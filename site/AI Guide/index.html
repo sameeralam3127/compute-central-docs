@@ -517,6 +517,8 @@
       
         
       
+        
+      
     
     
     
@@ -623,6 +625,36 @@
     
   
     AI Model Evaluation for Reliable AI Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./llm-fundamentals/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-cpu" viewBox="0 0 24 24"><path d="M12 20v2M12 2v2M17 20v2M17 2v2M2 12h2M2 17h2M2 7h2M20 12h2M20 17h2M20 7h2M7 20v2M7 2v2"/><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="8" height="8" x="8" y="8" rx="1"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Fundamentals: Tokens, Context, and Next-Token Prediction
   
 
     
@@ -2971,6 +3003,10 @@
 <li>Evaluation to measure quality over time</li>
 </ul>
 <p>This guide gives a practical overview of the major concepts behind modern AI systems so the rest of the section makes more sense.</p>
+<div class="admonition info">
+<p class="admonition-title">Start with the fundamentals</p>
+<p>If you are new to LLMs, first read <a href="llm-fundamentals/">LLM fundamentals</a> to understand tokens, context windows, and next-token prediction.</p>
+</div>
 <hr />
 <h2 id="why-ai-feels-different-now">Why AI Feels Different Now<a class="headerlink" href="#why-ai-feels-different-now" title="Permanent link">&para;</a></h2>
 <p>Earlier software systems followed explicit instructions written by developers. Modern AI systems can generate outputs, reason across context, summarize large documents, search knowledge bases, and interact with external tools.</p>
@@ -3008,9 +3044,17 @@ model + context + retrieval + tools + evaluation + application logic</p>
 </ul>
 <p>Rule-based systems still matter today for validation, safety checks, and business constraints around AI outputs.</p>
 <hr />
-<h3 id="2-machine-learning-and-generative-ai">2. Machine Learning and Generative AI<a class="headerlink" href="#2-machine-learning-and-generative-ai" title="Permanent link">&para;</a></h3>
+<h3 id="2-machine-learning-llms-and-generative-ai">2. Machine Learning, LLMs, and Generative AI<a class="headerlink" href="#2-machine-learning-llms-and-generative-ai" title="Permanent link">&para;</a></h3>
 <p>Modern AI systems learn patterns from data rather than relying only on hardcoded rules.</p>
 <p>In the current wave of AI, the most visible category is <strong>Generative AI</strong>, especially large language models (LLMs). These models generate text, code, summaries, translations, and structured outputs by predicting the next token based on prior context.</p>
+<p>At a basic level:</p>
+<ol>
+<li>Text is split into tokens.</li>
+<li>The model reads the available context.</li>
+<li>The model predicts the next likely token.</li>
+<li>The new token is added to the response.</li>
+<li>The process repeats until the response is complete.</li>
+</ol>
 <p>Common use cases:</p>
 <ul>
 <li>Chatbots</li>
@@ -3236,11 +3280,13 @@ model + context + retrieval + tools + evaluation + application logic</p>
 <h2 id="where-to-go-next">Where to Go Next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
 <p>This overview connects to the deeper topics in this section:</p>
 <ul>
+<li><a href="llm-fundamentals/">LLM Fundamentals</a></li>
 <li><a href="ai-agents/">AI Agents</a></li>
 <li><a href="ai-evaluation/">AI Model Evaluation</a></li>
 </ul>
 <p>If you are new to this space, a helpful learning sequence is:</p>
 <ol>
+<li>Understand tokens, context, and next-token prediction</li>
 <li>Understand the difference between prompts, retrieval, tools, and agents</li>
 <li>Learn how agent systems make decisions across multiple steps</li>
 <li>Learn how evaluation works so quality can be measured instead of guessed</li>

@@ -18,6 +18,9 @@ AI engineering is the practice of building systems that use models, data, retrie
 
 This guide gives a practical overview of the major concepts behind modern AI systems so the rest of the section makes more sense.
 
+!!! info "Start with the fundamentals"
+    If you are new to LLMs, first read [LLM fundamentals](llm-fundamentals.md) to understand tokens, context windows, and next-token prediction.
+
 ---
 
 ## Why AI Feels Different Now
@@ -66,11 +69,19 @@ Rule-based systems still matter today for validation, safety checks, and busines
 
 ---
 
-### 2. Machine Learning and Generative AI
+### 2. Machine Learning, LLMs, and Generative AI
 
 Modern AI systems learn patterns from data rather than relying only on hardcoded rules.
 
 In the current wave of AI, the most visible category is **Generative AI**, especially large language models (LLMs). These models generate text, code, summaries, translations, and structured outputs by predicting the next token based on prior context.
+
+At a basic level:
+
+1. Text is split into tokens.
+2. The model reads the available context.
+3. The model predicts the next likely token.
+4. The new token is added to the response.
+5. The process repeats until the response is complete.
 
 Common use cases:
 
@@ -331,13 +342,15 @@ Teams often underestimate that the hard part is not only the model. It is the fu
 
 This overview connects to the deeper topics in this section:
 
+- [LLM Fundamentals](llm-fundamentals.md)
 - [AI Agents](ai-agents.md)
 - [AI Model Evaluation](ai-evaluation.md)
 
 If you are new to this space, a helpful learning sequence is:
 
-1. Understand the difference between prompts, retrieval, tools, and agents
-2. Learn how agent systems make decisions across multiple steps
-3. Learn how evaluation works so quality can be measured instead of guessed
+1. Understand tokens, context, and next-token prediction
+2. Understand the difference between prompts, retrieval, tools, and agents
+3. Learn how agent systems make decisions across multiple steps
+4. Learn how evaluation works so quality can be measured instead of guessed
 
 That combination gives you a much stronger foundation for building AI systems that are useful, reliable, and maintainable.

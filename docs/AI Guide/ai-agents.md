@@ -12,7 +12,7 @@ AI Agents are systems that go beyond generating text. Instead of only predicting
 
 This is the key shift:
 
-- Generative AI → predicts next word
+- Generative AI → predicts next token
 - AI Agents → decide next action
 
 ---
