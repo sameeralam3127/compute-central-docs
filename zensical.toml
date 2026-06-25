@@ -1,10 +1,10 @@
 [project]
 site_name = "Compute Central"
-site_description = "Practical DevOps, cloud, Kubernetes, automation, and SRE guides for real-world infrastructure work."
+site_description = "Practical DevOps, cloud, Kubernetes, automation, AI engineering, and SRE guides for real-world infrastructure work."
 site_author = "Sameer Alam"
 site_url = "https://computecentral.in/"
-repo_url = "https://github.com/sameeralam3127/cc-docs"
-repo_name = "sameeralam3127/cc-docs"
+repo_url = "https://github.com/sameeralam3127/compute-central-docs"
+repo_name = "Compute Central Docs"
 edit_uri = "edit/main/docs"
 nav = []
 
@@ -64,7 +64,7 @@ repo = "fontawesome/brands/github"
 
 [[project.extra.social]]
 icon = "fontawesome/brands/github"
-link = "https://github.com/sameeralam3127/cc-docs"
+link = "https://github.com/sameeralam3127/compute-central-docs"
 name = "Compute Central on GitHub"
 
 [[project.extra.social]]

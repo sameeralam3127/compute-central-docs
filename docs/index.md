@@ -1,8 +1,8 @@
 # Compute Central
 
-**Compute Central** is a practical DevOps and cloud engineering knowledge base built around real infrastructure work.
+**Compute Central** is a practical DevOps, cloud, platform, AI engineering, and SRE knowledge base built around real infrastructure work.
 
-Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes, CI/CD, Terraform, Ansible, monitoring, troubleshooting, and system design. The focus is simple: explain concepts clearly, show how they work in practice, and connect them to day-to-day operations.
+Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes, CI/CD, Terraform, Ansible, monitoring, troubleshooting, system design, and AI-assisted engineering. The focus is simple: explain concepts clearly, show how they work in practice, and connect them to day-to-day operations.
 
 ![Compute Central DevOps knowledge hub](assets/compute-central-hero.png){ .cc-hero-image }
 
@@ -30,6 +30,11 @@ Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes,
   <span>Use Prometheus, Grafana, Alertmanager, Loki, and troubleshooting patterns to understand system health.</span>
 </a>
 
+<a class="cc-card" href="AI%20Guide/">
+  <strong>AI Engineering</strong>
+  <span>Understand LLM fundamentals, AI agents, evaluation, and practical model workflows for technical teams.</span>
+</a>
+
 </div>
 
 ## What You Will Find
@@ -38,6 +43,7 @@ Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes,
 - Kubernetes, OpenShift, Docker, Terraform, Ansible, Jenkins, and SonarQube notes
 - Monitoring and troubleshooting workflows for production-style systems
 - Architecture and system design references for platform engineering
+- AI engineering notes that connect models, retrieval, tools, evaluation, and operations
 - Scripts, examples, and checklists that are easy to adapt
 
 ## Learning Paths
@@ -49,6 +55,7 @@ Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes,
 | Automate server work | [Ansible overview](ansible/ansible.md), [Ansible playbooks](ansible/playbooks.md), and [shell scripts](shell-scripts/scripts.md) |
 | Improve delivery pipelines | [Jenkins setup](jenkins/jenkins.md), [SonarQube integration](sonarqube/jenkins-integration.md), and [Kubernetes CI/CD](kubernetes/operations/cicd-pipelines.md) |
 | Operate production-style systems | [Monitoring stack](monitoring-tools/index.md), [Kubernetes troubleshooting](kubernetes/operations/troubleshooting.md), and [system design](system-design/index.md) |
+| Understand AI engineering basics | [AI Engineering Guide](AI%20Guide/index.md), [LLM fundamentals](AI%20Guide/llm-fundamentals.md), and [AI evaluation](AI%20Guide/ai-evaluation.md) |
 
 ## How to Use This Site
 

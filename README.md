@@ -1,23 +1,34 @@
-# Compute Central
+# Compute Central Docs
 
-Compute Central is a practical documentation site for DevOps, cloud engineering, Kubernetes, automation, monitoring, and SRE topics.
+Compute Central Docs powers [computecentral.in](https://computecentral.in/), a practical knowledge base for DevOps, cloud engineering, Kubernetes, automation, monitoring, AI engineering, and SRE work.
 
-The goal is to keep technical notes clear, useful, and close to real infrastructure work. Instead of long theory-heavy pages, the content focuses on workflows, examples, commands, architecture patterns, and operational lessons that engineers can apply in labs, projects, and production-style environments.
+The project keeps technical notes clear, current, and close to real infrastructure practice. Pages prioritize working examples, useful commands, architecture patterns, and operational lessons that engineers can apply in labs, projects, and production-style environments.
 
-## What Changed Recently
+## Repository Purpose
 
-- Improved the homepage for easier navigation
-- Added a visual banner for the documentation site
-- Enabled repository edit/view actions in Zensical
-- Standardized page titles so each page clearly names its technology area
+- Publish the Compute Central documentation site
+- Keep DevOps, SRE, platform, and AI engineering guides organized in one place
+- Provide practical references for learning, interviews, labs, and day-to-day operations
+- Maintain generated site output for GitHub Pages deployment
 
 ## Main Topics
 
-- Kubernetes, OpenShift, Docker, and containers
+- Kubernetes, OpenShift, Docker, and container operations
 - Terraform, Ansible, shell scripting, and automation
 - Jenkins, CI/CD pipelines, SonarQube, and delivery workflows
 - Monitoring, logging, alerting, and troubleshooting
 - Platform and system design references
+- AI engineering fundamentals for DevOps and platform teams
+
+## Development
+
+Build the site locally with:
+
+```bash
+venv/bin/zensical build --clean
+```
+
+The GitHub Actions workflow builds and deploys the generated `site/` output to GitHub Pages.
 
 ## About
 
