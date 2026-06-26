@@ -48,24 +48,24 @@ Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes,
 
 ## Learning Paths
 
-| Goal | Good starting point |
-| --- | --- |
-| Learn containers and orchestration | [Docker guide](docker/docker.md), then [Kubernetes fundamentals](kubernetes/fundamentals.md) |
-| Practice Kubernetes locally | [Minikube lab](kubernetes/labs/minikube-lab.md), [Docker Desktop lab](kubernetes/labs/docker-lab.md), or [Podman lab](kubernetes/labs/podman-lab.md) |
-| Automate server work | [Ansible overview](ansible/ansible.md), [Ansible playbooks](ansible/playbooks.md), and [shell scripts](shell-scripts/scripts.md) |
-| Improve delivery pipelines | [Jenkins setup](jenkins/jenkins.md), [SonarQube integration](sonarqube/jenkins-integration.md), and [Kubernetes CI/CD](kubernetes/operations/cicd-pipelines.md) |
-| Operate production-style systems | [Monitoring stack](monitoring-tools/index.md), [Kubernetes troubleshooting](kubernetes/operations/troubleshooting.md), and [system design](system-design/index.md) |
-| Understand AI engineering basics | [AI Engineering Guide](AI%20Guide/index.md), [LLM fundamentals](AI%20Guide/llm-fundamentals.md), and [AI evaluation](AI%20Guide/ai-evaluation.md) |
+| Goal                               | Good starting point                                                                                                                                                |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Learn containers and orchestration | [Docker guide](docker/docker.md), then [Kubernetes fundamentals](kubernetes/fundamentals.md)                                                                       |
+| Practice Kubernetes locally        | [Minikube lab](kubernetes/labs/minikube-lab.md), [Docker Desktop lab](kubernetes/labs/docker-lab.md), or [Podman lab](kubernetes/labs/podman-lab.md)               |
+| Automate server work               | [Ansible overview](ansible/ansible.md), [Ansible playbooks](ansible/playbooks.md), and [shell scripts](shell-scripts/scripts.md)                                   |
+| Improve delivery pipelines         | [Jenkins setup](jenkins/jenkins.md), [SonarQube integration](sonarqube/jenkins-integration.md), and [Kubernetes CI/CD](kubernetes/operations/cicd-pipelines.md)    |
+| Operate production-style systems   | [Monitoring stack](monitoring-tools/index.md), [Kubernetes troubleshooting](kubernetes/operations/troubleshooting.md), and [system design](system-design/index.md) |
+| Understand AI engineering basics   | [AI Engineering Guide](AI%20Guide/index.md), [LLM fundamentals](AI%20Guide/llm-fundamentals.md), and [AI evaluation](AI%20Guide/ai-evaluation.md)                  |
 
 ## How to Use This Site
 
 Start with the topic you need, then follow the examples in a local or test environment before using them in production. Most pages are written to help you understand the reason behind each step, not just copy a command and move on.
 
 !!! tip "Best way to learn"
-    Read the short explanation first, run the example safely, then write down what changed and why it worked.
+Read the short explanation first, run the example safely, then write down what changed and why it worked.
 
 !!! note "Production reminder"
-    Always review commands, credentials, namespaces, and environment names before running anything against shared or production systems.
+Always review commands, credentials, namespaces, and environment names before running anything against shared or production systems.
 
 ## About Sameer Alam
 

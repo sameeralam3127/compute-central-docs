@@ -2,12 +2,7 @@
 
 Docker helps you package applications and their dependencies into portable units called containers. Those containers run the same way across laptops, test servers, and production systems, which reduces "it works on my machine" problems and makes delivery more predictable.
 
-!!! info "What Docker gives you"
-    - Consistent runtime environments across development, testing, and production
-    - Faster startup and lower overhead than traditional virtual machines
-    - Repeatable builds through `Dockerfile`
-    - Easy multi-service orchestration with `docker compose`
-    - Better isolation for apps, tools, and dependencies
+!!! info "What Docker gives you" - Consistent runtime environments across development, testing, and production - Faster startup and lower overhead than traditional virtual machines - Repeatable builds through `Dockerfile` - Easy multi-service orchestration with `docker compose` - Better isolation for apps, tools, and dependencies
 
 ---
 
@@ -23,7 +18,7 @@ Before jumping into commands, it helps to separate a few Docker terms:
 - **Registry**: A place to store and distribute images, such as Docker Hub
 
 !!! tip "Container vs virtual machine"
-    A container shares the host operating system kernel, while a virtual machine includes a full guest OS. That is why containers are usually lighter and faster to start.
+A container shares the host operating system kernel, while a virtual machine includes a full guest OS. That is why containers are usually lighter and faster to start.
 
 ---
 
@@ -64,9 +59,7 @@ Install Docker Desktop from [Docker's official website](https://www.docker.com/p
 
 Install Docker Desktop from [Docker's official website](https://www.docker.com/products/docker-desktop/). On Windows, Docker Desktop typically uses WSL 2 for Linux containers, so make sure WSL is enabled if prompted during setup.
 
-!!! note "Docker Desktop vs Docker Engine"
-    - **Docker Desktop** is commonly used on macOS and Windows and includes a GUI, Compose, and local Kubernetes support.
-    - **Docker Engine** is the lightweight server-side runtime commonly used on Linux.
+!!! note "Docker Desktop vs Docker Engine" - **Docker Desktop** is commonly used on macOS and Windows and includes a GUI, Compose, and local Kubernetes support. - **Docker Engine** is the lightweight server-side runtime commonly used on Linux.
 
 ### Enable non-root Docker access on Linux
 
@@ -130,7 +123,7 @@ docker inspect web
 ```
 
 !!! tip "Interactive debugging"
-    Use `docker exec -it <container> /bin/sh` or `/bin/bash` to inspect a running container. Minimal images often include `/bin/sh` but not `/bin/bash`.
+Use `docker exec -it <container> /bin/sh` or `/bin/bash` to inspect a running container. Minimal images often include `/bin/sh` but not `/bin/bash`.
 
 ---
 
@@ -208,7 +201,7 @@ docker run -d -p 5000:5000 --name flask-demo flask-demo:1.0
 - `CMD` sets the default runtime command
 
 !!! warning "Keep images small"
-    Use slim base images when practical, combine related steps, and avoid copying unnecessary files into the image.
+Use slim base images when practical, combine related steps, and avoid copying unnecessary files into the image.
 
 ### Add a `.dockerignore`
 
@@ -347,7 +340,7 @@ docker compose up -d --build
 ```
 
 !!! note "Prefer `docker compose`"
-    Modern Docker installations use `docker compose` with a space. The older `docker-compose` command may still work on some systems, but the plugin-based `docker compose` form is now the standard.
+Modern Docker installations use `docker compose` with a space. The older `docker-compose` command may still work on some systems, but the plugin-based `docker compose` form is now the standard.
 
 ---
 
@@ -408,7 +401,7 @@ A common day-to-day Docker workflow looks like this:
 - Use `docker compose` for multi-container development environments
 
 !!! warning "Containers are not full security boundaries"
-    Docker improves isolation, but containers still share the host kernel. For sensitive workloads, combine Docker with OS hardening, image scanning, least privilege, and good secret management.
+Docker improves isolation, but containers still share the host kernel. For sensitive workloads, combine Docker with OS hardening, image scanning, least privilege, and good secret management.
 
 ---
 
@@ -546,4 +539,4 @@ docker system prune
 ```
 
 !!! tip "Use cleanup carefully"
-    `docker system prune` removes unused objects such as stopped containers and dangling images. Review what it will delete before running it on a machine you care about.
+`docker system prune` removes unused objects such as stopped containers and dangling images. Review what it will delete before running it on a machine you care about.
