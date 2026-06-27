@@ -1,3 +1,7 @@
+---
+description: Build Kubernetes and OpenShift CI/CD workflows with Jenkins, Tekton, Argo CD, GitHub Actions, deployment strategies, and pipeline troubleshooting patterns.
+---
+
 # Kubernetes and OpenShift CI/CD Pipelines Guide
 
 ## 1. CI/CD Fundamentals

@@ -1,5 +1,6 @@
 ---
 icon: lucide/settings
+description: Configure SonarQube database settings, start the service, access the web UI, validate connectivity, and follow practical setup advice.
 tags:
   - Configuration
   - Database

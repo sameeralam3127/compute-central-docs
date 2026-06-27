@@ -1,3 +1,7 @@
+---
+description: Design a Kubernetes platform for teams and applications with cluster architecture, networking, identity, observability, delivery workflows, and operational guardrails.
+---
+
 # Kubernetes Platform System Design
 
 This page covers the basics of designing a Kubernetes platform for teams and applications.

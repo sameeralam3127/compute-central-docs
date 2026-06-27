@@ -1,5 +1,6 @@
 ---
 icon: lucide/server
+description: Learn Ansible inventory basics with static host groups, common inventory commands, Python interpreter overrides, and practical validation checks.
 tags:
   - Inventory
 ---

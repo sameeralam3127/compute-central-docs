@@ -1,5 +1,6 @@
 ---
 icon: lucide/cpu
+description: Understand LLM fundamentals including tokens, tokenization, next-token prediction, probability, context windows, hallucinations, and DevOps use cases.
 tags:
   - AI
   - LLM

@@ -1,5 +1,6 @@
 ---
 icon: lucide/code
+description: Use a practical Jenkins pipeline example to run SonarQube analysis, pass scanner parameters, publish quality gate results, and improve CI code quality checks.
 tags:
   - Pipeline
   - Groovy

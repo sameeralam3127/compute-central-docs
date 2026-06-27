@@ -1,5 +1,6 @@
 ---
 icon: lucide/database
+description: Learn Ansible variables, where to define values, how variables support reusable playbooks, and how to inspect variable behavior while practicing automation.
 tags:
   - Variables
 ---

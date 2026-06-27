@@ -1,3 +1,7 @@
+---
+description: Learn DevOps and platform engineering system design for CI/CD, Kubernetes platforms, observability, multi-environment deployments, backups, secrets, and access.
+---
+
 # DevOps and Platform Engineering System Design
 
 This section focuses on practical system design thinking for infrastructure, reliability, deployment, and operations.

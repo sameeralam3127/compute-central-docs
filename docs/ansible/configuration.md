@@ -1,5 +1,6 @@
 ---
 icon: lucide/settings
+description: Configure Ansible with practical ansible.cfg settings, understand configuration precedence, common file locations, useful defaults, and quick validation commands.
 tags:
   - Configuration
 ---

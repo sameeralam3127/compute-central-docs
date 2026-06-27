@@ -1,3 +1,7 @@
+---
+description: Learn how Prometheus fits into a monitoring stack, including scrape targets, configuration files, alert examples, health checks, and practical improvements.
+---
+
 # Prometheus Guide for the Monitoring Stack
 
 Prometheus is the core metrics and alerting engine in this monitoring lab.
@@ -50,3 +54,28 @@ docker compose logs -f prometheus
 curl http://localhost:9090/-/healthy
 curl http://localhost:9090/api/v1/targets
 ```
+
+## FAQ
+
+### What is Prometheus used for?
+
+Prometheus collects and stores metrics as time-series data. It is commonly used for infrastructure, container, application, and service health monitoring.
+
+### Is Prometheus the same as Grafana?
+
+No. Prometheus stores and queries metrics. [Grafana](grafana.md) visualizes metrics and logs through dashboards and panels.
+
+### What is a scrape target?
+
+A scrape target is an endpoint that exposes metrics for Prometheus to collect. Common targets include Node Exporter, cAdvisor, application metrics endpoints, and Blackbox Exporter probes.
+
+### When should I add Alertmanager?
+
+Add [Alertmanager](alertmanager.md) when you need alert grouping, routing, silencing, deduplication, and notification delivery.
+
+## Related Learning
+
+- [Monitoring stack overview](index.md)
+- [Grafana guide](grafana.md)
+- [Monitoring troubleshooting](troubleshooting.md)
+- [Observability system design](../system-design/observability.md)

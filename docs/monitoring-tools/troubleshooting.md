@@ -1,3 +1,7 @@
+---
+description: Troubleshoot a Prometheus, Grafana, Loki, Alertmanager, and Blackbox Exporter monitoring stack with practical checks for data, targets, logs, probes, and ports.
+---
+
 # Monitoring Stack Troubleshooting Guide
 
 This page collects the most common issues you may hit while running the monitoring lab locally.

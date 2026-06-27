@@ -1,5 +1,6 @@
 ---
 icon: lucide/shield-check
+description: Learn SonarQube code quality basics, installation flow, configuration, Jenkins integration, pipeline scanning, quality gates, and practical code review checks.
 tags:
   - SonarQube
   - Code Quality

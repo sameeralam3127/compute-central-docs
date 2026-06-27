@@ -1,3 +1,7 @@
+---
+description: Prepare for Ansible interviews with concise practical answers about inventory, playbooks, roles, idempotency, variables, facts, handlers, and automation workflows.
+---
+
 # Ansible Interview Questions for Automation Engineers
 
 This page helps you prepare short, practical answers for Ansible interviews.

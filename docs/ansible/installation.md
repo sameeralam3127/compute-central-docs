@@ -1,5 +1,6 @@
 ---
 icon: lucide/download
+description: Install Ansible, verify the command-line tools, prepare a control node, and confirm your first automation environment is ready for practice.
 tags:
   - Setup
   - Installation

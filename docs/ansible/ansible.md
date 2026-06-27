@@ -1,5 +1,6 @@
 ---
 icon: lucide/book-open
+description: Learn Ansible automation basics, inventory, playbooks, roles, configuration, variables, facts, and practical workflows for server and infrastructure management.
 tags:
   - Ansible
   - Overview
@@ -58,6 +59,31 @@ Ansible became popular because it reduced complexity while still supporting real
 ansible --version
 ansible all -m ping -i inventory.ini
 ```
+
+## FAQ
+
+### What is Ansible used for?
+
+Ansible is used for configuration management, application deployment, server setup, repeatable operations, and simple automation over SSH.
+
+### Is Ansible agentless?
+
+Yes for most Linux workflows. Ansible usually connects over SSH from a control node and runs modules on managed hosts without requiring a permanent agent.
+
+### What is the difference between a playbook and a role?
+
+A playbook defines automation steps for hosts. A role organizes tasks, variables, handlers, templates, and files into a reusable structure.
+
+### Should I use Ansible or Terraform?
+
+Use [Terraform](../terraform/overview.md) to create infrastructure. Use Ansible to configure systems and run operational tasks after the infrastructure exists.
+
+## Related Learning
+
+- [Ansible playbooks](playbooks.md)
+- [Ansible inventory](inventory.md)
+- [Ansible roles](roles.md)
+- [Shell scripting for SRE and DevOps automation](../shell-scripts/scripts.md)
 
 ## Next Steps
 

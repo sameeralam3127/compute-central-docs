@@ -1,5 +1,6 @@
 ---
 icon: lucide/plug
+description: Integrate SonarQube with Jenkins by installing the plugin, adding the SonarQube server, configuring scans, and preparing pipeline quality checks.
 tags:
   - Jenkins
   - Integration

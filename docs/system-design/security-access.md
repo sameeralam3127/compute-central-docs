@@ -1,3 +1,7 @@
+---
+description: Design secrets and access systems with identity, RBAC, credentials, rotation, audit trails, least privilege, and secure operational workflows.
+---
+
 # Secrets and Access System Design
 
 This page explains how to think about secrets, identity, and access control as part of system design.

@@ -1,3 +1,7 @@
+---
+description: Use Blackbox Exporter for synthetic monitoring checks, endpoint probes, configuration validation, practical improvements, and monitoring stack health checks.
+---
+
 # Blackbox Exporter Guide for the Monitoring Stack
 
 Blackbox Exporter adds synthetic checks to the monitoring lab. Instead of reading host metrics, it probes endpoints to see whether they are actually reachable.

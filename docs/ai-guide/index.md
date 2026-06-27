@@ -1,5 +1,6 @@
 ---
 icon: lucide/book-open
+description: Learn AI engineering for DevOps and platform teams, including LLM fundamentals, RAG, tool use, MCP, agents, evaluation, production risks, and workflows.
 tags:
   - AI
   - Guide
@@ -337,6 +338,31 @@ Teams often underestimate that the hard part is not only the model. It is the fu
 - Re-evaluate regularly as prompts, models, and data change
 
 ---
+
+## FAQ
+
+### What is AI engineering?
+
+AI engineering is the practice of building reliable systems around models. It includes prompts, retrieval, tools, agents, evaluation, observability, security, and user experience.
+
+### What is the difference between an LLM and an AI agent?
+
+An LLM predicts text from context. An AI agent uses a model inside a loop that can plan steps, call tools, inspect results, and continue toward a goal. Start with [LLM fundamentals](llm-fundamentals.md), then read [AI agents](ai-agents.md).
+
+### What is RAG used for?
+
+Retrieval-augmented generation connects a model to external knowledge, such as documentation or internal data, so answers can be grounded in relevant context.
+
+### Why does AI evaluation matter?
+
+Evaluation helps teams measure quality, regressions, safety, and usefulness with real examples instead of relying only on demos. See [AI model evaluation](ai-evaluation.md).
+
+## Related Learning
+
+- [LLM fundamentals](llm-fundamentals.md)
+- [AI agents for automation workflows](ai-agents.md)
+- [AI model evaluation](ai-evaluation.md)
+- [Observability system design](../system-design/observability.md)
 
 ## Where to Go Next
 

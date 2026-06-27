@@ -1,3 +1,7 @@
+---
+description: Practice Kubernetes with hands-on scenarios for multi-tier apps, CI/CD, monitoring, blue-green deployments, troubleshooting, services, and resource management.
+---
+
 # Kubernetes Hands-On Practice Scenarios
 
 ## Scenario 1: Deploy a Multi-Tier Application

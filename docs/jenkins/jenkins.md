@@ -1,3 +1,7 @@
+---
+description: Install Jenkins on Ubuntu, configure the first setup, create a practical CI/CD pipeline, understand Jenkins concepts, and troubleshoot common pipeline issues.
+---
+
 # Jenkins CI/CD Installation and First Pipeline on Ubuntu
 
 Jenkins is an open-source automation server used to build, test, and deploy software. It is one of the most widely used CI/CD tools because it supports pipelines as code, integrates with a large plugin ecosystem, and can automate everything from simple shell scripts to full production delivery workflows.
@@ -572,6 +576,31 @@ sudo ss -tulpn | grep 8080
 ```
 
 ---
+
+## FAQ
+
+### What is Jenkins used for?
+
+Jenkins is used to automate build, test, delivery, deployment, and operational workflows. It is most valuable when pipelines are stored as code in a `Jenkinsfile`.
+
+### What is a Jenkins pipeline?
+
+A Jenkins pipeline is a versioned workflow made of stages such as checkout, build, test, scan, package, and deploy. It helps teams review and repeat delivery steps consistently.
+
+### How does Jenkins work with Kubernetes?
+
+Jenkins can deploy workloads to Kubernetes with `kubectl`, Helm, or GitOps tools. Start with [Kubernetes CI/CD pipelines](../kubernetes/operations/cicd-pipelines.md) after your first Jenkins pipeline works.
+
+### How does Jenkins work with SonarQube?
+
+Jenkins can run SonarQube analysis during CI and fail or pause delivery based on quality gates. See the [SonarQube Jenkins integration guide](../sonarqube/jenkins-integration.md).
+
+## Related Learning
+
+- [SonarQube code quality overview](../sonarqube/index.md)
+- [Kubernetes CI/CD pipelines](../kubernetes/operations/cicd-pipelines.md)
+- [Shell scripting for SRE and DevOps automation](../shell-scripts/scripts.md)
+- [CI/CD platform system design](../system-design/cicd-platform.md)
 
 ## Next Steps
 

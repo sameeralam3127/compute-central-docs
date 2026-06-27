@@ -1,3 +1,7 @@
+---
+description: Understand Kubernetes architecture, workloads, networking, storage, RBAC, kubectl commands, and core objects used in real platform operations.
+---
+
 # Kubernetes Fundamentals Guide
 
 ## 1. Kubernetes Architecture

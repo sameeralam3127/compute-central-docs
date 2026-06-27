@@ -1,3 +1,7 @@
+---
+description: Design backup and disaster recovery plans with RPO, RTO, restore testing, storage strategy, automation, failure scenarios, and practical recovery checks.
+---
+
 # Backup and Disaster Recovery System Design
 
 This page explains the basics of planning backups and recovery as part of system design.

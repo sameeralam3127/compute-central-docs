@@ -1,3 +1,7 @@
+---
+description: Learn Kubernetes and OpenShift from container fundamentals to local labs, managed clusters, workloads, services, troubleshooting, and production practices.
+---
+
 # Kubernetes and OpenShift: From Basics to Practical Operations
 
 Kubernetes is a container orchestration platform for deploying, scaling, and operating applications across a cluster of machines.
@@ -534,6 +538,31 @@ Kubernetes is most useful when you understand both layers:
 - The platform layer: Deployments, Services, Ingress, storage, Helm, and managed clusters
 
 Learn the local workflow first, then move to managed platforms with stronger operational practices around access, networking, observability, backup, and release safety.
+
+## FAQ
+
+### What is Kubernetes used for?
+
+Kubernetes is used to run containerized applications across a cluster. It schedules workloads, restarts failed containers, exposes services, manages configuration, and supports controlled rollouts.
+
+### Is Kubernetes the same as Docker?
+
+No. Docker is commonly used to build and run containers. Kubernetes is a platform for operating containers across multiple nodes. A good learning path is [Docker first](../docker/docker.md), then [Kubernetes fundamentals](fundamentals.md).
+
+### Should beginners use Minikube, Docker Desktop, or Podman?
+
+Use [Minikube](labs/minikube-lab.md) when you want a dedicated local Kubernetes cluster. Use [Docker Desktop](labs/docker-lab.md) if it is already part of your daily workflow. Use [Podman](labs/podman-lab.md) when you want daemonless container tooling and Kubernetes-style YAML practice.
+
+### What should I learn after Kubernetes basics?
+
+Practice [hands-on scenarios](labs/hands-on-scenarios.md), then study [troubleshooting](operations/troubleshooting.md), [CI/CD pipelines](operations/cicd-pipelines.md), and [OpenShift](openshift/guide.md) if your target environment uses enterprise Kubernetes.
+
+## Related Learning
+
+- [Kubernetes quick reference](reference/quick-reference.md)
+- [Kubernetes and OpenShift interview handbook](interview/questions.md)
+- [Observability system design](../system-design/observability.md)
+- [CI/CD platform design](../system-design/cicd-platform.md)
 
 ## Further Learning
 

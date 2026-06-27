@@ -1,3 +1,7 @@
+---
+description: Learn Loki and Promtail logging flow, important configuration files, log sources, validation commands, and practical improvements for local monitoring labs.
+---
+
 # Loki and Promtail Logging Guide
 
 This page explains the logging flow in the monitoring lab.

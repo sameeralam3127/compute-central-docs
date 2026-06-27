@@ -1,5 +1,6 @@
 ---
 icon: lucide/puzzle
+description: Understand Ansible core concepts including control nodes, managed hosts, modules, tasks, playbooks, inventory, idempotency, and practical automation habits.
 tags:
   - Ansible
   - Basics

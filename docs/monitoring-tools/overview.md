@@ -1,3 +1,7 @@
+---
+description: Walk through a Docker-based monitoring lab with Prometheus, Grafana, Loki, Alertmanager, exporters, service URLs, configuration paths, and validation checks.
+---
+
 # Monitoring Stack Walkthrough: Prometheus, Grafana, Loki, and Alertmanager
 
 This page explains how the monitoring lab is structured and how to bring it up quickly.

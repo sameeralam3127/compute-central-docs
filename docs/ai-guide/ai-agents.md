@@ -1,5 +1,6 @@
 ---
 icon: lucide/bot
+description: Learn AI agents for automation workflows, including generative AI differences, agent loops, tool use, RAG, reliability patterns, and common frameworks.
 tags:
   - AI
   - Agents

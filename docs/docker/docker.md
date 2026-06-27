@@ -1,3 +1,7 @@
+---
+description: Learn Docker containers from installation and core commands to Dockerfiles, volumes, networking, Compose, registries, best practices, and troubleshooting.
+---
+
 # Docker Container Guide: From Basics to Advanced
 
 Docker helps you package applications and their dependencies into portable units called containers. Those containers run the same way across laptops, test servers, and production systems, which reduces "it works on my machine" problems and makes delivery more predictable.
@@ -540,3 +544,28 @@ docker system prune
 
 !!! tip "Use cleanup carefully"
 `docker system prune` removes unused objects such as stopped containers and dangling images. Review what it will delete before running it on a machine you care about.
+
+## FAQ
+
+### What is Docker used for?
+
+Docker packages applications and dependencies into containers so they can run consistently across laptops, test servers, and production-style environments.
+
+### What is the difference between an image and a container?
+
+An image is the packaged template. A container is a running instance of that image. You build and pull images, then run containers from them.
+
+### Should I learn Docker before Kubernetes?
+
+Yes. Docker teaches container images, ports, volumes, logs, and runtime behavior. Those concepts make [Kubernetes fundamentals](../kubernetes/fundamentals.md) much easier to understand.
+
+### When should I use Docker Compose?
+
+Use Docker Compose when you need several local services together, such as an app, database, cache, and monitoring container. For cluster scheduling and production-style orchestration, continue to [Kubernetes](../kubernetes/index.md).
+
+## Related Learning
+
+- [Basic Docker commands](basic.md)
+- [Kubernetes with Docker Desktop lab](../kubernetes/labs/docker-lab.md)
+- [Shell scripting for DevOps automation](../shell-scripts/scripts.md)
+- [Terraform overview](../terraform/overview.md)

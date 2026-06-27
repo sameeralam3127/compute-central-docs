@@ -1,5 +1,6 @@
 ---
 icon: lucide/file-code
+description: Write and run your first Ansible playbook, target inventory groups, use privilege escalation, add conditions, and validate changes with check mode.
 tags:
   - Playbooks
 ---

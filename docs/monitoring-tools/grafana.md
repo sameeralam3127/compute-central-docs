@@ -1,3 +1,7 @@
+---
+description: Learn how Grafana provides dashboards and log views for a monitoring lab, including provisioning files, data sources, dashboard checks, and practical improvements.
+---
+
 # Grafana Guide for the Monitoring Stack
 
 Grafana provides the dashboards and log views for the monitoring lab.
@@ -51,3 +55,28 @@ Default login:
 
 - Username: `admin`
 - Password: `admin`
+
+## FAQ
+
+### What is Grafana used for?
+
+Grafana is used to build dashboards, explore metrics and logs, and make system health easier to understand during normal operations and incidents.
+
+### Does Grafana store metrics?
+
+Grafana usually visualizes data from other systems. In this stack, metrics come from [Prometheus](prometheus.md) and logs come from [Loki](logging.md).
+
+### Why provision Grafana dashboards?
+
+Provisioning keeps data sources and dashboards reproducible. It also lets teams review dashboard changes in Git instead of relying on manual UI edits.
+
+### What should a good monitoring dashboard show?
+
+A useful dashboard shows service health, latency or probe success, resource usage, error signals, recent logs, and alert context without overwhelming the operator.
+
+## Related Learning
+
+- [Prometheus guide](prometheus.md)
+- [Loki and Promtail logging](logging.md)
+- [Monitoring stack troubleshooting](troubleshooting.md)
+- [Observability system design](../system-design/observability.md)

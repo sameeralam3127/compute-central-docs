@@ -1,5 +1,6 @@
 ---
 icon: lucide/download
+description: Install SonarQube on Ubuntu with PostgreSQL and Java, prepare the database user, download the server package, and continue into runtime configuration.
 tags:
   - Installation
   - Ubuntu

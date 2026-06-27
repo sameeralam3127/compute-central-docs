@@ -1,3 +1,7 @@
+---
+description: Prepare practical Terraform interview answers covering state, providers, modules, plans, variables, workspaces, drift, remote backends, and infrastructure workflows.
+---
+
 # Terraform Interview Questions for Infrastructure as Code
 
 This page helps you prepare clear, practical answers for Terraform interviews.

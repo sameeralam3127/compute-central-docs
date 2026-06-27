@@ -1,5 +1,6 @@
 ---
 icon: lucide/folders
+description: Organize Ansible automation with roles, standard role directory structure, reusable tasks, playbook integration, and practical role design advice.
 tags:
   - Roles
 ---

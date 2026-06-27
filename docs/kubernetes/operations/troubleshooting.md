@@ -1,3 +1,7 @@
+---
+description: Troubleshoot Kubernetes and OpenShift issues including pending pods, CrashLoopBackOff, image pulls, services, DNS, storage, rollouts, RBAC, and node problems.
+---
+
 # Kubernetes and OpenShift Troubleshooting Guide
 
 ## 1. Systematic Troubleshooting Approach

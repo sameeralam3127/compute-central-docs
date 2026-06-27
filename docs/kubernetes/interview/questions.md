@@ -1,3 +1,7 @@
+---
+description: Prepare for Kubernetes and OpenShift interviews with practical answers, troubleshooting scenarios, architecture explanations, security notes, and command examples.
+---
+
 # Kubernetes and OpenShift Interview Questions Handbook
 
 This guide is designed to help you answer Kubernetes and OpenShift interview questions with clarity, depth, and confidence.

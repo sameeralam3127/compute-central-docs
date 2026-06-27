@@ -1,3 +1,7 @@
+---
+description: Design development, staging, and production environments with promotion flows, configuration isolation, release controls, access boundaries, and deployment safety.
+---
+
 # Multi-Environment Deployment System Design
 
 This page covers how to think about development, staging, and production environments in a practical way.

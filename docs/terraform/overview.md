@@ -1,3 +1,7 @@
+---
+description: Learn Terraform infrastructure as code concepts, providers, workflow commands, AWS CLI setup, LocalStack practice, and safe local provisioning patterns.
+---
+
 # Terraform Infrastructure as Code Overview
 
 Terraform is an infrastructure as code tool used to define and manage cloud and platform resources with declarative configuration files.
@@ -192,6 +196,31 @@ provider "aws" {
 - Use remote state for team environments
 - Review `plan` output before every apply
 - Separate learning labs from production workspaces
+
+## FAQ
+
+### What is Terraform used for?
+
+Terraform is used to define and manage infrastructure with code. It is commonly used for cloud networks, compute, storage, IAM, Kubernetes platform dependencies, and repeatable environment setup.
+
+### What is the difference between Terraform and Ansible?
+
+Terraform is strongest for provisioning infrastructure resources. [Ansible](../ansible/ansible.md) is strongest for configuring systems and running operational tasks on existing hosts. Many teams use both together.
+
+### What is Terraform state?
+
+Terraform state records what Terraform believes it manages. Treat state as important operational data, store team state remotely, and protect it from accidental edits or exposure.
+
+### How can I practice Terraform safely?
+
+Use local labs such as LocalStack, isolated cloud sandboxes, small examples, and `terraform plan` reviews before applying changes.
+
+## Related Learning
+
+- [Terraform interview questions](interview-questions.md)
+- [Ansible automation overview](../ansible/ansible.md)
+- [Multi-environment deployment design](../system-design/multi-environment.md)
+- [Backup and disaster recovery design](../system-design/backup-disaster-recovery.md)
 
 ## Next Steps
 

@@ -1,5 +1,6 @@
 ---
 icon: lucide/bar-chart
+description: Evaluate AI systems with quantitative, qualitative, benchmark, LLM-as-judge, and reliability-focused methods for safer production AI workflows.
 tags:
   - AI
   - Evaluation

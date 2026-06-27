@@ -1,3 +1,7 @@
+---
+description: Design observability systems with metrics, logs, traces, alerting, dashboards, SLOs, incident workflows, and practical troubleshooting feedback loops.
+---
+
 # Observability System Design
 
 This page explains how to think about monitoring, logging, alerting, and troubleshooting as part of system design.

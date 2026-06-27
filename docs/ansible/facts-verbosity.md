@@ -1,5 +1,6 @@
 ---
 icon: lucide/info
+description: Use Ansible facts and verbosity flags to inspect managed hosts, debug playbook behavior, validate gathered data, and troubleshoot automation runs.
 tags:
   - Facts
   - Debugging

@@ -1,3 +1,7 @@
+---
+description: Use practical kubectl and oc commands, YAML templates, troubleshooting checks, resource units, selectors, JSONPath examples, aliases, and Kubernetes cheat sheets.
+---
+
 # Kubernetes and OpenShift Quick Reference and Cheat Sheets
 
 ## Essential kubectl Commands

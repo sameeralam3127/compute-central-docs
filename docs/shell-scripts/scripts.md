@@ -1,3 +1,7 @@
+---
+description: Learn shell scripting for DevOps and SRE automation with Bash basics, safe script structure, health checks, log scanners, backups, deployments, and debugging.
+---
+
 # Shell Scripting for SRE and DevOps Automation
 
 Shell scripts are one of the most practical tools in infrastructure work. They let you combine operating system commands, glue together tools, automate repetitive tasks, and turn manual runbooks into repeatable workflows.

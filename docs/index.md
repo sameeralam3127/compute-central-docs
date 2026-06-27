@@ -1,3 +1,7 @@
+---
+description: Learn DevOps, Kubernetes, Docker, Terraform, Ansible, CI/CD, monitoring, system design, and AI engineering through practical infrastructure guides.
+---
+
 # Compute Central
 
 **Compute Central** is a practical DevOps, cloud, platform, AI engineering, and SRE knowledge base built around real infrastructure work.
@@ -30,7 +34,7 @@ Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes,
   <span>Use Prometheus, Grafana, Alertmanager, Loki, and troubleshooting patterns to understand system health.</span>
 </a>
 
-<a class="cc-card" href="AI%20Guide/">
+<a class="cc-card" href="ai-guide/">
   <strong>AI Engineering</strong>
   <span>Understand LLM fundamentals, AI agents, evaluation, and practical model workflows for technical teams.</span>
 </a>
@@ -55,7 +59,7 @@ Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes,
 | Automate server work               | [Ansible overview](ansible/ansible.md), [Ansible playbooks](ansible/playbooks.md), and [shell scripts](shell-scripts/scripts.md)                                   |
 | Improve delivery pipelines         | [Jenkins setup](jenkins/jenkins.md), [SonarQube integration](sonarqube/jenkins-integration.md), and [Kubernetes CI/CD](kubernetes/operations/cicd-pipelines.md)    |
 | Operate production-style systems   | [Monitoring stack](monitoring-tools/index.md), [Kubernetes troubleshooting](kubernetes/operations/troubleshooting.md), and [system design](system-design/index.md) |
-| Understand AI engineering basics   | [AI Engineering Guide](AI%20Guide/index.md), [LLM fundamentals](AI%20Guide/llm-fundamentals.md), and [AI evaluation](AI%20Guide/ai-evaluation.md)                  |
+| Understand AI engineering basics   | [AI Engineering Guide](ai-guide/index.md), [LLM fundamentals](ai-guide/llm-fundamentals.md), and [AI evaluation](ai-guide/ai-evaluation.md)                         |
 
 ## How to Use This Site
 

@@ -1,3 +1,7 @@
+---
+description: Design a practical CI/CD platform with source control, build agents, artifact storage, environments, approvals, deployment safety, and operational risk controls.
+---
+
 # CI/CD Platform System Design
 
 This page explains the basic design thinking behind a practical CI/CD platform.

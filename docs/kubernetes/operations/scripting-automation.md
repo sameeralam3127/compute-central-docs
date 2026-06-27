@@ -1,3 +1,7 @@
+---
+description: Automate Kubernetes and OpenShift operations with shell scripts, Python helpers, backup jobs, monitoring checks, cleanup tasks, and reusable command patterns.
+---
+
 # Kubernetes and OpenShift Scripting and Automation Guide
 
 ## 1. Shell Scripting Essentials

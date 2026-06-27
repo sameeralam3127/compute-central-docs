@@ -1,3 +1,7 @@
+---
+description: Understand Alertmanager routing, grouping, silences, notification flow, practical routing models, health checks, and alerting improvements for monitoring stacks.
+---
+
 # Alertmanager Guide for the Monitoring Stack
 
 Alertmanager receives alerts from Prometheus and decides how they should be grouped, routed, silenced, and repeated.
