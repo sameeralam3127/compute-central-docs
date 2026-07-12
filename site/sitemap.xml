@@ -4,46 +4,136 @@
         <loc>https://computecentral.in/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/AI%20Guide/</loc>
+        <loc>https://computecentral.in/ai-guide/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/AI%20Guide/ai-agents/</loc>
+        <loc>https://computecentral.in/ai-guide/ai-agents/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/AI%20Guide/ai-evaluation/</loc>
+        <loc>https://computecentral.in/ai-guide/ai-evaluation/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/AI%20Guide/llm-fundamentals/</loc>
+        <loc>https://computecentral.in/ai-guide/llm-fundamentals/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/ansible/ansible/</loc>
+        <loc>https://computecentral.in/ansible/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/ansible/basics/</loc>
+        <loc>https://computecentral.in/ansible/volume-1-fundamentals-and-history/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/ansible/configuration/</loc>
+        <loc>https://computecentral.in/ansible/volume-1-fundamentals-and-history/01-infrastructure-before-ansible/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/ansible/facts-verbosity/</loc>
+        <loc>https://computecentral.in/ansible/volume-1-fundamentals-and-history/02-michael-dehaan-and-the-birth-of-ansible/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/ansible/installation/</loc>
+        <loc>https://computecentral.in/ansible/volume-1-fundamentals-and-history/03-what-exactly-is-ansible/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/ansible/interview-questions/</loc>
+        <loc>https://computecentral.in/ansible/volume-1-fundamentals-and-history/04-why-yaml/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/ansible/inventory/</loc>
+        <loc>https://computecentral.in/ansible/volume-1-fundamentals-and-history/05-declarative-vs-imperative/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/ansible/playbooks/</loc>
+        <loc>https://computecentral.in/ansible/volume-1-fundamentals-and-history/06-installing-ansible/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/ansible/roles/</loc>
+        <loc>https://computecentral.in/ansible/volume-2-playbooks-roles-and-collections/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/ansible/variables/</loc>
+        <loc>https://computecentral.in/ansible/volume-2-playbooks-roles-and-collections/01-cli-deep-dive/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-2-playbooks-roles-and-collections/02-inventory/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-2-playbooks-roles-and-collections/03-variables-and-precedence/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-2-playbooks-roles-and-collections/04-ansible-cfg/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-2-playbooks-roles-and-collections/05-playbooks/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-2-playbooks-roles-and-collections/06-roles/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-2-playbooks-roles-and-collections/07-collections/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-2-playbooks-roles-and-collections/08-galaxy/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-3-core-internals/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-3-core-internals/01-internal-architecture/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-3-core-internals/02-how-ansible-executes/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-3-core-internals/03-why-python/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-3-core-internals/04-source-code-tour/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-4-enterprise-automation-platform/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-4-enterprise-automation-platform/01-ansible-core-vs-ansible-vs-aap/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-4-enterprise-automation-platform/02-automation-controller-and-mesh/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-4-enterprise-automation-platform/03-execution-environments-and-hub/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-4-enterprise-automation-platform/04-licensing-and-adoption/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-5-development-and-contributing/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-5-development-and-contributing/01-module-architecture/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-5-development-and-contributing/02-plugin-architecture/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-5-development-and-contributing/03-testing-ansible-content/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-5-development-and-contributing/04-development-toolkit/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-5-development-and-contributing/05-contributing-to-ansible/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-6-production-and-performance/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-6-production-and-performance/01-security/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-6-production-and-performance/02-performance-and-scaling/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-6-production-and-performance/03-windows-automation/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-6-production-and-performance/04-troubleshooting/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-6-production-and-performance/05-best-practices/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/ansible/volume-6-production-and-performance/06-real-production-projects/</loc>
       </url>
       <url>
         <loc>https://computecentral.in/docker/basic/</loc>

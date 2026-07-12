@@ -205,7 +205,7 @@ Terraform is used to define and manage infrastructure with code. It is commonly 
 
 ### What is the difference between Terraform and Ansible?
 
-Terraform is strongest for provisioning infrastructure resources. [Ansible](../ansible/ansible.md) is strongest for configuring systems and running operational tasks on existing hosts. Many teams use both together.
+Terraform is strongest for provisioning infrastructure resources. [Ansible](../ansible/index.md) is strongest for configuring systems and running operational tasks on existing hosts. Many teams use both together.
 
 ### What is Terraform state?
 
@@ -218,11 +218,11 @@ Use local labs such as LocalStack, isolated cloud sandboxes, small examples, and
 ## Related Learning
 
 - [Terraform interview questions](interview-questions.md)
-- [Ansible automation overview](../ansible/ansible.md)
+- [Ansible book series](../ansible/index.md)
 - [Multi-environment deployment design](../system-design/multi-environment.md)
 - [Backup and disaster recovery design](../system-design/backup-disaster-recovery.md)
 
 ## Next Steps
 
 - Review [Terraform interview questions](interview-questions.md)
-- Pair Terraform with [Ansible](../ansible/ansible.md) when you need both provisioning and configuration
+- Pair Terraform with [Ansible](../ansible/index.md) when you need both provisioning and configuration

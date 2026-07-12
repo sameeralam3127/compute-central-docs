@@ -19,7 +19,7 @@ Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes,
   <span>Learn core concepts, OpenShift operations, labs, troubleshooting, and quick-reference commands.</span>
 </a>
 
-<a class="cc-card" href="ansible/ansible/">
+<a class="cc-card" href="ansible/">
   <strong>Automation</strong>
   <span>Build repeatable workflows with Ansible, shell scripting, Terraform, and practical infrastructure examples.</span>
 </a>
@@ -56,7 +56,7 @@ Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes,
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Learn containers and orchestration | [Docker guide](docker/docker.md), then [Kubernetes fundamentals](kubernetes/fundamentals.md)                                                                       |
 | Practice Kubernetes locally        | [Minikube lab](kubernetes/labs/minikube-lab.md), [Docker Desktop lab](kubernetes/labs/docker-lab.md), or [Podman lab](kubernetes/labs/podman-lab.md)               |
-| Automate server work               | [Ansible overview](ansible/ansible.md), [Ansible playbooks](ansible/playbooks.md), and [shell scripts](shell-scripts/scripts.md)                                   |
+| Automate server work               | [Ansible book series](ansible/index.md), [Ansible playbooks](ansible/volume-2-playbooks-roles-and-collections/05-playbooks.md), and [shell scripts](shell-scripts/scripts.md) |
 | Improve delivery pipelines         | [Jenkins setup](jenkins/jenkins.md), [SonarQube integration](sonarqube/jenkins-integration.md), and [Kubernetes CI/CD](kubernetes/operations/cicd-pipelines.md)    |
 | Operate production-style systems   | [Monitoring stack](monitoring-tools/index.md), [Kubernetes troubleshooting](kubernetes/operations/troubleshooting.md), and [system design](system-design/index.md) |
 | Understand AI engineering basics   | [AI Engineering Guide](ai-guide/index.md), [LLM fundamentals](ai-guide/llm-fundamentals.md), and [AI evaluation](ai-guide/ai-evaluation.md)                         |
