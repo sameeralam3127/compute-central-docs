@@ -18,7 +18,7 @@
         <link rel="prev" href="../ai-evaluation/">
       
       
-        <link rel="next" href="../../ansible/">
+        <link rel="next" href="../terminology/">
       
       
         
@@ -529,6 +529,8 @@
       
         
       
+        
+      
     
     
     
@@ -677,6 +679,34 @@
 
       </a>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Terminology in Plain English
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -4307,6 +4337,12 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>User text -&gt; Tokenizer -&gt; Tokens -&gt; Model
 </span></code></pre></div>
 <p>The model does not directly see words the way humans do. It sees token IDs. Each token maps to a number in the model vocabulary.</p>
+<pre class="mermaid"><code>flowchart LR
+    I["Text: Restart the API"] --&gt; T["Tokenizer"]
+    T --&gt; IDs["Token IDs"]
+    IDs --&gt; M["LLM"]
+    M --&gt; N["Next-token probabilities"]
+    N --&gt; O["Generated answer"]</code></pre>
 <p>Example:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&quot;pod&quot;       -&gt; token ID 14132
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&quot; service&quot; -&gt; token ID 2534
@@ -4332,6 +4368,13 @@
 <p>This loop continues until the response is complete.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Prompt tokens -&gt; Predict next token -&gt; Append token -&gt; Predict again -&gt; Final response
 </span></code></pre></div>
+<pre class="mermaid"><code>flowchart TD
+    P["Prompt and context"] --&gt; X["Predict likely next tokens"]
+    X --&gt; D["Choose one token"]
+    D --&gt; A["Add it to the answer"]
+    A --&gt; F{"Finished?"}
+    F -- "No" --&gt; X
+    F -- "Yes" --&gt; R["Return response"]</code></pre>
 <hr />
 <h2 id="probability-not-certainty">Probability, Not Certainty<a class="headerlink" href="#probability-not-certainty" title="Permanent link">&para;</a></h2>
 <p>An LLM does not usually produce one fixed answer internally. It calculates probabilities for many possible next tokens.</p>
@@ -4439,6 +4482,49 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Prompt + context + retrieval + tools + validation + monitoring
 </span></code></pre></div>
 <p>That full system is what turns a language model into a reliable engineering assistant.</p>
+<h2 id="terms-to-know-before-moving-on">Terms to Know Before Moving On<a class="headerlink" href="#terms-to-know-before-moving-on" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Plain-English meaning</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prompt</strong></td>
+<td>The instructions and information you send to the model.</td>
+<td>Clear prompts reduce ambiguity.</td>
+</tr>
+<tr>
+<td><strong>Inference</strong></td>
+<td>The time when a trained model generates an answer.</td>
+<td>This is the request you pay for and wait for.</td>
+</tr>
+<tr>
+<td><strong>Model</strong></td>
+<td>The trained prediction system behind the assistant.</td>
+<td>Models differ in capability, speed, cost, and context size.</td>
+</tr>
+<tr>
+<td><strong>Vocabulary</strong></td>
+<td>The token pieces a model knows how to represent.</td>
+<td>It determines how text and code are split into tokens.</td>
+</tr>
+<tr>
+<td><strong>Embedding</strong></td>
+<td>A numeric representation of meaning used for similarity search.</td>
+<td>RAG uses embeddings to find relevant content.</td>
+</tr>
+<tr>
+<td><strong>Grounding</strong></td>
+<td>Giving the model reliable source material before it answers.</td>
+<td>It reduces invented or outdated claims.</td>
+</tr>
+</tbody>
+</table>
+<p>For the wider vocabulary, see <a href="../terminology/">AI terminology in plain English</a>.</p>
 
 
   <nav class="md-tags" >
@@ -4577,13 +4663,13 @@
         
         
           
-          <a href="../../ansible/" class="md-footer__link md-footer__link--next" aria-label="Next: The Ansible Book: A Complete Automation Series">
+          <a href="../terminology/" class="md-footer__link md-footer__link--next" aria-label="Next: AI Terminology in Plain English">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                The Ansible Book: A Complete Automation Series
+                AI Terminology in Plain English
               </div>
             </div>
             <div class="md-footer__button md-icon">

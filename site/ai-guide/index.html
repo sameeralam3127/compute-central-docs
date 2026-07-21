@@ -529,6 +529,8 @@
       
         
       
+        
+      
     
     
     
@@ -665,6 +667,34 @@
     
   
     LLM Fundamentals: Tokens, Context, and Next-Token Prediction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Terminology in Plain English
   
 
     
@@ -4273,6 +4303,7 @@
 <div class="admonition info">
 <p class="admonition-title">Start with the fundamentals</p>
 <p>If you are new to LLMs, first read <a href="llm-fundamentals/">LLM fundamentals</a> to understand tokens, context windows, and next-token prediction.</p>
+<p>Keep <a href="terminology/">AI terminology</a> open while reading. It defines the words used in this guide in plain language.</p>
 </div>
 <hr />
 <h2 id="why-ai-feels-different-now">Why AI Feels Different Now<a class="headerlink" href="#why-ai-feels-different-now" title="Permanent link">&para;</a></h2>
@@ -4286,9 +4317,19 @@
 </ul>
 <div class="admonition info">
 <p class="admonition-title">A useful mental model</p>
-<p>Think of AI engineering as a stack:
-model + context + retrieval + tools + evaluation + application logic</p>
 </div>
+<p>Think of AI engineering as a stack:
+    model + context + retrieval + tools + evaluation + application logic</p>
+<pre class="mermaid"><code>flowchart LR
+    U["User question"] --&gt; A["Application"]
+    A --&gt; L["LLM: generates a response"]
+    A --&gt; R["Retrieval: finds relevant knowledge"]
+    A --&gt; T["Tools: read data or take an action"]
+    R --&gt; L
+    T --&gt; L
+    L --&gt; V["Validation and evaluation"]
+    V --&gt; O["Helpful, safe response"]</code></pre>
+<p>The model is only one part of the system. Retrieval supplies facts, tools connect to live systems, and validation checks whether the result is safe and useful.</p>
 <hr />
 <h2 id="the-evolution-of-ai-systems">The Evolution of AI Systems<a class="headerlink" href="#the-evolution-of-ai-systems" title="Permanent link">&para;</a></h2>
 <h3 id="1-rule-based-systems">1. Rule-Based Systems<a class="headerlink" href="#1-rule-based-systems" title="Permanent link">&para;</a></h3>
@@ -4382,6 +4423,12 @@ model + context + retrieval + tools + evaluation + application logic</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>User question -&gt; Retriever -&gt; Relevant documents -&gt; Model -&gt; Grounded response
 </span></code></pre></div>
 <p>RAG is often the first serious step from demo AI toward production AI.</p>
+<pre class="mermaid"><code>flowchart LR
+    Q["Question"] --&gt; S["Search documents"]
+    S --&gt; C["Relevant chunks"]
+    C --&gt; P["Prompt with sources"]
+    P --&gt; M["LLM"]
+    M --&gt; A["Answer grounded in those sources"]</code></pre>
 <hr />
 <h3 id="4-tool-use-and-model-context-protocol-mcp">4. Tool Use and Model Context Protocol (MCP)<a class="headerlink" href="#4-tool-use-and-model-context-protocol-mcp" title="Permanent link">&para;</a></h3>
 <p>Many tasks require more than text generation. They need the AI system to take actions or read live data.</p>
@@ -4553,11 +4600,14 @@ model + context + retrieval + tools + evaluation + application logic</p>
 <p>Retrieval-augmented generation connects a model to external knowledge, such as documentation or internal data, so answers can be grounded in relevant context.</p>
 <h3 id="why-does-ai-evaluation-matter">Why does AI evaluation matter?<a class="headerlink" href="#why-does-ai-evaluation-matter" title="Permanent link">&para;</a></h3>
 <p>Evaluation helps teams measure quality, regressions, safety, and usefulness with real examples instead of relying only on demos. See <a href="ai-evaluation/">AI model evaluation</a>.</p>
+<h3 id="do-i-need-an-agent-for-every-ai-feature">Do I need an agent for every AI feature?<a class="headerlink" href="#do-i-need-an-agent-for-every-ai-feature" title="Permanent link">&para;</a></h3>
+<p>No. Start with the simplest pattern that solves the problem. A prompt-only assistant may be enough for drafting; use RAG when answers need trusted documents; add tools for live data or actions; use an agent only when the work genuinely needs multiple decisions and steps.</p>
 <h2 id="related-learning">Related Learning<a class="headerlink" href="#related-learning" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="llm-fundamentals/">LLM fundamentals</a></li>
 <li><a href="ai-agents/">AI agents for automation workflows</a></li>
 <li><a href="ai-evaluation/">AI model evaluation</a></li>
+<li><a href="terminology/">AI terminology in plain English</a></li>
 <li><a href="../system-design/observability/">Observability system design</a></li>
 </ul>
 <h2 id="where-to-go-next">Where to Go Next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>

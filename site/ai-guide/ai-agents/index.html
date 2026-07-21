@@ -529,6 +529,8 @@
       
         
       
+        
+      
     
     
     
@@ -669,6 +671,34 @@
     
   
     LLM Fundamentals: Tokens, Context, and Next-Token Prediction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Terminology in Plain English
   
 
     
@@ -4320,34 +4350,34 @@
 <tr>
 <th>Aspect</th>
 <th>Generative AI</th>
-<th>AI Agents</th>
+<th>AI agent system</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Core Function</td>
-<td>Next token prediction</td>
-<td>Action selection</td>
+<td>Core function</td>
+<td>Generates an output from the supplied context</td>
+<td>Coordinates a model, state, and tools across steps</td>
 </tr>
 <tr>
-<td>Goal Awareness</td>
-<td>No</td>
-<td>Yes</td>
+<td>Goal-directed loop</td>
+<td>No loop by itself</td>
+<td>The application can plan, act, observe, and continue</td>
 </tr>
 <tr>
-<td>Memory</td>
-<td>Limited</td>
-<td>Can maintain state</td>
+<td>Memory or state</td>
+<td>Only what the current prompt provides</td>
+<td>Can store task state between steps</td>
 </tr>
 <tr>
-<td>Tool Usage</td>
-<td>No</td>
-<td>Yes</td>
+<td>Tool use</td>
+<td>Can request a tool when the application supports it</td>
+<td>Uses tools as part of a multi-step workflow</td>
 </tr>
 <tr>
 <td>Reliability</td>
-<td>Lower</td>
-<td>Higher (with iteration)</td>
+<td>Depends on prompt, context, and checks</td>
+<td>Depends on the same factors plus tool controls and evaluation</td>
 </tr>
 </tbody>
 </table>
@@ -4357,6 +4387,13 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Goal → Plan → Act → Observe → Reflect → Repeat
 </span></code></pre></div>
 <p>This loop allows agents to improve results over time instead of generating a single response.</p>
+<pre class="mermaid"><code>flowchart TD
+    G["Goal: investigate a failed deployment"] --&gt; P["Plan the next small step"]
+    P --&gt; T["Use an allowed tool"]
+    T --&gt; O["Observe logs, metrics, or tool output"]
+    O --&gt; C{"Enough evidence?"}
+    C -- "No" --&gt; P
+    C -- "Yes" --&gt; H["Summarize findings or request approval"]</code></pre>
 <hr />
 <h2 id="how-agents-use-llms">How Agents Use LLMs<a class="headerlink" href="#how-agents-use-llms" title="Permanent link">&para;</a></h2>
 <p>Important:</p>
@@ -4390,36 +4427,44 @@
 <li>Data analysis pipelines</li>
 </ul>
 <hr />
-<h2 id="why-agents-are-more-reliable">Why Agents Are More Reliable<a class="headerlink" href="#why-agents-are-more-reliable" title="Permanent link">&para;</a></h2>
+<h2 id="reliability-is-designed-not-automatic">Reliability Is Designed, Not Automatic<a class="headerlink" href="#reliability-is-designed-not-automatic" title="Permanent link">&para;</a></h2>
 <p>Generative AI:</p>
 <ul>
 <li>Produces one-shot answers</li>
 <li>No verification</li>
 <li>Can hallucinate</li>
 </ul>
-<p>Agents:</p>
+<p>Well-designed agents can:</p>
 <ul>
 <li>Break problems into steps</li>
 <li>Validate intermediate results</li>
 <li>Retry if needed</li>
 <li>Use external data sources</li>
 </ul>
-<p>This makes agents better for real-world applications.</p>
+<p>Agents are not automatically safer or more accurate. Their extra steps can improve quality only when tools have limited permissions, results are checked, failures are logged, and risky actions require human approval.</p>
 <hr />
 <h2 id="agent-rag-tools">Agent + RAG + Tools<a class="headerlink" href="#agent-rag-tools" title="Permanent link">&para;</a></h2>
 <p>Modern agents combine multiple systems:</p>
-<p><code>id="p9d3sa"
-User Request
-   ↓
-Agent
-   ↓
-LLM (reasoning)
-   ↓
-RAG (knowledge retrieval)
-   ↓
-Tools / APIs
-   ↓
-Final Output</code></p>
+<pre class="mermaid"><code>flowchart LR
+    U["User request"] --&gt; A["Agent orchestration"]
+    A --&gt; L["LLM: choose or explain"]
+    A --&gt; R["RAG: retrieve trusted knowledge"]
+    A --&gt; T["Tools and APIs: fetch data or act"]
+    L --&gt; A
+    R --&gt; A
+    T --&gt; A
+    A --&gt; H["Human approval for sensitive actions"]
+    H --&gt; O["Final response or action"]</code></pre>
+<h2 id="agent-vocabulary">Agent Vocabulary<a class="headerlink" href="#agent-vocabulary" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Goal</strong>: the outcome the agent is trying to achieve, such as "summarize the incident."</li>
+<li><strong>Plan</strong>: a short sequence of proposed steps. A plan can change after new evidence appears.</li>
+<li><strong>Tool call</strong>: a structured request to a system outside the model, such as a search API or a log query.</li>
+<li><strong>State</strong>: the task information the agent keeps between steps, such as completed actions and collected evidence.</li>
+<li><strong>Guardrail</strong>: a boundary that prevents unwanted behavior, such as read-only credentials or an approval requirement.</li>
+<li><strong>Human in the loop</strong>: a person reviews or approves important decisions before they happen.</li>
+</ul>
+<p>See <a href="../terminology/">AI terminology</a> for retrieval, prompts, hallucinations, evaluation, and other related terms.</p>
 <hr />
 <h2 id="types-of-agents">Types of Agents<a class="headerlink" href="#types-of-agents" title="Permanent link">&para;</a></h2>
 <ul>

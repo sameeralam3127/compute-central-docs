@@ -68,6 +68,15 @@ User text -> Tokenizer -> Tokens -> Model
 
 The model does not directly see words the way humans do. It sees token IDs. Each token maps to a number in the model vocabulary.
 
+```mermaid
+flowchart LR
+    I["Text: Restart the API"] --> T["Tokenizer"]
+    T --> IDs["Token IDs"]
+    IDs --> M["LLM"]
+    M --> N["Next-token probabilities"]
+    N --> O["Generated answer"]
+```
+
 Example:
 
 ```text
@@ -107,6 +116,16 @@ This loop continues until the response is complete.
 
 ```text
 Prompt tokens -> Predict next token -> Append token -> Predict again -> Final response
+```
+
+```mermaid
+flowchart TD
+    P["Prompt and context"] --> X["Predict likely next tokens"]
+    X --> D["Choose one token"]
+    D --> A["Add it to the answer"]
+    A --> F{"Finished?"}
+    F -- "No" --> X
+    F -- "Yes" --> R["Return response"]
 ```
 
 ---
@@ -246,3 +265,16 @@ Prompt + context + retrieval + tools + validation + monitoring
 ```
 
 That full system is what turns a language model into a reliable engineering assistant.
+
+## Terms to Know Before Moving On
+
+| Term | Plain-English meaning | Why it matters |
+| --- | --- | --- |
+| **Prompt** | The instructions and information you send to the model. | Clear prompts reduce ambiguity. |
+| **Inference** | The time when a trained model generates an answer. | This is the request you pay for and wait for. |
+| **Model** | The trained prediction system behind the assistant. | Models differ in capability, speed, cost, and context size. |
+| **Vocabulary** | The token pieces a model knows how to represent. | It determines how text and code are split into tokens. |
+| **Embedding** | A numeric representation of meaning used for similarity search. | RAG uses embeddings to find relevant content. |
+| **Grounding** | Giving the model reliable source material before it answers. | It reduces invented or outdated claims. |
+
+For the wider vocabulary, see [AI terminology in plain English](terminology.md).

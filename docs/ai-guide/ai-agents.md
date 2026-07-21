@@ -74,13 +74,13 @@ Agent behavior:
 
 ## Core Difference
 
-| Aspect         | Generative AI         | AI Agents               |
-| -------------- | --------------------- | ----------------------- |
-| Core Function  | Next token prediction | Action selection        |
-| Goal Awareness | No                    | Yes                     |
-| Memory         | Limited               | Can maintain state      |
-| Tool Usage     | No                    | Yes                     |
-| Reliability    | Lower                 | Higher (with iteration) |
+| Aspect | Generative AI | AI agent system |
+| --- | --- | --- |
+| Core function | Generates an output from the supplied context | Coordinates a model, state, and tools across steps |
+| Goal-directed loop | No loop by itself | The application can plan, act, observe, and continue |
+| Memory or state | Only what the current prompt provides | Can store task state between steps |
+| Tool use | Can request a tool when the application supports it | Uses tools as part of a multi-step workflow |
+| Reliability | Depends on prompt, context, and checks | Depends on the same factors plus tool controls and evaluation |
 
 ---
 
@@ -93,6 +93,16 @@ Goal → Plan → Act → Observe → Reflect → Repeat
 ```
 
 This loop allows agents to improve results over time instead of generating a single response.
+
+```mermaid
+flowchart TD
+    G["Goal: investigate a failed deployment"] --> P["Plan the next small step"]
+    P --> T["Use an allowed tool"]
+    T --> O["Observe logs, metrics, or tool output"]
+    O --> C{"Enough evidence?"}
+    C -- "No" --> P
+    C -- "Yes" --> H["Summarize findings or request approval"]
+```
 
 ---
 
@@ -138,7 +148,7 @@ print(agent("weather today"))
 
 ---
 
-## Why Agents Are More Reliable
+## Reliability Is Designed, Not Automatic
 
 Generative AI:
 
@@ -146,14 +156,14 @@ Generative AI:
 - No verification
 - Can hallucinate
 
-Agents:
+Well-designed agents can:
 
 - Break problems into steps
 - Validate intermediate results
 - Retry if needed
 - Use external data sources
 
-This makes agents better for real-world applications.
+Agents are not automatically safer or more accurate. Their extra steps can improve quality only when tools have limited permissions, results are checked, failures are logged, and risky actions require human approval.
 
 ---
 
@@ -161,19 +171,29 @@ This makes agents better for real-world applications.
 
 Modern agents combine multiple systems:
 
-```id="p9d3sa"
-User Request
-   ↓
-Agent
-   ↓
-LLM (reasoning)
-   ↓
-RAG (knowledge retrieval)
-   ↓
-Tools / APIs
-   ↓
-Final Output
+```mermaid
+flowchart LR
+    U["User request"] --> A["Agent orchestration"]
+    A --> L["LLM: choose or explain"]
+    A --> R["RAG: retrieve trusted knowledge"]
+    A --> T["Tools and APIs: fetch data or act"]
+    L --> A
+    R --> A
+    T --> A
+    A --> H["Human approval for sensitive actions"]
+    H --> O["Final response or action"]
 ```
+
+## Agent Vocabulary
+
+- **Goal**: the outcome the agent is trying to achieve, such as "summarize the incident."
+- **Plan**: a short sequence of proposed steps. A plan can change after new evidence appears.
+- **Tool call**: a structured request to a system outside the model, such as a search API or a log query.
+- **State**: the task information the agent keeps between steps, such as completed actions and collected evidence.
+- **Guardrail**: a boundary that prevents unwanted behavior, such as read-only credentials or an approval requirement.
+- **Human in the loop**: a person reviews or approves important decisions before they happen.
+
+See [AI terminology](terminology.md) for retrieval, prompts, hallucinations, evaluation, and other related terms.
 
 ---
 

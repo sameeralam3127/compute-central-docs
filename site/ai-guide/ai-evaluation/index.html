@@ -529,6 +529,8 @@
       
         
       
+        
+      
     
     
     
@@ -669,6 +671,34 @@
     
   
     LLM Fundamentals: Tokens, Context, and Next-Token Prediction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Terminology in Plain English
   
 
     
@@ -4267,6 +4297,12 @@
 <h1 id="ai-model-evaluation-for-reliable-ai-systems">AI Model Evaluation for Reliable AI Systems<a class="headerlink" href="#ai-model-evaluation-for-reliable-ai-systems" title="Permanent link">&para;</a></h1>
 <p>AI model evaluation is the process of measuring how well a model performs against defined objectives. It ensures reliability, accuracy, and usefulness before deploying models in real-world systems.</p>
 <p>Evaluation becomes more complex with modern systems like LLMs and RAG because outputs are not always deterministic.</p>
+<pre class="mermaid"><code>flowchart LR
+    D["Representative test cases"] --&gt; S["Run the AI system"]
+    S --&gt; M["Measure quality, safety, and cost"]
+    M --&gt; R["Review failures"]
+    R --&gt; I["Improve prompt, retrieval, tools, or model"]
+    I --&gt; D</code></pre>
 <hr />
 <h2 id="why-evaluation-matters">Why Evaluation Matters<a class="headerlink" href="#why-evaluation-matters" title="Permanent link">&para;</a></h2>
 <ul>
@@ -4324,6 +4360,12 @@
 <p>How many actual positives were captured.</p>
 <h3 id="f1-score">F1 Score<a class="headerlink" href="#f1-score" title="Permanent link">&para;</a></h3>
 <p>Balance between precision and recall.</p>
+<h3 id="groundedness">Groundedness<a class="headerlink" href="#groundedness" title="Permanent link">&para;</a></h3>
+<p>Whether an answer is supported by the sources supplied to the model. This matters most for RAG systems: a fluent answer is not enough if it cannot be traced back to trusted information.</p>
+<h3 id="latency">Latency<a class="headerlink" href="#latency" title="Permanent link">&para;</a></h3>
+<p>How long a user waits for a response. A highly accurate system can still be unusable if retrieval, tools, or model calls take too long.</p>
+<h3 id="cost-per-request">Cost per request<a class="headerlink" href="#cost-per-request" title="Permanent link">&para;</a></h3>
+<p>The cost of processing input tokens, output tokens, retrieval, and tool calls for one user request. Track it alongside quality so an improvement remains practical to run.</p>
 <hr />
 <h2 id="evaluating-llms">Evaluating LLMs<a class="headerlink" href="#evaluating-llms" title="Permanent link">&para;</a></h2>
 <p>LLMs require different strategies because:</p>
@@ -4338,6 +4380,39 @@
 <li>Reference-based scoring</li>
 <li>LLM-as-a-judge</li>
 </ul>
+<h2 id="a-practical-evaluation-set">A Practical Evaluation Set<a class="headerlink" href="#a-practical-evaluation-set" title="Permanent link">&para;</a></h2>
+<p>Build a small, version-controlled set of real examples before changing a prompt, model, or retrieval pipeline.</p>
+<table>
+<thead>
+<tr>
+<th>Include</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Normal requests</td>
+<td>"How do I rotate this service credential?"</td>
+</tr>
+<tr>
+<td>Ambiguous requests</td>
+<td>"The deployment is broken"</td>
+</tr>
+<tr>
+<td>Edge cases</td>
+<td>A long log with irrelevant errors mixed in</td>
+</tr>
+<tr>
+<td>Safety cases</td>
+<td>A request for a destructive production command</td>
+</tr>
+<tr>
+<td>Freshness cases</td>
+<td>A question that must be answered from current internal documentation</td>
+</tr>
+</tbody>
+</table>
+<p>For every example, record the expected behavior: a correct answer, a cited source, a safe refusal, a clarifying question, or a request for approval. See <a href="../terminology/">AI terminology</a> for the meaning of terms such as regression, benchmark, and groundedness.</p>
 <hr />
 <h2 id="llm-as-a-judge">LLM-as-a-Judge<a class="headerlink" href="#llm-as-a-judge" title="Permanent link">&para;</a></h2>
 <p>Use one model to evaluate another.</p>

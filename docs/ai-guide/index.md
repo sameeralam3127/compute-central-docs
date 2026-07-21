@@ -22,6 +22,8 @@ This guide gives a practical overview of the major concepts behind modern AI sys
 !!! info "Start with the fundamentals"
     If you are new to LLMs, first read [LLM fundamentals](llm-fundamentals.md) to understand tokens, context windows, and next-token prediction.
 
+    Keep [AI terminology](terminology.md) open while reading. It defines the words used in this guide in plain language.
+
 ---
 
 ## Why AI Feels Different Now
@@ -36,8 +38,22 @@ That shift matters because:
 - Safety and correctness become engineering concerns, not just model concerns
 
 !!! info "A useful mental model"
-    Think of AI engineering as a stack:
+Think of AI engineering as a stack:
     model + context + retrieval + tools + evaluation + application logic
+
+```mermaid
+flowchart LR
+    U["User question"] --> A["Application"]
+    A --> L["LLM: generates a response"]
+    A --> R["Retrieval: finds relevant knowledge"]
+    A --> T["Tools: read data or take an action"]
+    R --> L
+    T --> L
+    L --> V["Validation and evaluation"]
+    V --> O["Helpful, safe response"]
+```
+
+The model is only one part of the system. Retrieval supplies facts, tools connect to live systems, and validation checks whether the result is safe and useful.
 
 ---
 
@@ -149,6 +165,15 @@ User question -> Retriever -> Relevant documents -> Model -> Grounded response
 ```
 
 RAG is often the first serious step from demo AI toward production AI.
+
+```mermaid
+flowchart LR
+    Q["Question"] --> S["Search documents"]
+    S --> C["Relevant chunks"]
+    C --> P["Prompt with sources"]
+    P --> M["LLM"]
+    M --> A["Answer grounded in those sources"]
+```
 
 ---
 
@@ -357,11 +382,16 @@ Retrieval-augmented generation connects a model to external knowledge, such as d
 
 Evaluation helps teams measure quality, regressions, safety, and usefulness with real examples instead of relying only on demos. See [AI model evaluation](ai-evaluation.md).
 
+### Do I need an agent for every AI feature?
+
+No. Start with the simplest pattern that solves the problem. A prompt-only assistant may be enough for drafting; use RAG when answers need trusted documents; add tools for live data or actions; use an agent only when the work genuinely needs multiple decisions and steps.
+
 ## Related Learning
 
 - [LLM fundamentals](llm-fundamentals.md)
 - [AI agents for automation workflows](ai-agents.md)
 - [AI model evaluation](ai-evaluation.md)
+- [AI terminology in plain English](terminology.md)
 - [Observability system design](../system-design/observability.md)
 
 ## Where to Go Next
