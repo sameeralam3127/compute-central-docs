@@ -9,7 +9,7 @@ edit_uri = "edit/main/docs"
 nav = []
 
 copyright = """
-Copyright © 2016–2026 Sameer Alam
+Copyright © 2016–2026 Sameer Alam · <a href="#__consent">Cookie settings</a>
 """
 
 extra_css = ["stylesheets/extra.css"]
@@ -71,3 +71,38 @@ name = "Compute Central on GitHub"
 icon = "fontawesome/solid/globe"
 link = "https://computecentral.in/"
 name = "Compute Central website"
+
+[project.extra.analytics]
+provider = "google"
+property = "G-TBKH2M5SJ3"
+
+[project.extra.analytics.feedback]
+title = "Was this page helpful?"
+
+[[project.extra.analytics.feedback.ratings]]
+icon = "material/thumb-up-outline"
+name = "This page was helpful"
+data = 1
+note = "Thanks for your feedback!"
+
+[[project.extra.analytics.feedback.ratings]]
+icon = "material/thumb-down-outline"
+name = "This page could be improved"
+data = 0
+note = """
+  Thanks for your feedback! Help us improve this page by
+  <a href="https://github.com/sameeralam3127/compute-central-docs/issues/new?title=[Feedback]+{title}+-+{url}" target="_blank" rel="noopener">opening a feedback issue</a>.
+"""
+
+[project.extra.consent]
+title = "Cookie consent"
+description = """
+  We use optional analytics cookies to understand repeated visits, improve this
+  documentation, and learn whether readers find what they are looking for.
+  You can change your choice at any time using the Cookie settings link below.
+"""
+actions = ["accept", "reject", "manage"]
+
+[project.extra.consent.cookies.analytics]
+name = "Google Analytics"
+checked = false
