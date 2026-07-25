@@ -1,5 +1,7 @@
 ---
 description: Learn DevOps, Kubernetes, Docker, Terraform, Ansible, CI/CD, monitoring, system design, and AI engineering through practical infrastructure guides.
+hide:
+  - navigation
 ---
 
 # Compute Central
@@ -10,9 +12,56 @@ Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes,
 
 ![Compute Central DevOps knowledge hub](assets/compute-central-hero.png){ .cc-hero-image }
 
+<div class="cc-stats" markdown>
+
+<div class="cc-stat" markdown>
+**110+**
+<span>Guides and lab-tested chapters</span>
+</div>
+
+<div class="cc-stat" markdown>
+**10**
+<span>Learning tracks, foundations to production</span>
+</div>
+
+<div class="cc-stat" markdown>
+**2016**
+<span>Notes and lessons collected since</span>
+</div>
+
+</div>
+
+## The path through this site
+
+```mermaid
+flowchart LR
+    A[Foundations] --> B[Docker & containers]
+    B --> C[Kubernetes & OpenShift]
+    C --> D[Automation: Ansible & scripts]
+    D --> E["CI/CD: Jenkins & SonarQube"]
+    E --> F[Observability & SRE]
+    F --> G[System design]
+    G --> H[AI engineering]
+    classDef stage1 fill:#dbeafe,stroke:#2563eb,color:#172554
+    classDef stage2 fill:#dcfce7,stroke:#16a34a,color:#14532d
+    classDef stage3 fill:#fef3c7,stroke:#d97706,color:#78350f
+    classDef stage4 fill:#fce7f3,stroke:#db2777,color:#831843
+    class A,B stage1
+    class C,D stage2
+    class E,F stage3
+    class G,H stage4
+```
+
+Most readers move left to right, but every section stands on its own — jump straight to the track you need.
+
 ## Start Here
 
 <div class="cc-card-grid" markdown>
+
+<a class="cc-card" href="docker/">
+  <strong>Docker and Linux Containers</strong>
+  <span>A from-first-principles course: namespaces, cgroups, OCI runtimes, networking, storage, and Docker workflows.</span>
+</a>
 
 <a class="cc-card" href="kubernetes/">
   <strong>Kubernetes and OpenShift</strong>
@@ -20,8 +69,8 @@ Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes,
 </a>
 
 <a class="cc-card" href="ansible/">
-  <strong>Automation</strong>
-  <span>Build repeatable workflows with Ansible, shell scripting, Terraform, and practical infrastructure examples.</span>
+  <strong>Ansible Automation</strong>
+  <span>A book-length series: fundamentals, playbooks and roles, core internals, the enterprise platform, and production scale.</span>
 </a>
 
 <a class="cc-card" href="jenkins/jenkins/">
@@ -29,14 +78,34 @@ Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes,
   <span>Set up Jenkins pipelines, SonarQube checks, and deployment workflows that are easier to review and operate.</span>
 </a>
 
+<a class="cc-card" href="sonarqube/">
+  <strong>SonarQube</strong>
+  <span>Install, configure, and wire SonarQube into Jenkins with quality gates that actually get enforced.</span>
+</a>
+
 <a class="cc-card" href="monitoring-tools/">
   <strong>Monitoring and SRE</strong>
   <span>Use Prometheus, Grafana, Alertmanager, Loki, and troubleshooting patterns to understand system health.</span>
 </a>
 
+<a class="cc-card" href="system-design/">
+  <strong>System Design</strong>
+  <span>Platform-engineering system design: CI/CD platforms, Kubernetes platforms, observability, and multi-environment delivery.</span>
+</a>
+
 <a class="cc-card" href="ai-guide/">
   <strong>AI Engineering</strong>
   <span>Understand LLM fundamentals, AI agents, evaluation, and practical model workflows for technical teams.</span>
+</a>
+
+<a class="cc-card" href="terraform/overview/">
+  <strong>Terraform</strong>
+  <span>Infrastructure as code fundamentals, core concepts, and common interview questions.</span>
+</a>
+
+<a class="cc-card" href="shell-scripts/scripts/">
+  <strong>Shell Scripts</strong>
+  <span>Practical automation scripts and patterns for everyday operations work.</span>
 </a>
 
 </div>
@@ -66,10 +135,10 @@ Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes,
 Start with the topic you need, then follow the examples in a local or test environment before using them in production. Most pages are written to help you understand the reason behind each step, not just copy a command and move on.
 
 !!! tip "Best way to learn"
-Read the short explanation first, run the example safely, then write down what changed and why it worked.
+    Read the short explanation first, run the example safely, then write down what changed and why it worked.
 
 !!! note "Production reminder"
-Always review commands, credentials, namespaces, and environment names before running anything against shared or production systems.
+    Always review commands, credentials, namespaces, and environment names before running anything against shared or production systems.
 
 ## About Sameer Alam
 
@@ -84,3 +153,5 @@ I started documenting my learning in **2016**. Compute Central brings those note
 - **GitHub:** [github.com/sameeralam3127](https://github.com/sameeralam3127)
 - **Medium:** [medium.com/@sameeralam3127](https://medium.com/@sameeralam3127)
 - **Blog archive:** [compute-central.blogspot.com](https://compute-central.blogspot.com/)
+
+:lucide-rocket: test icon

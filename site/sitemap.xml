@@ -7,13 +7,13 @@
         <loc>https://computecentral.in/ai-guide/</loc>
       </url>
       <url>
+        <loc>https://computecentral.in/ai-guide/llm-fundamentals/</loc>
+      </url>
+      <url>
         <loc>https://computecentral.in/ai-guide/ai-agents/</loc>
       </url>
       <url>
         <loc>https://computecentral.in/ai-guide/ai-evaluation/</loc>
-      </url>
-      <url>
-        <loc>https://computecentral.in/ai-guide/llm-fundamentals/</loc>
       </url>
       <url>
         <loc>https://computecentral.in/ai-guide/terminology/</loc>
@@ -139,10 +139,88 @@
         <loc>https://computecentral.in/ansible/volume-6-production-and-performance/06-real-production-projects/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/docker/basic/</loc>
+        <loc>https://computecentral.in/docker/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/01-before-containers/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/02-virtual-machines-and-kvm/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/03-application-dependencies/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/04-linux-namespaces/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/05-cgroups/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/06-build-a-container-with-linux/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/07-oci-standards/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/08-runc-containerd-and-docker/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/09-what-docker-solves/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/10-installation-and-engine/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/11-essential-docker-commands/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/12-networking-fundamentals/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/13-docker-networking/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/14-caddy-web-app-lab/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/15-storage/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/16-container-images/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/17-dockerfiles/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/18-docker-compose/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/19-registries-and-publishing/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/20-podman/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/21-kubernetes-runtimes/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/22-macos-containers/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/23-monoliths-and-microservices/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/24-production-troubleshooting/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/25-course-wrap-up/</loc>
       </url>
       <url>
         <loc>https://computecentral.in/docker/docker/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/docker/basic/</loc>
       </url>
       <url>
         <loc>https://computecentral.in/jenkins/jenkins/</loc>
@@ -154,24 +232,6 @@
         <loc>https://computecentral.in/kubernetes/fundamentals/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/kubernetes/interview/questions/</loc>
-      </url>
-      <url>
-        <loc>https://computecentral.in/kubernetes/labs/docker-lab/</loc>
-      </url>
-      <url>
-        <loc>https://computecentral.in/kubernetes/labs/hands-on-scenarios/</loc>
-      </url>
-      <url>
-        <loc>https://computecentral.in/kubernetes/labs/minikube-lab/</loc>
-      </url>
-      <url>
-        <loc>https://computecentral.in/kubernetes/labs/podman-lab/</loc>
-      </url>
-      <url>
-        <loc>https://computecentral.in/kubernetes/openshift/guide/</loc>
-      </url>
-      <url>
         <loc>https://computecentral.in/kubernetes/operations/cicd-pipelines/</loc>
       </url>
       <url>
@@ -181,28 +241,46 @@
         <loc>https://computecentral.in/kubernetes/operations/troubleshooting/</loc>
       </url>
       <url>
+        <loc>https://computecentral.in/kubernetes/openshift/guide/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/kubernetes/labs/hands-on-scenarios/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/kubernetes/labs/docker-lab/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/kubernetes/labs/minikube-lab/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/kubernetes/labs/podman-lab/</loc>
+      </url>
+      <url>
         <loc>https://computecentral.in/kubernetes/reference/quick-reference/</loc>
       </url>
       <url>
+        <loc>https://computecentral.in/kubernetes/interview/questions/</loc>
+      </url>
+      <url>
         <loc>https://computecentral.in/monitoring-tools/</loc>
-      </url>
-      <url>
-        <loc>https://computecentral.in/monitoring-tools/alertmanager/</loc>
-      </url>
-      <url>
-        <loc>https://computecentral.in/monitoring-tools/blackbox/</loc>
-      </url>
-      <url>
-        <loc>https://computecentral.in/monitoring-tools/grafana/</loc>
-      </url>
-      <url>
-        <loc>https://computecentral.in/monitoring-tools/logging/</loc>
       </url>
       <url>
         <loc>https://computecentral.in/monitoring-tools/overview/</loc>
       </url>
       <url>
         <loc>https://computecentral.in/monitoring-tools/prometheus/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/monitoring-tools/grafana/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/monitoring-tools/alertmanager/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/monitoring-tools/logging/</loc>
+      </url>
+      <url>
+        <loc>https://computecentral.in/monitoring-tools/blackbox/</loc>
       </url>
       <url>
         <loc>https://computecentral.in/monitoring-tools/troubleshooting/</loc>
@@ -214,10 +292,10 @@
         <loc>https://computecentral.in/sonarqube/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/sonarqube/configuration/</loc>
+        <loc>https://computecentral.in/sonarqube/installation/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/sonarqube/installation/</loc>
+        <loc>https://computecentral.in/sonarqube/configuration/</loc>
       </url>
       <url>
         <loc>https://computecentral.in/sonarqube/jenkins-integration/</loc>
@@ -229,27 +307,27 @@
         <loc>https://computecentral.in/system-design/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/system-design/backup-disaster-recovery/</loc>
-      </url>
-      <url>
         <loc>https://computecentral.in/system-design/cicd-platform/</loc>
       </url>
       <url>
         <loc>https://computecentral.in/system-design/kubernetes-platform/</loc>
       </url>
       <url>
+        <loc>https://computecentral.in/system-design/observability/</loc>
+      </url>
+      <url>
         <loc>https://computecentral.in/system-design/multi-environment/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/system-design/observability/</loc>
+        <loc>https://computecentral.in/system-design/backup-disaster-recovery/</loc>
       </url>
       <url>
         <loc>https://computecentral.in/system-design/security-access/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/terraform/interview-questions/</loc>
+        <loc>https://computecentral.in/terraform/overview/</loc>
       </url>
       <url>
-        <loc>https://computecentral.in/terraform/overview/</loc>
+        <loc>https://computecentral.in/terraform/interview-questions/</loc>
       </url>
 </urlset>

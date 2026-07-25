@@ -1,11 +1,18 @@
-@media (min-width: 1024px) {
-  .md-main {
-    padding-right: 10rem !important;
+/* Bump the theme's default type scale up one tier at every breakpoint —
+   the stock sizing reads small on modern high-DPI laptop/desktop screens. */
+html {
+  font-size: 137.5%;
+}
+
+@media screen and (min-width: 100em) {
+  html {
+    font-size: 150%;
   }
 }
-@media (min-width: 1024px) {
+
+@media screen and (min-width: 125em) {
   html {
-    font-size: 22px;
+    font-size: 162.5%;
   }
 }
 
@@ -71,6 +78,38 @@
   text-decoration: none !important;
 }
 
-.md-typeset table:not([class]) {
-  font-size: 0.88rem;
+.md-typeset .mermaid {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.4rem;
+  background: var(--md-code-bg-color);
+}
+
+.cc-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.cc-stat {
+  flex: 1 1 160px;
+  padding: 0.9rem 1.1rem;
+  border-radius: 8px;
+  background: var(--md-code-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.cc-stat strong {
+  display: block;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  color: var(--md-typeset-a-color);
+}
+
+.cc-stat span {
+  font-size: 0.76rem;
+  color: var(--md-default-fg-color--light);
 }
