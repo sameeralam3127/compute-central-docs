@@ -70,4 +70,4 @@ Collections are the packaging unit that let Ansible content (modules, plugins, r
 
 ## Next
 
-Continue to [Part 14 — Galaxy](08-galaxy.md).
+Continue to [Part 14 — Galaxy](12-galaxy.md).

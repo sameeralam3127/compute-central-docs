@@ -52,7 +52,7 @@ flowchart TD
 - **host_vars / group_vars**: file-based, resolved from both the inventory directory and the playbook directory (with the playbook directory taking precedence).
 - **Play vars / role vars / defaults**: the different `vars:` blocks and why `defaults/main.yml` is intentionally the lowest-precedence, most-overridable layer.
 - **Registered vars**: `register:` capturing a task's result for later use.
-- **Facts**: auto-discovered host data (deferred fully to a future chapter on fact gathering internals in Volume 3).
+- **Facts**: auto-discovered host data, gathered before role defaults are even applied — the usage-level details (gathering, caching, custom facts) are covered fully in [Part 37 — Facts](04-facts.md); the internals of *how* they're gathered are covered in Volume 3.
 - **Extra vars**: `-e` on the CLI or `-e @file.yml`, always highest precedence, ideal for one-off overrides.
 - **set_fact**: runtime-defined variables, precedence-wise close to registered vars.
 - **Magic vars**: `hostvars`, `group_names`, `groups`, `inventory_hostname`, `ansible_play_hosts` — special variables Ansible provides automatically, not user-set.
@@ -92,4 +92,4 @@ flowchart TD
 
 ## Next
 
-Continue to [Part 10 — ansible.cfg](04-ansible-cfg.md).
+Continue to [Part 37 — Facts](04-facts.md).

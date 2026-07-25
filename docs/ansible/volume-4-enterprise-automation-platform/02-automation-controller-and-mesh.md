@@ -44,7 +44,7 @@ flowchart LR
 ## Step-by-Step Explanation
 
 - Creating a Job Template: binding a project (playbook source, typically a Git repo), an inventory, and a credential, then optionally exposing a **Survey** (a form-based prompt for run-time variables) to non-technical requesters.
-- Building a Workflow: chaining multiple Job Templates with success/failure/always branches, similar in spirit to `block`/`rescue`/`always` (Volume 2, Part 11) but at the orchestration level across entire playbook runs.
+- Building a Workflow: chaining multiple Job Templates with success/failure/always branches, similar in spirit to `block`/`rescue`/`always` (Volume 2, Part 40 — Error Handling) but at the orchestration level across entire playbook runs.
 - Mesh topology: how control nodes and execution nodes peer, and how a job gets routed to the execution node nearest its target infrastructure.
 
 ## Production Best Practices

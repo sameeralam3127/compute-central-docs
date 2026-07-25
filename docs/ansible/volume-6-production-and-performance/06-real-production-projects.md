@@ -27,7 +27,7 @@ This closing chapter is where every earlier volume comes together into complete,
 - **LAMP deployment**: Linux + Apache + MySQL + PHP as one of the most common "first real playbook" projects — roles for each layer, environment-scoped variables for credentials.
 - **Kubernetes bootstrap**: using Ansible to provision the underlying nodes and install `kubeadm`/`containerd` prerequisites before cluster init — Ansible's role *around* Kubernetes rather than inside it (echoes the boundaries drawn in Volume 1, Part 3).
 - **Docker installation**: a canonical idempotent package-installation-plus-service-configuration role, good for demonstrating check mode and idempotency concretely.
-- **Patch management**: scheduled, batched (`serial`) OS patching across a fleet with pre/post health checks — a strong example of `pre_tasks`/`post_tasks`/`serial` (Volume 2, Part 11) together.
+- **Patch management**: scheduled, batched (`serial`) OS patching across a fleet with pre/post health checks — a strong example of `pre_tasks`/`post_tasks`/`serial` (Volume 2, Part 38 — Playbook Structure and Control Flow) together.
 - **User management**: idempotent user/group/SSH-key provisioning across environments — a natural fit for `loop` and structured variable data (Volume 2, Part 9).
 - **Apache** and **Nginx**: templated virtual-host configuration using the `template` action plugin (Volume 5, Part 26), with handler-driven reloads.
 - **MySQL** and **PostgreSQL**: database provisioning and user/permission management, highlighting `no_log` usage (Part 31) for connection credentials.

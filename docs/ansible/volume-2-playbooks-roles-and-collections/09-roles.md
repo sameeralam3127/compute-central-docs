@@ -41,7 +41,7 @@ myrole/
 
 ## Workflow
 
-- The load order when a play includes multiple roles: each role's `vars` and `defaults` load in sequence, task execution proceeds role by role (or interleaved with `pre_tasks`/`post_tasks` as covered in Part 11).
+- The load order when a play includes multiple roles: each role's `vars` and `defaults` load in sequence, task execution proceeds role by role (or interleaved with `pre_tasks`/`post_tasks` as covered in [Part 38 — Playbook Structure and Control Flow](06-playbook-structure-and-control-flow.md)).
 
 ## Production Best Practices
 
@@ -80,4 +80,4 @@ myrole/
 
 ## Next
 
-Continue to [Part 13 — Collections](07-collections.md).
+Continue to [Part 41 — Jinja2 and Templates](10-jinja2-and-templates.md).

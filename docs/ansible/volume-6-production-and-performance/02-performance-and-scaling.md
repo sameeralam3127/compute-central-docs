@@ -39,7 +39,7 @@ Every performance lever referenced as "previewed here, covered fully in Volume 6
 ## Production Best Practices — Scaling to 10,000 Hosts
 
 - Combining high `forks`, pipelining, ControlPersist, and fact caching as the baseline before considering more exotic options.
-- Splitting extremely large runs across batches (`serial`) not just for blast-radius control (Volume 2, Part 11) but because a single control node has real limits on concurrent SSH connections and memory for in-flight results.
+- Splitting extremely large runs across batches (`serial`) not just for blast-radius control (Volume 2, Part 38 — Playbook Structure and Control Flow) but because a single control node has real limits on concurrent SSH connections and memory for in-flight results.
 - Considering Automation Mesh (Volume 4, Part 21) for distributing execution across multiple execution nodes rather than scaling one control node vertically forever.
 
 ## Common Mistakes

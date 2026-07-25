@@ -133,7 +133,7 @@ Pick the goal closest to yours — each tab is a short, ordered route through th
 
 === ":lucide-workflow: Automate server work"
 
-    Read the [Ansible book series](ansible/index.md) — jump straight to [playbooks](ansible/volume-2-playbooks-roles-and-collections/05-playbooks.md) — and pair it with [shell scripts](shell-scripts/scripts.md).
+    Read the [Ansible book series](ansible/index.md) — jump straight to [playbooks](ansible/volume-2-playbooks-roles-and-collections/06-playbook-structure-and-control-flow.md) — and pair it with [shell scripts](shell-scripts/scripts.md).
 
 === ":lucide-infinity: Improve delivery pipelines"
 
