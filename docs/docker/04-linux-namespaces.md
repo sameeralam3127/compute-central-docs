@@ -2,7 +2,7 @@
 description: Learn how Linux namespaces isolate a container process's view of process IDs, networking, mounts, hostnames, IPC, users, and cgroups.
 ---
 
-# 4. Linux Namespaces: Isolating a Process View
+# Linux Namespaces: Isolating a Process View
 
 A container starts as a normal Linux process. **Namespaces** give that process an isolated view of selected kernel resources. They are not a magical VM and they do not, by themselves, limit CPU or memory.
 

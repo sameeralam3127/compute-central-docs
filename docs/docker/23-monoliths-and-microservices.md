@@ -2,7 +2,7 @@
 description: Learn how containers support independent deployment without automatically making microservices a good architecture.
 ---
 
-# 23. Monoliths and Microservices
+# Monoliths and Microservices
 
 A monolith may combine web UI, authentication, orders, payments, and database integration into one deployment. Splitting it can create frontend, auth, order, payment, and database services that scale and deploy independently.
 

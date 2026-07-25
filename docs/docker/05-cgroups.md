@@ -2,7 +2,7 @@
 description: Learn Linux cgroups, CPU and memory control, accounting, cgroup v1 and v2, and what really happens when a container exceeds memory limits.
 ---
 
-# 5. cgroups: Resource Control and Accounting
+# cgroups: Resource Control and Accounting
 
 Namespaces stop one workload seeing another workload's resources. They do not stop a workload consuming all available CPU or memory. **Control groups (cgroups)** group processes so Linux can account for and constrain their resource use.
 

@@ -2,7 +2,7 @@
 description: Learn what an application actually needs at runtime, compare Python, Node.js, and Java dependency stacks, and understand the technical causes of “it works on my machine.”
 ---
 
-# 3. What Is Actually Inside an Application?
+# What Is Actually Inside an Application?
 
 An application is not only a folder of source code. To run successfully, it needs a compatible **runtime environment**: the programs, libraries, configuration, files, permissions, and network access it expects.
 

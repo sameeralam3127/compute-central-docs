@@ -2,7 +2,7 @@
 description: Understand Linux containers on macOS, Docker Desktop virtualization, and Apple's current container tooling.
 ---
 
-# 22. macOS and Apple Container Technology
+# macOS and Apple Container Technology
 
 Linux containers need Linux kernel primitives. On macOS, Docker Desktop therefore uses a Linux VM to run Linux containers; the Docker client integrates with that VM rather than turning the macOS kernel into a Linux container kernel.
 

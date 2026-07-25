@@ -2,7 +2,7 @@
 description: Review the Linux container mental model and choose the next practical learning steps.
 ---
 
-# 25. Course Wrap-Up
+# Course Wrap-Up
 
 You can now trace a container from application dependency to OCI image, filesystem layers, runtime configuration, namespaces, cgroups, process lifecycle, networking, storage, and a higher-level Docker or Kubernetes workflow.
 

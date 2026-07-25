@@ -2,7 +2,7 @@
 description: A safe conceptual lab combining Linux namespaces, a root filesystem, cgroups, and networking to show how container-style isolation works without Docker.
 ---
 
-# 6. Build Container-Style Isolation Without Docker
+# Build Container-Style Isolation Without Docker
 
 Docker did not invent Linux process isolation. It made isolation, packaging, distribution, storage, networking, and lifecycle management usable together. This lab combines the underlying ideas without attempting to recreate Docker.
 

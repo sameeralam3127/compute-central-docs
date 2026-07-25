@@ -2,7 +2,7 @@
 description: Learn registries, repositories, tags, digests, authentication, naming, and publishing images safely.
 ---
 
-# 19. Image Registries and Publishing
+# Image Registries and Publishing
 
 A registry stores images. A repository groups image versions; a tag names a version; a digest identifies exact content. A typical name is `registry.example.com/team/payment-api:v1.2.0`.
 

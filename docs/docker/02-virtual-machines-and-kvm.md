@@ -2,7 +2,7 @@
 description: Learn why virtualization became popular, how hypervisors and virtual machines work, what KVM and QEMU do on Linux, and how VMs compare with containers.
 ---
 
-# 2. Virtual Machines and KVM
+# Virtual Machines and KVM
 
 The first answer to application conflicts was usually not containers. It was **virtualization**: run separate computers in software on the same physical machine.
 
@@ -18,6 +18,12 @@ flowchart TB
     HV --> VM1[VM 1<br/>Guest Linux<br/>Application A]
     HV --> VM2[VM 2<br/>Guest Linux<br/>Application B]
     HV --> VM3[VM 3<br/>Guest Linux<br/>Database]
+    classDef hardware fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e
+    classDef hypervisor fill:#ede9fe,stroke:#7c3aed,color:#3b0764
+    classDef guest fill:#dcfce7,stroke:#16a34a,color:#14532d
+    class H hardware
+    class HV hypervisor
+    class VM1,VM2,VM3 guest
 ```
 
 Each VM normally has its own:

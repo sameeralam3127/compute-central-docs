@@ -2,7 +2,7 @@
 description: Practice essential Docker commands as lifecycle tools with common mistakes and troubleshooting checks.
 ---
 
-# 11. Essential Docker Commands
+# Essential Docker Commands
 
 | Goal | Command | Common mistake |
 | --- | --- | --- |

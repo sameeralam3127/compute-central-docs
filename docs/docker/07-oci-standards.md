@@ -2,7 +2,7 @@
 description: Learn the OCI Image, Runtime, and Distribution Specifications and why standards let container images and runtimes interoperate.
 ---
 
-# 7. OCI: Container Standards
+# OCI: Container Standards
 
 The Open Container Initiative (OCI) defines open specifications so an image created by one compatible tool can be used by another compatible runtime or registry.
 

@@ -2,7 +2,7 @@
 description: Compare Docker and Podman: daemon architecture, rootless containers, OCI compatibility, pods, and operational trade-offs.
 ---
 
-# 20. Podman
+# Podman
 
 Podman is an OCI-compatible container tool with a familiar CLI. It is commonly described as daemonless: commands manage containers without a central long-running daemon equivalent to Docker Engine. Rootless workflows can reduce host privilege requirements, though they introduce networking, UID-mapping, and volume-permission considerations.
 

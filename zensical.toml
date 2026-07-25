@@ -14,6 +14,15 @@ Copyright © 2016–2026 Sameer Alam · <a href="#__consent">Cookie settings</a>
 
 extra_css = ["stylesheets/extra.css"]
 
+[project.markdown_extensions.admonition]
+
+[project.markdown_extensions.pymdownx.details]
+
+[project.markdown_extensions.pymdownx.superfences]
+custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+]
+
 [project.theme]
 language = "en"
 favicon = "assets/logo.png"

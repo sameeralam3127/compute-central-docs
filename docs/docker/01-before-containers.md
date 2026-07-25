@@ -2,7 +2,7 @@
 description: Understand how applications ran before containers: physical servers, monoliths, processes, dependencies, configuration, ports, data, and deployment conflicts.
 ---
 
-# 1. How Applications Used to Run
+# How Applications Used to Run
 
 Before learning Docker, it helps to understand the operating model it changed. For much of software history, deploying an application meant installing everything it needed directly onto a server.
 

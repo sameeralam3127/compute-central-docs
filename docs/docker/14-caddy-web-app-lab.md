@@ -2,7 +2,7 @@
 description: Design a Caddy, frontend, API, and database application with private networking and reverse proxying.
 ---
 
-# 14. Web Application Lab: Caddy, Frontend, API, Database
+# Web Application Lab: Caddy, Frontend, API, Database
 
 ```mermaid
 flowchart LR

@@ -2,7 +2,7 @@
 description: A systematic Docker troubleshooting workflow for startup failures, exits, networking, DNS, volumes, limits, logs, and image problems.
 ---
 
-# 24. Troubleshooting Like a DevOps Engineer
+# Troubleshooting Like a DevOps Engineer
 
 Start with evidence, not a restart loop.
 

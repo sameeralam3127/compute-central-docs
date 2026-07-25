@@ -2,7 +2,7 @@
 description: Learn Docker Engine, the CLI, daemon, contexts, Docker Desktop, and platform differences.
 ---
 
-# 10. Docker Installation and Engine
+# Docker Installation and Engine
 
 Docker Engine on Linux is normally a daemon and a CLI client. Verify the client/server relationship with `docker version`, `docker info`, and `docker context ls`.
 

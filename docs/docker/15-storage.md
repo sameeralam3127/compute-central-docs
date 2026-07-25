@@ -2,7 +2,7 @@
 description: Learn writable layers, volumes, bind mounts, tmpfs, permissions, persistence, and backup planning.
 ---
 
-# 15. Storage and Persistent Data
+# Storage and Persistent Data
 
 Removing a container removes its writable layer. Important database data must use deliberate persistent storage.
 

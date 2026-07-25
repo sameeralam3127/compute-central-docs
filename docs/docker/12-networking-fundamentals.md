@@ -2,7 +2,7 @@
 description: Learn IP addresses, loopback, subnets, gateways, DNS, ports, TCP, and listening sockets.
 ---
 
-# 12. Networking Foundations
+# Networking Foundations
 
 An IP address identifies an interface. Private addresses are routed internally; public addresses can be routed on the internet. `127.0.0.1` means “this network namespace,” not always “the physical host.”
 

@@ -20,6 +20,14 @@ flowchart LR
     E --> F[OCI + runc + containerd]
     F --> G[Docker workflows]
     G --> H[Production operations]
+    classDef foundation fill:#dbeafe,stroke:#2563eb,color:#172554
+    classDef kernel fill:#dcfce7,stroke:#16a34a,color:#14532d
+    classDef tooling fill:#fef3c7,stroke:#d97706,color:#78350f
+    classDef operations fill:#fce7f3,stroke:#db2777,color:#831843
+    class A,B,C foundation
+    class D,E kernel
+    class F,G tooling
+    class H operations
 ```
 
 A container is not a tiny virtual machine. It is a process, or a group of processes, given an isolated view of parts of a Linux system and a prepared filesystem. Docker builds a friendly workflow around creating, packaging, distributing, connecting, and operating those processes.
@@ -28,36 +36,36 @@ A container is not a tiny virtual machine. It is a process, or a group of proces
 
 ### Part I — Why containers exist
 
-1. [How applications used to run](01-before-containers.md) — physical servers, monoliths, dependencies, configuration, and deployment conflicts.
-2. [Virtual machines and KVM](02-virtual-machines-and-kvm.md) — why virtualization was a major improvement and where its costs remain.
-3. [Application dependencies](03-application-dependencies.md) — why Python, Node.js, and Java applications fail when their runtimes and libraries differ.
+- [How applications used to run](01-before-containers.md) — physical servers, monoliths, dependencies, configuration, and deployment conflicts.
+- [Virtual machines and KVM](02-virtual-machines-and-kvm.md) — why virtualization was a major improvement and where its costs remain.
+- [Application dependencies](03-application-dependencies.md) — why Python, Node.js, and Java applications fail when their runtimes and libraries differ.
 
 ### Part II — Containers without Docker
 
-4. [Linux namespaces](04-linux-namespaces.md)
-5. [cgroups and resource limits](05-cgroups.md)
-6. [Build container-style isolation with Linux](06-build-a-container-with-linux.md)
-7. [OCI standards](07-oci-standards.md)
-8. [`runc`, `containerd`, and Docker architecture](08-runc-containerd-and-docker.md)
+- [Linux namespaces](04-linux-namespaces.md)
+- [cgroups and resource limits](05-cgroups.md)
+- [Build container-style isolation with Linux](06-build-a-container-with-linux.md)
+- [OCI standards](07-oci-standards.md)
+- [`runc`, `containerd`, and Docker architecture](08-runc-containerd-and-docker.md)
 
 ### Part III — Docker workflows
 
-9. [What Docker actually solves](09-what-docker-solves.md)
-10. [Installation and the Docker Engine](10-installation-and-engine.md)
-11. [Essential commands as practical lifecycle tools](11-essential-docker-commands.md)
-12. [Networking foundations](12-networking-fundamentals.md) and [Docker networking](13-docker-networking.md)
-13. [Caddy web-application lab](14-caddy-web-app-lab.md)
-14. [Storage](15-storage.md), [images](16-container-images.md), [Dockerfiles](17-dockerfiles.md), and [Compose](18-docker-compose.md)
-15. [Registries and publishing](19-registries-and-publishing.md)
+- [What Docker actually solves](09-what-docker-solves.md)
+- [Installation and the Docker Engine](10-installation-and-engine.md)
+- [Essential commands as practical lifecycle tools](11-essential-docker-commands.md)
+- [Networking foundations](12-networking-fundamentals.md) and [Docker networking](13-docker-networking.md)
+- [Caddy web-application lab](14-caddy-web-app-lab.md)
+- [Storage](15-storage.md), [images](16-container-images.md), [Dockerfiles](17-dockerfiles.md), and [Compose](18-docker-compose.md)
+- [Registries and publishing](19-registries-and-publishing.md)
 
 ### Part IV — Beyond Docker
 
-16. [Podman](20-podman.md)
-17. [Kubernetes container runtimes](21-kubernetes-runtimes.md)
-18. [macOS container architecture](22-macos-containers.md)
-19. [Monoliths and microservices](23-monoliths-and-microservices.md)
-20. [Production troubleshooting](24-production-troubleshooting.md)
-21. [Course wrap-up](25-course-wrap-up.md)
+- [Podman](20-podman.md)
+- [Kubernetes container runtimes](21-kubernetes-runtimes.md)
+- [macOS container architecture](22-macos-containers.md)
+- [Monoliths and microservices](23-monoliths-and-microservices.md)
+- [Production troubleshooting](24-production-troubleshooting.md)
+- [Course wrap-up](25-course-wrap-up.md)
 
 ## Before you start
 

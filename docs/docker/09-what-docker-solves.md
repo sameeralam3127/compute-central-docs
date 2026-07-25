@@ -2,7 +2,7 @@
 description: Map Docker workflows to the Linux container concepts they automate.
 ---
 
-# 9. What Docker Actually Solves
+# What Docker Actually Solves
 
 Docker makes building images, distributing content, creating isolated processes, networking, storage, logging, and lifecycle management convenient.
 
