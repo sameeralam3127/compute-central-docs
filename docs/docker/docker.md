@@ -30,7 +30,7 @@ Before jumping into commands, it helps to separate a few Docker terms:
 - **Registry**: A place to store and distribute images, such as Docker Hub
 
 !!! tip "Container vs virtual machine"
-A container shares the host operating system kernel, while a virtual machine includes a full guest OS. That is why containers are usually lighter and faster to start.
+    A container shares the host operating system kernel, while a virtual machine includes a full guest OS. That is why containers are usually lighter and faster to start.
 
 ---
 
@@ -137,7 +137,7 @@ docker inspect web
 ```
 
 !!! tip "Interactive debugging"
-Use `docker exec -it <container> /bin/sh` or `/bin/bash` to inspect a running container. Minimal images often include `/bin/sh` but not `/bin/bash`.
+    Use `docker exec -it <container> /bin/sh` or `/bin/bash` to inspect a running container. Minimal images often include `/bin/sh` but not `/bin/bash`.
 
 ---
 
@@ -215,7 +215,7 @@ docker run -d -p 5000:5000 --name flask-demo flask-demo:1.0
 - `CMD` sets the default runtime command
 
 !!! warning "Keep images small"
-Use slim base images when practical, combine related steps, and avoid copying unnecessary files into the image.
+    Use slim base images when practical, combine related steps, and avoid copying unnecessary files into the image.
 
 ### Add a `.dockerignore`
 
@@ -354,7 +354,7 @@ docker compose up -d --build
 ```
 
 !!! note "Prefer `docker compose`"
-Modern Docker installations use `docker compose` with a space. The older `docker-compose` command may still work on some systems, but the plugin-based `docker compose` form is now the standard.
+    Modern Docker installations use `docker compose` with a space. The older `docker-compose` command may still work on some systems, but the plugin-based `docker compose` form is now the standard.
 
 ---
 
@@ -415,7 +415,7 @@ A common day-to-day Docker workflow looks like this:
 - Use `docker compose` for multi-container development environments
 
 !!! warning "Containers are not full security boundaries"
-Docker improves isolation, but containers still share the host kernel. For sensitive workloads, combine Docker with OS hardening, image scanning, least privilege, and good secret management.
+    Docker improves isolation, but containers still share the host kernel. For sensitive workloads, combine Docker with OS hardening, image scanning, least privilege, and good secret management.
 
 ---
 
@@ -553,7 +553,7 @@ docker system prune
 ```
 
 !!! tip "Use cleanup carefully"
-`docker system prune` removes unused objects such as stopped containers and dangling images. Review what it will delete before running it on a machine you care about.
+    `docker system prune` removes unused objects such as stopped containers and dangling images. Review what it will delete before running it on a machine you care about.
 
 ## FAQ
 

@@ -6,7 +6,6 @@ site_url = "https://computecentral.in/"
 repo_url = "https://github.com/sameeralam3127/compute-central-docs"
 repo_name = "Compute Central Docs"
 edit_uri = "edit/main/docs"
-nav = []
 
 copyright = """
 Copyright © 2016–2026 Sameer Alam · <a href="#__consent">Cookie settings</a>
@@ -145,3 +144,122 @@ actions = ["accept", "reject", "manage"]
 [project.extra.consent.cookies.analytics]
 name = "Google Analytics"
 checked = false
+
+# Explicit navigation. Each top-level section is one array-of-tables entry so
+# that footer prev/next links stay a deliberate, curated handoff between
+# sections instead of falling out of alphabetical directory order.
+
+[[project.nav]]
+"Compute Central" = "index.md"
+
+[[project.nav]]
+"Ai guide" = [
+  "ai-guide/index.md",
+  "ai-guide/llm-fundamentals.md",
+  "ai-guide/ai-agents.md",
+  "ai-guide/ai-evaluation.md",
+  "ai-guide/terminology.md",
+]
+
+[[project.nav]]
+Ansible = [
+  "ansible/index.md",
+  { "Volume 1 — Fundamentals & History" = ["ansible/volume-1-fundamentals-and-history/index.md", "ansible/volume-1-fundamentals-and-history/01-infrastructure-before-ansible.md", "ansible/volume-1-fundamentals-and-history/02-michael-dehaan-and-the-birth-of-ansible.md", "ansible/volume-1-fundamentals-and-history/03-what-exactly-is-ansible.md", "ansible/volume-1-fundamentals-and-history/04-why-yaml.md", "ansible/volume-1-fundamentals-and-history/05-declarative-vs-imperative.md", "ansible/volume-1-fundamentals-and-history/06-installing-ansible.md"] },
+  { "Volume 2 — Playbooks, Roles & Collections" = ["ansible/volume-2-playbooks-roles-and-collections/index.md", "ansible/volume-2-playbooks-roles-and-collections/01-cli-deep-dive.md", "ansible/volume-2-playbooks-roles-and-collections/02-inventory.md", "ansible/volume-2-playbooks-roles-and-collections/03-variables-and-precedence.md", "ansible/volume-2-playbooks-roles-and-collections/04-ansible-cfg.md", "ansible/volume-2-playbooks-roles-and-collections/05-playbooks.md", "ansible/volume-2-playbooks-roles-and-collections/06-roles.md", "ansible/volume-2-playbooks-roles-and-collections/07-collections.md", "ansible/volume-2-playbooks-roles-and-collections/08-galaxy.md"] },
+  { "Volume 3 — Core Internals & Python Architecture" = ["ansible/volume-3-core-internals/index.md", "ansible/volume-3-core-internals/01-internal-architecture.md", "ansible/volume-3-core-internals/02-how-ansible-executes.md", "ansible/volume-3-core-internals/03-why-python.md", "ansible/volume-3-core-internals/04-source-code-tour.md"] },
+  { "Volume 4 — Enterprise Automation Platform (AAP)" = ["ansible/volume-4-enterprise-automation-platform/index.md", "ansible/volume-4-enterprise-automation-platform/01-ansible-core-vs-ansible-vs-aap.md", "ansible/volume-4-enterprise-automation-platform/02-automation-controller-and-mesh.md", "ansible/volume-4-enterprise-automation-platform/03-execution-environments-and-hub.md", "ansible/volume-4-enterprise-automation-platform/04-licensing-and-adoption.md"] },
+  { "Volume 5 — Developing Modules, Plugins & Contributing" = ["ansible/volume-5-development-and-contributing/index.md", "ansible/volume-5-development-and-contributing/01-module-architecture.md", "ansible/volume-5-development-and-contributing/02-plugin-architecture.md", "ansible/volume-5-development-and-contributing/03-testing-ansible-content.md", "ansible/volume-5-development-and-contributing/04-development-toolkit.md", "ansible/volume-5-development-and-contributing/05-contributing-to-ansible.md"] },
+  { "Volume 6 — Production Best Practices, Performance & Troubleshooting" = ["ansible/volume-6-production-and-performance/index.md", "ansible/volume-6-production-and-performance/01-security.md", "ansible/volume-6-production-and-performance/02-performance-and-scaling.md", "ansible/volume-6-production-and-performance/03-windows-automation.md", "ansible/volume-6-production-and-performance/04-troubleshooting.md", "ansible/volume-6-production-and-performance/05-best-practices.md", "ansible/volume-6-production-and-performance/06-real-production-projects.md"] },
+]
+
+[[project.nav]]
+Docker = [
+  "docker/index.md",
+  "docker/01-before-containers.md",
+  "docker/02-virtual-machines-and-kvm.md",
+  "docker/03-application-dependencies.md",
+  "docker/04-linux-namespaces.md",
+  "docker/05-cgroups.md",
+  "docker/06-build-a-container-with-linux.md",
+  "docker/07-oci-standards.md",
+  "docker/08-runc-containerd-and-docker.md",
+  "docker/09-what-docker-solves.md",
+  "docker/10-installation-and-engine.md",
+  "docker/11-essential-docker-commands.md",
+  "docker/12-networking-fundamentals.md",
+  "docker/13-docker-networking.md",
+  "docker/14-caddy-web-app-lab.md",
+  "docker/15-storage.md",
+  "docker/16-container-images.md",
+  "docker/17-dockerfiles.md",
+  "docker/18-docker-compose.md",
+  "docker/19-registries-and-publishing.md",
+  "docker/20-podman.md",
+  "docker/21-kubernetes-runtimes.md",
+  "docker/22-macos-containers.md",
+  "docker/23-monoliths-and-microservices.md",
+  "docker/24-production-troubleshooting.md",
+  "docker/25-course-wrap-up.md",
+  "docker/docker.md",
+  "docker/basic.md",
+]
+
+[[project.nav]]
+Jenkins = "jenkins/jenkins.md"
+
+[[project.nav]]
+Kubernetes = [
+  "kubernetes/index.md",
+  "kubernetes/fundamentals.md",
+  "kubernetes/operations/cicd-pipelines.md",
+  "kubernetes/operations/scripting-automation.md",
+  "kubernetes/operations/troubleshooting.md",
+  "kubernetes/openshift/guide.md",
+  "kubernetes/labs/hands-on-scenarios.md",
+  "kubernetes/labs/docker-lab.md",
+  "kubernetes/labs/minikube-lab.md",
+  "kubernetes/labs/podman-lab.md",
+  "kubernetes/reference/quick-reference.md",
+  "kubernetes/interview/questions.md",
+]
+
+[[project.nav]]
+"Monitoring tools" = [
+  "monitoring-tools/index.md",
+  "monitoring-tools/overview.md",
+  "monitoring-tools/prometheus.md",
+  "monitoring-tools/grafana.md",
+  "monitoring-tools/alertmanager.md",
+  "monitoring-tools/logging.md",
+  "monitoring-tools/blackbox.md",
+  "monitoring-tools/troubleshooting.md",
+]
+
+[[project.nav]]
+"Shell scripts" = "shell-scripts/scripts.md"
+
+[[project.nav]]
+Sonarqube = [
+  "sonarqube/index.md",
+  "sonarqube/installation.md",
+  "sonarqube/configuration.md",
+  "sonarqube/jenkins-integration.md",
+  "sonarqube/pipeline-example.md",
+]
+
+[[project.nav]]
+"System design" = [
+  "system-design/index.md",
+  "system-design/cicd-platform.md",
+  "system-design/kubernetes-platform.md",
+  "system-design/observability.md",
+  "system-design/multi-environment.md",
+  "system-design/backup-disaster-recovery.md",
+  "system-design/security-access.md",
+]
+
+[[project.nav]]
+Terraform = [
+  "terraform/overview.md",
+  "terraform/interview-questions.md",
+]
