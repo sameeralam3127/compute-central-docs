@@ -54,7 +54,7 @@ Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes,
 
 | Goal                               | Good starting point                                                                                                                                                |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Learn containers and orchestration | [Docker guide](docker/docker.md), then [Kubernetes fundamentals](kubernetes/fundamentals.md)                                                                       |
+| Learn containers and orchestration | [Docker and Linux Containers course](docker/), then [Kubernetes fundamentals](kubernetes/fundamentals.md)                                                         |
 | Practice Kubernetes locally        | [Minikube lab](kubernetes/labs/minikube-lab.md), [Docker Desktop lab](kubernetes/labs/docker-lab.md), or [Podman lab](kubernetes/labs/podman-lab.md)               |
 | Automate server work               | [Ansible book series](ansible/index.md), [Ansible playbooks](ansible/volume-2-playbooks-roles-and-collections/05-playbooks.md), and [shell scripts](shell-scripts/scripts.md) |
 | Improve delivery pipelines         | [Jenkins setup](jenkins/jenkins.md), [SonarQube integration](sonarqube/jenkins-integration.md), and [Kubernetes CI/CD](kubernetes/operations/cicd-pipelines.md)    |

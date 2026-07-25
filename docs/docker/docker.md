@@ -4,9 +4,17 @@ description: Learn Docker containers from installation and core commands to Dock
 
 # Docker Container Guide: From Basics to Advanced
 
+!!! note "Looking for the beginner course?"
+    Start with [Docker and Linux Containers: From First Principles](index.md). This page remains a practical Docker overview and reference for readers who already understand the foundations.
+
 Docker helps you package applications and their dependencies into portable units called containers. Those containers run the same way across laptops, test servers, and production systems, which reduces "it works on my machine" problems and makes delivery more predictable.
 
-!!! info "What Docker gives you" - Consistent runtime environments across development, testing, and production - Faster startup and lower overhead than traditional virtual machines - Repeatable builds through `Dockerfile` - Easy multi-service orchestration with `docker compose` - Better isolation for apps, tools, and dependencies
+!!! info "What Docker gives you"
+    - Consistent runtime environments across development, testing, and production
+    - Faster startup and lower overhead than traditional virtual machines
+    - Repeatable builds through `Dockerfile`
+    - Easy multi-service orchestration with `docker compose`
+    - Better isolation for apps, tools, and dependencies
 
 ---
 
@@ -63,7 +71,9 @@ Install Docker Desktop from [Docker's official website](https://www.docker.com/p
 
 Install Docker Desktop from [Docker's official website](https://www.docker.com/products/docker-desktop/). On Windows, Docker Desktop typically uses WSL 2 for Linux containers, so make sure WSL is enabled if prompted during setup.
 
-!!! note "Docker Desktop vs Docker Engine" - **Docker Desktop** is commonly used on macOS and Windows and includes a GUI, Compose, and local Kubernetes support. - **Docker Engine** is the lightweight server-side runtime commonly used on Linux.
+!!! note "Docker Desktop vs Docker Engine"
+    - **Docker Desktop** is commonly used on macOS and Windows and includes a GUI, Compose, and local Kubernetes support.
+    - **Docker Engine** is the lightweight server-side runtime commonly used on Linux.
 
 ### Enable non-root Docker access on Linux
 
