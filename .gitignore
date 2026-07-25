@@ -1,0 +1,13 @@
+# Generated site output (rebuilt by CI on every push, see .github/workflows/docs.yml)
+site/
+
+# Local build cache
+.cache/
+
+# Python virtual environment
+venv/
+__pycache__/
+*.pyc
+
+# Editor/OS cruft
+.DS_Store

@@ -59,52 +59,52 @@ Most readers move left to right, but every section stands on its own — jump st
 <div class="cc-card-grid" markdown>
 
 <a class="cc-card" href="docker/">
-  <strong>Docker and Linux Containers</strong>
+  <strong>:lucide-container: Docker and Linux Containers</strong>
   <span>A from-first-principles course: namespaces, cgroups, OCI runtimes, networking, storage, and Docker workflows.</span>
 </a>
 
 <a class="cc-card" href="kubernetes/">
-  <strong>Kubernetes and OpenShift</strong>
+  <strong>:lucide-ship-wheel: Kubernetes and OpenShift</strong>
   <span>Learn core concepts, OpenShift operations, labs, troubleshooting, and quick-reference commands.</span>
 </a>
 
 <a class="cc-card" href="ansible/">
-  <strong>Ansible Automation</strong>
+  <strong>:lucide-workflow: Ansible Automation</strong>
   <span>A book-length series: fundamentals, playbooks and roles, core internals, the enterprise platform, and production scale.</span>
 </a>
 
 <a class="cc-card" href="jenkins/jenkins/">
-  <strong>CI/CD and Code Quality</strong>
+  <strong>:lucide-infinity: CI/CD and Code Quality</strong>
   <span>Set up Jenkins pipelines, SonarQube checks, and deployment workflows that are easier to review and operate.</span>
 </a>
 
 <a class="cc-card" href="sonarqube/">
-  <strong>SonarQube</strong>
+  <strong>:lucide-shield-check: SonarQube</strong>
   <span>Install, configure, and wire SonarQube into Jenkins with quality gates that actually get enforced.</span>
 </a>
 
 <a class="cc-card" href="monitoring-tools/">
-  <strong>Monitoring and SRE</strong>
+  <strong>:lucide-activity: Monitoring and SRE</strong>
   <span>Use Prometheus, Grafana, Alertmanager, Loki, and troubleshooting patterns to understand system health.</span>
 </a>
 
 <a class="cc-card" href="system-design/">
-  <strong>System Design</strong>
+  <strong>:lucide-network: System Design</strong>
   <span>Platform-engineering system design: CI/CD platforms, Kubernetes platforms, observability, and multi-environment delivery.</span>
 </a>
 
 <a class="cc-card" href="ai-guide/">
-  <strong>AI Engineering</strong>
+  <strong>:lucide-brain: AI Engineering</strong>
   <span>Understand LLM fundamentals, AI agents, evaluation, and practical model workflows for technical teams.</span>
 </a>
 
 <a class="cc-card" href="terraform/overview/">
-  <strong>Terraform</strong>
+  <strong>:lucide-layers: Terraform</strong>
   <span>Infrastructure as code fundamentals, core concepts, and common interview questions.</span>
 </a>
 
 <a class="cc-card" href="shell-scripts/scripts/">
-  <strong>Shell Scripts</strong>
+  <strong>:lucide-terminal: Shell Scripts</strong>
   <span>Practical automation scripts and patterns for everyday operations work.</span>
 </a>
 
@@ -121,14 +121,31 @@ Most readers move left to right, but every section stands on its own — jump st
 
 ## Learning Paths
 
-| Goal                               | Good starting point                                                                                                                                                |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Learn containers and orchestration | [Docker and Linux Containers course](docker/), then [Kubernetes fundamentals](kubernetes/fundamentals.md)                                                         |
-| Practice Kubernetes locally        | [Minikube lab](kubernetes/labs/minikube-lab.md), [Docker Desktop lab](kubernetes/labs/docker-lab.md), or [Podman lab](kubernetes/labs/podman-lab.md)               |
-| Automate server work               | [Ansible book series](ansible/index.md), [Ansible playbooks](ansible/volume-2-playbooks-roles-and-collections/05-playbooks.md), and [shell scripts](shell-scripts/scripts.md) |
-| Improve delivery pipelines         | [Jenkins setup](jenkins/jenkins.md), [SonarQube integration](sonarqube/jenkins-integration.md), and [Kubernetes CI/CD](kubernetes/operations/cicd-pipelines.md)    |
-| Operate production-style systems   | [Monitoring stack](monitoring-tools/index.md), [Kubernetes troubleshooting](kubernetes/operations/troubleshooting.md), and [system design](system-design/index.md) |
-| Understand AI engineering basics   | [AI Engineering Guide](ai-guide/index.md), [LLM fundamentals](ai-guide/llm-fundamentals.md), and [AI evaluation](ai-guide/ai-evaluation.md)                         |
+Pick the goal closest to yours — each tab is a short, ordered route through the material.
+
+=== ":lucide-container: Containers & orchestration"
+
+    Start with the [Docker and Linux Containers course](docker/), then move to [Kubernetes fundamentals](kubernetes/fundamentals.md).
+
+=== ":lucide-flask-conical: Practice Kubernetes locally"
+
+    Try the [Minikube lab](kubernetes/labs/minikube-lab.md), the [Docker Desktop lab](kubernetes/labs/docker-lab.md), or the [Podman lab](kubernetes/labs/podman-lab.md).
+
+=== ":lucide-workflow: Automate server work"
+
+    Read the [Ansible book series](ansible/index.md) — jump straight to [playbooks](ansible/volume-2-playbooks-roles-and-collections/05-playbooks.md) — and pair it with [shell scripts](shell-scripts/scripts.md).
+
+=== ":lucide-infinity: Improve delivery pipelines"
+
+    Set up [Jenkins](jenkins/jenkins.md), add [SonarQube quality gates](sonarqube/jenkins-integration.md), then wire in [Kubernetes CI/CD](kubernetes/operations/cicd-pipelines.md).
+
+=== ":lucide-activity: Operate production-style systems"
+
+    Stand up the [monitoring stack](monitoring-tools/index.md), review [Kubernetes troubleshooting](kubernetes/operations/troubleshooting.md), and study [system design](system-design/index.md).
+
+=== ":lucide-brain: Understand AI engineering basics"
+
+    Start with the [AI Engineering Guide](ai-guide/index.md), then [LLM fundamentals](ai-guide/llm-fundamentals.md) and [AI evaluation](ai-guide/ai-evaluation.md).
 
 ## How to Use This Site
 
@@ -139,6 +156,19 @@ Start with the topic you need, then follow the examples in a local or test envir
 
 !!! note "Production reminder"
     Always review commands, credentials, namespaces, and environment names before running anything against shared or production systems.
+
+??? note ":lucide-layout-list: Browse every section"
+
+    - **Docker** — [Course index](docker/), [Dockerfiles](docker/17-dockerfiles.md), [Compose](docker/18-docker-compose.md), [quick reference](docker/docker.md)
+    - **Kubernetes** — [Fundamentals](kubernetes/fundamentals.md), [labs](kubernetes/labs/hands-on-scenarios.md), [OpenShift](kubernetes/openshift/guide.md), [troubleshooting](kubernetes/operations/troubleshooting.md), [quick reference](kubernetes/reference/quick-reference.md)
+    - **Ansible** — [Series index](ansible/index.md) with six volumes: fundamentals, playbooks, internals, the enterprise platform, development, and production
+    - **Jenkins** — [Installation and first pipeline](jenkins/jenkins.md)
+    - **SonarQube** — [Overview](sonarqube/index.md), [installation](sonarqube/installation.md), [Jenkins integration](sonarqube/jenkins-integration.md)
+    - **Monitoring** — [Stack overview](monitoring-tools/index.md), [Prometheus](monitoring-tools/prometheus.md), [Grafana](monitoring-tools/grafana.md), [Alertmanager](monitoring-tools/alertmanager.md)
+    - **System Design** — [Overview](system-design/index.md), [CI/CD platforms](system-design/cicd-platform.md), [observability](system-design/observability.md), [security & access](system-design/security-access.md)
+    - **AI Engineering** — [Guide](ai-guide/index.md), [LLM fundamentals](ai-guide/llm-fundamentals.md), [AI agents](ai-guide/ai-agents.md), [evaluation](ai-guide/ai-evaluation.md)
+    - **Terraform** — [Overview](terraform/overview.md), [interview questions](terraform/interview-questions.md)
+    - **Shell Scripts** — [Practical scripts](shell-scripts/scripts.md)
 
 ## About Sameer Alam
 
@@ -153,5 +183,3 @@ I started documenting my learning in **2016**. Compute Central brings those note
 - **GitHub:** [github.com/sameeralam3127](https://github.com/sameeralam3127)
 - **Medium:** [medium.com/@sameeralam3127](https://medium.com/@sameeralam3127)
 - **Blog archive:** [compute-central.blogspot.com](https://compute-central.blogspot.com/)
-
-:lucide-rocket: test icon
