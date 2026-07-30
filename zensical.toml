@@ -204,7 +204,15 @@ Docker = [
 ]
 
 [[project.nav]]
-Jenkins = "jenkins/jenkins.md"
+"CI/CD Pipelines" = [
+  "jenkins/index.md",
+  "jenkins/github-actions.md",
+  "jenkins/java-github-actions.md",
+  "jenkins/python-github-actions.md",
+  "jenkins/gitlab-ci.md",
+  "jenkins/argocd.md",
+  "jenkins/jenkins.md",
+]
 
 [[project.nav]]
 Kubernetes = [
