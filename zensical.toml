@@ -246,8 +246,10 @@ Kubernetes = [
 "Shell scripts" = "shell-scripts/scripts.md"
 
 [[project.nav]]
-Sonarqube = [
+"Code Quality" = [
   "sonarqube/index.md",
+  "sonarqube/code-quality-ecosystem.md",
+  "sonarqube/paid-platforms.md",
   "sonarqube/installation.md",
   "sonarqube/configuration.md",
   "sonarqube/jenkins-integration.md",

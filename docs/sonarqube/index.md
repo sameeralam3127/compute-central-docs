@@ -7,15 +7,19 @@ tags:
   - CI/CD
 ---
 
-# SonarQube Code Quality Overview
+# Code Quality Overview
 
 SonarQube helps teams check code quality and security issues as part of normal development and CI/CD work. It is useful when you want automated feedback on bugs, vulnerabilities, code smells, duplication, and quality gates.
+
+SonarQube is one option in a much larger market — this section also maps the surrounding ecosystem of open-source linters, security scanners, and paid SaaS platforms so you can combine them deliberately.
 
 ## What This Section Covers
 
 - Installing SonarQube on Ubuntu
 - Connecting SonarQube to PostgreSQL
 - Integrating scans into Jenkins pipelines
+- [Open-source tools and libraries](code-quality-ecosystem.md) — ruff, ESLint, Checkstyle, SpotBugs, Semgrep, Gitleaks, Trivy, JaCoCo, and how to wire them into CI
+- [Paid and SaaS platforms](paid-platforms.md) — SonarCloud, GitHub Advanced Security (CodeQL), Snyk, Codacy, Qlty, DeepSource, Codecov, Veracode, Checkmarx
 
 ## Why Teams Use SonarQube
 
