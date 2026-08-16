@@ -17,6 +17,26 @@ Repository: [sameeralam3127/Monitoring](https://github.com/sameeralam3127/Monito
 - Loki and Promtail for logs
 - Blackbox Exporter for synthetic endpoint checks
 
+## Signal Flow
+
+```mermaid
+flowchart LR
+  App["Application"] -->|"metrics /metrics"| Prometheus
+  App -->|"structured logs"| Promtail
+  App -->|"traces and events"| OTel["OpenTelemetry Collector"]
+  Node["Node Exporter"] --> Prometheus
+  Cadvisor["cAdvisor"] --> Prometheus
+  Blackbox["Blackbox Exporter"] --> Prometheus
+  Prometheus --> Grafana
+  Prometheus --> Alertmanager
+  Promtail --> Loki
+  Loki --> Grafana
+  OTel --> TraceStore["Tempo, Jaeger, or vendor backend"]
+  TraceStore --> Grafana
+```
+
+Use the signal that best answers the question: metrics show *how much* and *when*; logs show the detailed record; traces show *where* time or errors occur across a request; events record meaningful state changes such as a deployment or failed payment.
+
 ## Why This Repo Is Practical
 
 It shows how the main observability tools fit together instead of teaching them as isolated demos.
