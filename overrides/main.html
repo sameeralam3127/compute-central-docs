@@ -8,7 +8,48 @@
   {% set page_title = (page.meta.title if page.meta and page.meta.title else page.title | striptags if page.title else config.site_name) %}
   {% set page_description = (page.meta.description if page.meta and page.meta.description else config.site_description) %}
   {% set page_url = (page.canonical_url if page.canonical_url else config.site_url) %}
-  {% set page_image = config.site_url ~ "assets/compute-central-hero.png" %}
+
+  {# Per-section social preview cards for the Ansible docs; everything else keeps the site hero image. #}
+  {% set u = page.url or "" %}
+  {% if "ansible/getting-started/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/getting-started.jpg" %}
+  {% elif "ansible/core-concepts/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/core-concepts.jpg" %}
+  {% elif "ansible/yaml-and-execution-model/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/yaml-and-execution-model.jpg" %}
+  {% elif "ansible/variables-and-data/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/variables-and-data.jpg" %}
+  {% elif "ansible/jinja2-and-templates/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/jinja2-and-templates.jpg" %}
+  {% elif "ansible/modules/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/modules.jpg" %}
+  {% elif "ansible/playbook-engineering/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/playbook-engineering.jpg" %}
+  {% elif "ansible/advanced-execution/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/advanced-execution.jpg" %}
+  {% elif "ansible/roles/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/roles.jpg" %}
+  {% elif "ansible/collections/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/collections.jpg" %}
+  {% elif "ansible/build-your-own/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/build-your-own.jpg" %}
+  {% elif "ansible/production-engineering/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/production-engineering.jpg" %}
+  {% elif "ansible/enterprise-platform/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/enterprise-platform.jpg" %}
+  {% elif "ansible/case-studies/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/case-studies.jpg" %}
+  {% elif "ansible/troubleshooting/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/troubleshooting.jpg" %}
+  {% elif "ansible/interview-prep/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/interview-prep.jpg" %}
+  {% elif "ansible/quick-reference/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/quick-reference.jpg" %}
+  {% elif "ansible/" in u %}
+    {% set page_image = config.site_url ~ "assets/og/ansible.jpg" %}
+  {% else %}
+    {% set page_image = config.site_url ~ "assets/compute-central-hero.png" %}
+  {% endif %}
 
   <meta property="og:type" content="{{ 'website' if page.is_homepage else 'article' }}">
   <meta property="og:title" content="{{ page_title }}">
