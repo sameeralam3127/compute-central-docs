@@ -44,6 +44,12 @@ That usually gives you:
 - Recent logs from Loki
 - Alert summary
 
+## Make Dashboards Useful During Incidents
+
+Organize dashboards from user impact to infrastructure cause: availability and error rate first, then latency, dependencies, resources, logs, and recent deploy events. Use variables for environment, cluster, service, and instance. Add panel links that open a filtered Loki query or trace view so an operator can investigate without rebuilding context.
+
+Avoid a dashboard that only shows system CPU. Include an application-level signal such as request rate, error rate, latency percentile, queue lag, or successful business operations.
+
 ## Quick Check
 
 ```bash

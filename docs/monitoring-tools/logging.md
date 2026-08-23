@@ -29,6 +29,16 @@ This page explains the logging flow in the monitoring lab.
 - Uses labels effectively
 - Is lighter than some larger log platforms for small labs
 
+## Structured Logs and Events
+
+Make application logs queryable by emitting stable fields rather than relying only on text. A useful event includes timestamp, level, service, environment, event name, request ID, and trace ID when tracing is enabled.
+
+```json
+{"level":"ERROR","service":"orders-api","event":"payment_authorization_failed","request_id":"req-8f52","trace_id":"4bf92f..."}
+```
+
+Keep high-cardinality values such as request IDs inside the log body or parsed fields, not as Loki stream labels. Labels should be low-cardinality selectors such as service, environment, and cluster.
+
 ## What to Validate
 
 - Promtail can read the configured paths
@@ -42,6 +52,8 @@ This page explains the logging flow in the monitoring lab.
 - Set retention rules
 - Reduce noisy low-value logs
 - Parse structured logs where possible
+- Correlate logs with request IDs and trace IDs
+- Redact secrets and personal data before forwarding
 
 ## Quick Check
 

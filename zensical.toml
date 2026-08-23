@@ -244,11 +244,15 @@ Kubernetes = [
 [[project.nav]]
 "Monitoring tools" = [
   "monitoring-tools/index.md",
+  "monitoring-tools/observability-fundamentals.md",
   "monitoring-tools/overview.md",
   "monitoring-tools/prometheus.md",
+  "monitoring-tools/node-exporter.md",
   "monitoring-tools/grafana.md",
   "monitoring-tools/alertmanager.md",
   "monitoring-tools/logging.md",
+  "monitoring-tools/python-logging.md",
+  "monitoring-tools/opentelemetry-platforms.md",
   "monitoring-tools/blackbox.md",
   "monitoring-tools/troubleshooting.md",
 ]
