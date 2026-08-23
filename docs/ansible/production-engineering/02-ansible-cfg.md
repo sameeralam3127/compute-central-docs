@@ -1,4 +1,5 @@
 ---
+title: "ansible.cfg Settings Explained"
 icon: lucide/settings
 description: Every ansible.cfg setting that matters in production — search order and precedence, forks, SSH args, pipelining, timeouts, and privilege escalation.
 tags:

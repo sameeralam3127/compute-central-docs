@@ -1,4 +1,5 @@
 ---
+title: "Ansible Modules Reference and Decision Guide"
 icon: lucide/package
 description: Module reference and decision guides — command vs. shell vs. raw vs. script, decision trees for common tool choices, and category-by-category module coverage.
 tags:

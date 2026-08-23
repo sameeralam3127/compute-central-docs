@@ -1,4 +1,5 @@
 ---
+title: "Ansible Case Studies: Real-World Examples"
 icon: lucide/flask-conical
 description: End-to-end Ansible case studies — problem, architecture, implementation, execution output, failure scenarios, and production hardening.
 tags:

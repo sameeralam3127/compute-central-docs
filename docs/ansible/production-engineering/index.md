@@ -1,4 +1,5 @@
 ---
+title: "Ansible Production Engineering Guide"
 icon: lucide/factory
 description: The operational discipline around Ansible in production — project layout, ansible.cfg, secrets, security, performance, CI/CD, linting, and Molecule testing.
 tags:

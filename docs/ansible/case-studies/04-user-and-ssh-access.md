@@ -1,4 +1,5 @@
 ---
+title: "Ansible User and SSH Key Management Example"
 icon: lucide/users
 description: A user and SSH access case study — creating accounts, managing authorized_keys per team, and revoking access cleanly.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Ansible Module argument_spec and Check Mode"
 icon: lucide/list-checks
 description: Ansible module internals in depth — argument_spec validation features, check mode internals, idempotency patterns, diff mode, and no_log/module_utils.
 tags:

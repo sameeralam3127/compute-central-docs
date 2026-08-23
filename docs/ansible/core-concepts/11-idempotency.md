@@ -1,4 +1,5 @@
 ---
+title: "Ansible Idempotency Explained (Declarative vs Imperative)"
 icon: lucide/git-compare
 description: Idempotency and the declarative model — imperative vs. declarative vs. procedural automation, desired state, and state reconciliation — compared across shell scripts, Terraform, Ansible, and Kubernetes.
 tags:

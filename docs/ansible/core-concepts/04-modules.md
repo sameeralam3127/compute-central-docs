@@ -1,4 +1,5 @@
 ---
+title: "Ansible Modules Explained: How They Work"
 icon: lucide/box
 description: What an Ansible module actually is — a self-contained program with a check-then-act, JSON-in-JSON-out contract — and why that contract is what makes idempotency possible.
 tags:

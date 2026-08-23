@@ -1,4 +1,5 @@
 ---
+title: "Ansible Linux Server Hardening Playbook"
 icon: lucide/shield-check
 description: A Linux server hardening case study — SSH lockdown, firewall rules, unattended upgrades, and fail2ban, applied idempotently across a fleet.
 tags:

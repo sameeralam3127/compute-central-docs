@@ -1,4 +1,5 @@
 ---
+title: "Ansible Playbook Engineering Guide"
 icon: lucide/wrench
 description: Playbook engineering — blocks and error handling, imports vs. includes, delegation, become, and async execution.
 tags:

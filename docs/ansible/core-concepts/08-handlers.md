@@ -1,4 +1,5 @@
 ---
+title: "Ansible Handlers and notify Explained"
 icon: lucide/bell
 description: Ansible handlers and notify — running a follow-up action only when a task actually changed something, deduplicated, at the end of a play.
 tags:

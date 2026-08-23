@@ -1,4 +1,5 @@
 ---
+title: "How to Install Ansible on Linux, macOS, and Windows"
 icon: lucide/download
 description: Installing Ansible on Linux, macOS, and Windows (via WSL) — pipx, virtualenv, and OS package managers — and the difference between ansible-core and the ansible package.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Ansible Vault: Secrets Management Guide"
 icon: lucide/lock
 description: Ansible Vault and secrets management — encrypting files and values, vault IDs for multiple trust domains, and integrating an external secret manager instead.
 tags:

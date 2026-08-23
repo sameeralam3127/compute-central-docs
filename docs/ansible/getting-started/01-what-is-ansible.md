@@ -1,4 +1,5 @@
 ---
+title: "What Is Ansible? A Clear Definition and Comparison"
 icon: lucide/help-circle
 description: A precise definition of Ansible as a configuration management and orchestration tool, and how it differs from provisioning tools like Terraform and continuous reconcilers like Kubernetes.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Ansible Module Decision Trees (copy vs template)"
 icon: lucide/git-fork
 description: Quick decision trees for common Ansible tool choices — copy vs. template, import vs. include, role vs. task include, loop vs. with_*, set_fact vs. vars, and uri vs. shell/curl.
 tags:

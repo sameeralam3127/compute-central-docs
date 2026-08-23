@@ -1,4 +1,5 @@
 ---
+title: "Ansible Rolling Deployment Example (Nginx, serial)"
 icon: lucide/rocket
 description: A complete rolling nginx deployment case study across 10 servers — serial, handlers, a canary batch, a real failure scenario, and its fix.
 tags:

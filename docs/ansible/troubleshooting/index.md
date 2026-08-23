@@ -1,4 +1,5 @@
 ---
+title: "Ansible Troubleshooting Guide"
 icon: lucide/life-buoy
 description: A debugging methodology for broken Ansible playbooks — the essential diagnostic commands, and a decision tree for narrowing down what actually failed.
 tags:

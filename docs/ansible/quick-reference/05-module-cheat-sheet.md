@@ -1,4 +1,5 @@
 ---
+title: "Ansible Module Cheat Sheet"
 icon: lucide/package
 description: A quick module-selection reference — which ansible.builtin module to reach for, by task.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Ansible Inventory Explained: Static and Dynamic"
 icon: lucide/list-tree
 description: Ansible inventory — static INI and YAML formats, groups and children, host patterns, ranges, and when to move to dynamic inventory.
 tags:

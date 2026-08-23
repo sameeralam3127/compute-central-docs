@@ -1,4 +1,5 @@
 ---
+title: "Advanced Ansible Jinja2: Macros and Whitespace"
 icon: lucide/sparkles
 description: Jinja2 macros, whitespace control, and custom filter plugins for Ansible templates.
 tags:

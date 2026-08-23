@@ -1,4 +1,5 @@
 ---
+title: "Ansible async and poll for Long-Running Tasks"
 icon: lucide/clock
 description: Ansible async and poll — running long tasks in the background and checking on them later, instead of blocking the whole play.
 tags:

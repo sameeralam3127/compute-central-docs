@@ -1,4 +1,5 @@
 ---
+title: "Ansible Jinja2 Filters and Tests Reference"
 icon: lucide/filter
 description: The Jinja2 filters and tests used constantly in Ansible playbooks — default, join, dict2items, and is defined/is failed.
 tags:

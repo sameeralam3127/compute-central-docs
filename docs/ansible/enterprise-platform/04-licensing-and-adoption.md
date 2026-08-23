@@ -1,4 +1,5 @@
 ---
+title: "AWX vs AAP: Licensing and Adoption Guide"
 icon: lucide/scale
 description: Ansible Automation Platform's licensing and subscription model, AWX as the open-source upstream, and how to decide between self-supported AWX and a paid AAP subscription.
 tags:

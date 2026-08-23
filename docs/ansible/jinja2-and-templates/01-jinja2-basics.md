@@ -1,4 +1,5 @@
 ---
+title: "Ansible Jinja2 Basics and Syntax"
 icon: lucide/braces
 description: Jinja2 expressions in Ansible — variable interpolation, arithmetic, string operations, and exactly when templating runs relative to YAML parsing.
 tags:

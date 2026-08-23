@@ -1,4 +1,5 @@
 ---
+title: "Ansible Fact Caching Explained"
 icon: lucide/database-zap
 description: Ansible fact caching — jsonfile and redis backends, cache timeout, and avoiding repeated fact gathering across runs.
 tags:

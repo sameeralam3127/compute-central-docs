@@ -1,4 +1,5 @@
 ---
+title: "Ansible Tutorial: Learn Automation From Scratch"
 icon: lucide/workflow
 description: A practical Ansible learning platform and reference — get started, build real automation, go deep on internals, troubleshoot production, and prepare for interviews.
 tags:

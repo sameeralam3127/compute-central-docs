@@ -1,4 +1,5 @@
 ---
+title: "Ansible when Conditional: Syntax and Examples"
 icon: lucide/git-fork
 description: Ansible conditionals with when — skipping or running tasks based on facts, variables, and registered results.
 tags:

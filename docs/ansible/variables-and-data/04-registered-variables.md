@@ -1,4 +1,5 @@
 ---
+title: "Ansible register Variable Explained"
 icon: lucide/save
 description: Capturing a task's result with register, and using it in later conditionals, loops, and templates.
 tags:

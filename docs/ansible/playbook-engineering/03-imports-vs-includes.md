@@ -1,4 +1,5 @@
 ---
+title: "Ansible import_tasks vs include_tasks"
 icon: lucide/file-symlink
 description: Static vs. dynamic inclusion in Ansible — import_tasks/include_tasks and import_playbook, plus how each interacts with tags, loops, and --list-tasks.
 tags:

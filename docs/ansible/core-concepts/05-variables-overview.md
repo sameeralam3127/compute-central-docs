@@ -1,4 +1,5 @@
 ---
+title: "Ansible Variables Overview: Where Values Come From"
 icon: lucide/variable
 description: A map of where Ansible variables come from — inventory, roles, facts, registered results, extra vars — before the full precedence deep dive.
 tags:

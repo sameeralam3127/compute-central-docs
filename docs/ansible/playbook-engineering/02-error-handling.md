@@ -1,4 +1,5 @@
 ---
+title: "Ansible Error Handling: ignore_errors and failed_when"
 icon: lucide/octagon-alert
 description: Ansible error handling — ignore_errors, failed_when, any_errors_fatal, and max_fail_percentage.
 tags:

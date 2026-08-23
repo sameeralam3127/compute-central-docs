@@ -1,4 +1,5 @@
 ---
+title: "Ansible set_fact and combine Filter Explained"
 icon: lucide/merge
 description: Defining runtime variables with set_fact, and merging dictionaries safely with combine instead of overwriting them.
 tags:

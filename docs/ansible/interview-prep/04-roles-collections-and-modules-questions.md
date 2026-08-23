@@ -1,4 +1,5 @@
 ---
+title: "Ansible Interview Questions: Roles and Collections"
 icon: lucide/box
 description: Ansible interview questions on roles, collections, and custom modules, with concise answers and links to the full concept pages.
 tags:

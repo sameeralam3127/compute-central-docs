@@ -1,4 +1,5 @@
 ---
+title: "Ansible Project Directory Structure Best Practices"
 icon: lucide/folder-kanban
 description: A recommended production Ansible repository layout — inventories per environment, group_vars/host_vars, roles, collections, and where secrets and tests belong.
 tags:

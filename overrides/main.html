@@ -3,3 +3,43 @@
 {% block announce %}
   Practical DevOps, cloud, Kubernetes, automation, monitoring, and SRE notes for hands-on learning.
 {% endblock %}
+
+{% block extrahead %}
+  {% set page_title = (page.meta.title if page.meta and page.meta.title else page.title | striptags if page.title else config.site_name) %}
+  {% set page_description = (page.meta.description if page.meta and page.meta.description else config.site_description) %}
+  {% set page_url = (page.canonical_url if page.canonical_url else config.site_url) %}
+  {% set page_image = config.site_url ~ "assets/compute-central-hero.png" %}
+
+  <meta property="og:type" content="{{ 'website' if page.is_homepage else 'article' }}">
+  <meta property="og:title" content="{{ page_title }}">
+  <meta property="og:description" content="{{ page_description }}">
+  <meta property="og:url" content="{{ page_url }}">
+  <meta property="og:image" content="{{ page_image }}">
+  <meta property="og:site_name" content="{{ config.site_name }}">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page_title }}">
+  <meta name="twitter:description" content="{{ page_description }}">
+  <meta name="twitter:image" content="{{ page_image }}">
+
+  {% if not page.is_homepage %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": {{ page_title | tojson }},
+      "description": {{ page_description | tojson }},
+      "url": {{ page_url | tojson }},
+      "image": {{ page_image | tojson }},
+      "author": {
+        "@type": "Person",
+        "name": "{{ config.site_author }}"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "{{ config.site_name }}"
+      }
+    }
+    </script>
+  {% endif %}
+{% endblock %}

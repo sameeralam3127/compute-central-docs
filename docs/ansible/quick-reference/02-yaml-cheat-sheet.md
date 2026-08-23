@@ -1,4 +1,5 @@
 ---
+title: "Ansible YAML Cheat Sheet"
 icon: lucide/file-text
 description: YAML cheat sheet for Ansible — lists, mappings, block scalars, anchors, and the Norway problem.
 tags:

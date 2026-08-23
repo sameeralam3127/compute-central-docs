@@ -1,4 +1,5 @@
 ---
+title: "Ansible Multi-Environment Inventory Example"
 icon: lucide/layers
 description: A multi-environment inventory case study — isolating dev, staging, and production so a mistake can't cross environment boundaries, with a real near-miss failure scenario.
 tags:

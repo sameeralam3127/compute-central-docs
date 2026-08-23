@@ -1,4 +1,5 @@
 ---
+title: "Ansible Roles Guide"
 icon: lucide/folder-tree
 description: Ansible roles — why they exist, the standard directory structure, and how to design roles that stay reusable across projects.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Ansible uri Module: API Automation Guide"
 icon: lucide/globe
 description: API automation with the uri module — status_code checks, JSON bodies, authentication headers, and registering structured responses.
 tags:

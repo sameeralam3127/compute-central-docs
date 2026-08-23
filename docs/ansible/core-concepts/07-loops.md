@@ -1,4 +1,5 @@
 ---
+title: "Ansible Loop Examples: Lists and Dictionaries"
 icon: lucide/repeat
 description: Ansible loops with loop — iterating a task over a list or dictionary, loop_control, and why loop replaced the legacy with_items family.
 tags:

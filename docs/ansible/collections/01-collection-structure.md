@@ -1,4 +1,5 @@
 ---
+title: "Ansible Collection Directory Structure"
 icon: lucide/folder-tree
 description: What's inside an Ansible collection — galaxy.yml, plugins/modules, roles/, and the namespace.collection naming convention.
 tags:

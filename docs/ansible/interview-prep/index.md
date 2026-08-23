@@ -1,4 +1,5 @@
 ---
+title: "Ansible Interview Questions and Answers"
 icon: lucide/graduation-cap
 description: Ansible interview preparation, organized by subject and by level — every question ties back to a real concept page, not a memorized answer list.
 tags:

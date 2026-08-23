@@ -1,4 +1,5 @@
 ---
+title: "Ansible Role Variables and Defaults Design"
 icon: lucide/plug-zap
 description: Designing a role's public interface through defaults, and documenting what a role expects versus what it provides.
 tags:

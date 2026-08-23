@@ -1,4 +1,5 @@
 ---
+title: "Ansible API Automation Case Study (uri Module)"
 icon: lucide/globe
 description: An API automation case study — registering hosts with an internal service registry using uri, with retries and structured error handling.
 tags:

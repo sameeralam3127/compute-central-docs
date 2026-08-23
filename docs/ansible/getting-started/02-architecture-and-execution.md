@@ -1,4 +1,5 @@
 ---
+title: "Ansible Architecture: How It Connects and Executes"
 icon: lucide/git-branch
 description: Ansible's agentless, push-based architecture — how a task actually gets from your terminal to a remote machine over SSH, executes, and returns a result.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "ansible.cfg Cheat Sheet"
 icon: lucide/settings
 description: ansible.cfg quick reference — search order and the settings that matter most in production.
 tags:

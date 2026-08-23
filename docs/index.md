@@ -1,4 +1,5 @@
 ---
+title: "DevOps, Kubernetes, Ansible & Cloud Engineering Guides"
 description: Learn DevOps, Kubernetes, Docker, Terraform, Ansible, CI/CD, monitoring, system design, and AI engineering through practical infrastructure guides.
 hide:
   - navigation

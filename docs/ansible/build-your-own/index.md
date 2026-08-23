@@ -1,4 +1,5 @@
 ---
+title: "Build a Custom Ansible Module or Collection"
 icon: lucide/hammer
 description: Extending Ansible — writing a real custom module with AnsibleModule, and packaging modules, roles, and plugins into a distributable collection.
 tags:

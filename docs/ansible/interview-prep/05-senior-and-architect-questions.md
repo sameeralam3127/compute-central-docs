@@ -1,4 +1,5 @@
 ---
+title: "Senior Ansible Interview Questions"
 icon: lucide/crown
 description: Senior and architect-level Ansible interview questions on cross-tool architecture, org-wide standards, and long-term maintainability decisions.
 tags:

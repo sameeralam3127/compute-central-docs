@@ -1,4 +1,5 @@
 ---
+title: "Ansible Variable Types and Sources"
 icon: lucide/variable
 description: Every place an Ansible variable can be defined — inventory, group_vars, host_vars, play vars, role vars and defaults, extra vars, and more — before precedence is applied.
 tags:

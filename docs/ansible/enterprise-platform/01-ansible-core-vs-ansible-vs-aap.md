@@ -1,4 +1,5 @@
 ---
+title: "ansible-core vs ansible vs AWX vs AAP"
 icon: lucide/layers-3
 description: ansible-core vs. the ansible community package vs. AWX vs. Red Hat Ansible Automation Platform — four things that share a name, disambiguated precisely.
 tags:

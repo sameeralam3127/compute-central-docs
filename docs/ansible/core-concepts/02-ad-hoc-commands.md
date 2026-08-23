@@ -1,4 +1,5 @@
 ---
+title: "Ansible Ad-Hoc Commands: Syntax and Examples"
 icon: lucide/terminal
 description: Ansible ad-hoc commands — running a single module against inventory without writing a playbook, and when to graduate to one.
 tags:

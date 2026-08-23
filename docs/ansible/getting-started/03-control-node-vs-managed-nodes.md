@@ -1,4 +1,5 @@
 ---
+title: "Ansible Control Node vs Managed Node Explained"
 icon: lucide/network
 description: Control node vs. managed node — what software each one actually needs, and why the requirements are asymmetric.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Ansible Role Directory Structure Explained"
 icon: lucide/folder-tree
 description: The standard Ansible role directory structure — tasks, handlers, defaults, vars, files, templates, and meta — and how including a role auto-wires all of it.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Fix Ansible become Sudo Password Errors"
 icon: lucide/shield-alert
 description: Diagnosing Ansible become and permission failures — missing sudo password, requiretty errors with pipelining, and file permission failures after a successful connection.
 tags:

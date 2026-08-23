@@ -1,4 +1,5 @@
 ---
+title: "Ansible Interview Questions: Core Concepts"
 icon: lucide/message-circle-question
 description: Leveled Ansible interview questions on idempotency, variable precedence, modules, and command vs. shell — with detailed answers, common misconceptions, and senior follow-ups.
 tags:

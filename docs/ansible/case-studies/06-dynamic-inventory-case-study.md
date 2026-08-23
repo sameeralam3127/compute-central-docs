@@ -1,4 +1,5 @@
 ---
+title: "Ansible Dynamic Inventory Case Study (AWS)"
 icon: lucide/refresh-cw
 description: A dynamic inventory case study — sourcing hosts live from AWS EC2 by tag, grouped automatically, with cached results.
 tags:

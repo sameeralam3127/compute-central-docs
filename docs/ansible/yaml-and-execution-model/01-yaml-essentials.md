@@ -1,4 +1,5 @@
 ---
+title: "YAML for Ansible: Syntax and Why Not JSON"
 icon: lucide/file-text
 description: YAML fundamentals for Ansible — why YAML instead of JSON or XML, indentation, lists and mappings, block scalars, anchors, and the parser mistakes everyone makes at least once.
 tags:

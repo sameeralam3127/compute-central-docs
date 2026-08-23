@@ -1,4 +1,5 @@
 ---
+title: "Ansible Lookup and Filter Plugins Explained"
 icon: lucide/search
 description: Ansible lookup and filter plugins — pulling data from outside the play (files, environment variables, external secret managers) and transforming it inline.
 tags:

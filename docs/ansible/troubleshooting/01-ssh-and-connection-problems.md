@@ -1,4 +1,5 @@
 ---
+title: "Fix Ansible SSH Permission Denied (publickey)"
 icon: lucide/key-round
 description: Diagnosing Ansible SSH and connection failures — UNREACHABLE, Permission denied (publickey), timeouts, and how to read -vvv output.
 tags:

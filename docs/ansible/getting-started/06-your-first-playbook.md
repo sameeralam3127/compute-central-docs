@@ -1,4 +1,5 @@
 ---
+title: "Ansible First Playbook Tutorial: Ping to Deploy"
 icon: lucide/play-circle
 description: A hands-on lab — set up an inventory and ansible.cfg, run your first ad-hoc ping, then write and run a real playbook, with full expected output.
 tags:

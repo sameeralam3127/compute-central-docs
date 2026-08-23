@@ -1,4 +1,5 @@
 ---
+title: "Ansible Interview Questions: Architecture and Performance"
 icon: lucide/cpu
 description: Leveled Ansible interview questions on execution architecture, SSH, forks, and strategy — with detailed answers, misconceptions, and senior follow-ups.
 tags:

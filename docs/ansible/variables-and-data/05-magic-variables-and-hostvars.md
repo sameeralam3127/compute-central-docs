@@ -1,4 +1,5 @@
 ---
+title: "Ansible hostvars and Magic Variables Explained"
 icon: lucide/sparkles
 description: Ansible's automatically-provided magic variables — hostvars, groups, group_names, inventory_hostname, and ansible_play_hosts.
 tags:

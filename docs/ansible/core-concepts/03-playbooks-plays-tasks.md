@@ -1,4 +1,5 @@
 ---
+title: "Ansible Playbooks, Plays, and Tasks Explained"
 icon: lucide/scroll-text
 description: The structure of an Ansible playbook — playbooks, plays, and tasks — hosts, become, pre_tasks/post_tasks, and how they nest.
 tags:

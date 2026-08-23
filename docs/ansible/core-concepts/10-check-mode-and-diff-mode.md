@@ -1,4 +1,5 @@
 ---
+title: "Ansible Check Mode and Diff Mode (Dry Run)"
 icon: lucide/eye
 description: Ansible --check and --diff — dry-running a playbook to see what would change before it actually changes anything.
 tags:

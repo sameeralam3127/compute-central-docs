@@ -1,4 +1,5 @@
 ---
+title: "Ansible CI/CD with ansible-lint and yamllint"
 icon: lucide/git-merge
 description: Running Ansible safely in CI/CD — ansible-lint, yamllint, --check/--diff gates, and pinned collection/role dependencies.
 tags:

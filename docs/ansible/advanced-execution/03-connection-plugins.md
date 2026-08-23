@@ -1,4 +1,5 @@
 ---
+title: "Ansible Connection Plugins and Pipelining"
 icon: lucide/plug
 description: Ansible connection plugins — ssh, local, docker, winrm, paramiko — and pipelining and ControlPersist as the two highest-value SSH performance settings.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Ansible Execution Environments and Automation Hub"
 icon: lucide/container
 description: Execution Environments — container images that package ansible-core, Python dependencies, and collections together — and Automation Hub, the certified content registry.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Fix Ansible YAML Errors and Undefined Variables"
 icon: lucide/file-warning
 description: Diagnosing Ansible YAML parse errors and undefined-variable failures — reading the line/column error, and the fastest way to trace a variable's source.
 tags:

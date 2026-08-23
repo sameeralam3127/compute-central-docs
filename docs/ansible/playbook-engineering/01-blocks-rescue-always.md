@@ -1,4 +1,5 @@
 ---
+title: "Ansible block, rescue, always Explained"
 icon: lucide/shield-alert
 description: Ansible blocks, rescue, and always — grouping tasks, catching failures, and running cleanup logic regardless of outcome.
 tags:

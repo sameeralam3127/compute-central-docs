@@ -1,4 +1,5 @@
 ---
+title: "Ansible Forks vs Serial vs Strategy Explained"
 icon: lucide/gauge
 description: Ansible forks, serial, strategy, and throttle explained precisely — how many hosts run in parallel, how a rollout is batched, and what changes at 100+ hosts.
 tags:

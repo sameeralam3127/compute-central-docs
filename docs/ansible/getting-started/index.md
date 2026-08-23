@@ -1,4 +1,5 @@
 ---
+title: "Ansible Tutorial: Getting Started Guide"
 icon: lucide/rocket
 description: Start here — what Ansible is, how it connects to machines, how to install it, and how to run your first ad-hoc command and playbook.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Ansible Variable Precedence Order Explained"
 icon: lucide/layers
 description: Ansible's full variable precedence order, highest to lowest, with a decision tree for debugging which source actually won and a runnable lab to prove it.
 tags:

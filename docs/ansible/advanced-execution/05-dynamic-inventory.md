@@ -1,4 +1,5 @@
 ---
+title: "Ansible Dynamic Inventory: AWS EC2 Example"
 icon: lucide/refresh-cw
 description: Dynamic inventory plugins for Ansible — sourcing hosts live from AWS, Azure, and Kubernetes instead of maintaining a static file, with a full worked AWS EC2 example.
 tags:

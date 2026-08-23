@@ -1,4 +1,5 @@
 ---
+title: "Ansible Role Testing with Molecule"
 icon: lucide/flask-conical
 description: Testing Ansible roles in isolation with Molecule — scenarios, converge/verify/idempotence stages, and Docker-based test instances.
 tags:

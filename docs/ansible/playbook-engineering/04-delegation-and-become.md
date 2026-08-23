@@ -1,4 +1,5 @@
 ---
+title: "Ansible delegate_to and become Explained"
 icon: lucide/arrow-right-left
 description: delegate_to and run_once — running a task's action on a different host, or exactly once across a whole play — and become for privilege escalation.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Ansible Template Module: Config File Example"
 icon: lucide/file-cog
 description: Generating real config files with the template module — .j2 files, loops and conditionals inside a template, and why template beats lineinfile for whole-file management.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Ansible Variables and Data Sources"
 icon: lucide/database
 description: Every Ansible variable source and how they combine — types, sources, precedence, facts, registered variables, magic variables, and set_fact/combine.
 tags:

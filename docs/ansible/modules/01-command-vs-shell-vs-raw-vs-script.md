@@ -1,4 +1,5 @@
 ---
+title: "Ansible command vs shell vs raw vs script"
 icon: lucide/terminal-square
 description: command vs. shell vs. raw vs. script in Ansible — what each one actually does, when each is legitimate, and why module-first automation beats all four whenever a real module exists.
 tags:

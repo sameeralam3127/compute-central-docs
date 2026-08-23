@@ -1,4 +1,5 @@
 ---
+title: "Fix Ansible Module Not Found Errors"
 icon: lucide/octagon-x
 description: Diagnosing Ansible module and execution errors — missing Python interpreters, module not found, and reading module-specific failure messages.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Ansible Performance Tuning Guide"
 icon: lucide/gauge
 description: Ansible performance tuning end to end — forks, pipelining, ControlPersist, fact caching, strategy, and scaling to thousands of hosts.
 tags:

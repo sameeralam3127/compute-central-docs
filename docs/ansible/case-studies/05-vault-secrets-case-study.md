@@ -1,4 +1,5 @@
 ---
+title: "Ansible Vault Case Study: Encrypting Secrets"
 icon: lucide/lock-keyhole
 description: A secrets management case study — encrypting a database password with Ansible Vault, multiple vault IDs, and a CI pipeline that never sees the plaintext.
 tags:

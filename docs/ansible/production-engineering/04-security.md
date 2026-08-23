@@ -1,4 +1,5 @@
 ---
+title: "Ansible Security Best Practices"
 icon: lucide/shield
 description: Ansible security end to end — Vault, SSH keys, least-privilege become, credential handling, no_log, and shell-injection risks in command/shell/uri tasks.
 tags:

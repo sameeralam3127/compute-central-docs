@@ -1,4 +1,5 @@
 ---
+title: "Ansible CLI Cheat Sheet (ansible-playbook, ansible-vault)"
 icon: lucide/terminal
 description: Ansible CLI cheat sheet — ansible, ansible-playbook, ansible-doc, ansible-vault, ansible-galaxy, ansible-inventory, and the flags used constantly.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "How to Install Ansible Collections"
 icon: lucide/download
 description: Installing and using Ansible collections — requirements.yml, version pinning, ansible-galaxy collection install, and offline installs.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Ansible Variable Precedence Cheat Sheet"
 icon: lucide/layers
 description: The full Ansible variable precedence order, highest to lowest, as a quick-lookup table and diagram.
 tags:

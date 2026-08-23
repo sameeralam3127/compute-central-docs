@@ -1,4 +1,5 @@
 ---
+title: "Ansible Facts and gather_facts Explained"
 icon: lucide/scan-search
 description: Ansible facts — the setup module, ansible_facts, gathering subsets, caching, and custom facts.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Ansible YAML and Execution Model"
 icon: lucide/file-code
 description: How a YAML playbook actually becomes remote execution — YAML fundamentals, and the conceptual pipeline from parsed YAML to a running module and back.
 tags:

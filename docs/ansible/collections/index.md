@@ -1,4 +1,5 @@
 ---
+title: "Ansible Collections Explained"
 icon: lucide/package-open
 description: Ansible Collections — the packaging and distribution unit for modules, plugins, and roles together, and how ansible-core relates to them.
 tags:

@@ -1,4 +1,5 @@
 ---
+title: "Production-Ready Ansible Role Design"
 icon: lucide/factory
 description: Designing Ansible roles for production — single responsibility, testing with Molecule, and versioning roles that other teams depend on.
 tags:
