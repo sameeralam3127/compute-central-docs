@@ -11,7 +11,7 @@ hide:
 
 Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes, CI/CD, Terraform, Ansible, monitoring, troubleshooting, system design, and AI-assisted engineering. The focus is simple: explain concepts clearly, show how they work in practice, and connect them to day-to-day operations.
 
-![Compute Central DevOps knowledge hub](assets/compute-central-hero.png){ .cc-hero-image }
+![Compute Central DevOps knowledge hub](assets/compute-central-hero.jpg){ .cc-hero-image width="1600" height="900" }
 
 <div class="cc-stats" markdown>
 

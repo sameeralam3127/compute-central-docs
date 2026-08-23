@@ -5,6 +5,8 @@
 {% endblock %}
 
 {% block extrahead %}
+  <link rel="preconnect" href="https://unpkg.com">
+
   {% set page_title = (page.meta.title if page.meta and page.meta.title else page.title | striptags if page.title else config.site_name) %}
   {% set page_description = (page.meta.description if page.meta and page.meta.description else config.site_description) %}
   {% set page_url = (page.canonical_url if page.canonical_url else config.site_url) %}
@@ -48,7 +50,7 @@
   {% elif "ansible/" in u %}
     {% set page_image = config.site_url ~ "assets/og/ansible.jpg" %}
   {% else %}
-    {% set page_image = config.site_url ~ "assets/compute-central-hero.png" %}
+    {% set page_image = config.site_url ~ "assets/compute-central-hero.jpg" %}
   {% endif %}
 
   <meta property="og:type" content="{{ 'website' if page.is_homepage else 'article' }}">
