@@ -70,7 +70,7 @@ Most readers move left to right, but every section stands on its own — jump st
 
 <a class="cc-card" href="ansible/">
   <strong>:lucide-workflow: Ansible Automation</strong>
-  <span>A book-length series: fundamentals, playbooks and roles, core internals, the enterprise platform, and production scale.</span>
+  <span>Getting started through production: playbooks, roles, collections, custom modules, troubleshooting, and interview prep.</span>
 </a>
 
 <a class="cc-card" href="jenkins/jenkins/">
@@ -133,7 +133,7 @@ Pick the goal closest to yours — each tab is a short, ordered route through th
 
 === ":lucide-workflow: Automate server work"
 
-    Read the [Ansible book series](ansible/index.md) — jump straight to [playbooks](ansible/volume-2-playbooks-roles-and-collections/06-playbook-structure-and-control-flow.md) — and pair it with [shell scripts](shell-scripts/scripts.md).
+    Read [Ansible](ansible/index.md) — jump straight to [playbooks, plays, and tasks](ansible/core-concepts/03-playbooks-plays-tasks.md) — and pair it with [shell scripts](shell-scripts/scripts.md).
 
 === ":lucide-infinity: Improve delivery pipelines"
 
@@ -161,7 +161,7 @@ Start with the topic you need, then follow the examples in a local or test envir
 
     - **Docker** — [Course index](docker/), [Dockerfiles](docker/17-dockerfiles.md), [Compose](docker/18-docker-compose.md), [quick reference](docker/docker.md)
     - **Kubernetes** — [Fundamentals](kubernetes/fundamentals.md), [labs](kubernetes/labs/hands-on-scenarios.md), [OpenShift](kubernetes/openshift/guide.md), [troubleshooting](kubernetes/operations/troubleshooting.md), [quick reference](kubernetes/reference/quick-reference.md)
-    - **Ansible** — [Series index](ansible/index.md) with six volumes: fundamentals, playbooks, internals, the enterprise platform, development, and production
+    - **Ansible** — [Overview](ansible/index.md), [Getting Started](ansible/getting-started/index.md), [Core Concepts](ansible/core-concepts/index.md), [Modules](ansible/modules/index.md), [Case Studies](ansible/case-studies/index.md), [Troubleshooting](ansible/troubleshooting/index.md), [Interview Prep](ansible/interview-prep/index.md)
     - **Jenkins** — [Installation and first pipeline](jenkins/jenkins.md)
     - **SonarQube** — [Overview](sonarqube/index.md), [installation](sonarqube/installation.md), [Jenkins integration](sonarqube/jenkins-integration.md)
     - **Monitoring** — [Stack overview](monitoring-tools/index.md), [Prometheus](monitoring-tools/prometheus.md), [Grafana](monitoring-tools/grafana.md), [Alertmanager](monitoring-tools/alertmanager.md)

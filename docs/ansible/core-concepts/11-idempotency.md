@@ -1,15 +1,15 @@
 ---
 icon: lucide/git-compare
-description: Imperative vs. declarative vs. procedural automation, desired state, idempotency, and state reconciliation — compared across shell scripts, Terraform, Ansible, and Kubernetes.
+description: Idempotency and the declarative model — imperative vs. declarative vs. procedural automation, desired state, and state reconciliation — compared across shell scripts, Terraform, Ansible, and Kubernetes.
 tags:
   - Ansible
-  - Volume 1
+  - Core Concepts
   - Idempotency
 ---
 
-# Part 5 — Declarative vs. Imperative
+# Idempotency and the Declarative Model
 
-This is the single most important mental model in the entire series. Idempotency, reconciliation, and "safe to re-run" all trace back to the declarative/imperative distinction covered here.
+This is the single most important mental model in Ansible. "Why did this task change something on the second run?" and "why is my playbook not safe to re-run?" both trace back to the declarative/imperative distinction covered here.
 
 ## What You Will Learn
 
@@ -194,4 +194,4 @@ Declarative, idempotent automation is what makes "just run the playbook again" a
 
 ## Next Lesson
 
-Continue to [Part 6 — Installing Ansible](06-installing-ansible.md).
+Continue to [Playbooks, Plays, and Tasks](03-playbooks-plays-tasks.md), or jump to the [Interview Prep: Core Concepts](../interview-prep/01-core-concepts-questions.md) page for the leveled version of the questions above.
