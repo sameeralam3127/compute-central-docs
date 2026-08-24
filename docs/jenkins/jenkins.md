@@ -600,7 +600,6 @@ Jenkins can run SonarQube analysis during CI and fail or pause delivery based on
 - [SonarQube code quality overview](../sonarqube/index.md)
 - [Kubernetes CI/CD pipelines](../kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes.md)
 - [Shell scripting for SRE and DevOps automation](../shell-scripts/scripts.md)
-- [CI/CD platform system design](../system-design/cicd-platform.md)
 
 ## Next Steps
 

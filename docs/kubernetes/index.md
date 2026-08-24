@@ -88,7 +88,6 @@ Each project uses only what the previous ones already taught you. Skip ahead if 
 
 - [Docker and Linux Containers](../docker/index.md) — the runtime layer underneath every pod
 - [Ansible Automation](../ansible/index.md) — configuring the machines Kubernetes nodes run on
-- [System Design: Kubernetes Platform](../system-design/kubernetes-platform.md)
 - [Monitoring and SRE](../monitoring-tools/index.md)
 
 ## Further Reading

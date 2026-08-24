@@ -219,8 +219,6 @@ Use local labs such as LocalStack, isolated cloud sandboxes, small examples, and
 
 - [Terraform interview questions](interview-questions.md)
 - [Ansible book series](../ansible/index.md)
-- [Multi-environment deployment design](../system-design/multi-environment.md)
-- [Backup and disaster recovery design](../system-design/backup-disaster-recovery.md)
 
 ## Next Steps
 

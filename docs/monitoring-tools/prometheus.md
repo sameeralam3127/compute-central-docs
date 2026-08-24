@@ -78,4 +78,3 @@ Add [Alertmanager](alertmanager.md) when you need alert grouping, routing, silen
 - [Monitoring stack overview](index.md)
 - [Grafana guide](grafana.md)
 - [Monitoring troubleshooting](troubleshooting.md)
-- [Observability system design](../system-design/observability.md)

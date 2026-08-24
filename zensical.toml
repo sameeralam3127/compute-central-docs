@@ -278,17 +278,6 @@ Kubernetes = [
 ]
 
 [[project.nav]]
-"System design" = [
-  "system-design/index.md",
-  "system-design/cicd-platform.md",
-  "system-design/kubernetes-platform.md",
-  "system-design/observability.md",
-  "system-design/multi-environment.md",
-  "system-design/backup-disaster-recovery.md",
-  "system-design/security-access.md",
-]
-
-[[project.nav]]
 Terraform = [
   "terraform/overview.md",
   "terraform/interview-questions.md",

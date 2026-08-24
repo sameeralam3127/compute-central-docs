@@ -41,8 +41,7 @@ flowchart LR
     C --> D[Automation: Ansible & scripts]
     D --> E["CI/CD: Jenkins & SonarQube"]
     E --> F[Observability & SRE]
-    F --> G[System design]
-    G --> H[AI engineering]
+    F --> G[AI engineering]
     classDef stage1 fill:#dbeafe,stroke:#2563eb,color:#172554
     classDef stage2 fill:#dcfce7,stroke:#16a34a,color:#14532d
     classDef stage3 fill:#fef3c7,stroke:#d97706,color:#78350f
@@ -50,7 +49,7 @@ flowchart LR
     class A,B stage1
     class C,D stage2
     class E,F stage3
-    class G,H stage4
+    class G stage4
 ```
 
 Most readers move left to right, but every section stands on its own — jump straight to the track you need.
@@ -89,11 +88,6 @@ Most readers move left to right, but every section stands on its own — jump st
   <span>Use Prometheus, Grafana, Alertmanager, Loki, and troubleshooting patterns to understand system health.</span>
 </a>
 
-<a class="cc-card" href="system-design/">
-  <strong>:lucide-network: System Design</strong>
-  <span>Platform-engineering system design: CI/CD platforms, Kubernetes platforms, observability, and multi-environment delivery.</span>
-</a>
-
 <a class="cc-card" href="ai-guide/">
   <strong>:lucide-brain: AI Engineering</strong>
   <span>Understand LLM fundamentals, AI agents, evaluation, and practical model workflows for technical teams.</span>
@@ -116,7 +110,6 @@ Most readers move left to right, but every section stands on its own — jump st
 - Step-by-step guides for common DevOps and SRE tasks
 - Kubernetes, OpenShift, Docker, Terraform, Ansible, Jenkins, and SonarQube notes
 - Monitoring and troubleshooting workflows for production-style systems
-- Architecture and system design references for platform engineering
 - AI engineering notes that connect models, retrieval, tools, evaluation, and operations
 - Scripts, examples, and checklists that are easy to adapt
 
@@ -142,7 +135,7 @@ Pick the goal closest to yours — each tab is a short, ordered route through th
 
 === ":lucide-activity: Operate production-style systems"
 
-    Stand up the [monitoring stack](monitoring-tools/index.md), review [Kubernetes troubleshooting](kubernetes/troubleshooting/index.md), and study [system design](system-design/index.md).
+    Stand up the [monitoring stack](monitoring-tools/index.md) and review [Kubernetes troubleshooting](kubernetes/troubleshooting/index.md).
 
 === ":lucide-brain: Understand AI engineering basics"
 
@@ -166,7 +159,6 @@ Start with the topic you need, then follow the examples in a local or test envir
     - **Jenkins** — [Installation and first pipeline](jenkins/jenkins.md)
     - **SonarQube** — [Overview](sonarqube/index.md), [installation](sonarqube/installation.md), [Jenkins integration](sonarqube/jenkins-integration.md)
     - **Monitoring** — [Stack overview](monitoring-tools/index.md), [Prometheus](monitoring-tools/prometheus.md), [Grafana](monitoring-tools/grafana.md), [Alertmanager](monitoring-tools/alertmanager.md)
-    - **System Design** — [Overview](system-design/index.md), [CI/CD platforms](system-design/cicd-platform.md), [observability](system-design/observability.md), [security & access](system-design/security-access.md)
     - **AI Engineering** — [Guide](ai-guide/index.md), [LLM fundamentals](ai-guide/llm-fundamentals.md), [AI agents](ai-guide/ai-agents.md), [evaluation](ai-guide/ai-evaluation.md)
     - **Terraform** — [Overview](terraform/overview.md), [interview questions](terraform/interview-questions.md)
     - **Shell Scripts** — [Practical scripts](shell-scripts/scripts.md)

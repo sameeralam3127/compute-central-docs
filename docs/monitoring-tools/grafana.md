@@ -85,4 +85,3 @@ A useful dashboard shows service health, latency or probe success, resource usag
 - [Prometheus guide](prometheus.md)
 - [Loki and Promtail logging](logging.md)
 - [Monitoring stack troubleshooting](troubleshooting.md)
-- [Observability system design](../system-design/observability.md)

@@ -392,7 +392,6 @@ No. Start with the simplest pattern that solves the problem. A prompt-only assis
 - [AI agents for automation workflows](ai-agents.md)
 - [AI model evaluation](ai-evaluation.md)
 - [AI terminology in plain English](terminology.md)
-- [Observability system design](../system-design/observability.md)
 
 ## Where to Go Next
 
