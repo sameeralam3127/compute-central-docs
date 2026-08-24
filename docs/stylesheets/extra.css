@@ -20,38 +20,32 @@ html {
   position: relative;
   overflow: hidden;
   margin: 1.5rem 0 2rem;
-  padding: 2.75rem 1.5rem 2.25rem;
-  border-radius: 12px;
-  background: linear-gradient(120deg, #1d4ed8, #0891b2, #16a34a, #1d4ed8);
-  background-size: 300% 300%;
-  animation: cc-hero-gradient 14s ease infinite;
-  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.2);
+  padding: 1.6rem 1.5rem 1.4rem;
+  border-radius: 8px;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  background: var(--md-code-bg-color);
 }
 
 .cc-hero-tagline {
-  position: relative;
-  z-index: 1;
   max-width: 46rem;
-  margin: 0 auto 1.75rem;
-  color: #fff;
-  font-size: 0.92rem;
+  margin: 0 auto 1.1rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.82rem;
   line-height: 1.6;
   text-align: center;
   opacity: 0;
-  animation: cc-hero-tagline-in 0.7s ease-out 0.15s forwards;
+  animation: cc-hero-tagline-in 0.5s ease-out 0.1s forwards;
 }
 
 .cc-hero-tagline strong {
-  color: #fff;
+  color: var(--md-typeset-a-color);
 }
 
 .cc-hero-track {
-  position: relative;
-  z-index: 1;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.6rem 1rem;
+  gap: 0.5rem 0.6rem;
   margin: 0;
 }
 
@@ -63,81 +57,69 @@ html {
 .cc-hero-node {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.5rem 0.9rem;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  color: #fff;
-  font-size: 0.78rem;
+  background: var(--md-default-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color--light);
+  font-size: 0.72rem;
   font-weight: 600;
   white-space: nowrap;
-  animation: cc-hero-float 4.5s ease-in-out infinite;
-  animation-delay: calc(var(--i, 0) * 0.25s);
+  opacity: 0;
+  animation: cc-hero-node-in 0.4s ease-out forwards;
+  animation-delay: calc(0.15s + var(--i, 0) * 0.06s);
 }
 
 .cc-hero-node svg {
   width: 1em;
   height: 1em;
+  color: var(--md-typeset-a-color);
 }
 
 .cc-hero-line {
   position: relative;
-  z-index: 1;
-  height: 2px;
-  margin: 1.75rem 1rem 0;
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 2px;
+  height: 1px;
+  margin: 1.1rem 1rem 0;
+  background: var(--md-default-fg-color--lightest);
   overflow: hidden;
 }
 
 .cc-hero-packet {
   position: absolute;
-  top: -3px;
+  top: -2px;
   left: -6%;
-  width: 8px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.8);
-  animation: cc-hero-flow 3.6s linear infinite;
+  background: var(--md-accent-fg-color);
+  animation: cc-hero-flow 4.2s linear infinite;
   opacity: 0;
 }
 
 .cc-hero-packet:nth-child(2) {
-  animation-delay: 1.2s;
+  animation-delay: 1.4s;
 }
 
 .cc-hero-packet:nth-child(3) {
-  animation-delay: 2.4s;
+  animation-delay: 2.8s;
 }
 
-@keyframes cc-hero-gradient {
-  0% {
-    background-position: 0% 50%;
+@keyframes cc-hero-node-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes cc-hero-float {
-  0%,
-  100% {
+  to {
+    opacity: 1;
     transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
   }
 }
 
 @keyframes cc-hero-tagline-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -150,10 +132,10 @@ html {
     left: -6%;
     opacity: 0;
   }
-  8% {
+  10% {
     opacity: 1;
   }
-  92% {
+  90% {
     opacity: 1;
   }
   100% {
@@ -163,13 +145,13 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cc-hero,
   .cc-hero-node,
   .cc-hero-packet,
   .cc-hero-tagline {
     animation: none !important;
   }
 
+  .cc-hero-node,
   .cc-hero-tagline {
     opacity: 1 !important;
     transform: none !important;
