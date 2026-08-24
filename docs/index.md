@@ -1,17 +1,17 @@
 ---
 title: "DevOps, Kubernetes, Ansible & Cloud Engineering Guides"
-description: Learn DevOps, Kubernetes, Docker, Terraform, Ansible, CI/CD, monitoring, system design, and AI engineering through practical infrastructure guides.
+description: Learn DevOps, Kubernetes, Docker, Terraform, Ansible, CI/CD, monitoring, and AI engineering through practical infrastructure guides.
 hide:
   - navigation
 ---
 
 # Compute Central
 
-**Compute Central** is a practical DevOps, cloud, platform, AI engineering, and SRE knowledge base built around real infrastructure work.
+<div class="cc-hero" markdown>
 
-Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes, CI/CD, Terraform, Ansible, monitoring, troubleshooting, system design, and AI-assisted engineering. The focus is simple: explain concepts clearly, show how they work in practice, and connect them to day-to-day operations.
-
-<div class="cc-hero" role="img" aria-label="An animated banner showing the site's tracks — Docker, Kubernetes, Ansible, CI/CD, Monitoring, and AI — connected by a flowing pipeline" markdown>
+<p class="cc-hero-tagline" markdown>
+**Compute Central** is a practical DevOps, cloud, platform, AI engineering, and SRE knowledge base built around real infrastructure work — Linux, containers, Kubernetes, CI/CD, Terraform, Ansible, monitoring, troubleshooting, and AI-assisted engineering, explained clearly and connected to day-to-day operations.
+</p>
 
 <div class="cc-hero-track" markdown>
 <span class="cc-hero-node" style="--i:0">:lucide-container: Docker</span>
