@@ -567,7 +567,7 @@ An image is the packaged template. A container is a running instance of that ima
 
 ### Should I learn Docker before Kubernetes?
 
-Yes. Docker teaches container images, ports, volumes, logs, and runtime behavior. Those concepts make [Kubernetes fundamentals](../kubernetes/fundamentals.md) much easier to understand.
+Yes. Docker teaches container images, ports, volumes, logs, and runtime behavior. Those concepts make [Kubernetes core concepts](../kubernetes/core-concepts/index.md) much easier to understand.
 
 ### When should I use Docker Compose?
 
@@ -576,6 +576,6 @@ Use Docker Compose when you need several local services together, such as an app
 ## Related Learning
 
 - [Basic Docker commands](basic.md)
-- [Kubernetes with Docker Desktop lab](../kubernetes/labs/docker-lab.md)
+- [Kubernetes with Docker Desktop lab](../kubernetes/labs/03-docker-desktop-lab.md)
 - [Shell scripting for DevOps automation](../shell-scripts/scripts.md)
 - [Terraform overview](../terraform/overview.md)

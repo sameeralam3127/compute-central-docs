@@ -126,11 +126,11 @@ Pick the goal closest to yours — each tab is a short, ordered route through th
 
 === ":lucide-container: Containers & orchestration"
 
-    Start with the [Docker and Linux Containers course](docker/), then move to [Kubernetes fundamentals](kubernetes/fundamentals.md).
+    Start with the [Docker and Linux Containers course](docker/), then move to [Kubernetes core concepts](kubernetes/core-concepts/index.md).
 
 === ":lucide-flask-conical: Practice Kubernetes locally"
 
-    Try the [Minikube lab](kubernetes/labs/minikube-lab.md), the [Docker Desktop lab](kubernetes/labs/docker-lab.md), or the [Podman lab](kubernetes/labs/podman-lab.md).
+    Try the [Minikube lab](kubernetes/labs/01-minikube-lab.md), the [Docker Desktop lab](kubernetes/labs/03-docker-desktop-lab.md), or the [Podman lab](kubernetes/labs/04-podman-lab.md).
 
 === ":lucide-workflow: Automate server work"
 
@@ -138,11 +138,11 @@ Pick the goal closest to yours — each tab is a short, ordered route through th
 
 === ":lucide-infinity: Improve delivery pipelines"
 
-    Set up [Jenkins](jenkins/jenkins.md), add [SonarQube quality gates](sonarqube/jenkins-integration.md), then wire in [Kubernetes CI/CD](kubernetes/operations/cicd-pipelines.md).
+    Set up [Jenkins](jenkins/jenkins.md), add [SonarQube quality gates](sonarqube/jenkins-integration.md), then wire in [Kubernetes CI/CD](kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes.md).
 
 === ":lucide-activity: Operate production-style systems"
 
-    Stand up the [monitoring stack](monitoring-tools/index.md), review [Kubernetes troubleshooting](kubernetes/operations/troubleshooting.md), and study [system design](system-design/index.md).
+    Stand up the [monitoring stack](monitoring-tools/index.md), review [Kubernetes troubleshooting](kubernetes/troubleshooting/index.md), and study [system design](system-design/index.md).
 
 === ":lucide-brain: Understand AI engineering basics"
 
@@ -161,7 +161,7 @@ Start with the topic you need, then follow the examples in a local or test envir
 ??? note ":lucide-layout-list: Browse every section"
 
     - **Docker** — [Course index](docker/), [Dockerfiles](docker/17-dockerfiles.md), [Compose](docker/18-docker-compose.md), [quick reference](docker/docker.md)
-    - **Kubernetes** — [Fundamentals](kubernetes/fundamentals.md), [labs](kubernetes/labs/hands-on-scenarios.md), [OpenShift](kubernetes/openshift/guide.md), [troubleshooting](kubernetes/operations/troubleshooting.md), [quick reference](kubernetes/reference/quick-reference.md)
+    - **Kubernetes** — [Core Concepts](kubernetes/core-concepts/index.md), [labs](kubernetes/labs/05-hands-on-scenarios.md), [OpenShift](kubernetes/openshift/index.md), [troubleshooting](kubernetes/troubleshooting/index.md), [quick reference](kubernetes/quick-reference/index.md)
     - **Ansible** — [Overview](ansible/index.md), [Getting Started](ansible/getting-started/index.md), [Core Concepts](ansible/core-concepts/index.md), [Modules](ansible/modules/index.md), [Case Studies](ansible/case-studies/index.md), [Troubleshooting](ansible/troubleshooting/index.md), [Interview Prep](ansible/interview-prep/index.md)
     - **Jenkins** — [Installation and first pipeline](jenkins/jenkins.md)
     - **SonarQube** — [Overview](sonarqube/index.md), [installation](sonarqube/installation.md), [Jenkins integration](sonarqube/jenkins-integration.md)

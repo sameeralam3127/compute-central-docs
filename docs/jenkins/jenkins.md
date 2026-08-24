@@ -589,7 +589,7 @@ A Jenkins pipeline is a versioned workflow made of stages such as checkout, buil
 
 ### How does Jenkins work with Kubernetes?
 
-Jenkins can deploy workloads to Kubernetes with `kubectl`, Helm, or GitOps tools. Start with [Kubernetes CI/CD pipelines](../kubernetes/operations/cicd-pipelines.md) after your first Jenkins pipeline works.
+Jenkins can deploy workloads to Kubernetes with `kubectl`, Helm, or GitOps tools. Start with [Kubernetes CI/CD pipelines](../kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes.md) after your first Jenkins pipeline works.
 
 ### How does Jenkins work with SonarQube?
 
@@ -598,7 +598,7 @@ Jenkins can run SonarQube analysis during CI and fail or pause delivery based on
 ## Related Learning
 
 - [SonarQube code quality overview](../sonarqube/index.md)
-- [Kubernetes CI/CD pipelines](../kubernetes/operations/cicd-pipelines.md)
+- [Kubernetes CI/CD pipelines](../kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes.md)
 - [Shell scripting for SRE and DevOps automation](../shell-scripts/scripts.md)
 - [CI/CD platform system design](../system-design/cicd-platform.md)
 
