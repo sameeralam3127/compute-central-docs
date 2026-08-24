@@ -12,6 +12,7 @@ Copyright © 2016–2026 Sameer Alam · <a href="#__consent">Cookie settings</a>
 """
 
 extra_css = ["stylesheets/extra.css"]
+extra_javascript = ["javascripts/extra.js"]
 
 # Keep Zensical's recommended extension set explicit. Adding one extension table
 # disables the implicit defaults, so `meta` is included to strip Markdown front matter.

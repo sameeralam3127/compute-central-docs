@@ -11,17 +11,34 @@ hide:
 
 Use it to learn, revise, and apply topics such as Linux, containers, Kubernetes, CI/CD, Terraform, Ansible, monitoring, troubleshooting, system design, and AI-assisted engineering. The focus is simple: explain concepts clearly, show how they work in practice, and connect them to day-to-day operations.
 
-![Compute Central DevOps knowledge hub](assets/compute-central-hero.jpg){ .cc-hero-image width="1600" height="900" }
+<div class="cc-hero" role="img" aria-label="An animated banner showing the site's tracks — Docker, Kubernetes, Ansible, CI/CD, Monitoring, and AI — connected by a flowing pipeline" markdown>
+
+<div class="cc-hero-track" markdown>
+<span class="cc-hero-node" style="--i:0">:lucide-container: Docker</span>
+<span class="cc-hero-node" style="--i:1">:lucide-ship-wheel: Kubernetes</span>
+<span class="cc-hero-node" style="--i:2">:lucide-workflow: Ansible</span>
+<span class="cc-hero-node" style="--i:3">:lucide-infinity: CI/CD</span>
+<span class="cc-hero-node" style="--i:4">:lucide-activity: Monitoring</span>
+<span class="cc-hero-node" style="--i:5">:lucide-brain: AI</span>
+</div>
+
+<div class="cc-hero-line" aria-hidden="true">
+<span class="cc-hero-packet"></span>
+<span class="cc-hero-packet"></span>
+<span class="cc-hero-packet"></span>
+</div>
+
+</div>
 
 <div class="cc-stats" markdown>
 
 <div class="cc-stat" markdown>
-**110+**
+**0**{: .cc-stat-number data-count="110" data-suffix="+" }
 <span>Guides and lab-tested chapters</span>
 </div>
 
 <div class="cc-stat" markdown>
-**10**
+**0**{: .cc-stat-number data-count="10" }
 <span>Learning tracks, foundations to production</span>
 </div>
 
