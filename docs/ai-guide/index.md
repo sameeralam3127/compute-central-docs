@@ -38,7 +38,7 @@ That shift matters because:
 - Safety and correctness become engineering concerns, not just model concerns
 
 !!! info "A useful mental model"
-Think of AI engineering as a stack:
+    Think of AI engineering as a stack:
     model + context + retrieval + tools + evaluation + application logic
 
 ```mermaid

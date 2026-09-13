@@ -50,4 +50,6 @@ flowchart TD
 
 ## Next
 
+Start with [SSH and Connection Problems](01-ssh-and-connection-problems.md).
+
 If the playbook runs but produces the wrong result, the issue is usually [Variable Precedence](../variables-and-data/02-variable-precedence.md) or [Idempotency](../core-concepts/11-idempotency.md), not a failure at all.

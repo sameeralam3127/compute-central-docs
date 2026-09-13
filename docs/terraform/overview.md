@@ -123,8 +123,8 @@ Runs on `http://localhost:4566`.
 
 These screenshots show the LocalStack interface during a local Terraform practice setup.
 
-![LocalStack dashboard](<Screenshot 2025-10-05 at 8.22.20 PM.png>)
-![LocalStack resources view](<Screenshot 2025-10-05 at 8.23.33 PM.png>)
+![LocalStack dashboard](localstack-dashboard.png)
+![LocalStack resources view](localstack-resources.png)
 
 ### Quick Test
 
@@ -136,7 +136,6 @@ awslocal s3 mb s3://demo-bucket
 ### Docker Compose Example
 
 ```yaml
-version: "3.8"
 services:
   localstack:
     image: localstack/localstack

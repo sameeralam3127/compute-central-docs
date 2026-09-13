@@ -42,4 +42,4 @@ SonarQube is one option in a much larger market — this section also maps the s
 - [SonarQube downloads](https://www.sonarsource.com/products/sonarqube/downloads/)
 
 !!! tip
-For production use, plan for enough memory, persistent storage, backups, and proper access control from the start.
+    For production use, plan for enough memory, persistent storage, backups, and proper access control from the start.
