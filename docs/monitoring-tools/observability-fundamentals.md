@@ -1,8 +1,20 @@
 ---
+title: "Observability Fundamentals: Metrics, Logs, Traces, and Events"
+icon: lucide/radar
 description: Understand observability theory and use logs, events, metrics, and traces together for practical monitoring and incident response.
+tags:
+  - Monitoring
+  - Observability
 ---
 
 # Observability Fundamentals: Logs, Events, Metrics, and Traces
+
+## What You'll Learn
+
+- What metrics, logs, traces, and events each tell you
+- How the signals work together during an incident
+- Alerting principles that avoid noise
+- How SLOs and correlation fields make telemetry useful
 
 Monitoring tells you that a known condition is unhealthy. Observability gives you enough evidence to ask new questions about a system you did not anticipate. In production, use both: dashboards and alerts for known risks, then logs and traces to investigate the unknowns.
 
@@ -76,3 +88,20 @@ These fields make Grafana links, Loki queries, and trace searches practical inst
 - [Prometheus guide](prometheus.md)
 - [Python logging in practice](python-logging.md)
 - [OpenTelemetry and platforms](opentelemetry-platforms.md)
+
+## Common Mistakes
+
+- Collecting every signal without deciding which questions each should answer.
+- Paging on every threshold breach instead of on user-facing symptoms and SLO burn.
+- Logs, metrics, and traces with no shared request or trace ID, so correlation is manual.
+- Setting SLOs at 100%, leaving no error budget for change.
+
+## Interview Questions
+
+- Explain SLI, SLO, and error budget with an example.
+- What's the difference between the RED and USE methods?
+- How would you move from an alert to the root cause using metrics, logs, and traces together?
+
+## Next
+
+Continue to the [Stack Walkthrough](overview.md) to run these signals in a local lab.

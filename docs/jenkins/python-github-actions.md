@@ -1,8 +1,21 @@
 ---
+title: "Python CI/CD Pipeline With GitHub Actions: FastAPI to Production"
+icon: lucide/code
 description: Complete CI/CD pipeline for a Python FastAPI web app with GitHub Actions — pytest, ruff linting, multi-stage Docker image, push to Docker Hub, and deployment.
+tags:
+  - CI/CD
+  - GitHub Actions
+  - Python
 ---
 
 # Python Pipeline: FastAPI from Code to Production
+
+## What You'll Learn
+
+- How to lint with ruff and test with pytest in CI
+- How to build a slim, non-root image for a FastAPI app
+- A complete workflow: lint, test, build, push, and deploy
+- How to adapt the deploy step for Kubernetes
 
 This page mirrors the [Java pipeline](java-github-actions.md) for a Python stack: every push lints and tests a FastAPI web app, builds a slim Docker image, pushes it to **Docker Hub**, and deploys it. (The Java page used GHCR — this one uses Docker Hub so you see both registries; the steps are interchangeable.)
 
@@ -50,11 +63,9 @@ from fastapi import FastAPI
 
 app = FastAPI(title="FastAPI CI/CD Demo")
 
-
 @app.get("/")
 def read_root() -> dict:
     return {"message": "Hello from FastAPI CI/CD!"}
-
 
 @app.get("/health")
 def health() -> dict:
@@ -71,12 +82,10 @@ from app.main import app
 
 client = TestClient(app)
 
-
 def test_root_returns_greeting():
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": "Hello from FastAPI CI/CD!"}
-
 
 def test_health_endpoint_is_up():
     response = client.get("/health")
@@ -326,3 +335,21 @@ As with Java, the cleanest production setup lets [ArgoCD](argocd.md) apply this 
 | Tests hang on `TestClient` | Missing `httpx` | It is required by `fastapi.testclient` — add to dev requirements |
 | Wheels compile slowly in image build | Alpine base image | Switch to `python:3.13-slim` |
 | Coverage gate fails | `--cov-fail-under=80` | Add tests, or tune the threshold consciously |
+
+## Common Mistakes
+
+- Unpinned dependencies, so the image built today differs from the one tested yesterday.
+- Using Alpine images for Python and compiling wheels from source on every build.
+- Installing development dependencies (pytest, ruff) into the production image.
+- Chasing a coverage percentage with meaningless tests instead of testing behavior.
+- Baking `.env` files with secrets into the image.
+
+## Interview Questions
+
+- Why is `python:3.x-slim` usually a better base than Alpine for Python services?
+- What should a pipeline check before building an image?
+- How do you keep test-only dependencies out of the runtime image?
+
+## Next
+
+Continue to [GitLab CI/CD](gitlab-ci.md).

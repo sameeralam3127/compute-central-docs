@@ -1,8 +1,20 @@
 ---
+title: "GitHub Actions Deep Dive: Workflows, Runners, Secrets, and Environments"
+icon: lucide/workflow
 description: GitHub Actions deep dive — workflow anatomy, events, runners, secrets, caching, matrix builds, environments, and self-hosted runner installation with complete YAML examples.
+tags:
+  - CI/CD
+  - GitHub Actions
 ---
 
 # GitHub Actions Deep Dive
+
+## What You'll Learn
+
+- How events, workflows, jobs, steps, and runners fit together
+- How to handle secrets, variables, and deployment environments with approvals
+- How to install and secure self-hosted runners
+- How to share pipeline logic with reusable workflows
 
 GitHub Actions is GitHub's built-in CI/CD platform. There is nothing to install for hosted usage: you commit a YAML file under `.github/workflows/`, and GitHub runs it on managed virtual machines every time a matching event fires.
 
@@ -305,7 +317,24 @@ jobs:
 
 ---
 
-## Next Steps
+## Common Mistakes
+
+- Referencing third-party actions by a moving branch like `@main` instead of a release tag or full commit SHA.
+- Leaving `GITHUB_TOKEN` with broad default permissions instead of declaring a minimal `permissions:` block.
+- Using `pull_request_target` to run untrusted pull-request code with access to secrets.
+- Printing secrets or passing them on command lines where they can leak into logs.
+- Attaching self-hosted runners to public repositories, where anyone's pull request can run code on your machine.
+
+## Interview Questions
+
+- What's the difference between a job and a step, and how do jobs share data?
+- How do environments with required reviewers protect production deployments?
+- When would you use a reusable workflow instead of a composite action?
+- What are the security risks of self-hosted runners?
+
+## Next
+
+Continue to the [Java Pipeline](java-github-actions.md) or the parallel [Python Pipeline](python-github-actions.md).
 
 Now apply all of this to a real application:
 

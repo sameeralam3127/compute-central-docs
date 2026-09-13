@@ -18,6 +18,8 @@ tags:
 
 Both need a plain `Deployment` + `Service` setup — no service mesh, no progressive-delivery controller installed yet.
 
+The trade-offs between rolling, blue-green, and canary releases are covered in [Deployment Strategies](../workloads-and-scheduling/01-deployment-strategies.md); automating them with a controller is in [Progressive Delivery](../cicd-and-gitops/03-progressive-delivery-canary-and-blue-green.md).
+
 ## Requirements
 
 - Blue-green: two full, independently running versions; traffic switches from one to the other as a single atomic operation; rollback is the same operation in reverse

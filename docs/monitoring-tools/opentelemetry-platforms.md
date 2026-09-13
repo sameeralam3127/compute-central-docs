@@ -1,8 +1,21 @@
 ---
+title: "OpenTelemetry and Observability Platforms"
+icon: lucide/share-2
 description: Learn OpenTelemetry concepts, Collector pipelines, practical instrumentation, trace correlation, and how to choose self-hosted or managed observability platforms.
+tags:
+  - Monitoring
+  - OpenTelemetry
+  - Tracing
 ---
 
 # OpenTelemetry and Other Observability Platforms
+
+## What You'll Learn
+
+- How telemetry flows from an instrumented application through the OpenTelemetry Collector
+- Core concepts: spans, traces, resources, and context propagation
+- How to instrument a Python service
+- How to choose between self-hosted and managed observability platforms
 
 OpenTelemetry (OTel) is a vendor-neutral framework for generating, processing, and exporting traces, metrics, logs, and events. It is not a storage backend or dashboard by itself. Applications use SDKs and auto-instrumentation; the OpenTelemetry Collector receives, enriches, samples, and forwards telemetry to one or more backends.
 
@@ -75,3 +88,22 @@ Choose based on data residency, existing skills, integration coverage, expected 
 - [Observability fundamentals](observability-fundamentals.md)
 - [Python logging in practice](python-logging.md)
 - [Grafana guide](grafana.md)
+
+## Common Mistakes
+
+- Sampling 100% of traces at high traffic and paying for data nobody looks at.
+- Instrumenting with a vendor-specific SDK, making a later platform change a rewrite.
+- Losing trace context across message queues and background jobs.
+- Running the Collector without `memory_limiter` and `batch` processors.
+- Not setting `service.name` and environment resource attributes, so traces can't be filtered.
+
+## Interview Questions
+
+- What's the difference between a span and a trace?
+- Why put an OpenTelemetry Collector between applications and the backend?
+- What is context propagation, and where does it usually break?
+- How would you decide on a sampling strategy?
+
+## Next
+
+Continue to [Blackbox Exporter](blackbox.md).

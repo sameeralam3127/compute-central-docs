@@ -1,8 +1,19 @@
 ---
+title: "Monitoring and Observability Stack: Prometheus, Grafana, Loki, and Alertmanager"
+icon: lucide/activity
 description: Learn a practical monitoring stack with Prometheus, Grafana, Alertmanager, Loki, Grafana Alloy, Blackbox Exporter, exporters, dashboards, alerts, and troubleshooting.
+tags:
+  - Monitoring
+  - Overview
 ---
 
 # Monitoring Stack Overview: Prometheus, Grafana, Loki, and Alertmanager
+
+## What You'll Learn
+
+- What each component in the stack does and how the signals connect
+- The recommended order for learning and running the lab
+- Where each page fits, from fundamentals to troubleshooting
 
 This section explains a practical observability stack built with Prometheus, Grafana, Alertmanager, Loki, Grafana Alloy, OpenTelemetry, Blackbox Exporter, Node Exporter, and application instrumentation.
 
@@ -37,8 +48,8 @@ That makes it a solid learning setup for DevOps and SRE work.
 
 ## Pages in This Section
 
-- [Stack walkthrough](overview.md)
 - [Observability fundamentals: logs, events, metrics, and traces](observability-fundamentals.md)
+- [Stack walkthrough](overview.md)
 - [Prometheus](prometheus.md)
 - [Node Exporter](node-exporter.md)
 - [Grafana](grafana.md)
@@ -48,3 +59,21 @@ That makes it a solid learning setup for DevOps and SRE work.
 - [OpenTelemetry and other platforms](opentelemetry-platforms.md)
 - [Blackbox Exporter](blackbox.md)
 - [Troubleshooting](troubleshooting.md)
+
+## Common Mistakes
+
+- Building dashboards but no alerts, so problems are only found by someone looking at the right screen.
+- Alerting on causes (CPU is high) instead of symptoms users feel (errors, latency).
+- Using high-cardinality values such as user IDs as metric or log labels.
+- Not planning retention and storage, then losing history exactly when an incident needs it.
+- Not monitoring the monitoring stack itself.
+
+## Interview Questions
+
+- What question does each signal — metrics, logs, traces — answer best?
+- Why does Prometheus pull metrics instead of having services push them?
+- Why is Alertmanager a separate component from Prometheus?
+
+## Next
+
+Continue to [Observability Fundamentals](observability-fundamentals.md). To apply these tools inside a cluster, see [Kubernetes Observability & Health](../kubernetes/observability/index.md).

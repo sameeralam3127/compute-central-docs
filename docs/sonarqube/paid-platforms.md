@@ -1,4 +1,5 @@
 ---
+title: "Paid Code Quality and Security Platforms Compared"
 icon: lucide/badge-dollar-sign
 description: Paid and SaaS code quality platforms compared — SonarCloud, GitHub Advanced Security with CodeQL, Snyk, Codacy, Qlty, DeepSource, Codecov, Veracode, and Checkmarx — with pricing models and CI examples.
 tags:
@@ -8,6 +9,12 @@ tags:
 ---
 
 # Paid and SaaS Code Quality Platforms
+
+## What You'll Learn
+
+- The market map of paid code quality and security platforms
+- How SonarCloud, GitHub Advanced Security, Snyk, and Codecov compare
+- How to choose based on your repository host, team size, and security needs
 
 The [open-source tools](code-quality-ecosystem.md) give you point-in-time checks. Paid platforms add what is hard to build yourself: hosted infrastructure, trend dashboards, pull-request decoration, org-wide policy, and compliance reporting. This page maps the market so you can pick deliberately.
 
@@ -205,3 +212,20 @@ Rules of thumb:
 
 !!! tip "Paid platforms complement, not replace, the free layer"
     Even teams paying for SonarCloud or Snyk keep ruff/ESLint/Checkstyle in the pipeline — the linters fail in seconds on the developer's machine, while the platform catches what needs history and depth. Fast feedback and deep analysis are different jobs.
+
+## Common Mistakes
+
+- Buying a platform before running the free linters and scanners that catch most issues faster.
+- Enabling a platform without tuning it, drowning developers in low-value findings.
+- Paying for overlapping features across several tools.
+- Ignoring pricing models based on committers or lines of code until the bill grows.
+
+## Interview Questions
+
+- When would you choose a SaaS platform over self-hosted SonarQube?
+- What does GitHub Advanced Security's CodeQL provide?
+- How would you justify a security scanning purchase to leadership?
+
+## Next
+
+Continue to [Installing SonarQube](installation.md).

@@ -193,6 +193,9 @@ spec:
 
 Neither Argo Rollouts nor Flagger requires you to hand-write these annotations — they generate and update them (or the equivalent Istio `VirtualService` weights) as the rollout progresses. Understanding that this is what's happening underneath is what makes debugging a stuck rollout tractable instead of magic.
 
+!!! tip "See these strategies in practice"
+    [Case Study: Blue-Green and Canary Releases](../case-studies/02-blue-green-and-canary-releases.md) walks through both patterns by hand, without a controller, and [Gateway API](../networking/07-gateway-api.md#weighted-canary-without-a-special-controller) shows weighted traffic splitting with typed fields.
+
 ## Common Mistakes
 
 - Adopting canary tooling without first having real success-rate/latency metrics in Prometheus (or equivalent) to analyze — the automation has nothing to gate on.

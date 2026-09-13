@@ -177,6 +177,8 @@ flux get helmreleases -n production
 flux reconcile kustomization checkout-api --with-source
 ```
 
+For the CI half of this flow — building the image and committing the new tag that ArgoCD then syncs — see [ArgoCD and GitOps](../../jenkins/argocd.md#the-full-ci-gitops-flow) in the CI/CD section.
+
 ### ArgoCD vs. Flux
 
 | | ArgoCD | Flux |

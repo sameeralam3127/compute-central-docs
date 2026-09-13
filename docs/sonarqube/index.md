@@ -1,4 +1,5 @@
 ---
+title: "Code Quality: SonarQube, Linters, Scanners, and Quality Gates"
 icon: lucide/shield-check
 description: Learn SonarQube code quality basics, installation flow, configuration, Jenkins integration, pipeline scanning, quality gates, and practical code review checks.
 tags:
@@ -8,6 +9,12 @@ tags:
 ---
 
 # Code Quality Overview
+
+## What You'll Learn
+
+- Where SonarQube fits among linters, security scanners, and paid platforms
+- The recommended path from installation to an enforced quality gate
+- How the pages in this section build on each other
 
 SonarQube helps teams check code quality and security issues as part of normal development and CI/CD work. It is useful when you want automated feedback on bugs, vulnerabilities, code smells, duplication, and quality gates.
 
@@ -43,3 +50,20 @@ SonarQube is one option in a much larger market — this section also maps the s
 
 !!! tip
     For production use, plan for enough memory, persistent storage, backups, and proper access control from the start.
+
+## Common Mistakes
+
+- Gating on overall code metrics instead of new code, so legacy debt blocks every change.
+- Treating SonarQube as the only check instead of running fast linters locally and in CI first.
+- Ignoring security hotspots because they aren't marked as bugs.
+- Leaving the default admin password, and not backing up the database.
+
+## Interview Questions
+
+- What is a quality gate, and what should it check?
+- What does "clean as you code" mean?
+- What's the difference between SAST, SCA, and secrets scanning?
+
+## Next
+
+Continue to [Open-Source Code Quality Tools](code-quality-ecosystem.md).

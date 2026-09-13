@@ -1,4 +1,5 @@
 ---
+title: "SonarQube Configuration: Database, Service, and First Login"
 icon: lucide/settings
 description: Configure SonarQube database settings, start the service, access the web UI, validate connectivity, and follow practical setup advice.
 tags:
@@ -7,6 +8,12 @@ tags:
 ---
 
 # SonarQube Configuration Guide
+
+## What You'll Learn
+
+- How to point SonarQube at PostgreSQL
+- How to start SonarQube and reach the web UI
+- Practical settings to change before real use
 
 After installation, the next job is to point SonarQube at PostgreSQL and start the service cleanly.
 
@@ -65,3 +72,20 @@ curl http://localhost:9000
 ```
 
 Official guide: [Install the Server](https://docs.sonarsource.com/sonarqube/latest/setup-and-upgrade/install-the-server/)
+
+## Common Mistakes
+
+- Leaving the default `admin`/`admin` account.
+- Exposing port 9000 directly instead of putting SonarQube behind an HTTPS reverse proxy.
+- Not sizing JVM heap for the web, compute engine, and search processes.
+- Not backing up the database — it holds all project history and settings.
+
+## Interview Questions
+
+- Where does SonarQube store analysis results?
+- How would you secure access to a SonarQube server?
+- Which logs would you check if SonarQube fails to start?
+
+## Next
+
+Continue to [Jenkins Integration](jenkins-integration.md).

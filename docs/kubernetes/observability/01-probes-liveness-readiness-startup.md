@@ -125,4 +125,4 @@ See [Interview Prep](../interview-prep/index.md) for full answers.
 
 ## Next
 
-Continue to [Logging](02-logging.md) to see what happens to a container's output once it's running and passing these probes.
+Continue to [Logging](02-logging.md) to see what happens to a container's output once it's running and passing these probes. Probes check a container from the node's point of view; to check endpoints from outside the cluster, the way users reach them, see [Blackbox Exporter](../../monitoring-tools/blackbox.md).

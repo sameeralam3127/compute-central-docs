@@ -1,4 +1,5 @@
 ---
+title: "AI Agents for Automation Workflows"
 icon: lucide/bot
 description: Learn AI agents for automation workflows, including generative AI differences, agent loops, tool use, RAG, reliability patterns, and common frameworks.
 tags:
@@ -8,6 +9,13 @@ tags:
 ---
 
 # AI Agents for Automation Workflows
+
+## What You'll Learn
+
+- How an agent differs from a single generative response
+- The agent loop: plan, act with tools, observe, adjust
+- How agents combine LLMs, retrieval, and tools
+- How to design reliability, permissions, and limits into agents
 
 AI Agents are systems that go beyond generating text. Instead of only predicting the next token, they take actions, make decisions, and complete tasks step by step to achieve a goal.
 
@@ -214,3 +222,22 @@ See [AI terminology](terminology.md) for retrieval, prompts, hallucinations, eva
 - Semantic Kernel
 
 ---
+
+## Common Mistakes
+
+- Letting an agent loop without step, time, or cost limits.
+- Giving the agent broad credentials instead of narrowly scoped, read-only tools by default.
+- Allowing destructive actions (deleting resources, restarting production) without human approval.
+- Not tracing every tool call and decision, so failures can't be reconstructed.
+- Using an agent for a fixed, well-understood process that a normal workflow or script handles more reliably.
+
+## Interview Questions
+
+- Describe the agent loop and where it can fail.
+- How would you make an incident-triage agent safe to run against production?
+- When is a deterministic workflow a better choice than an agent?
+- How can tool output be used to manipulate an agent, and how do you defend against it?
+
+## Next
+
+Continue to [AI Evaluation](ai-evaluation.md).

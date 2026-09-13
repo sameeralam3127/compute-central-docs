@@ -1,8 +1,20 @@
 ---
+title: "What's Inside an Application: Runtimes, Libraries, and Configuration"
+icon: lucide/package
 description: Learn what an application actually needs at runtime, compare Python, Node.js, and Java dependency stacks, and understand the technical causes of “it works on my machine.”
+tags:
+  - Docker
+  - Why Containers Exist
 ---
 
 # What Is Actually Inside an Application?
+
+## What You'll Learn
+
+- The layers of an application's runtime stack
+- How Python, Node.js, and Java applications depend on their environment
+- Why configuration, filesystem paths, and permissions are part of the deployment
+- What it means to package userspace dependencies together
 
 An application is not only a folder of source code. To run successfully, it needs a compatible **runtime environment**: the programs, libraries, configuration, files, permissions, and network access it expects.
 
@@ -132,7 +144,13 @@ The natural next step is to package an application with the userspace files it n
 
 That is the packaging idea behind container images. Before introducing an image format or a Docker command, we need to understand the Linux isolation mechanisms that allow a normal process to run with its own view of the system.
 
-## Check your understanding
+## Common Mistakes
+
+- Trusting `requirements.txt` or `package.json` to list everything — native system libraries and runtime versions are often missing.
+- Baking environment-specific configuration into the build, so the same artifact can't be promoted between environments.
+- Leaving transitive dependencies unpinned, so two builds of the same commit differ.
+
+## Check Your Understanding
 
 1. Why does a dependency file not always describe every requirement of an application?
 2. Name two differences between a developer laptop and a server that can cause an application failure.
@@ -140,5 +158,7 @@ That is the packaging idea behind container images. Before introducing an image 
 4. What is meant by packaging an application's *userspace* dependencies?
 
 ## Next
+
+Continue to [Linux Namespaces](04-linux-namespaces.md).
 
 Next: containers without Docker—Linux processes, namespaces, cgroups, and a root filesystem.

@@ -1,8 +1,20 @@
 ---
+title: "Prometheus: Scrape Targets, PromQL, and Alert Rules"
+icon: lucide/flame
 description: Learn how Prometheus fits into a monitoring stack, including scrape targets, configuration files, alert examples, health checks, and practical improvements.
+tags:
+  - Monitoring
+  - Prometheus
 ---
 
 # Prometheus Guide for the Monitoring Stack
+
+## What You'll Learn
+
+- How Prometheus scrapes targets and stores time series
+- Where scrape jobs and alert rules are configured
+- How to write practical alert rules
+- How to check that Prometheus and its targets are healthy
 
 Prometheus is the core metrics and alerting engine in this monitoring lab.
 
@@ -78,3 +90,22 @@ Add [Alertmanager](alertmanager.md) when you need alert grouping, routing, silen
 - [Monitoring stack overview](index.md)
 - [Grafana guide](grafana.md)
 - [Monitoring troubleshooting](troubleshooting.md)
+
+## Common Mistakes
+
+- Adding high-cardinality labels (user IDs, request paths with IDs), which explode the number of time series.
+- Using `rate()` on gauges, or reading raw counter values instead of their rate.
+- Alert rules without a `for:` duration, paging on brief spikes.
+- Treating local Prometheus storage as long-term storage instead of using remote write to a durable backend.
+- Scrape intervals so long that `rate()` windows have too few samples.
+
+## Interview Questions
+
+- Why does Prometheus use a pull model, and when do you need the Pushgateway?
+- What's the difference between a counter, a gauge, and a histogram?
+- What are recording rules for?
+- How do you keep series cardinality under control?
+
+## Next
+
+Continue to [Node Exporter](node-exporter.md).

@@ -1,8 +1,20 @@
 ---
+title: "Virtual Machines, Hypervisors, and KVM"
+icon: lucide/monitor
 description: Learn why virtualization became popular, how hypervisors and virtual machines work, what KVM and QEMU do on Linux, and how VMs compare with containers.
+tags:
+  - Docker
+  - Why Containers Exist
 ---
 
 # Virtual Machines and KVM
+
+## What You'll Learn
+
+- What a hypervisor does, and the difference between type 1 and type 2
+- How KVM and QEMU divide the work on a Linux virtualization host
+- What a full guest operating system costs in memory, boot time, and patching
+- Where VMs still beat containers
 
 The first answer to application conflicts was usually not containers. It was **virtualization**: run separate computers in software on the same physical machine.
 
@@ -113,7 +125,13 @@ Virtual machines isolate whole operating systems. Containers take a different ap
 
 That lets several workloads share one kernel without sharing the same complete userspace environment. Before we study those kernel features, we need to look carefully at what an application actually depends on.
 
-## Check your understanding
+## Common Mistakes
+
+- Calling containers "lightweight VMs" — a VM has its own kernel; a container is a process on the host kernel.
+- Assuming VMs are obsolete. Cloud instances are VMs, and most containers in production run inside them.
+- Choosing containers for workloads that need a different kernel or strong tenant isolation, where a VM is the better boundary.
+
+## Check Your Understanding
 
 1. Why can two VMs use the same port number without conflicting?
 2. What does each VM include that a Linux container normally does not?
@@ -121,5 +139,7 @@ That lets several workloads share one kernel without sharing the same complete u
 4. When might a VM still be a better choice than a container?
 
 ## Next
+
+Continue to [Application Dependencies](03-application-dependencies.md).
 
 Next: application runtimes, libraries, configuration, and the practical causes of “it works on my machine.”

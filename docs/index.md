@@ -33,12 +33,12 @@ hide:
 <div class="cc-stats" markdown>
 
 <div class="cc-stat" markdown>
-**0**{: .cc-stat-number data-count="110" data-suffix="+" }
+**0**{: .cc-stat-number data-count="280" data-suffix="+" }
 <span>Guides and lab-tested chapters</span>
 </div>
 
 <div class="cc-stat" markdown>
-**0**{: .cc-stat-number data-count="10" }
+**0**{: .cc-stat-number data-count="9" }
 <span>Learning tracks, foundations to production</span>
 </div>
 

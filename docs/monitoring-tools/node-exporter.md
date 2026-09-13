@@ -1,8 +1,19 @@
 ---
+title: "Node Exporter: Host Metrics for Prometheus"
+icon: lucide/cpu
 description: Learn Node Exporter installation, Prometheus scrape configuration, core host metrics, PromQL examples, and safe alerting practices.
+tags:
+  - Monitoring
+  - Prometheus
 ---
 
 # Node Exporter Guide: Host Metrics for Prometheus
+
+## What You'll Learn
+
+- How to run Node Exporter and add it as a Prometheus job
+- The core host metrics and PromQL queries for CPU, memory, disk, and network
+- Practical host alerts that avoid noise
 
 Node Exporter exposes Linux host metrics in Prometheus format. It answers questions about CPU, memory, disks, filesystems, network interfaces, and the operating system; it does not replace application instrumentation or container-level metrics from cAdvisor.
 
@@ -57,7 +68,7 @@ Start with these conditions, tune them to the workload, and include `instance`, 
 - High CPU: sustained busy CPU, not a momentary burst.
 - Memory pressure: low available memory combined with swapping or OOM events.
 
-## Common Pitfalls
+## Common Mistakes
 
 - Do not alert on every mount; exclude temporary and container filesystems.
 - Account for ephemeral nodes and autoscaling when defining `instance`-based alerts.
@@ -76,3 +87,13 @@ curl 'http://localhost:9090/api/v1/query?query=up%7Bjob%3D%22node%22%7D'
 - [Prometheus guide](prometheus.md)
 - [Grafana guide](grafana.md)
 - [Monitoring troubleshooting](troubleshooting.md)
+
+## Interview Questions
+
+- How would you calculate CPU usage percentage from `node_cpu_seconds_total`?
+- Why should a disk alert predict when the disk fills instead of alerting at a fixed percentage?
+- Why does Node Exporter need access to the host's filesystems and network namespace?
+
+## Next
+
+Continue to [Grafana](grafana.md).

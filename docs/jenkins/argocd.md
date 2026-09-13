@@ -1,8 +1,21 @@
 ---
+title: "ArgoCD and GitOps: Pull-Based Deployment to Kubernetes"
+icon: lucide/git-pull-request-arrow
 description: ArgoCD and GitOps — install ArgoCD on Kubernetes, connect a repo, write Application manifests, and wire GitHub Actions or GitLab CI to a full GitOps deployment flow.
+tags:
+  - CI/CD
+  - GitOps
+  - ArgoCD
 ---
 
 # ArgoCD and GitOps
+
+## What You'll Learn
+
+- How pull-based GitOps differs from pipelines that push to clusters
+- How to install ArgoCD and deploy a first Application
+- How CI hands off to ArgoCD by committing an image tag
+- Sync policies, rollback, and managing many apps with app-of-apps
 
 ArgoCD is a **GitOps controller for Kubernetes**. Instead of your pipeline pushing changes into the cluster with `kubectl apply`, ArgoCD runs *inside* the cluster, watches a Git repository that describes the desired state, and continuously makes the cluster match it.
 
@@ -43,6 +56,9 @@ The pull model removes the most dangerous secret from CI (cluster admin credenti
 ## Installation
 
 You need a Kubernetes cluster (minikube, kind, k3s, or managed). Then:
+
+!!! tip "Quick-start install"
+    The steps below are the fastest way to try ArgoCD. For a production installation — Helm values, high availability, SSO, and RBAC — plus ApplicationSets and a comparison with Flux, follow [GitOps With ArgoCD and Flux](../kubernetes/cicd-and-gitops/04-gitops-with-argocd-and-flux.md).
 
 ### 1. Install ArgoCD
 
@@ -322,3 +338,22 @@ flowchart LR
 ```
 
 CI owns everything up to and including a Git commit. ArgoCD owns everything after. The interface between them is a version-controlled, reviewable, revertible text change — which is the entire point of GitOps.
+
+## Common Mistakes
+
+- Enabling automated sync with `prune` on production before the team trusts its review process.
+- Running `kubectl apply` from CI against clusters ArgoCD manages, so the two fight over state.
+- Committing plain Kubernetes Secrets to the GitOps repository.
+- Leaving the initial admin password in use instead of SSO and RBAC.
+- One enormous Application for everything, so every sync is slow and every failure is global.
+
+## Interview Questions
+
+- Compare push-based deployment with GitOps.
+- What do the `selfHeal` and `prune` sync options do?
+- How does a CI pipeline hand a new release to ArgoCD?
+- How do you roll back a bad release in a GitOps workflow?
+
+## Next
+
+Continue to [Jenkins](jenkins.md). For production-grade installation, ApplicationSets, and a comparison with Flux, see [GitOps With ArgoCD and Flux](../kubernetes/cicd-and-gitops/04-gitops-with-argocd-and-flux.md).

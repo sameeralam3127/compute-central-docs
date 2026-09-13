@@ -1,8 +1,19 @@
 ---
+title: "Monitoring Stack Troubleshooting Guide"
+icon: lucide/life-buoy
 description: Troubleshoot a Prometheus, Grafana, Loki, Alertmanager, and Blackbox Exporter monitoring stack with practical checks for data, targets, logs, probes, and ports.
+tags:
+  - Monitoring
+  - Troubleshooting
 ---
 
 # Monitoring Stack Troubleshooting Guide
+
+## What You'll Learn
+
+- A debug order that finds the broken component quickly
+- Fixes for empty dashboards, down targets, missing logs, and failing probes
+- How to apply configuration changes and reset the lab safely
 
 This page collects the most common issues you may hit while running the monitoring lab locally.
 
@@ -88,3 +99,20 @@ docker compose up -d --build
 3. Test health endpoints.
 4. Review Prometheus targets.
 5. Check Grafana data sources and dashboards.
+
+## Common Mistakes
+
+- Restarting everything before checking which component is actually failing.
+- Running `docker compose down -v` to "fix" a problem and deleting all stored metrics, logs, and dashboards.
+- Debugging Grafana panels before confirming Prometheus targets are up.
+- Editing configuration inside running containers instead of the mounted files, then losing the change on restart.
+
+## Interview Questions
+
+- Grafana shows no data. What do you check, in order?
+- A Prometheus target shows as down. What are the likely causes?
+- Logs aren't appearing in Loki. How do you narrow down whether the collector or Loki is at fault?
+
+## Next
+
+Continue to [Kubernetes Observability & Health](../kubernetes/observability/index.md) to apply the same signals inside a cluster.
