@@ -279,6 +279,12 @@ Monitoring = [
 
 [[project.nav]]
 Terraform = [
+  "terraform/index.md",
   "terraform/overview.md",
+  "terraform/variables-outputs-and-locals.md",
+  "terraform/state-and-backends.md",
+  "terraform/modules.md",
+  "terraform/environments-and-workspaces.md",
+  "terraform/testing-and-ci.md",
   "terraform/interview-questions.md",
 ]

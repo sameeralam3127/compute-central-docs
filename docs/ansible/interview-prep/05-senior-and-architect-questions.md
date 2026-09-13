@@ -51,7 +51,7 @@ Related: [Project Layout](../production-engineering/01-project-layout.md), [Prod
 
 **Senior signals:** defines clear ownership boundaries and handoff points; can explain where the answer changes (immutable infrastructure, small teams).
 
-Related: [What Is Ansible?](../getting-started/01-what-is-ansible.md), [Terraform](../../terraform/overview.md), [Kubernetes](../../kubernetes/index.md)
+Related: [What Is Ansible?](../getting-started/01-what-is-ansible.md), [Terraform](../../terraform/index.md), [Kubernetes](../../kubernetes/index.md)
 
 ## 3. Introducing secrets management to a messy organization
 

@@ -110,9 +110,9 @@ Most readers move left to right, but every section stands on its own — jump st
   <span>Understand LLM fundamentals, AI agents, evaluation, and practical model workflows for technical teams.</span>
 </a>
 
-<a class="cc-card" href="terraform/overview/">
+<a class="cc-card" href="terraform/">
   <strong>:lucide-layers: Terraform</strong>
-  <span>Infrastructure as code fundamentals, core concepts, and common interview questions.</span>
+  <span>Infrastructure as code from a first project to remote state, modules, environments, testing, and CI/CD.</span>
 </a>
 
 <a class="cc-card" href="shell-scripts/scripts/">
@@ -177,7 +177,7 @@ Start with the topic you need, then follow the examples in a local or test envir
     - **Code Quality** — [Overview](sonarqube/index.md), [open-source tools](sonarqube/code-quality-ecosystem.md), [SonarQube installation](sonarqube/installation.md), [Jenkins integration](sonarqube/jenkins-integration.md)
     - **Monitoring** — [Stack overview](monitoring-tools/index.md), [Prometheus](monitoring-tools/prometheus.md), [Grafana](monitoring-tools/grafana.md), [Alertmanager](monitoring-tools/alertmanager.md)
     - **AI Engineering** — [Guide](ai-guide/index.md), [LLM fundamentals](ai-guide/llm-fundamentals.md), [AI agents](ai-guide/ai-agents.md), [evaluation](ai-guide/ai-evaluation.md)
-    - **Terraform** — [Overview](terraform/overview.md), [interview questions](terraform/interview-questions.md)
+    - **Terraform** — [Overview](terraform/index.md), [first project](terraform/overview.md), [state and backends](terraform/state-and-backends.md), [modules](terraform/modules.md), [testing and CI/CD](terraform/testing-and-ci.md), [interview questions](terraform/interview-questions.md)
     - **Shell Scripts** — [Practical scripts](shell-scripts/scripts.md)
 
 ## About Sameer Alam
