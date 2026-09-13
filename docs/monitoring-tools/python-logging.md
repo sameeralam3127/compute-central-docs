@@ -20,7 +20,7 @@ Avoid logging the same failure at every layer. Log an exception with stack trace
 
 ## Production-Friendly Configuration
 
-This example writes JSON to standard output. Containers should normally log to stdout/stderr, leaving collection to Docker, Kubernetes, Promtail, Fluent Bit, or an OpenTelemetry Collector.
+This example writes JSON to standard output. Containers should normally log to stdout/stderr, leaving collection to Docker, Kubernetes, Grafana Alloy, Fluent Bit, or an OpenTelemetry Collector.
 
 ```python
 import json
@@ -101,6 +101,6 @@ Do not try to use logs as a substitute for every metric. Increment a Prometheus 
 
 ## Related Learning
 
-- [Loki and Promtail logging](logging.md)
+- [Loki logging with Grafana Alloy](logging.md)
 - [Observability fundamentals](observability-fundamentals.md)
 - [OpenTelemetry and platforms](opentelemetry-platforms.md)

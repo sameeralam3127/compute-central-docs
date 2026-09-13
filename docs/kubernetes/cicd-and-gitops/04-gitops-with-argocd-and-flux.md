@@ -141,32 +141,34 @@ For a chart-based deployment instead of raw manifests, Flux's `HelmRelease` poin
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: bitnami
+  name: podinfo
   namespace: flux-system
 spec:
+  type: oci
   interval: 1h
-  url: https://charts.bitnami.com/bitnami
+  url: oci://ghcr.io/stefanprodan/charts
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: checkout-redis
+  name: podinfo
   namespace: production
 spec:
   interval: 10m
   chart:
     spec:
-      chart: redis
-      version: "20.x"
+      chart: podinfo
+      version: "6.x"
       sourceRef:
         kind: HelmRepository
-        name: bitnami
+        name: podinfo
         namespace: flux-system
   values:
-    architecture: standalone
-    auth:
-      enabled: true
-      existingSecret: checkout-redis-auth
+    replicaCount: 2
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
 ```
 
 ```bash

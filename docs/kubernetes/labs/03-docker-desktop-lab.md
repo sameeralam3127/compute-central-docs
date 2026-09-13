@@ -45,7 +45,7 @@ Check the cluster is actually healthy:
 kubectl cluster-info
 kubectl get nodes
 # NAME             STATUS   ROLES           AGE   VERSION
-# docker-desktop   Ready    control-plane   5m    v1.31.0
+# docker-desktop   Ready    control-plane   5m    v1.36.2
 ```
 
 ## 3. Deploy a workload

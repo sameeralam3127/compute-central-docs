@@ -59,13 +59,15 @@ sudo chown "$(id -u)":"$(id -g)" "$HOME"/.kube/config
 ```bash
 kubectl get nodes
 # NAME           STATUS     ROLES           AGE   VERSION
-# cp-1           NotReady   control-plane   90s   v1.30.4
+# cp-1           NotReady   control-plane   90s   v1.37.0
 ```
 
 This is expected. The kubelet reports `NotReady` until a CNI plugin is installed and pod networking is functional — the node has no way to give pods IP addresses yet. Install a CNI immediately after `init`:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/cilium/cilium/v1.15.6/install/kubernetes/quick-install.yaml
+# Install the Cilium CLI first: https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/
+cilium install --version 1.20.1
+cilium status --wait
 ```
 
 Within a minute or two of the CNI's own pods becoming `Running`, the node flips to `Ready`. If it never does, the CNI's pod CIDR doesn't match `--pod-network-cidr`, or the CNI's DaemonSet pods themselves aren't scheduling — check `kubectl get pods -n kube-system` first.

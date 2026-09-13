@@ -213,7 +213,7 @@ push:
 
 deploy:
   stage: deploy
-  image: bitnami/kubectl:1.30
+  image: registry.example.com/platform/kubectl:1.37   # your own pinned image with a shell + kubectl (see note below)
   environment:
     name: production
   rules:
@@ -223,6 +223,9 @@ deploy:
     - kubectl set image deployment/checkout-api checkout-api="$IMAGE" -n production
     - kubectl rollout status deployment/checkout-api -n production --timeout=180s
 ```
+
+!!! note "Why not `bitnami/kubectl`?"
+    Many older pipelines use `bitnami/kubectl`. In August 2025 Bitnami moved its free public images to an unmaintained `bitnamilegacy` repository, so those tags stopped receiving updates. The official `registry.k8s.io/kubectl` image is distroless (no shell), which doesn't suit `script:` steps. Most teams build a tiny internal image — a minimal base plus a pinned `kubectl` binary — and pin it by version or digest.
 
 GitLab's `stages:` list is what enforces ordering — each named stage runs only after every job in the previous stage succeeds, so a failed `scan` job blocks `push` and `deploy` from ever starting.
 

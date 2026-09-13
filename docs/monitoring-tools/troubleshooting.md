@@ -37,12 +37,12 @@ docker compose logs -f prometheus
 
 Check:
 
-- Promtail can read the configured paths
+- The collector (Grafana Alloy, or Promtail in older setups) can read the Docker socket and `/var/log`
 - Loki is healthy
 - Grafana has the Loki data source
 
 ```bash
-docker compose logs -f promtail
+docker compose logs -f alloy      # or promtail on the legacy lab config
 docker compose logs -f loki
 curl http://localhost:3100/ready
 ```

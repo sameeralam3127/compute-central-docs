@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Networking Guide: Services, Ingress, DNS, CNI"
 icon: lucide/network
-description: How pods get IPs, how Services and Ingress route traffic, how NetworkPolicy restricts it, and how CoreDNS and CNI plugins make it all work.
+description: How pods get IPs, how Services, Ingress, and Gateway API route traffic, how NetworkPolicy restricts it, and how CoreDNS and CNI plugins make it all work.
 tags:
   - Kubernetes
   - Networking
@@ -21,9 +21,10 @@ If you already know how Services and Ingress work and just need storage details,
 4. [Network Policies](04-network-policies.md) — the default-allow-all reality, default-deny patterns, ingress/egress rules
 5. [DNS and CoreDNS](05-dns-and-coredns.md) — CoreDNS architecture, Service/Pod DNS naming, debugging DNS from a throwaway pod
 6. [CNI Plugins](06-cni-plugins.md) — Calico, Flannel, Cilium, and Weave compared at a decision-making level
+7. [Gateway API](07-gateway-api.md) — the role-oriented successor to Ingress, and how to migrate off the retired ingress-nginx controller
 
 !!! tip "Ingress needs a controller"
-    The single most common networking surprise: applying an `Ingress` manifest does nothing on its own. It requires an Ingress controller (nginx, Traefik, etc.) already running in the cluster to actually watch and act on it — see [Ingress and Ingress Controllers](03-ingress-and-ingress-controllers.md).
+    The single most common networking surprise: applying an `Ingress` manifest does nothing on its own. It requires an Ingress controller (Traefik, HAProxy, a cloud controller, etc.) already running in the cluster to actually watch and act on it — see [Ingress and Ingress Controllers](03-ingress-and-ingress-controllers.md).
 
 ## Next
 

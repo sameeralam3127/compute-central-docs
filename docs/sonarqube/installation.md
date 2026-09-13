@@ -12,15 +12,15 @@ This page walks through a practical SonarQube installation using PostgreSQL on U
 
 ## Before You Start
 
-- Ubuntu 20.04, 22.04, or 24.04
+- Ubuntu 22.04 or 24.04
 - At least 4 GB RAM, with 8 GB preferred
-- Java 17
+- Java 21 (Java 17 is deprecated in SonarQube Server 2025.x and removed from 2026.4)
 
 Install Java:
 
 ```bash
 sudo apt update
-sudo apt install openjdk-17-jdk -y
+sudo apt install openjdk-21-jdk -y
 java -version
 ```
 

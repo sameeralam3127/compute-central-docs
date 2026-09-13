@@ -83,5 +83,5 @@ A useful dashboard shows service health, latency or probe success, resource usag
 ## Related Learning
 
 - [Prometheus guide](prometheus.md)
-- [Loki and Promtail logging](logging.md)
+- [Loki logging with Grafana Alloy](logging.md)
 - [Monitoring stack troubleshooting](troubleshooting.md)

@@ -15,6 +15,9 @@ tags:
 - How to route by host and path to multiple backend Services from one entry point
 - How TLS termination and automatic certificate issuance with cert-manager fit together
 
+!!! warning "ingress-nginx is retired"
+    The Kubernetes project retired the **ingress-nginx** controller in March 2026 — it no longer receives releases or security fixes. The `Ingress` API itself is not deprecated, so everything on this page about how Ingress works still applies, but for a new cluster pick a maintained controller or go straight to [Gateway API](07-gateway-api.md), and plan a migration for existing ingress-nginx installs.
+
 ## Why This Matters
 
 `Ingress` is one of the most misunderstood objects in Kubernetes because it's declarative *config*, not a running *component*. Applying it with no controller installed produces an object that sits in etcd doing nothing — no errors, no traffic routed, nothing. Understanding this split is the difference between debugging in five minutes and an hour of confused `curl` attempts.
@@ -26,7 +29,7 @@ tags:
 ```mermaid
 flowchart LR
     U[User request: https://app.example.com/api] --> LB[Cloud/external Load Balancer]
-    LB --> IC[Ingress controller pod - e.g. nginx-ingress]
+    LB --> IC[Ingress controller pod - e.g. Traefik]
     IC -->|reads Ingress objects via API server| API[Kubernetes API Server]
     IC -->|routes by host+path| S1[Service: api-service]
     IC -->|routes by host+path| S2[Service: frontend-service]
@@ -79,19 +82,23 @@ spec:
 Nothing above works until a controller is actually running:
 
 ```bash
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo add traefik https://traefik.github.io/charts
 helm repo update
-helm install ingress-nginx ingress-nginx/ingress-nginx \
-  --namespace ingress-nginx --create-namespace
-kubectl get pods -n ingress-nginx
-kubectl get svc -n ingress-nginx   # usually a LoadBalancer Service — the real external entry point
+helm install traefik traefik/traefik \
+  --namespace traefik --create-namespace
+kubectl get pods -n traefik
+kubectl get svc -n traefik   # usually a LoadBalancer Service — the real external entry point
+kubectl get ingressclass     # the class name to use in ingressClassName
 ```
+
+The manifests on this page use `ingressClassName: nginx` and `nginx.ingress.kubernetes.io/*` annotations because that is what most existing clusters still run. With Traefik, set `ingressClassName: traefik` and drop the nginx annotations — which is exactly the annotation-portability problem described below.
 
 Popular controllers:
 
 | Controller | Notes |
 |---|---|
-| **ingress-nginx** | Most widely deployed, huge annotation surface, well understood |
+| **ingress-nginx** | **Retired March 2026** — historically the most widely deployed; migrate off it |
+| **NGINX Gateway Fabric / F5 NGINX Ingress Controller** | Maintained NGINX-based options (different projects from ingress-nginx, different annotations) |
 | **Traefik** | Native support for dynamic config, good with Let's Encrypt out of the box, popular in smaller/edge deployments |
 | **HAProxy Ingress** | Strong for teams already standardized on HAProxy |
 | **Cloud-native (ALB Ingress Controller, GKE Ingress)** | Maps `Ingress` directly onto the cloud provider's native load balancer, no separate proxy pod |
@@ -140,4 +147,4 @@ See [Interview Prep](../interview-prep/index.md) for full answers.
 
 ## Next
 
-Continue to [Network Policies](04-network-policies.md) to restrict which traffic is even allowed to reach these Services in the first place.
+Continue to [Network Policies](04-network-policies.md) to restrict which traffic is even allowed to reach these Services in the first place. The modern successor to this whole page is covered in [Gateway API](07-gateway-api.md).

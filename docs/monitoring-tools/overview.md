@@ -14,7 +14,7 @@ Repository: [sameeralam3127/Monitoring](https://github.com/sameeralam3127/Monito
 - Grafana for dashboards and visualization
 - Alertmanager for notification routing
 - Node Exporter and cAdvisor for infrastructure and container metrics
-- Loki and Promtail for logs
+- Loki for log storage, with Promtail as the lab's collector (Promtail is end-of-life — see [Loki logging with Grafana Alloy](logging.md) for the supported replacement)
 - Blackbox Exporter for synthetic endpoint checks
 
 ## Signal Flow
@@ -22,14 +22,14 @@ Repository: [sameeralam3127/Monitoring](https://github.com/sameeralam3127/Monito
 ```mermaid
 flowchart LR
   App["Application"] -->|"metrics /metrics"| Prometheus
-  App -->|"structured logs"| Promtail
+  App -->|"structured logs"| Alloy["Grafana Alloy (replaces Promtail)"]
   App -->|"traces and events"| OTel["OpenTelemetry Collector"]
   Node["Node Exporter"] --> Prometheus
   Cadvisor["cAdvisor"] --> Prometheus
   Blackbox["Blackbox Exporter"] --> Prometheus
   Prometheus --> Grafana
   Prometheus --> Alertmanager
-  Promtail --> Loki
+  Alloy --> Loki
   Loki --> Grafana
   OTel --> TraceStore["Tempo, Jaeger, or vendor backend"]
   TraceStore --> Grafana
@@ -88,7 +88,7 @@ Grafana default login:
 - `grafana/provisioning/`
 - `alertmanager/`
 - `loki/`
-- `promtail/`
+- `promtail/` (legacy collector — migrate to `alloy/config.alloy`)
 - `blackbox/blackbox.yml`
 
 ## Practical Next Steps

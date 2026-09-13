@@ -60,10 +60,10 @@ sudo apt upgrade -y
 
 ### 2. Install Java
 
-Jenkins requires Java. On modern Ubuntu systems, OpenJDK 17 is a safe default for current Jenkins releases.
+Jenkins requires Java. **Jenkins 2.555.1 LTS (April 2026) and later require Java 21 or 25** — Java 17 is no longer supported. OpenJDK 21 is packaged on Ubuntu 22.04 and 24.04.
 
 ```bash
-sudo apt install openjdk-17-jdk -y
+sudo apt install openjdk-21-jdk -y
 ```
 
 Verify Java:
@@ -74,10 +74,10 @@ java -version
 
 ### 3. Add the Jenkins repository
 
-Import the Jenkins repository key:
+Import the Jenkins repository key (Jenkins switched to a new signing key with 2.541.1 LTS — the older `jenkins.io-2023.key` will fail signature checks on current packages):
 
 ```bash
-curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key | sudo tee \
   /usr/share/keyrings/jenkins-keyring.asc > /dev/null
 ```
 
