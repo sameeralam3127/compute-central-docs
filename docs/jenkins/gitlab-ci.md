@@ -1,6 +1,6 @@
 ---
 title: "GitLab CI/CD: Pipelines, Runners, and the Container Registry"
-icon: lucide/gitlab
+icon: fontawesome/brands/gitlab
 description: GitLab CI/CD guide — pipeline concepts, .gitlab-ci.yml anatomy, runner installation on Ubuntu, the built-in container registry, and full Java and Python pipeline examples.
 tags:
   - CI/CD
