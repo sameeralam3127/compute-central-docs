@@ -73,9 +73,9 @@ You do not need Docker experience for Part I. Familiarity with a shell is useful
 
 For the hands-on Linux isolation chapters, plan to use a disposable Linux VM. Some exercises require root privileges because creating network namespaces, changing mounts, and configuring cgroups are administrative operations.
 
-## Existing quick references
+## Quick reference
 
-If you already use Docker and need an immediate reference, the existing [Docker guide](docker.md) and [basic command reference](basic.md) remain available. They are supporting material—not the recommended starting point for a beginner.
+If you already use Docker and need a command fast, use the [Docker Quick Reference](docker.md). Each section links back to the chapter that explains it — it's a companion to the course, not a replacement for it.
 
 ## Course outcomes
 

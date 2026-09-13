@@ -212,7 +212,6 @@ Docker = [
   "docker/24-production-troubleshooting.md",
   "docker/25-course-wrap-up.md",
   "docker/docker.md",
-  "docker/basic.md",
 ]
 
 [[project.nav]]
