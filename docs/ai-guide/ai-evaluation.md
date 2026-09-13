@@ -1,4 +1,5 @@
 ---
+title: "AI Evaluation: Metrics, Test Sets, and LLM-as-a-Judge"
 icon: lucide/bar-chart
 description: Evaluate AI systems with quantitative, qualitative, benchmark, LLM-as-judge, and reliability-focused methods for safer production AI workflows.
 tags:
@@ -8,6 +9,13 @@ tags:
 ---
 
 # AI Model Evaluation for Reliable AI Systems
+
+## What You'll Learn
+
+- Quantitative, qualitative, and benchmark evaluation, and when to use each
+- Precision, recall, F1, groundedness, latency, and cost per request
+- How to build a practical evaluation set from real examples
+- How LLM-as-a-judge works, and its limits
 
 AI model evaluation is the process of measuring how well a model performs against defined objectives. It ensures reliability, accuracy, and usefulness before deploying models in real-world systems.
 
@@ -167,3 +175,22 @@ response = generate(
 print(response["response"])
 
 ```
+
+## Common Mistakes
+
+- Evaluating on a handful of hand-picked demo prompts instead of a representative set of real cases.
+- Reporting one aggregate score that hides regressions on important categories.
+- Trusting LLM-as-a-judge scores without checking them against human labels.
+- Not re-running evaluations when the prompt, model, retrieval data, or tools change.
+- Optimizing quality while ignoring latency and cost per request.
+
+## Interview Questions
+
+- When would you optimize for precision over recall?
+- What does groundedness measure, and why does it matter for RAG?
+- How would you build an evaluation set for a support assistant?
+- How would you use evaluations as a gate in a CI/CD pipeline?
+
+## Next
+
+Continue to [AI Terminology](terminology.md).

@@ -1,4 +1,5 @@
 ---
+title: "LLM Fundamentals: Tokens, Context Windows, and Next-Token Prediction"
 icon: lucide/cpu
 description: Understand LLM fundamentals including tokens, tokenization, next-token prediction, probability, context windows, hallucinations, and DevOps use cases.
 tags:
@@ -8,6 +9,13 @@ tags:
 ---
 
 # LLM Fundamentals: Tokens, Context, and Next-Token Prediction
+
+## What You'll Learn
+
+- What tokens are, and why they drive cost and limits
+- How next-token prediction produces fluent — and sometimes wrong — answers
+- What a context window is, and what happens when you exceed it
+- How to apply LLMs safely to DevOps and SRE work such as log analysis
 
 Large Language Models (LLMs) are AI models trained to work with language-like sequences. They can write text, summarize documents, answer questions, generate code, classify content, and reason across context because they learn patterns from huge amounts of text and code.
 
@@ -278,3 +286,20 @@ That full system is what turns a language model into a reliable engineering assi
 | **Grounding** | Giving the model reliable source material before it answers. | It reduces invented or outdated claims. |
 
 For the wider vocabulary, see [AI terminology in plain English](terminology.md).
+
+## Common Mistakes
+
+- Treating fluent output as verified fact instead of checking it against logs, docs, or tests.
+- Pasting logs or configuration that contain secrets, tokens, or personal data into a prompt.
+- Stuffing huge logs into the context and assuming the model read all of it carefully.
+- Assuming a low temperature makes answers correct — it makes them more repeatable, not more accurate.
+
+## Interview Questions
+
+- What is a token, and why does it matter for cost and context limits?
+- Why do LLMs hallucinate, and what reduces it?
+- How would you use an LLM to help triage an incident without leaking sensitive data?
+
+## Next
+
+Continue to [AI Agents](ai-agents.md).

@@ -1,8 +1,21 @@
 ---
+title: "Python Logging in Practice: Structured JSON, Levels, and Correlation IDs"
+icon: lucide/file-code
 description: Implement practical Python logging with levels, structured JSON, handlers, exception logging, correlation IDs, and safe production defaults.
+tags:
+  - Monitoring
+  - Logging
+  - Python
 ---
 
 # Python Logging in Practice
+
+## What You'll Learn
+
+- When to use each log level
+- A production-friendly structured JSON logging configuration
+- How to add request and trace IDs to every log line
+- How logs, metrics, and traces differ in practice
 
 Python's built-in `logging` module is enough for many production services when it is configured deliberately. The goals are consistent levels, machine-readable fields, one log record per event, and useful correlation with metrics and traces.
 
@@ -20,7 +33,7 @@ Avoid logging the same failure at every layer. Log an exception with stack trace
 
 ## Production-Friendly Configuration
 
-This example writes JSON to standard output. Containers should normally log to stdout/stderr, leaving collection to Docker, Kubernetes, Promtail, Fluent Bit, or an OpenTelemetry Collector.
+This example writes JSON to standard output. Containers should normally log to stdout/stderr, leaving collection to Docker, Kubernetes, Grafana Alloy, Fluent Bit, or an OpenTelemetry Collector.
 
 ```python
 import json
@@ -28,7 +41,6 @@ import logging
 import os
 import sys
 from datetime import datetime, timezone
-
 
 class JsonFormatter(logging.Formatter):
     def format(self, record):
@@ -47,7 +59,6 @@ class JsonFormatter(logging.Formatter):
         if record.exc_info:
             event["exception"] = self.formatException(record.exc_info)
         return json.dumps(event)
-
 
 handler = logging.StreamHandler(sys.stdout)
 handler.setFormatter(JsonFormatter())
@@ -101,6 +112,24 @@ Do not try to use logs as a substitute for every metric. Increment a Prometheus 
 
 ## Related Learning
 
-- [Loki and Promtail logging](logging.md)
+- [Loki logging with Grafana Alloy](logging.md)
 - [Observability fundamentals](observability-fundamentals.md)
 - [OpenTelemetry and platforms](opentelemetry-platforms.md)
+
+## Common Mistakes
+
+- Using `print()` instead of the `logging` module.
+- Logging passwords, tokens, or personal data.
+- Calling `logging.basicConfig()` inside a library, overriding the application's configuration.
+- Building messages with f-strings for debug logs that are usually disabled — pass arguments instead: `logger.debug("user %s", user_id)`.
+- Logging exceptions without the traceback — use `logger.exception()` inside `except` blocks.
+
+## Interview Questions
+
+- Why log in structured JSON instead of plain text?
+- How do you propagate a request ID through a web application's logs?
+- When should an event be a log line, and when a metric?
+
+## Next
+
+Continue to [OpenTelemetry and Other Platforms](opentelemetry-platforms.md).

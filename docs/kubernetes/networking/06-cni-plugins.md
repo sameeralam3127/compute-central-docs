@@ -86,4 +86,4 @@ See [Interview Prep](../interview-prep/index.md) for full answers.
 
 ## Next
 
-Continue to [Storage](../storage/index.md) for how persistent data is attached to the pods this networking layer connects.
+Continue to [Gateway API](07-gateway-api.md), the modern way to route external traffic into the cluster.

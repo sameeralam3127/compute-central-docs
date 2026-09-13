@@ -126,4 +126,6 @@ See [Interview Prep](../interview-prep/index.md) for full answers.
 
 ## Next
 
-This page only covers the basics of getting a value into a Pod. For real config-management patterns (immutable ConfigMaps, `envFrom`, templating with Kustomize/Helm), continue to [ConfigMaps In Depth](../configuration-and-packaging/01-configmaps-in-depth.md) and [Secrets In Depth](../configuration-and-packaging/02-secrets-in-depth.md).
+Continue to [Volumes and Storage Basics](07-volumes-and-storage-basics.md).
+
+This page only covers the basics of getting a value into a Pod. When you reach real config-management patterns (immutable ConfigMaps, `envFrom`, templating with Kustomize/Helm), go deeper with [ConfigMaps In Depth](../configuration-and-packaging/01-configmaps-in-depth.md) and [Secrets In Depth](../configuration-and-packaging/02-secrets-in-depth.md).

@@ -39,27 +39,27 @@ Verify:
 
 ```bash
 kind version
-# kind v0.24.0 go1.22.6 linux/amd64
+# kind v0.33.0 go1.25.x linux/amd64
 ```
 
 ## 2. Define a multi-node cluster
 
-Create a config file describing one control-plane node and two workers, and pin the node image so every run gives you the same Kubernetes version:
+Create a config file describing one control-plane node and two workers, and pin the node image so every run gives you the same Kubernetes version. Always take the tag (ideally with its `@sha256` digest) from the release notes of the kind version you installed — node images are built for specific kind releases:
 
 ```yaml title="kind-config.yaml"
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
   - role: control-plane
-    image: kindest/node:v1.31.0
+    image: kindest/node:v1.37.0
     extraPortMappings:
       - containerPort: 30080
         hostPort: 30080
         protocol: TCP
   - role: worker
-    image: kindest/node:v1.31.0
+    image: kindest/node:v1.37.0
   - role: worker
-    image: kindest/node:v1.31.0
+    image: kindest/node:v1.37.0
 ```
 
 `extraPortMappings` on the control-plane node is what lets a `NodePort` service inside the cluster be reachable at `localhost:30080` on your machine later in this lab.
@@ -74,7 +74,7 @@ Expected output (abbreviated):
 
 ```text
 Creating cluster "lab" ...
- ✓ Ensuring node image (kindest/node:v1.31.0) 🖼
+ ✓ Ensuring node image (kindest/node:v1.37.0) 🖼
  ✓ Preparing nodes 📦 📦 📦
  ✓ Writing configuration 📜
  ✓ Starting control-plane 🕹️
@@ -95,9 +95,9 @@ kubectl config current-context
 
 kubectl get nodes
 # NAME                 STATUS   ROLES           AGE   VERSION
-# lab-control-plane    Ready    control-plane   60s   v1.31.0
-# lab-worker           Ready    <none>          40s   v1.31.0
-# lab-worker2          Ready    <none>          40s   v1.31.0
+# lab-control-plane    Ready    control-plane   60s   v1.37.0
+# lab-worker           Ready    <none>          40s   v1.37.0
+# lab-worker2          Ready    <none>          40s   v1.37.0
 ```
 
 ## 4. Build a local image

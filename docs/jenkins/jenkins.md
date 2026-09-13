@@ -1,8 +1,20 @@
 ---
+title: "Jenkins: Installation, First Pipeline, and Pipeline as Code"
+icon: lucide/hammer
 description: Install Jenkins on Ubuntu, configure the first setup, create a practical CI/CD pipeline, understand Jenkins concepts, and troubleshoot common pipeline issues.
+tags:
+  - CI/CD
+  - Jenkins
 ---
 
 # Jenkins CI/CD Installation and First Pipeline on Ubuntu
+
+## What You'll Learn
+
+- How to install Jenkins on Ubuntu and complete first-time setup
+- Core concepts: controller, agents, jobs, plugins, and credentials
+- How to write declarative pipelines in a `Jenkinsfile`
+- How to troubleshoot the most common Jenkins problems
 
 Jenkins is an open-source automation server used to build, test, and deploy software. It is one of the most widely used CI/CD tools because it supports pipelines as code, integrates with a large plugin ecosystem, and can automate everything from simple shell scripts to full production delivery workflows.
 
@@ -60,10 +72,10 @@ sudo apt upgrade -y
 
 ### 2. Install Java
 
-Jenkins requires Java. On modern Ubuntu systems, OpenJDK 17 is a safe default for current Jenkins releases.
+Jenkins requires Java. **Jenkins 2.555.1 LTS (April 2026) and later require Java 21 or 25** — Java 17 is no longer supported. OpenJDK 21 is packaged on Ubuntu 22.04 and 24.04.
 
 ```bash
-sudo apt install openjdk-17-jdk -y
+sudo apt install openjdk-21-jdk -y
 ```
 
 Verify Java:
@@ -74,10 +86,10 @@ java -version
 
 ### 3. Add the Jenkins repository
 
-Import the Jenkins repository key:
+Import the Jenkins repository key (Jenkins switched to a new signing key with 2.541.1 LTS — the older `jenkins.io-2023.key` will fail signature checks on current packages):
 
 ```bash
-curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key | sudo tee \
   /usr/share/keyrings/jenkins-keyring.asc > /dev/null
 ```
 
@@ -601,7 +613,24 @@ Jenkins can run SonarQube analysis during CI and fail or pause delivery based on
 - [Kubernetes CI/CD pipelines](../kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes.md)
 - [Shell scripting for SRE and DevOps automation](../shell-scripts/scripts.md)
 
-## Next Steps
+## Common Mistakes
+
+- Running builds on the controller instead of setting its executors to 0 and using agents.
+- Installing many plugins and never updating them, which is the most common source of Jenkins security issues.
+- Hard-coding credentials in a `Jenkinsfile` instead of using the Credentials store with `withCredentials`.
+- Not backing up `JENKINS_HOME`.
+- Exposing Jenkins to the internet without SSO and HTTPS.
+
+## Interview Questions
+
+- What's the difference between declarative and scripted pipelines?
+- Why shouldn't builds run on the Jenkins controller?
+- How do you use a secret in a pipeline without exposing it in logs?
+- When would you choose Jenkins over GitHub Actions or GitLab CI?
+
+## Next
+
+Continue to [Code Quality](../sonarqube/index.md) to add SonarQube quality gates to these pipelines.
 
 Once the first pipeline is working, the next useful improvements are:
 

@@ -17,7 +17,6 @@ The project keeps technical notes clear, current, and close to real infrastructu
 - Terraform, Ansible, shell scripting, and automation
 - Jenkins, CI/CD pipelines, SonarQube, and delivery workflows
 - Monitoring, logging, alerting, and troubleshooting
-- Platform and system design references
 - AI engineering fundamentals for DevOps and platform teams
 
 ## Development

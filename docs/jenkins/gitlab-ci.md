@@ -1,8 +1,20 @@
 ---
+title: "GitLab CI/CD: Pipelines, Runners, and the Container Registry"
+icon: fontawesome/brands/gitlab
 description: GitLab CI/CD guide — pipeline concepts, .gitlab-ci.yml anatomy, runner installation on Ubuntu, the built-in container registry, and full Java and Python pipeline examples.
+tags:
+  - CI/CD
+  - GitLab
 ---
 
 # GitLab CI/CD
+
+## What You'll Learn
+
+- How GitLab pipelines, stages, and jobs run
+- How to install and register a GitLab Runner on Ubuntu
+- How to build images with the built-in container registry
+- Complete pipeline examples for Python and Java applications
 
 GitLab bundles source control, CI/CD, and a container registry in one application. The pipeline lives in a single file at the repo root — `.gitlab-ci.yml` — and runs on **runners**, which are agents you (or gitlab.com) host.
 
@@ -273,3 +285,22 @@ deploy-production:
 - [x] Split long pipelines with `include:` once they grow past ~200 lines
 
 For Kubernetes deployments, the GitOps handoff works exactly as with GitHub Actions — the pipeline builds and pushes the image, then [ArgoCD](argocd.md) syncs the manifests.
+
+## Common Mistakes
+
+- Running Docker-in-Docker on shared privileged runners, giving every job root on the runner host — consider rootless BuildKit, Buildah, or dedicated runners.
+- Using legacy `only/except` instead of `rules:`.
+- Leaving deployment credentials as unprotected, unmasked variables available to every branch.
+- Relying only on stages when `needs:` would let independent jobs run in parallel.
+- Registering runners with deprecated registration tokens instead of runner authentication tokens.
+
+## Interview Questions
+
+- What's the difference between `stages` and `needs` in GitLab CI?
+- Compare the shell and Docker executors for GitLab Runner.
+- What do protected and masked variables do?
+- What are safer alternatives to privileged Docker-in-Docker for building images?
+
+## Next
+
+Continue to [ArgoCD and GitOps](argocd.md).

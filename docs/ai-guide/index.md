@@ -1,4 +1,5 @@
 ---
+title: "AI Engineering Guide for DevOps and Platform Teams"
 icon: lucide/book-open
 description: Learn AI engineering for DevOps and platform teams, including LLM fundamentals, RAG, tool use, MCP, agents, evaluation, production risks, and workflows.
 tags:
@@ -8,6 +9,13 @@ tags:
 ---
 
 # AI Engineering Guide for DevOps and Platform Teams
+
+## What You'll Learn
+
+- How models, retrieval, tools, and evaluation fit together in a production AI system
+- How AI systems evolved from rules to generative models, RAG, tools, and agents
+- Which system pattern fits which problem
+- The production risks and engineering habits that matter most
 
 AI engineering is the practice of building systems that use models, data, retrieval, tools, and application logic to solve real problems. Modern AI is no longer just about prompting a model. In production systems, it usually involves multiple layers working together:
 
@@ -38,7 +46,7 @@ That shift matters because:
 - Safety and correctness become engineering concerns, not just model concerns
 
 !!! info "A useful mental model"
-Think of AI engineering as a stack:
+    Think of AI engineering as a stack:
     model + context + retrieval + tools + evaluation + application logic
 
 ```mermaid
@@ -393,7 +401,24 @@ No. Start with the simplest pattern that solves the problem. A prompt-only assis
 - [AI model evaluation](ai-evaluation.md)
 - [AI terminology in plain English](terminology.md)
 
-## Where to Go Next
+## Common Mistakes
+
+- Starting with an agent when a prompt or a RAG assistant would solve the problem with far fewer failure modes.
+- Shipping without an evaluation set, so quality changes go unnoticed when prompts or models change.
+- Giving tools write access to production systems without approval steps or least privilege.
+- Trusting retrieved documents and tool output as instructions, which opens the door to prompt injection.
+- Not logging prompts, retrieved context, tool calls, latency, and cost, making incidents impossible to debug.
+
+## Interview Questions
+
+- What's the difference between an LLM, a RAG system, and an agent?
+- When would you use retrieval instead of fine-tuning a model?
+- What problem does the Model Context Protocol (MCP) solve?
+- How do you reduce hallucinations in a production assistant?
+
+## Next
+
+Continue to [LLM Fundamentals](llm-fundamentals.md).
 
 This overview connects to the deeper topics in this section:
 

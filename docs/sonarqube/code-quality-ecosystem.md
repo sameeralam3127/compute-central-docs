@@ -1,4 +1,5 @@
 ---
+title: "Open-Source Code Quality Tools: Linters, Scanners, and Coverage"
 icon: lucide/wrench
 description: The open-source code quality ecosystem — linters, formatters, type checkers, security scanners, and coverage tools for Java, Python, and JavaScript, with CI integration examples.
 tags:
@@ -8,6 +9,13 @@ tags:
 ---
 
 # Open-Source Code Quality Tools and Libraries
+
+## What You'll Learn
+
+- The open-source linters, formatters, type checkers, and scanners for Python, Java, and JavaScript
+- Cross-language security tools for secrets and dependencies
+- How to wire them into CI
+- How to choose a small, effective set instead of every tool
 
 SonarQube is a *platform* that aggregates many kinds of analysis. But underneath and alongside it lives a whole ecosystem of focused open-source tools — linters, formatters, type checkers, security scanners, and coverage libraries — that most teams run directly in their pipelines. This page maps that landscape and shows how to wire the most-used tools into CI.
 
@@ -280,3 +288,21 @@ flowchart LR
 2. **Coverage threshold** — `--cov-fail-under` / JaCoCo rule, so coverage can only ratchet up.
 3. **Secrets + dependency scanning** — Gitleaks and Trivy/pip-audit; near-zero config, catches the incidents that make headlines.
 4. **A platform** — when you want trends, PR decoration, and org-wide gates: self-host [SonarQube](installation.md) or pick a [paid service](paid-platforms.md).
+
+## Common Mistakes
+
+- Running several overlapping tools that report the same issue in different ways.
+- Reporting warnings without failing the build, so they accumulate forever.
+- Not pinning tool versions, so a new release breaks CI overnight.
+- Scanning only the latest commit for secrets, not the repository history.
+- Treating coverage percentage as the goal instead of a signal.
+
+## Interview Questions
+
+- What's the difference between a linter, a formatter, and a type checker?
+- Which checks would you add first to a repository with none, and why?
+- How do secrets scanning and dependency scanning differ?
+
+## Next
+
+Continue to [Paid and SaaS Platforms](paid-platforms.md).

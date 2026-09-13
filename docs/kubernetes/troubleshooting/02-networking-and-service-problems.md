@@ -99,8 +99,9 @@ Each status code narrows the search:
 ```bash
 kubectl get ingress myapp-ingress -o yaml         # confirm host, path, backend service/port
 kubectl describe ingress myapp-ingress            # events show backend resolution problems
-kubectl get pods -n ingress-nginx
-kubectl logs -n ingress-nginx -l app.kubernetes.io/name=ingress-nginx --tail=100
+kubectl get ingressclass                         # which controllers exist, and which is default
+kubectl get pods -n <controller-namespace>        # e.g. traefik, or ingress-nginx on older clusters
+kubectl logs -n <controller-namespace> -l app.kubernetes.io/name=<controller> --tail=100
 
 # Bypass the Ingress to isolate it from the Service
 kubectl run curl-test --rm -it --restart=Never --image=curlimages/curl:8.8.0 -- \
@@ -133,7 +134,7 @@ spec:
                   number: 80
 ```
 
-**Prevention:** always set `ingressClassName` explicitly rather than relying on a cluster default, and confirm the backend Service has ready endpoints before blaming the Ingress.
+**Prevention:** if the controller is still ingress-nginx, treat the incident as a prompt to plan its migration — the project was retired in March 2026 (see [Gateway API](../networking/07-gateway-api.md)). Always set `ingressClassName` explicitly rather than relying on a cluster default, and confirm the backend Service has ready endpoints before blaming the Ingress.
 
 ## Traffic Silently Dropped by a NetworkPolicy
 

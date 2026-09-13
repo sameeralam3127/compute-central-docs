@@ -1,8 +1,19 @@
 ---
+title: "Grafana: Dashboards, Data Sources, and Provisioning"
+icon: lucide/layout-dashboard
 description: Learn how Grafana provides dashboards and log views for a monitoring lab, including provisioning files, data sources, dashboard checks, and practical improvements.
+tags:
+  - Monitoring
+  - Grafana
 ---
 
 # Grafana Guide for the Monitoring Stack
+
+## What You'll Learn
+
+- How Grafana connects to Prometheus and Loki
+- Why provisioning dashboards and data sources as files matters
+- What makes a dashboard useful during an incident
 
 Grafana provides the dashboards and log views for the monitoring lab.
 
@@ -83,5 +94,22 @@ A useful dashboard shows service health, latency or probe success, resource usag
 ## Related Learning
 
 - [Prometheus guide](prometheus.md)
-- [Loki and Promtail logging](logging.md)
+- [Loki logging with Grafana Alloy](logging.md)
 - [Monitoring stack troubleshooting](troubleshooting.md)
+
+## Common Mistakes
+
+- Building dashboards by hand in the UI with no provisioning, so they're lost or drift between environments.
+- Dashboards with dozens of panels and no clear question they answer.
+- Not linking metrics panels to the related logs, so every investigation starts from scratch.
+- Using Grafana as the alerting source of truth without deciding how it relates to Prometheus rules and Alertmanager.
+
+## Interview Questions
+
+- Does Grafana store metrics? Where does the data live?
+- Why provision dashboards and data sources from files?
+- What should the first row of a service dashboard show?
+
+## Next
+
+Continue to [Alertmanager](alertmanager.md).

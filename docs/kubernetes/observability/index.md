@@ -24,3 +24,8 @@ A cluster you can't see into is a cluster you can only guess about. This section
 ## Next
 
 With health, logs, and metrics covered, continue to [Cluster Administration](../cluster-administration/index.md) to see how these signals feed into running the cluster itself.
+
+## Related Learning
+
+- [Monitoring and Observability Stack](../../monitoring-tools/index.md) — Prometheus, Grafana, Loki, and Alertmanager in depth
+- [Observability Fundamentals](../../monitoring-tools/observability-fundamentals.md) — how metrics, logs, traces, and events work together

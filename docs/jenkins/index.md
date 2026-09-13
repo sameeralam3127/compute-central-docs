@@ -1,8 +1,20 @@
 ---
+title: "CI/CD Pipelines: From Commit to Production"
+icon: lucide/infinity
 description: A complete guide to modern CI/CD pipelines — how code moves from commit to test to container image to production using GitHub Actions, GitLab CI, ArgoCD, and Jenkins.
+tags:
+  - CI/CD
+  - Overview
 ---
 
 # CI/CD Pipelines
+
+## What You'll Learn
+
+- How a change flows through test, build, image, registry, and deploy stages
+- How GitHub Actions, GitLab CI, Jenkins, and ArgoCD map onto those stages
+- The difference between push-based deployment and GitOps
+- A reading order through the section
 
 CI/CD is the automation backbone of modern software delivery. **Continuous Integration (CI)** builds and tests every change as soon as it is pushed. **Continuous Delivery/Deployment (CD)** packages that change — usually as a container image — and ships it to an environment automatically.
 
@@ -96,3 +108,21 @@ flowchart TD
 
 !!! note "Suggested reading order"
     Start with the GitHub Actions deep dive, then follow the Java **or** Python pipeline page end-to-end (they are parallel tracks — same pipeline, different stack). Finish with ArgoCD to see how GitOps replaces the deploy stage.
+
+## Common Mistakes
+
+- Deploying from CI with long-lived cloud credentials instead of short-lived OIDC federation.
+- Rebuilding the image for each environment instead of promoting one tested artifact.
+- Letting pipelines deploy without a test gate, or letting flaky tests be retried until green.
+- Deploying mutable tags like `latest`, so nobody knows which build is running.
+- One monolithic pipeline file that nobody dares to change.
+
+## Interview Questions
+
+- What's the difference between continuous delivery and continuous deployment?
+- Compare push-based deployment with GitOps pull-based deployment.
+- How would you choose between GitHub Actions, GitLab CI, and Jenkins for a new team?
+
+## Next
+
+Continue to [GitHub Actions Deep Dive](github-actions.md).

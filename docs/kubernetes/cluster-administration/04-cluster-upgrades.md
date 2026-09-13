@@ -36,27 +36,27 @@ The rule that matters most in practice: **kubelets can lag behind the API server
 
 ```mermaid
 flowchart LR
-    A["v1.29 API server"] -->|supports kubelets down to| B["v1.28, v1.27, v1.26"]
-    A -.->|never supports| C["v1.30 kubelet"]
+    A["v1.36 API server"] -->|supports kubelets down to| B["v1.35, v1.34, v1.33"]
+    A -.->|never supports| C["v1.37 kubelet"]
 ```
 
 ### The kubeadm upgrade workflow
 
-Upgrades happen one minor version at a time — you cannot skip from 1.28 straight to 1.30, you go 1.28 → 1.29 → 1.30, verifying health at each step.
+Upgrades happen one minor version at a time — you cannot skip from 1.35 straight to 1.37, you go 1.35 → 1.36 → 1.37, verifying health at each step.
 
 **1. Upgrade the first control-plane node**
 
 ```bash
 # On the first control-plane node
 sudo apt-mark unhold kubeadm
-sudo apt-get install -y kubeadm=1.30.4-1.1
+sudo apt-get install -y kubeadm=1.37.0-1.1
 sudo apt-mark hold kubeadm
 
 sudo kubeadm upgrade plan          # shows what will change, sanity-checks skew
-sudo kubeadm upgrade apply v1.30.4
+sudo kubeadm upgrade apply v1.37.0
 
 sudo apt-mark unhold kubelet kubectl
-sudo apt-get install -y kubelet=1.30.4-1.1 kubectl=1.30.4-1.1
+sudo apt-get install -y kubelet=1.37.0-1.1 kubectl=1.37.0-1.1
 sudo apt-mark hold kubelet kubectl
 sudo systemctl daemon-reload
 sudo systemctl restart kubelet
@@ -78,7 +78,7 @@ kubectl drain node-worker-1 --ignore-daemonsets --delete-emptydir-data
 
 # On node-worker-1
 sudo kubeadm upgrade node
-sudo apt-get install -y kubelet=1.30.4-1.1 kubectl=1.30.4-1.1
+sudo apt-get install -y kubelet=1.37.0-1.1 kubectl=1.37.0-1.1
 sudo systemctl daemon-reload
 sudo systemctl restart kubelet
 
@@ -106,7 +106,7 @@ The version skew policy still applies underneath all three managed platforms —
 ## Common Mistakes
 
 - Upgrading a kubelet to a newer minor version than the control plane — unsupported, and can cause API compatibility failures.
-- Skipping minor versions (1.28 straight to 1.30) instead of stepping through each one.
+- Skipping minor versions (1.35 straight to 1.37) instead of stepping through each one.
 - Upgrading all worker nodes at once instead of one at a time with drain/uncordon between each.
 - Forgetting to `apt-mark hold`/pin the package versions, letting an unrelated `apt upgrade` silently bump Kubernetes components out of band.
 - Assuming a managed platform's "automatic" node upgrade doesn't need `PodDisruptionBudget`s — it still respects them, and a misconfigured PDB can still stall a managed upgrade.

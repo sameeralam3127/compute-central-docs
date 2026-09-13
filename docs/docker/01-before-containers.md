@@ -1,8 +1,20 @@
 ---
-description: Understand how applications ran before containers: physical servers, monoliths, processes, dependencies, configuration, ports, data, and deployment conflicts.
+title: "How Applications Ran Before Containers"
+icon: lucide/server
+description: "Understand how applications ran before containers: physical servers, monoliths, processes, dependencies, configuration, ports, data, and deployment conflicts."
+tags:
+  - Docker
+  - Why Containers Exist
 ---
 
 # How Applications Used to Run
+
+## What You'll Learn
+
+- What an application needs at runtime beyond its code
+- Why sharing one server between applications causes conflicts
+- Why scaling on physical servers is slow and uneven
+- How environment drift produces "it works on my machine"
 
 Before learning Docker, it helps to understand the operating model it changed. For much of software history, deploying an application meant installing everything it needed directly onto a server.
 
@@ -87,12 +99,20 @@ This is the beginning of the familiar statement:
 
 Containers address this problem by packaging an application with its **userspace** dependencies in a reproducible form. They do not remove the need for good configuration, networking, security, backups, or monitoring—but they give those concerns a more consistent deployment unit.
 
-## Check your understanding
+## Common Mistakes
+
+- Assuming containers fix bad configuration management — drift simply moves into images and environment variables if nobody owns it.
+- Treating monoliths as inherently bad; the problem is coupling in deployment and scaling, not a single codebase.
+- Blaming individual engineers for environment drift when the real cause is manual, unrepeatable setup.
+
+## Check Your Understanding
 
 1. Why is an application’s runtime environment more than its source code?
 2. Which resources can conflict when two applications share one server?
 3. Why does adding another physical server create operational work even when it has plenty of spare capacity?
 
 ## Next
+
+Continue to [Virtual Machines and KVM](02-virtual-machines-and-kvm.md).
 
 Next, we will see why virtual machines became the standard way to separate workloads before containers—and why sharing a host kernel later changed the trade-offs.

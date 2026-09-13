@@ -35,7 +35,7 @@ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stabl
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 
-curl -LO https://storage.googleapis.com/minikube/releases/v1.34.0/minikube-linux-amd64
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
 ```
 
@@ -66,7 +66,7 @@ kubectl config current-context
 
 kubectl get nodes
 # NAME       STATUS   ROLES           AGE   VERSION
-# minikube   Ready    control-plane   30s   v1.31.0
+# minikube   Ready    control-plane   30s   v1.37.0
 ```
 
 !!! warning "Always check the context first"

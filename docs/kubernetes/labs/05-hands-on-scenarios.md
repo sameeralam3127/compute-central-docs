@@ -214,7 +214,7 @@ kind: Pod
 spec:
   containers:
   - name: kubectl
-    image: bitnami/kubectl:1.31.0
+    image: registry.example.com/platform/kubectl:1.37   # a pinned internal image with a shell + kubectl; bitnami/kubectl is no longer updated
     command: ["cat"]
     tty: true
 """

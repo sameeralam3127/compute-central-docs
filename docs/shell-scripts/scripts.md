@@ -1,8 +1,21 @@
 ---
+title: "Shell Scripting for SRE and DevOps Automation"
+icon: lucide/terminal
 description: Learn shell scripting for DevOps and SRE automation with Bash basics, safe script structure, health checks, log scanners, backups, deployments, and debugging.
+tags:
+  - Shell
+  - Bash
+  - Automation
 ---
 
 # Shell Scripting for SRE and DevOps Automation
+
+## What You'll Learn
+
+- How to start every script safely with a shebang and strict mode
+- The Bash building blocks: variables, arguments, conditionals, loops, functions, and traps
+- Six practical operations scripts you can adapt
+- How to debug, lint, and decide when to switch to another language
 
 Shell scripts are one of the most practical tools in infrastructure work. They let you combine operating system commands, glue together tools, automate repetitive tasks, and turn manual runbooks into repeatable workflows.
 
@@ -508,7 +521,7 @@ shellcheck script.sh
 
 ---
 
-## Common Mistakes to Avoid
+## Common Mistakes
 
 - Unquoted variables:
 
@@ -571,3 +584,14 @@ Shell is not always the right tool. Consider Python or Go when you need:
 - Larger testable codebases
 
 Use shell scripts for what they do best: command orchestration, operational automation, and fast system-level workflows.
+
+## Interview Questions
+
+- What does `set -euo pipefail` do, and what are its pitfalls?
+- Why quote variables like `"$file"`?
+- How do you make sure a script cleans up temporary files even when it fails?
+- When would you rewrite a shell script in Python or move it to Ansible?
+
+## Next
+
+Continue to [Ansible](../ansible/index.md) when scripts need to run idempotently across many hosts, or to the [Docker course](../docker/index.md) to package them.

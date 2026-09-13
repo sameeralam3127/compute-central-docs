@@ -1,6 +1,7 @@
 ---
+title: "AI Terminology in Plain English"
 icon: lucide/library
-description: Plain-English AI terminology for beginners: LLMs, prompts, tokens, RAG, embeddings, tools, agents, MCP, evaluation, guardrails, and production AI concepts.
+description: "Plain-English AI terminology for beginners: LLMs, prompts, tokens, RAG, embeddings, tools, agents, MCP, evaluation, guardrails, and production AI concepts."
 tags:
   - AI
   - Glossary
@@ -8,6 +9,13 @@ tags:
 ---
 
 # AI Terminology in Plain English
+
+## What You'll Learn
+
+- The core vocabulary of models, prompts, and tokens
+- Retrieval terms: embeddings, vector search, chunking, and grounding
+- Tool, agent, and safety terms, including MCP and guardrails
+- Quality and operations terms used when running AI in production
 
 Use this page as a companion to the [AI Engineering Guide](index.md). It explains common terms without assuming a machine-learning background.
 
@@ -89,7 +97,22 @@ flowchart LR
 
 Start small: define one user task, use trusted context, give tools only read access, test with real examples, and require human approval before sensitive actions. Expand capability only after you can measure quality and understand failures.
 
-## Continue Learning
+## Common Mistakes
+
+- Confusing fine-tuning (changing model weights) with RAG (supplying knowledge at request time).
+- Treating embeddings and tokens as the same thing — tokens are text pieces; embeddings are numeric vectors of meaning.
+- Using "agent" for any LLM feature, including fixed workflows with no autonomous decisions.
+- Assuming guardrails replace evaluation; guardrails block known bad outputs, evaluation measures overall quality.
+
+## Interview Questions
+
+- What's an embedding, and how does RAG use it?
+- What's the difference between a guardrail and an evaluation?
+- Explain MCP to a platform engineer in two sentences.
+
+## Next
+
+Return to the [AI Engineering Guide](index.md), or see how to observe AI services in production with [Observability Fundamentals](../monitoring-tools/observability-fundamentals.md).
 
 - [LLM fundamentals](llm-fundamentals.md)
 - [AI agents for automation workflows](ai-agents.md)

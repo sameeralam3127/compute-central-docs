@@ -38,7 +38,7 @@ By default, a Kubernetes Secret is base64-encoded plaintext, stored unencrypted 
 ESO installs a controller that watches `ExternalSecret` custom resources, fetches the referenced value from a configured backend, and writes (and continuously refreshes) an ordinary native Secret for pods to consume unchanged.
 
 ```yaml
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: SecretStore
 metadata:
   name: aws-secrets-manager
@@ -53,7 +53,7 @@ spec:
           serviceAccountRef:
             name: external-secrets-sa
 ---
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: orders-db-credentials
@@ -71,6 +71,9 @@ spec:
         key: prod/orders-db
         property: password
 ```
+
+!!! note "Use `external-secrets.io/v1`"
+    ESO v0.17 stopped serving `v1beta1`. If you have older manifests, upgrade to v0.16.2 first (it serves both versions), move every `ExternalSecret` and `SecretStore` to `v1`, then upgrade further.
 
 The application manifest never changes — it still references `orders-db-credentials` via `secretKeyRef` exactly as in [Secrets in Depth](02-secrets-in-depth.md). The difference is that no human, and no CI pipeline, ever writes the actual value into a Kubernetes manifest at all; ESO keeps the native Secret in sync with the real source of truth on `refreshInterval`.
 

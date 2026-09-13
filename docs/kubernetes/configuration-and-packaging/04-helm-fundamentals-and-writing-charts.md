@@ -43,32 +43,31 @@ helm version
 
 ```bash
 # Add a repository and refresh its index
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo add traefik https://traefik.github.io/charts
 helm repo update
 
-# Install a chart as a named release
-helm install my-ingress ingress-nginx/ingress-nginx \
-  --namespace ingress-nginx --create-namespace \
-  --version 4.11.2
+# Install a chart as a named release (pin --version to a chart version from `helm search repo traefik/traefik --versions`)
+helm install my-ingress traefik/traefik \
+  --namespace traefik --create-namespace
 
 # Inspect what's installed
 helm list -A
-helm status my-ingress -n ingress-nginx
+helm status my-ingress -n traefik
 
 # Upgrade with new values (creates a new revision)
-helm upgrade my-ingress ingress-nginx/ingress-nginx \
-  --namespace ingress-nginx \
-  --set controller.replicaCount=3
+helm upgrade my-ingress traefik/traefik \
+  --namespace traefik \
+  --set deployment.replicas=3
 
 # Roll back to the previous revision if the upgrade broke something
-helm rollback my-ingress -n ingress-nginx
+helm rollback my-ingress -n traefik
 
 # Preview what a change would render, without applying it
-helm diff upgrade my-ingress ingress-nginx/ingress-nginx --set controller.replicaCount=5   # requires the helm-diff plugin
-helm template my-ingress ingress-nginx/ingress-nginx --set controller.replicaCount=5
+helm diff upgrade my-ingress traefik/traefik -n traefik --set deployment.replicas=5   # requires the helm-diff plugin
+helm template my-ingress traefik/traefik --set deployment.replicas=5
 ```
 
-`helm rollback` works because every `helm upgrade` is stored as a new numbered revision (visible via `helm history my-ingress -n ingress-nginx`) — rolling back re-applies a prior revision's fully rendered manifests, it doesn't try to compute a reverse diff.
+`helm rollback` works because every `helm upgrade` is stored as a new numbered revision (visible via `helm history my-ingress -n traefik`) — rolling back re-applies a prior revision's fully rendered manifests, it doesn't try to compute a reverse diff.
 
 ### Chart anatomy
 

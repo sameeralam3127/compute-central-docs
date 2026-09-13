@@ -153,7 +153,7 @@ checked = false
 "Compute Central" = "index.md"
 
 [[project.nav]]
-"Ai guide" = [
+"AI Guide" = [
   "ai-guide/index.md",
   "ai-guide/llm-fundamentals.md",
   "ai-guide/ai-agents.md",
@@ -212,7 +212,6 @@ Docker = [
   "docker/24-production-troubleshooting.md",
   "docker/25-course-wrap-up.md",
   "docker/docker.md",
-  "docker/basic.md",
 ]
 
 [[project.nav]]
@@ -232,7 +231,7 @@ Kubernetes = [
   { "Getting Started" = ["kubernetes/getting-started/index.md", "kubernetes/getting-started/00-history-and-why-kubernetes.md", "kubernetes/getting-started/01-what-is-kubernetes.md", "kubernetes/getting-started/02-architecture-and-control-plane.md", "kubernetes/getting-started/03-installing-kubectl-and-a-local-cluster.md", "kubernetes/getting-started/04-your-first-deployment.md"] },
   { "Core Concepts" = ["kubernetes/core-concepts/index.md", "kubernetes/core-concepts/01-pods.md", "kubernetes/core-concepts/02-replicasets-and-deployments.md", "kubernetes/core-concepts/03-services.md", "kubernetes/core-concepts/04-namespaces.md", "kubernetes/core-concepts/05-labels-selectors-and-annotations.md", "kubernetes/core-concepts/06-configmaps-and-secrets.md", "kubernetes/core-concepts/07-volumes-and-storage-basics.md", "kubernetes/core-concepts/08-jobs-and-cronjobs.md"] },
   { "Workloads & Scheduling" = ["kubernetes/workloads-and-scheduling/index.md", "kubernetes/workloads-and-scheduling/01-deployment-strategies.md", "kubernetes/workloads-and-scheduling/02-statefulsets.md", "kubernetes/workloads-and-scheduling/03-daemonsets.md", "kubernetes/workloads-and-scheduling/04-scheduling-affinity-and-taints.md", "kubernetes/workloads-and-scheduling/05-resource-requests-limits-and-qos.md", "kubernetes/workloads-and-scheduling/06-autoscaling.md"] },
-  { "Networking" = ["kubernetes/networking/index.md", "kubernetes/networking/01-cluster-networking-model.md", "kubernetes/networking/02-services-deep-dive.md", "kubernetes/networking/03-ingress-and-ingress-controllers.md", "kubernetes/networking/04-network-policies.md", "kubernetes/networking/05-dns-and-coredns.md", "kubernetes/networking/06-cni-plugins.md"] },
+  { "Networking" = ["kubernetes/networking/index.md", "kubernetes/networking/01-cluster-networking-model.md", "kubernetes/networking/02-services-deep-dive.md", "kubernetes/networking/03-ingress-and-ingress-controllers.md", "kubernetes/networking/04-network-policies.md", "kubernetes/networking/05-dns-and-coredns.md", "kubernetes/networking/06-cni-plugins.md", "kubernetes/networking/07-gateway-api.md"] },
   { "Storage" = ["kubernetes/storage/index.md", "kubernetes/storage/01-volumes.md", "kubernetes/storage/02-persistentvolumes-and-claims.md", "kubernetes/storage/03-storageclasses-and-dynamic-provisioning.md", "kubernetes/storage/04-statefulset-storage-patterns.md"] },
   { "Configuration & Packaging" = ["kubernetes/configuration-and-packaging/index.md", "kubernetes/configuration-and-packaging/01-configmaps-in-depth.md", "kubernetes/configuration-and-packaging/02-secrets-in-depth.md", "kubernetes/configuration-and-packaging/03-injecting-config-env-and-volumes.md", "kubernetes/configuration-and-packaging/04-helm-fundamentals-and-writing-charts.md", "kubernetes/configuration-and-packaging/05-kustomize.md", "kubernetes/configuration-and-packaging/06-external-secrets-and-secret-stores.md"] },
   { "Security" = ["kubernetes/security/index.md", "kubernetes/security/01-authentication-and-authorization.md", "kubernetes/security/02-rbac.md", "kubernetes/security/03-service-accounts.md", "kubernetes/security/04-pod-security-standards.md", "kubernetes/security/05-image-and-supply-chain-security.md", "kubernetes/security/06-secrets-and-encryption-at-rest.md"] },
@@ -249,7 +248,7 @@ Kubernetes = [
 ]
 
 [[project.nav]]
-"Monitoring tools" = [
+Monitoring = [
   "monitoring-tools/index.md",
   "monitoring-tools/observability-fundamentals.md",
   "monitoring-tools/overview.md",
@@ -265,7 +264,7 @@ Kubernetes = [
 ]
 
 [[project.nav]]
-"Shell scripts" = "shell-scripts/scripts.md"
+"Shell Scripts" = "shell-scripts/scripts.md"
 
 [[project.nav]]
 "Code Quality" = [
@@ -280,6 +279,12 @@ Kubernetes = [
 
 [[project.nav]]
 Terraform = [
+  "terraform/index.md",
   "terraform/overview.md",
+  "terraform/variables-outputs-and-locals.md",
+  "terraform/state-and-backends.md",
+  "terraform/modules.md",
+  "terraform/environments-and-workspaces.md",
+  "terraform/testing-and-ci.md",
   "terraform/interview-questions.md",
 ]

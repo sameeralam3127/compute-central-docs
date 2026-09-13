@@ -17,7 +17,7 @@ Everything on this page sits below the workload layer — a perfectly healthy De
 ```bash
 kubectl get nodes
 # NAME    STATUS     ROLES    AGE   VERSION
-# node1   NotReady   <none>   30d   v1.30.2
+# node1   NotReady   <none>   30d   v1.36.3
 ```
 
 **Likely causes:**

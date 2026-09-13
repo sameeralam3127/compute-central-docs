@@ -79,12 +79,15 @@ Two architectures dominate, and they trade off resource usage against isolation:
 
 | Pattern | How it works | Trade-off |
 |---|---|---|
-| **Node-level agent (DaemonSet)** | One log-shipping agent per node (e.g. Fluent Bit, Promtail) reads every container's log files on that node and forwards them centrally | One agent per node regardless of pod count — efficient, but all workloads on a node share the same agent configuration |
+| **Node-level agent (DaemonSet)** | One log-shipping agent per node (e.g. Fluent Bit, Grafana Alloy) reads every container's log files on that node and forwards them centrally | One agent per node regardless of pod count — efficient, but all workloads on a node share the same agent configuration |
 | **Sidecar container** | A dedicated logging container runs inside the same pod as the app, reading the app's output (or a shared volume) and shipping it independently | Per-pod control over log handling (useful if an app can't write to stdout at all, or needs per-app processing) — costs a container's worth of resources per pod |
 
 The **node-agent/DaemonSet** pattern is the standard default for most clusters because it scales with nodes, not pods, and keeps resource overhead low. The **sidecar** pattern is reserved for exceptions — an application that logs only to a file and can't be changed to use stdout, or a workload needing log processing too specific for a shared node agent.
 
-A common cluster-wide stack pairs a DaemonSet log shipper (Fluent Bit or Promtail) with a central store — **Loki** (paired with Promtail/Fluent Bit, designed to integrate with Grafana) or the **EFK stack** (Elasticsearch, Fluentd, Kibana) are the two most common combinations in production Kubernetes environments.
+A common cluster-wide stack pairs a DaemonSet log shipper (Fluent Bit or Grafana Alloy) with a central store — **Loki** (paired with Alloy/Fluent Bit, designed to integrate with Grafana) or the **EFK stack** (Elasticsearch, Fluentd, Kibana) are the two most common combinations in production Kubernetes environments.
+
+!!! warning "Promtail is end-of-life"
+    Older Loki guides use Promtail as the DaemonSet agent. Promtail reached end of life on March 2, 2026; use Grafana Alloy (or Fluent Bit) instead. See [Loki Logging With Grafana Alloy](../../monitoring-tools/logging.md) for the config and the `alloy convert` migration path.
 
 ## Common Mistakes
 

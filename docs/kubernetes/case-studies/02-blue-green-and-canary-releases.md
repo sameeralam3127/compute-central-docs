@@ -18,12 +18,17 @@ tags:
 
 Both need a plain `Deployment` + `Service` setup — no service mesh, no progressive-delivery controller installed yet.
 
+The trade-offs between rolling, blue-green, and canary releases are covered in [Deployment Strategies](../workloads-and-scheduling/01-deployment-strategies.md); automating them with a controller is in [Progressive Delivery](../cicd-and-gitops/03-progressive-delivery-canary-and-blue-green.md).
+
 ## Requirements
 
 - Blue-green: two full, independently running versions; traffic switches from one to the other as a single atomic operation; rollback is the same operation in reverse
 - Canary: a small, controllable percentage of traffic reaches the new version while most traffic stays on the stable version; the split percentage must be adjustable without redeploying either version
-- Both patterns must work with a standard NGINX Ingress Controller — no additional traffic-management infrastructure
+- Both patterns must work with the cluster's existing NGINX Ingress Controller — no additional traffic-management infrastructure
 - A documented rollback command for each pattern that a second engineer could run without asking questions
+
+!!! warning "This case study uses ingress-nginx"
+    The canary half relies on ingress-nginx's `canary-weight` annotations, which is how many clusters still did it. ingress-nginx was retired in March 2026; on a new cluster, do the same weighted split with typed `weight` fields in a Gateway API `HTTPRoute` — see [Gateway API](../networking/07-gateway-api.md#weighted-canary-without-a-special-controller).
 
 ## Solution Walkthrough
 

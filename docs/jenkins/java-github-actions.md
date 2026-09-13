@@ -1,8 +1,21 @@
 ---
+title: "Java CI/CD Pipeline With GitHub Actions: Spring Boot to Production"
+icon: lucide/coffee
 description: Complete CI/CD pipeline for a Java Spring Boot web app with GitHub Actions — JUnit tests, Maven build, multi-stage Docker image, push to GHCR, and deployment to a VM or Kubernetes.
+tags:
+  - CI/CD
+  - GitHub Actions
+  - Java
 ---
 
 # Java Pipeline: Spring Boot from Code to Production
+
+## What You'll Learn
+
+- How to structure a Spring Boot app so the pipeline can test and package it
+- How a multi-stage Dockerfile keeps the JDK out of the runtime image
+- A complete workflow: test, build, push to GHCR, and deploy
+- How to deploy the same image to a VM or Kubernetes
 
 This page builds one complete, working pipeline for a Java web application: every push runs the tests, builds the JAR, packages it into a small Docker image, pushes the image to GitHub Container Registry (GHCR), and deploys it.
 
@@ -379,3 +392,21 @@ With GitOps, the pipeline's last step is not `kubectl apply` — it is a commit 
 | Image works locally, crashes on server | Architecture mismatch (Apple Silicon vs x86) | Add `platforms: linux/amd64` to `build-push-action` |
 | Slow builds | No dependency cache | Ensure `cache: maven` and `cache-from/to: type=gha` are set |
 | `./mvnw: Permission denied` | Wrapper not executable in Git | `git update-index --chmod=+x mvnw` |
+
+## Common Mistakes
+
+- Using different JDK versions locally, in `setup-java`, and in the Dockerfile.
+- Shipping a full JDK and build tools in the runtime image instead of a slim JRE stage.
+- Skipping tests with `-DskipTests` to make the pipeline faster.
+- Not caching Maven dependencies, so every run downloads the internet.
+- Deploying `latest` instead of the exact commit-SHA tag the pipeline just built.
+
+## Interview Questions
+
+- Why use a multi-stage build for a Java service?
+- How do you guarantee the image that passed tests is the one that gets deployed?
+- How would you speed up a slow Maven build in CI?
+
+## Next
+
+Continue to the [Python Pipeline](python-github-actions.md).
