@@ -1,7 +1,7 @@
 ---
 title: "How Applications Ran Before Containers"
 icon: lucide/server
-description: Understand how applications ran before containers: physical servers, monoliths, processes, dependencies, configuration, ports, data, and deployment conflicts.
+description: "Understand how applications ran before containers: physical servers, monoliths, processes, dependencies, configuration, ports, data, and deployment conflicts."
 tags:
   - Docker
   - Why Containers Exist

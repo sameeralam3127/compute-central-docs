@@ -1,7 +1,7 @@
 ---
 title: "AI Terminology in Plain English"
 icon: lucide/library
-description: Plain-English AI terminology for beginners: LLMs, prompts, tokens, RAG, embeddings, tools, agents, MCP, evaluation, guardrails, and production AI concepts.
+description: "Plain-English AI terminology for beginners: LLMs, prompts, tokens, RAG, embeddings, tools, agents, MCP, evaluation, guardrails, and production AI concepts."
 tags:
   - AI
   - Glossary
