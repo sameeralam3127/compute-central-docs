@@ -146,7 +146,7 @@ jobs:
           cache-to: type=gha,mode=max
 ```
 
-The full pipeline, including tests and deployment, is covered in [GitHub Actions](../jenkins/github-actions.md).
+The full pipeline, including tests and deployment, is covered in [GitHub Actions](../cicd/github-actions.md).
 
 ## A Local Registry
 

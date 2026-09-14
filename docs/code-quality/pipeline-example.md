@@ -91,4 +91,4 @@ Keep `waitForQualityGate` in the pipeline so code quality becomes part of delive
 
 ## Next
 
-Continue to [CI/CD Pipelines](../jenkins/index.md) to add the same quality checks to GitHub Actions and GitLab CI.
+Continue to [CI/CD Pipelines](../cicd/index.md) to add the same quality checks to GitHub Actions and GitLab CI.

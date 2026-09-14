@@ -3,9 +3,6 @@ site_name = "Compute Central"
 site_description = "Practical DevOps, cloud, Kubernetes, automation, AI engineering, and SRE guides for real-world infrastructure work."
 site_author = "Sameer Alam"
 site_url = "https://computecentral.in/"
-repo_url = "https://github.com/sameeralam3127/compute-central-docs"
-repo_name = "Compute Central Docs"
-edit_uri = "edit/main/docs"
 
 copyright = """
 Copyright © 2016–2026 Sameer Alam · <a href="#__consent">Cookie settings</a>
@@ -61,7 +58,6 @@ custom_dir = "overrides"
 
 features = [
   "announce.dismiss",
-  "content.action.view",
   "content.code.annotate",
   "content.code.copy",
   "content.code.select",
@@ -75,6 +71,7 @@ features = [
   "navigation.instant.prefetch",
   "navigation.instant.progress",
   "navigation.path",
+  "navigation.prune",
   "navigation.sections",
   "navigation.tabs",
   "navigation.tabs.sticky",
@@ -98,12 +95,11 @@ toggle.name = "Switch to light mode"
 
 [project.theme.icon]
 logo = "lucide/smile"
-repo = "fontawesome/brands/github"
 
 [[project.extra.social]]
 icon = "fontawesome/brands/github"
-link = "https://github.com/sameeralam3127/compute-central-docs"
-name = "Compute Central on GitHub"
+link = "https://github.com/sameeralam3127"
+name = "Sameer Alam on GitHub"
 
 [[project.extra.social]]
 icon = "fontawesome/solid/globe"
@@ -127,10 +123,7 @@ note = "Thanks for your feedback!"
 icon = "material/thumb-down-outline"
 name = "This page could be improved"
 data = 0
-note = """
-  Thanks for your feedback! Help us improve this page by
-  <a href="https://github.com/sameeralam3127/compute-central-docs/issues/new?title=[Feedback]+{title}+-+{url}" target="_blank" rel="noopener">opening a feedback issue</a>.
-"""
+note = "Thanks for your feedback! It helps improve this page."
 
 [project.extra.consent]
 title = "Cookie consent"
@@ -216,13 +209,13 @@ Docker = [
 
 [[project.nav]]
 "CI/CD Pipelines" = [
-  "jenkins/index.md",
-  "jenkins/github-actions.md",
-  "jenkins/java-github-actions.md",
-  "jenkins/python-github-actions.md",
-  "jenkins/gitlab-ci.md",
-  "jenkins/argocd.md",
-  "jenkins/jenkins.md",
+  "cicd/index.md",
+  "cicd/github-actions.md",
+  "cicd/java-github-actions.md",
+  "cicd/python-github-actions.md",
+  "cicd/gitlab-ci.md",
+  "cicd/argocd.md",
+  "cicd/jenkins.md",
 ]
 
 [[project.nav]]
@@ -268,13 +261,13 @@ Monitoring = [
 
 [[project.nav]]
 "Code Quality" = [
-  "sonarqube/index.md",
-  "sonarqube/code-quality-ecosystem.md",
-  "sonarqube/paid-platforms.md",
-  "sonarqube/installation.md",
-  "sonarqube/configuration.md",
-  "sonarqube/jenkins-integration.md",
-  "sonarqube/pipeline-example.md",
+  "code-quality/index.md",
+  "code-quality/code-quality-ecosystem.md",
+  "code-quality/paid-platforms.md",
+  "code-quality/installation.md",
+  "code-quality/configuration.md",
+  "code-quality/jenkins-integration.md",
+  "code-quality/pipeline-example.md",
 ]
 
 [[project.nav]]

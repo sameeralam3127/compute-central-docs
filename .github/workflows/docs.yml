@@ -7,10 +7,13 @@ on:
   pull_request:
     branches:
       - main
+# Least privilege: pull request builds get read-only access. Only the deploy
+# job, which never runs for pull requests, can write to GitHub Pages.
 permissions:
   contents: read
-  pages: write
-  id-token: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,6 +28,10 @@ jobs:
   deploy:
     if: github.event_name == 'push'
     needs: build
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

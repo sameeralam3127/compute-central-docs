@@ -605,11 +605,11 @@ Jenkins can deploy workloads to Kubernetes with `kubectl`, Helm, or GitOps tools
 
 ### How does Jenkins work with SonarQube?
 
-Jenkins can run SonarQube analysis during CI and fail or pause delivery based on quality gates. See the [SonarQube Jenkins integration guide](../sonarqube/jenkins-integration.md).
+Jenkins can run SonarQube analysis during CI and fail or pause delivery based on quality gates. See the [SonarQube Jenkins integration guide](../code-quality/jenkins-integration.md).
 
 ## Related Learning
 
-- [SonarQube code quality overview](../sonarqube/index.md)
+- [SonarQube code quality overview](../code-quality/index.md)
 - [Kubernetes CI/CD pipelines](../kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes.md)
 - [Shell scripting for SRE and DevOps automation](../shell-scripts/scripts.md)
 
@@ -630,7 +630,7 @@ Jenkins can run SonarQube analysis during CI and fail or pause delivery based on
 
 ## Next
 
-Continue to [Code Quality](../sonarqube/index.md) to add SonarQube quality gates to these pipelines.
+Continue to [Code Quality](../code-quality/index.md) to add SonarQube quality gates to these pipelines.
 
 Once the first pipeline is working, the next useful improvements are:
 

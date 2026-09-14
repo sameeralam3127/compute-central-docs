@@ -113,7 +113,7 @@ If any answer is shaky, revisit that chapter from the [course index](index.md).
 | If you want to... | Continue with |
 |---|---|
 | Run containers across many machines | [Kubernetes Getting Started](../kubernetes/getting-started/index.md) |
-| Automate builds and deployments | [CI/CD Pipelines](../jenkins/index.md) |
+| Automate builds and deployments | [CI/CD Pipelines](../cicd/index.md) |
 | Secure the image supply chain | [Image and Supply Chain Security](../kubernetes/security/05-image-and-supply-chain-security.md) |
 | Observe containerized apps | [Monitoring](../monitoring-tools/index.md) |
 | Configure the hosts containers run on | [Ansible](../ansible/index.md) |
