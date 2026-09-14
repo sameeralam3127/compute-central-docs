@@ -61,18 +61,32 @@ def last_commit_dates() -> dict[Path, str]:
 
 
 def first_commit_dates() -> dict[Path, str]:
-    """Map every tracked Markdown file to the date of its first (oldest) commit."""
+    """Map every tracked Markdown file to the date of its first commit.
+
+    Follows renames, so a page moved to a new URL keeps its original
+    publication date instead of the date of the move.
+    """
     out = subprocess.run(
-        ["git", "log", "--format=%x00%cs", "--name-only", "--", str(DOCS)],
+        ["git", "log", "-M", "--format=%x00%cs", "--name-status",
+         "--", str(DOCS)],
         capture_output=True, text=True, check=True,
     ).stdout
     dates: dict[Path, str] = {}
+    renamed_to: dict[str, str] = {}  # older path -> current path
     current = None
     for line in out.splitlines():
         if line.startswith("\x00"):
             current = line[1:]
-        elif line.endswith(".md") and current:
-            dates[Path(line)] = current  # log is newest first: last write wins = oldest
+            continue
+        if not line or not current:
+            continue
+        status, *paths = line.split("\t")
+        target = renamed_to.get(paths[-1], paths[-1])
+        if status.startswith("R"):
+            renamed_to[paths[0]] = target
+        if target.endswith(".md"):
+            # Log is newest first, so the last date seen is the oldest.
+            dates[Path(target)] = current
     return dates
 
 
