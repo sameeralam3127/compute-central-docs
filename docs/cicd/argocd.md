@@ -1,7 +1,7 @@
 ---
 title: "ArgoCD and GitOps: Pull-Based Deployment to Kubernetes"
 icon: lucide/git-pull-request-arrow
-description: ArgoCD and GitOps — install ArgoCD on Kubernetes, connect a repo, write Application manifests, and wire GitHub Actions or GitLab CI to a full GitOps deployment flow.
+description: "Deploy to Kubernetes with ArgoCD and GitOps — installation, Applications, sync policies, rollbacks, the CI image-tag flow, and app of apps."
 tags:
   - CI/CD
   - GitOps
@@ -145,7 +145,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/sameeralam3127/fastapi-demo.git
+    repoURL: https://github.com/example-org/fastapi-demo.git
     targetRevision: main
     path: k8s                        # folder containing the manifests
 
@@ -206,9 +206,9 @@ Add this job after `build-image` in the GitHub Actions workflow. It uses **Kusto
     runs-on: ubuntu-latest
     steps:
       - name: Check out config repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
-          repository: sameeralam3127/fastapi-demo-config
+          repository: example-org/fastapi-demo-config
           token: ${{ secrets.CONFIG_REPO_PAT }}   # PAT with repo write access
 
       - name: Bump image tag
@@ -234,7 +234,7 @@ resources:
   - deployment.yaml
   - service.yaml
 images:
-  - name: ghcr.io/sameeralam3127/fastapi-demo
+  - name: ghcr.io/example-org/fastapi-demo
     newTag: abc1234        # CI rewrites this line on every release
 ```
 
@@ -295,7 +295,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/sameeralam3127/argocd-apps.git
+    repoURL: https://github.com/example-org/argocd-apps.git
     targetRevision: main
     path: apps
   destination:

@@ -1,7 +1,7 @@
 ---
 title: "CI/CD Pipelines: From Commit to Production"
 icon: lucide/infinity
-description: A complete guide to modern CI/CD pipelines — how code moves from commit to test to container image to production using GitHub Actions, GitLab CI, ArgoCD, and Jenkins.
+description: "How code moves from commit to production — tests, images, registries, and deployments with GitHub Actions, GitLab CI, Jenkins, and ArgoCD."
 tags:
   - CI/CD
   - Overview
@@ -125,4 +125,4 @@ flowchart TD
 
 ## Next
 
-Continue to [GitHub Actions Deep Dive](github-actions.md).
+Continue to [GitHub Actions Deep Dive](github-actions.md). If your team hasn't settled on a branching model yet, read [Branching Strategies](../foundations/git/03-branching-strategies.md) first.

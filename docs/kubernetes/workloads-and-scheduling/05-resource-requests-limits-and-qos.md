@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Resource Requests, Limits, and QoS Classes"
 icon: lucide/gauge
-description: How CPU/memory requests and limits drive Kubernetes scheduling and eviction, the three QoS classes, and how LimitRange and ResourceQuota enforce them cluster-wide.
+description: "Kubernetes requests and limits — how scheduling, CPU throttling, OOM kills, and QoS classes work, and how to size workloads."
 tags:
   - Kubernetes
   - Workloads & Scheduling

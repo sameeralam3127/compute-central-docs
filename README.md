@@ -6,6 +6,16 @@ Pages prioritize working examples, useful commands, architecture patterns, and o
 
 > **Read the site at [computecentral.in](https://computecentral.in/).** This repository exists only to build and publish it.
 
+## What's Covered
+
+- **Foundations** — Linux administration, shell scripting, networking (TCP/IP, DNS, HTTP, TLS, load balancing), Git, and Python automation
+- **Containers and orchestration** — Docker from first principles, Kubernetes, and OpenShift
+- **Cloud and infrastructure as code** — AWS, Terraform, and Ansible
+- **Delivery** — CI/CD pipelines, GitOps, and code quality
+- **Operations** — monitoring and observability, SRE practices, incident response, and on-call
+- **Security** — DevSecOps, secrets management, supply chain security, scanning, zero trust, and hardening
+- **AI engineering** — LLM fundamentals, RAG, agents, and evaluation
+
 ## Disclaimer
 
 **This content is provided for educational and learning purposes only.**

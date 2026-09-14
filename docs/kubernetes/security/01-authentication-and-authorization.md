@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Authentication and Authorization Explained"
 icon: lucide/key-round
-description: How the Kubernetes API server authenticates a request, authorizes it through RBAC/ABAC/Node/Webhook, and hands it to admission control before anything is persisted.
+description: "How Kubernetes authenticates users and workloads and authorizes requests — certificates, tokens, OIDC, service accounts, and RBAC."
 tags:
   - Kubernetes
   - Security

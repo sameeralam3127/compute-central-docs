@@ -1,7 +1,7 @@
 ---
 title: "Podman: Daemonless and Rootless Containers"
 icon: lucide/ship
-description: Compare Docker and Podman — daemonless architecture, rootless containers and UID mapping, pods, Kubernetes YAML, systemd Quadlet units, Compose support, and operational trade-offs.
+description: "Docker vs Podman — daemonless and rootless containers, UID mapping, pods, Kubernetes YAML, systemd Quadlet units, and Compose support."
 tags:
   - Docker
   - Podman

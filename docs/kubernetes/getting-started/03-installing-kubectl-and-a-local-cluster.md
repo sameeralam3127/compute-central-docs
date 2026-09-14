@@ -1,7 +1,7 @@
 ---
 title: "Install kubectl and Set Up a Local Kubernetes Cluster"
 icon: lucide/terminal
-description: Install kubectl on Linux and macOS, understand kubeconfig and contexts, and choose between minikube, kind, Docker Desktop, and Rancher Desktop for a local cluster.
+description: "Install kubectl and run a local Kubernetes cluster, configure contexts, and verify the cluster is ready for the hands-on chapters."
 tags:
   - Kubernetes
   - Getting Started

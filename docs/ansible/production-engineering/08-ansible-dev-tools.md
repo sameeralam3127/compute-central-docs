@@ -1,7 +1,7 @@
 ---
 title: "ansible-dev-tools (ADT) Explained"
 icon: lucide/hammer
-description: ansible-dev-tools (ADT) — the single pip-installable bundle of ansible-builder, ansible-creator, ansible-dev-environment, ansible-lint, ansible-navigator, ansible-sign, molecule, pytest-ansible, and tox-ansible, with real commands for each.
+description: "ansible-dev-tools explained — ansible-builder, ansible-creator, ansible-lint, ansible-navigator, molecule, and more, with real commands."
 tags:
   - Ansible
   - Production

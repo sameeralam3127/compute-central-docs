@@ -88,6 +88,8 @@ These fields make Grafana links, Loki queries, and trace searches practical inst
 - [Prometheus guide](prometheus.md)
 - [Python logging in practice](python-logging.md)
 - [OpenTelemetry and platforms](opentelemetry-platforms.md)
+- [SLIs, SLOs, and error budgets](../sre/01-slis-slos-and-error-budgets.md)
+- [Alerting on SLOs with burn rates](../sre/02-alerting-on-slos.md)
 
 ## Common Mistakes
 

@@ -1,7 +1,7 @@
 ---
-title: "Terraform Environments: Directory Layouts, Workspaces, and Account Isolation"
+title: "Terraform Environments: Layouts, Workspaces, and Isolation"
 icon: lucide/git-branch
-description: Compare directory-per-environment layouts with Terraform CLI workspaces, isolate dev, staging, and production with separate state and accounts, and promote changes safely between environments.
+description: "Compare directory-per-environment layouts with Terraform workspaces, isolate environments with separate state and accounts, and promote safely."
 tags:
   - Terraform
   - Environments

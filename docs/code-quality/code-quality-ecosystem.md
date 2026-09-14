@@ -1,7 +1,7 @@
 ---
 title: "Open-Source Code Quality Tools: Linters, Scanners, and Coverage"
 icon: lucide/wrench
-description: The open-source code quality ecosystem — linters, formatters, type checkers, security scanners, and coverage tools for Java, Python, and JavaScript, with CI integration examples.
+description: "Open-source code quality tools — linters, formatters, type checkers, security scanners, and coverage for Java, Python, and JavaScript in CI."
 tags:
   - Code Quality
   - Open Source
@@ -221,11 +221,11 @@ A quality job that slots straight into the [GitHub Actions pipelines](../cicd/gi
   quality:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0                    # full history for gitleaks
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
           cache: pip
@@ -305,4 +305,4 @@ flowchart LR
 
 ## Next
 
-Continue to [Paid and SaaS Platforms](paid-platforms.md).
+Continue to [Paid and SaaS Platforms](paid-platforms.md). To scan container images and infrastructure as code as well, see [Container and IaC Scanning](../security/04-container-and-iac-scanning.md).

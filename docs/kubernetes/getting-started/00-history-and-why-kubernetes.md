@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes History: From Google Borg to CNCF"
 icon: lucide/history
-description: Why Kubernetes was created — Google's internal Borg and Omega systems, the 2014 open-source release, the donation to the CNCF, and the problem it solves that plain Docker doesn't.
+description: "Why Kubernetes exists — Google's Borg and Omega, the 2014 open-source release, the CNCF donation, and the problem plain Docker doesn't solve."
 tags:
   - Kubernetes
   - Getting Started

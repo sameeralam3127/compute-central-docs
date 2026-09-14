@@ -1,7 +1,7 @@
 ---
 title: "Lab: Caddy Reverse Proxy, Frontend, API, and PostgreSQL"
 icon: lucide/flask-conical
-description: Build a four-tier containerized web application — Caddy reverse proxy, static frontend, PostgREST API, and PostgreSQL — on segmented Docker networks, then verify isolation and TLS.
+description: "Build a four-tier app — Caddy reverse proxy, static frontend, PostgREST API, and PostgreSQL — on segmented Docker networks, then verify it."
 tags:
   - Docker
   - Networking

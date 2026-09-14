@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes and OpenShift Tutorial: Learn Container Orchestration"
 icon: lucide/ship-wheel
-description: A practical Kubernetes and OpenShift learning platform and reference — get started, master core objects, go deep on networking and security, troubleshoot production, and prepare for interviews.
+description: "Learn Kubernetes and OpenShift — get started, master core objects, go deep on networking and security, troubleshoot production, and prepare for interviews."
 tags:
   - Kubernetes
   - Overview
@@ -95,4 +95,4 @@ Each project uses only what the previous ones already taught you. Skip ahead if 
 - [Kubernetes Documentation](https://kubernetes.io/docs/)
 - [Kubernetes on GitHub](https://github.com/kubernetes/kubernetes)
 - [CNCF](https://www.cncf.io/)
-- [Red Hat OpenShift Documentation](https://docs.openshift.com/)
+- [Red Hat OpenShift Documentation](https://docs.redhat.com/en/documentation/openshift_container_platform/)

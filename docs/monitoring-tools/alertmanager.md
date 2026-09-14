@@ -1,7 +1,7 @@
 ---
 title: "Alertmanager: Routing, Grouping, Silences, and Inhibition"
 icon: lucide/bell-ring
-description: Understand Alertmanager routing, grouping, silences, notification flow, practical routing models, health checks, and alerting improvements for monitoring stacks.
+description: "Alertmanager for the monitoring stack — grouping, routing, silences, inhibition, and receivers that keep alerts actionable instead of noisy."
 tags:
   - Monitoring
   - Alerting
@@ -76,4 +76,4 @@ curl http://localhost:9093/-/healthy
 
 ## Next
 
-Continue to [Loki Logging With Grafana Alloy](logging.md).
+Continue to [Loki Logging With Grafana Alloy](logging.md). To page on user impact instead of thresholds, see [Alerting on SLOs](../sre/02-alerting-on-slos.md).

@@ -1,5 +1,5 @@
 ---
-title: "LLM Fundamentals: Tokens, Context Windows, and Next-Token Prediction"
+title: "LLM Fundamentals: Tokens, Context Windows, and Prediction"
 icon: lucide/cpu
 description: Understand LLM fundamentals including tokens, tokenization, next-token prediction, probability, context windows, hallucinations, and DevOps use cases.
 tags:

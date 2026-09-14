@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Core Concepts: Pods, Deployments, Services"
 icon: lucide/box
-description: The vocabulary and daily-driver objects behind every Kubernetes manifest — Pods, ReplicaSets and Deployments, Services, namespaces, labels, ConfigMaps/Secrets, volumes, and Jobs.
+description: "The everyday Kubernetes objects — Pods, Deployments, Services, namespaces, labels, ConfigMaps and Secrets, volumes, and Jobs — explained."
 tags:
   - Kubernetes
   - Core Concepts

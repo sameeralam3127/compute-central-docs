@@ -1,67 +1,83 @@
 ---
 title: "Code Quality: SonarQube, Linters, Scanners, and Quality Gates"
 icon: lucide/shield-check
-description: Learn SonarQube code quality basics, installation flow, configuration, Jenkins integration, pipeline scanning, quality gates, and practical code review checks.
+description: Build automated code quality checks — open-source linters and scanners, SonarQube installation and quality gates, and CI pipelines that enforce them.
 tags:
   - SonarQube
   - Code Quality
   - CI/CD
 ---
 
-# Code Quality Overview
+# Code Quality
+
+Automated code quality checks catch bugs, vulnerabilities, leaked secrets, and untested changes before a human reviewer spends time on them. This section maps the tools, then takes you from a fresh SonarQube server to a quality gate that blocks a failing pull request.
 
 ## What You'll Learn
 
-- Where SonarQube fits among linters, security scanners, and paid platforms
-- The recommended path from installation to an enforced quality gate
-- How the pages in this section build on each other
+- Where linters, security scanners, SonarQube, and paid platforms each fit
+- How to install, configure, and secure a SonarQube server
+- How to design a quality gate that judges new code without blocking the team
+- How to enforce that gate in Jenkins, GitHub Actions, and GitLab CI
 
-SonarQube helps teams check code quality and security issues as part of normal development and CI/CD work. It is useful when you want automated feedback on bugs, vulnerabilities, code smells, duplication, and quality gates.
+## Layers of Automated Quality
 
-SonarQube is one option in a much larger market — this section also maps the surrounding ecosystem of open-source linters, security scanners, and paid SaaS platforms so you can combine them deliberately.
+```mermaid
+flowchart LR
+  A["Editor and pre-commit<br/>formatters, linters"] --> B["CI fast checks<br/>lint, type check, unit tests"]
+  B --> C["CI deep checks<br/>SAST, SCA, secrets, coverage"]
+  C --> D["Quality gate<br/>SonarQube or a SaaS platform"]
+  D --> E["Merge and deploy"]
+```
 
-## What This Section Covers
+Fast, cheap checks run earliest. SonarQube sits at the end as the aggregated verdict. It doesn't replace linters that give developers feedback in seconds.
 
-- Installing SonarQube on Ubuntu
-- Connecting SonarQube to PostgreSQL
-- Integrating scans into Jenkins pipelines
-- [Open-source tools and libraries](code-quality-ecosystem.md) — ruff, ESLint, Checkstyle, SpotBugs, Semgrep, Gitleaks, Trivy, JaCoCo, and how to wire them into CI
-- [Paid and SaaS platforms](paid-platforms.md) — SonarCloud, GitHub Advanced Security (CodeQL), Snyk, Codacy, Qlty, DeepSource, Codecov, Veracode, Checkmarx
+## Read in This Order
 
-## Why Teams Use SonarQube
+1. [Open-Source Tools](code-quality-ecosystem.md) — ruff, ESLint, Checkstyle, SpotBugs, Semgrep, Gitleaks, Trivy, JaCoCo, and how to wire them into CI
+2. [Paid Platforms](paid-platforms.md) — SonarQube Cloud, GitHub Advanced Security, Snyk, Codacy, Qlty, DeepSource, Codecov, Veracode, and Checkmarx
+3. [SonarQube Installation](installation.md) — editions, requirements, kernel settings, and Docker Compose or native Ubuntu installs
+4. [SonarQube Configuration](configuration.md) — `sonar.properties`, JVM memory, systemd, HTTPS with Nginx, first-login hardening, backups, and upgrades
+5. [Quality Gates and Profiles](quality-gates.md) — rules, issues and hotspots, the new code period, and custom gates
+6. [Jenkins Integration](jenkins-integration.md) — tokens, credentials, the scanner plugin, and the webhook
+7. [Pipeline Examples](pipeline-example.md) — complete Jenkins, GitHub Actions, and GitLab CI pipelines with coverage and a failing gate
 
-- Finds quality and security issues early
-- Supports many programming languages
-- Adds quality gates to pull request and pipeline workflows
-- Makes technical debt easier to track over time
+## Start Here, Based on Where You Are
 
-## Recommended Flow
+| You want to… | Start at |
+|---|---|
+| Add fast checks to an existing pipeline today | [Open-Source Tools](code-quality-ecosystem.md) |
+| Decide between self-hosting and a SaaS platform | [Paid Platforms](paid-platforms.md) |
+| Stand up a SonarQube server | [Installation](installation.md) |
+| Fix a gate that fails on legacy code | [Quality Gates and Profiles](quality-gates.md) |
+| Make a pipeline fail on a bad gate | [Pipeline Examples](pipeline-example.md) |
 
-1. Install SonarQube
-2. Configure the database and service
-3. Connect Jenkins
-4. Add analysis to a pipeline
-5. Enforce a quality gate
+## Terms You'll See
+
+| Term | Meaning |
+|---|---|
+| **SAST** | Static application security testing — analyzes your source code for vulnerabilities |
+| **SCA** | Software composition analysis — finds known vulnerabilities and license issues in dependencies |
+| **Secrets scanning** | Finds credentials committed to code or history |
+| **Quality profile** | The set of rules applied to a language |
+| **Quality gate** | Pass/fail conditions, usually on new code |
+| **Clean as You Code** | Hold every change to the standard, and let old issues get fixed as files are touched |
 
 ## Useful Links
 
-- [SonarQube documentation](https://docs.sonarsource.com/sonarqube/latest/)
-- [SonarQube downloads](https://www.sonarsource.com/products/sonarqube/downloads/)
-
-!!! tip
-    For production use, plan for enough memory, persistent storage, backups, and proper access control from the start.
+- [SonarQube documentation](https://docs.sonarsource.com/)
+- [SonarQube Community Build releases](https://github.com/SonarSource/sonarqube/releases)
 
 ## Common Mistakes
 
 - Gating on overall code metrics instead of new code, so legacy debt blocks every change.
 - Treating SonarQube as the only check instead of running fast linters locally and in CI first.
 - Ignoring security hotspots because they aren't marked as bugs.
-- Leaving the default admin password, and not backing up the database.
+- Leaving the default admin password, anonymous access, and no database backups on a server that holds private code.
 
 ## Interview Questions
 
 - What is a quality gate, and what should it check?
-- What does "clean as you code" mean?
+- What does "Clean as You Code" mean, and why does it work better than fixing everything first?
 - What's the difference between SAST, SCA, and secrets scanning?
 
 ## Next

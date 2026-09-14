@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Volumes Basics: emptyDir, hostPath, and Pod Ephemerality"
+title: "Kubernetes Volumes Basics: emptyDir, hostPath, and Ephemerality"
 icon: lucide/hard-drive
 description: Intro-level Kubernetes storage — why Pods are ephemeral by design, and the two simplest volume types, emptyDir and hostPath.
 tags:

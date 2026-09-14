@@ -138,4 +138,4 @@ See [Interview Prep](../interview-prep/index.md) for full answers.
 
 ## Next
 
-Continue to [Multi-Cluster and Multi-Region](03-multi-cluster-and-multi-region.md) to see how these same cost and capacity concerns change once a workload spans more than one cluster.
+Continue to [Multi-Cluster and Multi-Region](03-multi-cluster-and-multi-region.md) to see how these same cost and capacity concerns change once a workload spans more than one cluster. For account-wide AWS savings beyond the cluster, see [AWS Cost Optimization](../../cloud/aws/11-cost-optimization.md).

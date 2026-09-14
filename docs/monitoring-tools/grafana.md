@@ -1,7 +1,7 @@
 ---
 title: "Grafana: Dashboards, Data Sources, and Provisioning"
 icon: lucide/layout-dashboard
-description: Learn how Grafana provides dashboards and log views for a monitoring lab, including provisioning files, data sources, dashboard checks, and practical improvements.
+description: "Grafana for the monitoring stack — provisioned data sources and dashboards, useful panels, and dashboards that help during incidents."
 tags:
   - Monitoring
   - Grafana
@@ -21,7 +21,7 @@ Grafana provides the dashboards and log views for the monitoring lab.
 
 - `grafana/provisioning/datasources/datasources.yml`
 - `grafana/provisioning/dashboards/dashboards.yml`
-- `grafana/dashboards/advanced-monitoring-dashboard.json`
+- `grafana/dashboards/node-exporter-full.json` — downloaded during [lab setup](overview.md#2-grafana)
 
 ## What Happens Automatically
 

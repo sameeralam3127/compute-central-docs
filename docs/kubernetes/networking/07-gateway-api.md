@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Gateway API: The Successor to Ingress"
 icon: lucide/door-open
-description: How Gateway API splits GatewayClass, Gateway, and HTTPRoute across platform and app teams, how it replaces Ingress annotations with typed fields, and how to migrate off the retired ingress-nginx controller.
+description: "Gateway API explained — GatewayClass, Gateway, and HTTPRoute roles, typed routing instead of annotations, and migrating off ingress-nginx."
 tags:
   - Kubernetes
   - Networking

@@ -1,7 +1,7 @@
 ---
 title: "Ansible Core Concepts: Inventory, Modules, Variables"
 icon: lucide/layers
-description: The vocabulary and daily-driver skills behind every Ansible playbook — inventory, ad-hoc commands, playbooks/plays/tasks, modules, variables, conditionals, loops, handlers, tags, check mode, and idempotency.
+description: "The everyday Ansible building blocks — inventory, ad-hoc commands, playbooks, modules, variables, conditionals, loops, handlers, tags, and check mode."
 tags:
   - Ansible
   - Core Concepts

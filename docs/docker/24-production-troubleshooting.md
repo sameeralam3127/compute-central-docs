@@ -1,7 +1,7 @@
 ---
 title: "Docker Production Troubleshooting: A Systematic Workflow"
 icon: lucide/stethoscope
-description: A systematic Docker troubleshooting workflow — evidence collection, containers that exit or restart, OOM kills, unreachable ports, DNS, volume permissions, full disks, CPU throttling, image pull failures, and daemon problems.
+description: "A systematic Docker troubleshooting workflow — exits and restarts, OOM kills, unreachable ports, DNS, volume permissions, and full disks."
 tags:
   - Docker
   - Troubleshooting

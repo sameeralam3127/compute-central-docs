@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Configuration and Packaging: ConfigMaps, Secrets, Helm, Kustomize"
+title: "Kubernetes Configuration and Packaging: Helm and Kustomize"
 icon: lucide/settings
 description: How Kubernetes workloads get configured and packaged — ConfigMaps, Secrets, injection patterns, Helm charts, Kustomize overlays, and external secret stores.
 tags:

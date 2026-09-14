@@ -1,7 +1,7 @@
 ---
 title: "Docker Quick Reference: Commands and Cheat Sheet"
 icon: lucide/scroll-text
-description: A Docker cheat sheet — containers, images, builds, logs and debugging, networks, volumes, Compose, registries, cleanup, inspect templates, and troubleshooting one-liners, with links to the full course chapters.
+description: "A Docker cheat sheet — containers, images, builds, logs, networks, volumes, Compose, registries, cleanup, and troubleshooting one-liners."
 tags:
   - Docker
   - Quick Reference
@@ -241,4 +241,4 @@ docker system prune                                  # containers, networks, dan
 
 - [Docker course index](index.md)
 - [Kubernetes with Docker Desktop lab](../kubernetes/labs/03-docker-desktop-lab.md)
-- [Shell scripting for DevOps automation](../shell-scripts/scripts.md)
+- [Shell scripting for DevOps automation](../foundations/shell-scripting/01-bash-fundamentals.md)

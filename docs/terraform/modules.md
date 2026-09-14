@@ -1,7 +1,7 @@
 ---
-title: "Terraform Modules: Structure, Interfaces, Versioning, and Composition"
+title: "Terraform Modules: Structure, Versioning, and Composition"
 icon: lucide/package
-description: Learn how to write Terraform modules with clear inputs and outputs, pass providers correctly, version and publish modules, compose them into stacks, and refactor existing code into modules safely.
+description: "Write Terraform modules with clear inputs and outputs, pass providers correctly, version and publish modules, compose stacks, and refactor safely."
 tags:
   - Terraform
   - Modules

@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Multi-Cluster and Multi-Region Architecture"
 icon: lucide/globe
-description: Why teams run multiple Kubernetes clusters, the state of cluster federation and service-mesh multi-cluster, and the GitOps fan-out pattern most teams actually use.
+description: "Multi-cluster and multi-region Kubernetes — why teams split clusters, traffic and data strategies, GitOps across clusters, and failover."
 tags:
   - Kubernetes
   - Production Engineering

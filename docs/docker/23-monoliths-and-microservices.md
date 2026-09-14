@@ -1,7 +1,7 @@
 ---
-title: "Monoliths and Microservices: What Containers Change and What They Don't"
+title: "Monoliths and Microservices: What Containers Really Change"
 icon: lucide/network
-description: Learn how containers support independent deployment, when a monolith or modular monolith is the better choice, how to extract services safely with the strangler fig pattern, and the distributed-systems problems microservices introduce.
+description: "When a monolith beats microservices, how to extract services with the strangler fig pattern, and the distributed problems you inherit."
 tags:
   - Docker
   - Architecture

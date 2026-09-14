@@ -1,7 +1,7 @@
 ---
 title: "OCI Standards: Image, Runtime, and Distribution Specifications"
 icon: lucide/file-badge
-description: Learn the OCI Image, Runtime, and Distribution Specifications, inspect a real image manifest and runtime bundle, and see why standards let container tools interoperate.
+description: "The OCI image, runtime, and distribution specs — inspect a real image manifest and runtime bundle, and see why container tools interoperate."
 tags:
   - Docker
   - OCI

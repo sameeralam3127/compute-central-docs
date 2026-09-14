@@ -1,7 +1,7 @@
 ---
 title: "Networking Foundations for Containers"
 icon: lucide/network
-description: Learn the networking concepts containers depend on — IP addresses, loopback, subnets, routes, gateways, DNS, ports, and listening sockets — with Linux tools to observe each one.
+description: "Networking concepts containers depend on — IPs, loopback, subnets, routes, gateways, DNS, ports, and sockets — with Linux tools to see each."
 tags:
   - Docker
   - Networking
@@ -160,4 +160,4 @@ sudo ss -tlnp | grep 8080                        # on the server: listening, on 
 
 ## Next
 
-Continue to [Docker Networking and Service Discovery](13-docker-networking.md).
+Continue to [Docker Networking and Service Discovery](13-docker-networking.md). For TCP, DNS, TLS, and load balancers in more depth, see [Networking Foundations](../foundations/networking/index.md).

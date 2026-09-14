@@ -212,8 +212,8 @@ jobs:
       matrix:
         role: [nginx, node_exporter, app_checkout]
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - run: pip install ansible-core molecule "molecule-plugins[docker]"

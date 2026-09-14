@@ -1,7 +1,7 @@
 ---
 title: "Image Registries: Tagging, Authentication, and Publishing Safely"
 icon: lucide/package-check
-description: Learn registries, repositories, tags, and digests, authenticate safely, choose a tagging strategy, publish multi-architecture images from CI, run a local registry, and sign what you ship.
+description: "Image registries — tags and digests, authentication, tagging strategy, multi-arch publishing from CI, local registries, and image signing."
 tags:
   - Docker
   - Registries
@@ -115,7 +115,7 @@ jobs:
   image:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3

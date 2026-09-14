@@ -1,7 +1,7 @@
 ---
-title: "Kubernetes Container Runtimes: CRI, containerd, CRI-O, and dockershim"
+title: "Kubernetes Container Runtimes: CRI, containerd, and CRI-O"
 icon: lucide/ship-wheel
-description: Learn how the kubelet uses the Container Runtime Interface, how containerd and CRI-O run pods, what the dockershim removal really changed, how to debug nodes with crictl, and how RuntimeClass selects sandboxed runtimes.
+description: "How the kubelet uses the CRI, how containerd and CRI-O run pods, what dockershim removal changed, and debugging nodes with crictl."
 tags:
   - Docker
   - Kubernetes

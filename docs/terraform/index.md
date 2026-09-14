@@ -1,7 +1,7 @@
 ---
-title: "Terraform Tutorial: Infrastructure as Code From First Project to Production"
+title: "Terraform Tutorial: Infrastructure as Code to Production"
 icon: lucide/layers
-description: A practical Terraform learning path — core workflow, variables and modules, state and remote backends, environments, testing and CI/CD, and interview preparation.
+description: "A practical Terraform path — core workflow, variables and modules, remote state and backends, environments, testing, CI/CD, and interview prep."
 tags:
   - Terraform
   - Overview
@@ -49,6 +49,7 @@ flowchart TD
 | Layer | Tool | Where |
 |---|---|---|
 | Cloud resources, networks, managed services | **Terraform** | This section |
+| The AWS services you provision | AWS | [AWS](../cloud/aws/index.md) |
 | Operating system and host configuration | Ansible | [Ansible](../ansible/index.md) |
 | Container images | Docker | [Docker](../docker/index.md) |
 | Application workloads | Kubernetes | [Kubernetes](../kubernetes/index.md) |

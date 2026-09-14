@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Metrics Server, kubectl top, and the Metrics APIs"
 icon: lucide/gauge
-description: Installing metrics-server, using kubectl top, and the difference between the Resource Metrics API and the Custom/External Metrics APIs that HPA needs for non-CPU scaling.
+description: "Install metrics-server, use kubectl top, and understand the Resource, Custom, and External Metrics APIs that autoscaling depends on."
 tags:
   - Kubernetes
   - Observability & Health

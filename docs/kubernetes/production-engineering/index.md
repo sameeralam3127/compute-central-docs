@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Production Engineering: Running Real Clusters"
 icon: lucide/factory
-description: The operational discipline around Kubernetes in production — capacity planning, cost optimization, multi-cluster design, disaster recovery, and readiness review.
+description: "Run Kubernetes in production — cluster sizing, cost optimization, multi-cluster design, disaster recovery, and a readiness checklist."
 tags:
   - Kubernetes
   - Production Engineering

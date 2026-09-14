@@ -146,6 +146,16 @@ checked = false
 "Compute Central" = "index.md"
 
 [[project.nav]]
+Foundations = [
+  "foundations/index.md",
+  { "Linux" = ["foundations/linux/index.md", "foundations/linux/01-filesystem-and-permissions.md", "foundations/linux/02-processes-and-signals.md", "foundations/linux/03-systemd-and-journald.md", "foundations/linux/04-storage-disks-and-lvm.md", "foundations/linux/05-users-sudo-and-ssh-hardening.md", "foundations/linux/06-package-management-and-updates.md", "foundations/linux/07-performance-troubleshooting.md"] },
+  { "Shell Scripting" = ["foundations/shell-scripting/index.md", "foundations/shell-scripting/01-bash-fundamentals.md", "foundations/shell-scripting/02-text-processing.md", "foundations/shell-scripting/03-testing-linting-and-debugging.md", "foundations/shell-scripting/04-production-ready-scripts.md"] },
+  { "Networking" = ["foundations/networking/index.md", "foundations/networking/01-tcp-ip-ports-and-sockets.md", "foundations/networking/02-dns.md", "foundations/networking/03-http-and-tls.md", "foundations/networking/04-load-balancers-and-reverse-proxies.md", "foundations/networking/05-network-troubleshooting-toolkit.md"] },
+  { "Git and Branching" = ["foundations/git/index.md", "foundations/git/01-how-git-works.md", "foundations/git/02-everyday-workflow.md", "foundations/git/03-branching-strategies.md", "foundations/git/04-undo-and-recovery.md", "foundations/git/05-collaboration-and-repository-hygiene.md"] },
+  { "Python Automation" = ["foundations/python/index.md", "foundations/python/01-project-setup.md", "foundations/python/02-cli-tools-and-subprocess.md", "foundations/python/03-working-with-http-apis.md", "foundations/python/04-aws-automation-with-boto3.md", "foundations/python/05-files-config-and-templates.md", "foundations/python/06-testing-linting-and-packaging.md"] },
+]
+
+[[project.nav]]
 "AI Guide" = [
   "ai-guide/index.md",
   "ai-guide/llm-fundamentals.md",
@@ -257,15 +267,13 @@ Monitoring = [
 ]
 
 [[project.nav]]
-"Shell Scripts" = "shell-scripts/scripts.md"
-
-[[project.nav]]
 "Code Quality" = [
   "code-quality/index.md",
   "code-quality/code-quality-ecosystem.md",
   "code-quality/paid-platforms.md",
   "code-quality/installation.md",
   "code-quality/configuration.md",
+  "code-quality/quality-gates.md",
   "code-quality/jenkins-integration.md",
   "code-quality/pipeline-example.md",
 ]
@@ -280,4 +288,33 @@ Terraform = [
   "terraform/environments-and-workspaces.md",
   "terraform/testing-and-ci.md",
   "terraform/interview-questions.md",
+]
+
+[[project.nav]]
+Cloud = [
+  "cloud/index.md",
+  { "AWS" = ["cloud/aws/index.md", "cloud/aws/01-accounts-cli-and-organizations.md", "cloud/aws/02-iam.md", "cloud/aws/03-vpc-networking.md", "cloud/aws/04-ec2-and-auto-scaling.md", "cloud/aws/05-load-balancing-and-route53.md", "cloud/aws/06-s3-and-storage.md", "cloud/aws/07-containers-ecs-and-eks.md", "cloud/aws/08-databases.md", "cloud/aws/09-observability-cloudwatch.md", "cloud/aws/10-security-and-secrets.md", "cloud/aws/11-cost-optimization.md"] },
+]
+
+[[project.nav]]
+SRE = [
+  "sre/index.md",
+  "sre/01-slis-slos-and-error-budgets.md",
+  "sre/02-alerting-on-slos.md",
+  "sre/03-incident-response.md",
+  "sre/04-postmortems.md",
+  "sre/05-on-call.md",
+  "sre/06-toil-and-automation.md",
+  "sre/07-capacity-planning-and-load-testing.md",
+]
+
+[[project.nav]]
+Security = [
+  "security/index.md",
+  "security/01-devsecops-and-threat-modeling.md",
+  "security/02-secrets-management-with-vault.md",
+  "security/03-software-supply-chain-security.md",
+  "security/04-container-and-iac-scanning.md",
+  "security/05-identity-and-zero-trust.md",
+  "security/06-hardening-and-compliance.md",
 ]

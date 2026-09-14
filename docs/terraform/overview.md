@@ -1,7 +1,7 @@
 ---
 title: "Terraform Fundamentals and Your First Project"
 icon: lucide/rocket
-description: Learn Terraform infrastructure as code concepts — providers, resources, state, and the init/plan/apply workflow — build a first project with no cloud account, then connect to AWS or LocalStack safely.
+description: "Terraform fundamentals — providers, resources, state, and init/plan/apply — with a first project that needs no cloud account, then AWS or LocalStack."
 tags:
   - Terraform
   - Getting Started

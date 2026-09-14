@@ -53,7 +53,7 @@ Check:
 - Grafana has the Loki data source
 
 ```bash
-docker compose logs -f alloy      # or promtail on the legacy lab config
+docker compose logs -f alloy
 docker compose logs -f loki
 curl http://localhost:3100/ready
 ```

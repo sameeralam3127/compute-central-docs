@@ -1,7 +1,7 @@
 ---
 title: "Ansible Collections Catalog by Domain"
 icon: lucide/library
-description: Beyond ansible.builtin — a map of the major Ansible collections by domain (cloud, network, containers, databases, Windows), and where to find the authoritative module index.
+description: "A map of major Ansible collections by domain — cloud, network, containers, databases, and Windows — and where to find the module index."
 tags:
   - Ansible
   - Modules

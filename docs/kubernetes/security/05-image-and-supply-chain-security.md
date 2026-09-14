@@ -170,4 +170,4 @@ See [Interview Prep](../interview-prep/index.md) for full answers.
 
 ## Next
 
-Continue to [Secrets and Encryption at Rest](06-secrets-and-encryption-at-rest.md) to secure the data these workloads consume, not just the images they run.
+Continue to [Secrets and Encryption at Rest](06-secrets-and-encryption-at-rest.md) to secure the data these workloads consume, not just the images they run. For SBOMs, keyless signing, and build provenance in CI, see [Software Supply Chain Security](../../security/03-software-supply-chain-security.md).

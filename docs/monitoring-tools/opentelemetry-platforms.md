@@ -1,7 +1,7 @@
 ---
 title: "OpenTelemetry and Observability Platforms"
 icon: lucide/share-2
-description: Learn OpenTelemetry concepts, Collector pipelines, practical instrumentation, trace correlation, and how to choose self-hosted or managed observability platforms.
+description: "OpenTelemetry for traces, metrics, and logs — the collector, instrumentation, and how open-source and commercial platforms compare."
 tags:
   - Monitoring
   - OpenTelemetry

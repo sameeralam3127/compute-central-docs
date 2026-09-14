@@ -1,7 +1,7 @@
 ---
 title: "Terraform Variables, Outputs, Locals, and Expressions"
 icon: lucide/variable
-description: Learn Terraform input variables with types and validation, variable precedence, sensitive values, outputs, locals, data sources, count vs. for_each, dynamic blocks, and lifecycle rules.
+description: "Terraform variables with types and validation, precedence, sensitive values, outputs, locals, data sources, count vs for_each, and lifecycle."
 tags:
   - Terraform
   - Configuration

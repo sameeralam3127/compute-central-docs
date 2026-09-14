@@ -1,7 +1,7 @@
 ---
-title: "Monitoring and Observability Stack: Prometheus, Grafana, Loki, and Alertmanager"
+title: "Monitoring Stack: Prometheus, Grafana, Loki, and Alertmanager"
 icon: lucide/activity
-description: Learn a practical monitoring stack with Prometheus, Grafana, Alertmanager, Loki, Grafana Alloy, Blackbox Exporter, exporters, dashboards, alerts, and troubleshooting.
+description: "A practical observability stack — Prometheus, Grafana, Alertmanager, Loki with Grafana Alloy, exporters, synthetic checks, and troubleshooting."
 tags:
   - Monitoring
   - Overview
