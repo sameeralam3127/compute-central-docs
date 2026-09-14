@@ -19,11 +19,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0   # full history: page dates come from git
       - uses: actions/setup-python@v7
         with:
           python-version: 3.x
       - run: pip install zensical
+      - name: Add last-updated dates to front matter
+        run: python scripts/freshness.py frontmatter
       - run: zensical build --clean
+      - name: Add lastmod to sitemap
+        run: python scripts/freshness.py sitemap
+      - name: Shrink search index
+        run: python scripts/slim_search_index.py
 
   deploy:
     if: github.event_name == 'push'
@@ -39,11 +47,19 @@ jobs:
     steps:
       - uses: actions/configure-pages@v5
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0   # full history: page dates come from git
       - uses: actions/setup-python@v7
         with:
           python-version: 3.x
       - run: pip install zensical
+      - name: Add last-updated dates to front matter
+        run: python scripts/freshness.py frontmatter
       - run: zensical build --clean
+      - name: Add lastmod to sitemap
+        run: python scripts/freshness.py sitemap
+      - name: Shrink search index
+        run: python scripts/slim_search_index.py
       - uses: actions/upload-pages-artifact@v4
         with:
           path: site

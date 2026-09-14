@@ -47,7 +47,15 @@ venv/bin/pip install zensical
 venv/bin/zensical build --clean
 ```
 
-GitHub Actions builds the site on every push to `main` and deploys it to GitHub Pages.
+GitHub Actions builds the site on every push to `main` and deploys it to GitHub Pages. The workflow also runs two scripts around the build:
+
+| Script | When | What it does |
+|---|---|---|
+| `scripts/freshness.py frontmatter` | Before `zensical build` | Writes each page's last git commit date into its front matter, for the "Updated" byline and structured data |
+| `scripts/freshness.py sitemap` | After the build | Adds `<lastmod>` dates to `site/sitemap.xml` |
+| `scripts/slim_search_index.py` | After the build | Removes code blocks from `site/search.json`, which every page downloads |
+
+`freshness.py frontmatter` rewrites files in `docs/`, so it only runs in CI unless you pass `--force` — don't commit its changes. The deploy checkout uses `fetch-depth: 0` because dates come from git history.
 
 ## About
 

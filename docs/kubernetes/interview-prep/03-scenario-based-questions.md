@@ -49,7 +49,7 @@ A strong answer narrates the *decision*, not just the commands: "the status colu
 - Pull `kubectl top pod` history and correlate the growth curve against traffic and time-running: a leak shows unbounded growth over hours regardless of load; a legitimately undersized limit shows the container hitting the ceiling quickly under real load and staying flat otherwise.
 - If it's a leak: raising the limit buys time for a real fix, but the actual next step is a heap profile or restart-cadence monitoring in the app itself — that's a development-team action item, not just a platform config change.
 - If it's genuinely undersized: raise `resources.limits.memory` based on the observed high-water mark plus headroom, and set the `request` close to typical steady-state usage so the scheduler doesn't overcommit the node.
-- A strong answer explicitly says "bumping the limit without knowing which of these it is just changes when it fails, not whether it fails." Full depth: [Pod Scheduling and Startup Problems](../troubleshooting/01-pod-scheduling-and-startup-problems.md#oomkilled).
+- A strong answer explicitly says "bumping the limit without knowing which of these it is just changes when it fails, not whether it fails." Full depth: [Pod Scheduling and Startup Problems](../troubleshooting/oomkilled.md).
 
 ## Scenario 4 — "A `kubectl rollout status` has been hanging for ten minutes. What's happening and what do you check?"
 

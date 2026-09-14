@@ -164,6 +164,8 @@ No output after several minutes, alongside a stable restart count, is what actua
 - **Restarting the Deployment before actually fixing the ConfigMap** — this "fixes" the immediate symptom of stale pods for about as long as it takes the new pods to hit the same fatal panic again, and burns time that should have gone into finding the real cause.
 - **Not checking whether the previous ReplicaSet was still around for instant rollback** — in this incident, fixing the ConfigMap and restarting was faster and safer than rolling back, since the ConfigMap fix also unblocks `1.4.0`'s actual intended change. But when the root cause is inside the application code itself rather than an environment mismatch, `kubectl rollout undo deployment/order-service` back to `1.3.2` is almost always the faster way to stop the bleeding while the real fix is developed properly.
 
+For a reusable, step-by-step method beyond this incident, see [Fix Kubernetes CrashLoopBackOff](../troubleshooting/crashloopbackoff.md).
+
 ## Next
 
 Return to [Case Studies](index.md) for the full set, or continue to [Troubleshooting](../troubleshooting/index.md) for a broader diagnostic playbook beyond this one incident.

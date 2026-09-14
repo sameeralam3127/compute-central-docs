@@ -105,7 +105,7 @@ nav = [
     { "OpenShift" = ["kubernetes/openshift/index.md", "kubernetes/openshift/01-what-is-openshift.md", "kubernetes/openshift/02-oc-cli-and-projects.md", "kubernetes/openshift/03-routes-and-networking.md", "kubernetes/openshift/04-source-to-image-and-builds.md", "kubernetes/openshift/05-operators-and-olm.md"] },
     { "Labs" = ["kubernetes/labs/index.md", "kubernetes/labs/01-minikube-lab.md", "kubernetes/labs/02-kind-lab.md", "kubernetes/labs/03-docker-desktop-lab.md", "kubernetes/labs/04-podman-lab.md", "kubernetes/labs/05-hands-on-scenarios.md"] },
     { "Case Studies" = ["kubernetes/case-studies/index.md", "kubernetes/case-studies/01-rolling-deployment-with-zero-downtime.md", "kubernetes/case-studies/02-blue-green-and-canary-releases.md", "kubernetes/case-studies/03-multi-tenant-namespace-setup.md", "kubernetes/case-studies/04-autoscaling-under-load.md", "kubernetes/case-studies/05-secrets-rotation.md", "kubernetes/case-studies/06-debugging-a-crashloopbackoff-incident.md"] },
-    { "Troubleshooting" = ["kubernetes/troubleshooting/index.md", "kubernetes/troubleshooting/01-pod-scheduling-and-startup-problems.md", "kubernetes/troubleshooting/02-networking-and-service-problems.md", "kubernetes/troubleshooting/03-storage-problems.md", "kubernetes/troubleshooting/04-cluster-and-node-problems.md"] },
+    { "Troubleshooting" = ["kubernetes/troubleshooting/index.md", "kubernetes/troubleshooting/01-pod-scheduling-and-startup-problems.md", "kubernetes/troubleshooting/pod-pending.md", "kubernetes/troubleshooting/imagepullbackoff.md", "kubernetes/troubleshooting/crashloopbackoff.md", "kubernetes/troubleshooting/oomkilled.md", "kubernetes/troubleshooting/init-container-failures.md", "kubernetes/troubleshooting/02-networking-and-service-problems.md", "kubernetes/troubleshooting/03-storage-problems.md", "kubernetes/troubleshooting/04-cluster-and-node-problems.md"] },
     { "Interview Preparation" = ["kubernetes/interview-prep/index.md", "kubernetes/interview-prep/01-core-concepts-questions.md", "kubernetes/interview-prep/02-architecture-and-networking-questions.md", "kubernetes/interview-prep/03-scenario-based-questions.md", "kubernetes/interview-prep/04-security-and-rbac-questions.md", "kubernetes/interview-prep/05-senior-and-architect-questions.md"] },
     { "Quick Reference" = ["kubernetes/quick-reference/index.md", "kubernetes/quick-reference/01-kubectl-cheat-sheet.md", "kubernetes/quick-reference/02-yaml-cheat-sheet.md", "kubernetes/quick-reference/03-rbac-cheat-sheet.md", "kubernetes/quick-reference/04-troubleshooting-cheat-sheet.md", "kubernetes/quick-reference/05-resource-units-and-ports-cheat-sheet.md"] },
   ] },
@@ -156,6 +156,7 @@ nav = [
     "security/05-identity-and-zero-trust.md",
     "security/06-hardening-and-compliance.md",
   ] },
+  { "About" = "about/index.md" },
 ]
 
 # Keep Zensical's recommended extension set explicit. Adding one extension table
@@ -188,7 +189,7 @@ pygments_lang_class = true
 [project.markdown_extensions.pymdownx.smartsymbols]
 [project.markdown_extensions.pymdownx.superfences]
 custom_fences = [
-  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+  { name = "mermaid", class = "mermaid-lazy", format = "pymdownx.superfences.fence_code_format" },
 ]
 [project.markdown_extensions.pymdownx.tabbed]
 alternate_style = true
@@ -202,6 +203,8 @@ language = "en"
 favicon = "assets/logo.png"
 logo = "assets/logo.png"
 custom_dir = "overrides"
+# System font stack: Google Fonts was render-blocking and cost ~4.5 s of mobile LCP in Lighthouse tests
+font = false
 
 features = [
   "announce.dismiss",

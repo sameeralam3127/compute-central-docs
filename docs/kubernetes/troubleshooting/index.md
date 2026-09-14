@@ -28,7 +28,7 @@ tags:
 ```mermaid
 flowchart TD
     A[Something is broken] --> B{Pod stuck Pending,\ncrashing, or not\npulling its image?}
-    B -->|Yes| C[Pod scheduling/startup —\nsee Pod Scheduling and\nStartup Problems]
+    B -->|Yes| C[Pod startup —\nsee Pod Startup\nErrors triage]
     B -->|No| D{Traffic not\nreaching the pod?}
     D -->|Yes| E[Networking — see\nNetworking and Service\nProblems]
     D -->|No| F{PVC pending or\nvolume mount failing?}
@@ -40,7 +40,12 @@ flowchart TD
 
 ## Read in this order
 
-1. [Pod Scheduling and Startup Problems](01-pod-scheduling-and-startup-problems.md)
+1. [Pod Startup Errors: Triage Guide](01-pod-scheduling-and-startup-problems.md)
+    - [Pod stuck in Pending](pod-pending.md)
+    - [ImagePullBackOff and ErrImagePull](imagepullbackoff.md)
+    - [CrashLoopBackOff](crashloopbackoff.md)
+    - [OOMKilled (exit code 137)](oomkilled.md)
+    - [Init:CrashLoopBackOff and stuck init containers](init-container-failures.md)
 2. [Networking and Service Problems](02-networking-and-service-problems.md)
 3. [Storage Problems](03-storage-problems.md)
 4. [Cluster and Node Problems](04-cluster-and-node-problems.md)
