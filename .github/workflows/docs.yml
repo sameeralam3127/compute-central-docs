@@ -32,6 +32,8 @@ jobs:
         run: python scripts/freshness.py sitemap
       - name: Shrink search index
         run: python scripts/slim_search_index.py
+      - name: Check published URLs still resolve
+        run: python scripts/check_urls.py
 
   deploy:
     if: github.event_name == 'push'

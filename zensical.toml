@@ -287,3 +287,32 @@ actions = ["accept", "reject", "manage"]
 [project.extra.consent.cookies.analytics]
 name = "Google Analytics"
 checked = false
+
+# Old URLs that search engines and other sites may still link to. Each old page
+# becomes a small HTML page that sends readers (and search engines) to the new
+# one. scripts/check_urls.py fails the build if a published URL disappears
+# without an entry here, so move pages only when you have to.
+[project.plugins.redirects.redirect_maps]
+"jenkins/argocd.md" = "cicd/argocd.md"
+"jenkins/github-actions.md" = "cicd/github-actions.md"
+"jenkins/gitlab-ci.md" = "cicd/gitlab-ci.md"
+"jenkins/index.md" = "cicd/index.md"
+"jenkins/java-github-actions.md" = "cicd/java-github-actions.md"
+"jenkins/jenkins.md" = "cicd/jenkins.md"
+"jenkins/python-github-actions.md" = "cicd/python-github-actions.md"
+"sonarqube/code-quality-ecosystem.md" = "cicd/code-quality/code-quality-ecosystem.md"
+"sonarqube/configuration.md" = "cicd/code-quality/configuration.md"
+"sonarqube/index.md" = "cicd/code-quality/index.md"
+"sonarqube/installation.md" = "cicd/code-quality/installation.md"
+"sonarqube/jenkins-integration.md" = "cicd/code-quality/jenkins-integration.md"
+"sonarqube/paid-platforms.md" = "cicd/code-quality/paid-platforms.md"
+"sonarqube/pipeline-example.md" = "cicd/code-quality/pipeline-example.md"
+"code-quality/code-quality-ecosystem.md" = "cicd/code-quality/code-quality-ecosystem.md"
+"code-quality/configuration.md" = "cicd/code-quality/configuration.md"
+"code-quality/index.md" = "cicd/code-quality/index.md"
+"code-quality/installation.md" = "cicd/code-quality/installation.md"
+"code-quality/jenkins-integration.md" = "cicd/code-quality/jenkins-integration.md"
+"code-quality/paid-platforms.md" = "cicd/code-quality/paid-platforms.md"
+"code-quality/pipeline-example.md" = "cicd/code-quality/pipeline-example.md"
+"code-quality/quality-gates.md" = "cicd/code-quality/quality-gates.md"
+"shell-scripts/scripts.md" = "foundations/shell-scripting/01-bash-fundamentals.md"
