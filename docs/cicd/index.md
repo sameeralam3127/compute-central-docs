@@ -124,6 +124,12 @@ flowchart TD
 - Compare push-based deployment with GitOps pull-based deployment.
 - How would you choose between GitHub Actions, GitLab CI, and Jenkins for a new team?
 
+## Further Reading
+
+- [GitHub Actions Documentation](https://docs.github.com/actions)
+- [GitLab CI/CD Documentation](https://docs.gitlab.com/ee/ci/)
+- [Jenkins Documentation](https://www.jenkins.io/doc/)
+
 ## Next
 
 Continue to [GitHub Actions Deep Dive](github-actions.md). If your team hasn't settled on a branching model yet, read [Branching Strategies](../foundations/git/03-branching-strategies.md) first.

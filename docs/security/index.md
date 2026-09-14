@@ -55,6 +55,12 @@ flowchart LR
 | SAST, SCA, and secrets scanning tools | [Code Quality](../cicd/code-quality/code-quality-ecosystem.md) |
 | Running a security incident | [Incident Response](../sre/03-incident-response.md) |
 
+## Further Reading
+
+- [OWASP](https://owasp.org/) — application security guidance and the Top 10
+- [NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)
+- [CISA Secure by Design](https://www.cisa.gov/securebydesign)
+
 ## Next
 
 Start with [DevSecOps and Threat Modeling](01-devsecops-and-threat-modeling.md).

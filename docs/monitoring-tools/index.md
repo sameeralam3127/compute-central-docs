@@ -74,6 +74,12 @@ That makes it a solid learning setup for DevOps and SRE work.
 - Why does Prometheus pull metrics instead of having services push them?
 - Why is Alertmanager a separate component from Prometheus?
 
+## Further Reading
+
+- [Prometheus Documentation](https://prometheus.io/docs/)
+- [Grafana Documentation](https://grafana.com/docs/)
+- [OpenTelemetry Documentation](https://opentelemetry.io/docs/)
+
 ## Next
 
 Continue to [Observability Fundamentals](observability-fundamentals.md). To apply these tools inside a cluster, see [Kubernetes Observability & Health](../kubernetes/observability/index.md).

@@ -57,6 +57,12 @@ You don't need to finish everything before moving on. A good rule: complete **Li
 - [SRE Practices](../sre/index.md) — the reliability practices these skills support
 - [Security](../security/index.md) — secrets, supply chain, and hardening beyond the basics
 
+## Further Reading
+
+- [Linux man-pages online](https://man7.org/linux/man-pages/)
+- [Pro Git book](https://git-scm.com/book/en/v2)
+- [IETF RFC index](https://www.rfc-editor.org/) — the specifications behind TCP/IP, DNS, HTTP, and TLS
+
 ## Next
 
 Start with [Linux for DevOps](linux/index.md).
