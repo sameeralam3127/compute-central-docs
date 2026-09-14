@@ -102,14 +102,14 @@ Pick a track, or filter by what you're working on. Every track stands on its own
   <span class="cc-card-meta">8 guides</span>
 </a>
 
-<a class="cc-card" href="jenkins/" data-cc-tags="delivery">
+<a class="cc-card" href="cicd" data-cc-tags="delivery">
   <span class="cc-card-icon">:lucide-infinity:</span>
   <strong>CI/CD Pipelines</strong>
   <span class="cc-card-desc">GitHub Actions, GitLab CI, Jenkins, and ArgoCD — from commit to tested image to a GitOps deployment.</span>
   <span class="cc-card-meta">7 guides</span>
 </a>
 
-<a class="cc-card" href="sonarqube/" data-cc-tags="delivery">
+<a class="cc-card" href="code-quality" data-cc-tags="delivery">
   <span class="cc-card-icon">:lucide-shield-check:</span>
   <strong>Code Quality</strong>
   <span class="cc-card-desc">SonarQube quality gates, open-source linters and scanners, and the paid platforms that compete with them.</span>
@@ -148,7 +148,7 @@ Most readers move left to right — but jump in wherever your work is today.
   <li><a href="docker/"><span class="cc-step">2</span><span class="cc-journey-text"><strong>Containers</strong><small>How Docker really works</small></span></a></li>
   <li><a href="kubernetes/"><span class="cc-step">3</span><span class="cc-journey-text"><strong>Kubernetes</strong><small>Orchestrate workloads</small></span></a></li>
   <li><a href="ansible/"><span class="cc-step">4</span><span class="cc-journey-text"><strong>Automation</strong><small>Ansible and Terraform</small></span></a></li>
-  <li><a href="jenkins/"><span class="cc-step">5</span><span class="cc-journey-text"><strong>Delivery</strong><small>CI/CD and code quality</small></span></a></li>
+  <li><a href="cicd"><span class="cc-step">5</span><span class="cc-journey-text"><strong>Delivery</strong><small>CI/CD and code quality</small></span></a></li>
   <li><a href="monitoring-tools/"><span class="cc-step">6</span><span class="cc-journey-text"><strong>Observability</strong><small>Metrics, logs, traces</small></span></a></li>
   <li><a href="ai-guide/"><span class="cc-step">7</span><span class="cc-journey-text"><strong>AI engineering</strong><small>LLMs, RAG, and agents</small></span></a></li>
 </ol>
@@ -197,7 +197,7 @@ Pick the goal closest to yours — each tab is a short, ordered route through th
 
 === ":lucide-infinity: Improve delivery pipelines"
 
-    Start with the [CI/CD overview](jenkins/index.md) and [GitHub Actions](jenkins/github-actions.md), add [SonarQube quality gates](sonarqube/jenkins-integration.md), then wire in [Kubernetes CI/CD](kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes.md).
+    Start with the [CI/CD overview](cicd/index.md) and [GitHub Actions](cicd/github-actions.md), add [SonarQube quality gates](code-quality/jenkins-integration.md), then wire in [Kubernetes CI/CD](kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes.md).
 
 === ":lucide-activity: Operate production-style systems"
 
@@ -222,8 +222,8 @@ Start with the topic you need, then follow the examples in a local or test envir
     - **Docker** — [Course index](docker/index.md), [Dockerfiles](docker/17-dockerfiles.md), [Compose](docker/18-docker-compose.md), [quick reference](docker/docker.md)
     - **Kubernetes** — [Core Concepts](kubernetes/core-concepts/index.md), [labs](kubernetes/labs/05-hands-on-scenarios.md), [OpenShift](kubernetes/openshift/index.md), [troubleshooting](kubernetes/troubleshooting/index.md), [quick reference](kubernetes/quick-reference/index.md)
     - **Ansible** — [Overview](ansible/index.md), [Getting Started](ansible/getting-started/index.md), [Core Concepts](ansible/core-concepts/index.md), [Modules](ansible/modules/index.md), [Case Studies](ansible/case-studies/index.md), [Troubleshooting](ansible/troubleshooting/index.md), [Interview Prep](ansible/interview-prep/index.md)
-    - **CI/CD Pipelines** — [Overview](jenkins/index.md), [GitHub Actions](jenkins/github-actions.md), [GitLab CI/CD](jenkins/gitlab-ci.md), [ArgoCD](jenkins/argocd.md), [Jenkins](jenkins/jenkins.md)
-    - **Code Quality** — [Overview](sonarqube/index.md), [open-source tools](sonarqube/code-quality-ecosystem.md), [SonarQube installation](sonarqube/installation.md), [Jenkins integration](sonarqube/jenkins-integration.md)
+    - **CI/CD Pipelines** — [Overview](cicd/index.md), [GitHub Actions](cicd/github-actions.md), [GitLab CI/CD](cicd/gitlab-ci.md), [ArgoCD](cicd/argocd.md), [Jenkins](cicd/jenkins.md)
+    - **Code Quality** — [Overview](code-quality/index.md), [open-source tools](code-quality/code-quality-ecosystem.md), [SonarQube installation](code-quality/installation.md), [Jenkins integration](code-quality/jenkins-integration.md)
     - **Monitoring** — [Stack overview](monitoring-tools/index.md), [Prometheus](monitoring-tools/prometheus.md), [Grafana](monitoring-tools/grafana.md), [Alertmanager](monitoring-tools/alertmanager.md)
     - **AI Engineering** — [Guide](ai-guide/index.md), [LLM fundamentals](ai-guide/llm-fundamentals.md), [AI agents](ai-guide/ai-agents.md), [evaluation](ai-guide/ai-evaluation.md)
     - **Terraform** — [Overview](terraform/index.md), [first project](terraform/overview.md), [state and backends](terraform/state-and-backends.md), [modules](terraform/modules.md), [testing and CI/CD](terraform/testing-and-ci.md), [interview questions](terraform/interview-questions.md)

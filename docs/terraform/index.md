@@ -52,7 +52,7 @@ flowchart TD
 | Operating system and host configuration | Ansible | [Ansible](../ansible/index.md) |
 | Container images | Docker | [Docker](../docker/index.md) |
 | Application workloads | Kubernetes | [Kubernetes](../kubernetes/index.md) |
-| Pipelines that run all of the above | CI/CD | [CI/CD Pipelines](../jenkins/index.md) |
+| Pipelines that run all of the above | CI/CD | [CI/CD Pipelines](../cicd/index.md) |
 
 ## Further Reading
 
