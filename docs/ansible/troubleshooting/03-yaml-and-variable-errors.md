@@ -149,6 +149,28 @@ For optional nested values, supply a default at the point of use:
 port: "{{ database.port | default(5432) }}"
 ```
 
+## "unexpected parameter type in action: AnsibleSequence"
+
+```text
+ERROR! unexpected parameter type in action: <class 'ansible.parsing.yaml.objects.AnsibleSequence'>
+```
+
+The module's arguments were written as a YAML **list** instead of a **mapping**. It is almost always one extra `-` (newer `ansible-core` releases may print a different class name, such as `list`):
+
+```yaml
+# Wrong: the dash turns the arguments into a list
+- name: Install nginx
+  ansible.builtin.package:
+    - name: nginx
+      state: present
+
+# Right: the arguments are a mapping
+- name: Install nginx
+  ansible.builtin.package:
+    name: nginx
+    state: present
+```
+
 ## Type Surprises That Parse Fine but Fail Later
 
 YAML happily loads these; the error shows up deep inside a task, far from the cause.

@@ -1,7 +1,7 @@
 ---
-title: "Fix Ansible become Sudo Password Errors"
+title: "Fix Ansible become Errors: sudo Password, requiretty, PowerShell"
 icon: lucide/shield-alert
-description: "Fix Ansible become and permission failures — missing sudo passwords, requiretty with pipelining, and file permission errors."
+description: "Fix Ansible become and permission failures — missing sudo password, requiretty with pipelining, the PowerShell shell family error on Windows, and permission denied."
 tags:
   - Ansible
   - Troubleshooting
@@ -152,6 +152,35 @@ Typical causes:
 | `become: true` set on the play, but the task still runs as `deploy` | `become: false` set on the task, block, or role — check with `-vvv` |
 | Fails only on some hosts | Different ownership from a manual change; enforce it with a `file` task |
 | Denied despite correct Unix permissions | SELinux context — check `ls -Z` and `ausearch -m avc -ts recent` |
+
+## "The powershell shell family is incompatible with the sudo become plugin"
+
+```text
+fatal: [win01]: FAILED! => {"msg": "The powershell shell family is incompatible with the sudo become plugin"}
+```
+
+A Windows host is running a task with `become: true`, and the escalation method is the Linux default, `sudo`. Windows connections (`winrm`, `psrp`, or SSH with `ansible_shell_type: powershell`) run commands through PowerShell, where `sudo` means nothing.
+
+The usual cause is `become: true` set too broadly: in `ansible.cfg` (`[privilege_escalation] become = True`), in `group_vars/all.yml`, or on a play that targets Linux and Windows hosts together. Fix it where the Windows hosts are defined:
+
+| Situation | Fix |
+|---|---|
+| The Windows tasks don't need escalation (the connecting account already has the rights) | Set `ansible_become: false` for the Windows group, or remove `become: true` from plays that target Windows |
+| A task really needs to run as another Windows account | Use the Windows method, `runas`, with `become_user` |
+
+```yaml title="group_vars/windows.yml"
+ansible_connection: winrm
+ansible_become_method: runas
+```
+
+```yaml
+- name: Install IIS as SYSTEM
+  ansible.windows.win_feature:
+    name: Web-Server
+    state: present
+  become: true
+  become_user: SYSTEM
+```
 
 ## Common Mistakes
 

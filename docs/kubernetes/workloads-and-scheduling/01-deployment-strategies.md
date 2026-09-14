@@ -1,7 +1,7 @@
 ---
-title: "Kubernetes Deployment Strategies: RollingUpdate, Recreate, Canary"
+title: "Deployment Strategies: Rolling, Recreate, Blue-Green, Canary"
 icon: lucide/refresh-cw
-description: How Deployment rollout strategies work in Kubernetes, how to tune maxSurge and maxUnavailable, and how RollingUpdate relates to blue-green and canary releases.
+description: "Deployment strategies compared for Kubernetes — rolling update vs recreate, tuning maxSurge and maxUnavailable, and when to use blue-green or canary releases."
 tags:
   - Kubernetes
   - Workloads & Scheduling

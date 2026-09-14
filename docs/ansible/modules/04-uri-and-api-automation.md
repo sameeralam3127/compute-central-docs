@@ -1,7 +1,7 @@
 ---
-title: "Ansible uri Module: API Automation Guide"
+title: "Ansible uri Module (ansible.builtin.uri): REST API Examples"
 icon: lucide/globe
-description: API automation with the uri module — status_code checks, JSON bodies, authentication headers, and registering structured responses.
+description: "Ansible uri module examples — GET and POST to REST APIs with ansible.builtin.uri, JSON bodies, auth headers, status_code checks, and why it beats shell with curl."
 tags:
   - Ansible
   - Modules

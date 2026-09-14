@@ -1,7 +1,7 @@
 ---
-title: "Ansible Multi-Environment Inventory Example"
+title: "Ansible Inventory for Dev, Staging, and Prod Environments"
 icon: lucide/layers
-description: "A multi-environment Ansible inventory case study — isolating dev, staging, and production so a mistake can't cross environment boundaries."
+description: "How to structure Ansible inventory for dev, staging, and production — separate inventories, per-environment group_vars, and guardrails so a mistake can't reach prod."
 tags:
   - Ansible
   - Case Studies

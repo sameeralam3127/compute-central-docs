@@ -1,7 +1,7 @@
 ---
-title: "Fix Ansible Module Not Found Errors"
+title: "Fix Ansible Module Errors: Not Found, MODULE FAILURE, setup"
 icon: lucide/octagon-x
-description: Diagnosing Ansible module and execution errors — missing Python interpreters, module not found, and reading module-specific failure messages.
+description: "Fix Ansible module and execution errors — couldn't resolve module, missing Python, MODULE FAILURE, ansible.legacy.setup failed to execute, and module result deserialization failed."
 tags:
   - Ansible
   - Troubleshooting
@@ -124,6 +124,41 @@ For readable output, switch the callback:
 [defaults]
 stdout_callback = ansible.builtin.default
 result_format = yaml
+```
+
+## "The following modules failed to execute: ansible.legacy.setup"
+
+```text
+fatal: [web01]: FAILED! => {"ansible_facts": {}, "changed": false, "failed_modules": {"ansible.legacy.setup": {"failed": true, "module_stderr": "...", "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error", "rc": 1}}, "msg": "The following modules failed to execute: ansible.legacy.setup\n"}
+```
+
+`ansible.legacy.setup` is the module behind the implicit **Gathering Facts** step, so the play failed before your first task. The real cause is in `module_stderr` inside `failed_modules`:
+
+| `module_stderr` shows | Cause | Fix |
+|---|---|---|
+| `python3: not found`, or a `SyntaxError` | No Python, or a Python too old for this `ansible-core` | [Python Interpreter Problems](#python-interpreter-problems) |
+| `Permission denied`, or a sudo message | Escalation failed while gathering facts | [Become and Permission Problems](02-become-and-permission-problems.md) |
+| `No space left on device` | Ansible can't write the module to the remote temp directory | Free space, or point `remote_tmp` at a filesystem with room |
+| Nothing, and the task times out | A hung mount (often NFS) that hardware fact gathering tries to read | Skip those facts with `gather_subset: ["!hardware"]`, then fix the mount |
+
+To confirm the rest of the play works while you investigate, run it once with `gather_facts: false`.
+
+## "Module result deserialization failed: No start of json char found"
+
+```text
+fatal: [web01]: FAILED! => {"msg": "Module result deserialization failed: No start of json char found"}
+```
+
+A module reports its result by printing a JSON document. This error means Ansible got output back but found no JSON in it at all, so the module never really ran or something replaced its output. Common causes:
+
+- `ansible_python_interpreter` points at something that isn't a working Python: a wrapper script, a deleted virtualenv, or a different program.
+- A custom module in `library/` prints plain text instead of calling `module.exit_json()`.
+- A shell startup file or wrapper on the host exits early for non-interactive sessions.
+
+Run the task with `-vvv` and read `module_stdout` and `module_stderr`, which show what actually came back. Then test the interpreter directly:
+
+```bash
+ansible web01 -m ansible.builtin.raw -a "/usr/bin/python3 --version"
 ```
 
 ## Reading a Module's Own msg

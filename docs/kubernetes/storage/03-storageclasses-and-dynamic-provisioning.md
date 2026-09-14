@@ -1,5 +1,5 @@
 ---
-title: "StorageClasses and Dynamic Provisioning with CSI"
+title: "Kubernetes StorageClass and Dynamic Provisioning (CSI)"
 icon: lucide/layers
 description: How StorageClasses and CSI drivers provision PersistentVolumes on demand, plus volume expansion and default StorageClass behavior.
 tags:

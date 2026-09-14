@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes DaemonSets: Node-Level Agents Explained"
+title: "Kubernetes DaemonSet Explained: Examples and Use Cases"
 icon: lucide/server
 description: How DaemonSets run one pod per matching node for log collectors, CNI plugins, and monitoring agents, plus update strategies and node targeting.
 tags:

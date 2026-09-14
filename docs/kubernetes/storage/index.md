@@ -11,6 +11,46 @@ tags:
 
 Pods are disposable, but data usually isn't. This section builds the storage mental model in layers: the ephemeral volumes attached directly to a pod spec, the PersistentVolume/PersistentVolumeClaim abstraction that survives a pod being rescheduled, the StorageClasses that provision that storage on demand, and the patterns StatefulSets use to give each replica its own durable disk.
 
+## Kubernetes Storage at a Glance
+
+| Object | What it is | How long the data lasts | Usually created by |
+|---|---|---|---|
+| Volume (`emptyDir`, `hostPath`, `configMap`, ...) | Storage declared inside a pod spec | `emptyDir` lives as long as the pod; `hostPath` stays on that one node | The app team, in the pod spec |
+| PersistentVolume (PV) | A piece of real storage: a cloud disk, an NFS share, a local disk | Independent of any pod | An admin, or a StorageClass automatically |
+| PersistentVolumeClaim (PVC) | A request for storage: size, access mode, and class | Until the claim is deleted; the PV's `reclaimPolicy` then decides whether the data is kept | The app team |
+| StorageClass | A template that creates PVs on demand through a CSI driver | Cluster-wide configuration | The platform team |
+
+The everyday pattern for persistent storage is a PVC plus a pod that mounts it. The StorageClass creates the disk behind the claim:
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: standard      # list the classes in your cluster: kubectl get storageclass
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app
+spec:
+  containers:
+    - name: app
+      image: nginx:1.27
+      volumeMounts:
+        - name: data
+          mountPath: /usr/share/nginx/html
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: data
+```
+
 ## Read in this order
 
 1. [Volumes](01-volumes.md) — ephemeral volume types (`emptyDir`, `hostPath`, `configMap`, `secret`, `projected`), and why none of them survive a pod being rescheduled to a different node

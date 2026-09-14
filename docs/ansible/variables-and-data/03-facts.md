@@ -1,7 +1,7 @@
 ---
-title: "Ansible Facts and gather_facts Explained"
+title: "Ansible Facts: gather_facts, Common Facts, and Custom Facts"
 icon: lucide/scan-search
-description: Ansible facts — the setup module, ansible_facts, gathering subsets, caching, and custom facts.
+description: "Ansible facts explained — gather_facts and the setup module, how to print all facts, common facts like ansible_memtotal_mb and ansible_default_ipv4, subsets, and custom facts."
 tags:
   - Ansible
   - Variables
@@ -55,6 +55,39 @@ Abbreviated output:
     "memtotal_mb": 3931,
     "processor_vcpus": 2
 }
+```
+
+To print all facts from inside a playbook:
+
+```yaml
+- name: Print every fact Ansible gathered for this host
+  ansible.builtin.debug:
+    var: ansible_facts
+```
+
+## Commonly Used Facts
+
+| Fact inside `ansible_facts` | Top-level variable | Example value |
+|---|---|---|
+| `hostname` | `ansible_hostname` | `web01` |
+| `fqdn` | `ansible_fqdn` | `web01.example.internal` |
+| `distribution`, `distribution_version` | `ansible_distribution`, `ansible_distribution_version` | `Ubuntu`, `24.04` |
+| `os_family` | `ansible_os_family` | `Debian` |
+| `default_ipv4.address` | `ansible_default_ipv4.address` | `10.0.1.11` |
+| `all_ipv4_addresses` | `ansible_all_ipv4_addresses` | `["10.0.1.11", "172.17.0.1"]` |
+| `memtotal_mb` | `ansible_memtotal_mb` | `3931` |
+| `memfree_mb` | `ansible_memfree_mb` | `1210` |
+| `swaptotal_mb` | `ansible_swaptotal_mb` | `2047` |
+| `processor_vcpus` | `ansible_processor_vcpus` | `2` |
+| `mounts` | `ansible_mounts` | A list of mount points with size and free space |
+
+```yaml
+- name: Report memory, swap, and primary IP
+  ansible.builtin.debug:
+    msg: >-
+      {{ inventory_hostname }} has {{ ansible_facts['memtotal_mb'] }} MB RAM,
+      {{ ansible_facts['swaptotal_mb'] }} MB swap,
+      and IP {{ ansible_facts['default_ipv4']['address'] | default('none') }}
 ```
 
 ## Using Facts in Tasks

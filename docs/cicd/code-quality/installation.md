@@ -183,6 +183,12 @@ curl -s http://localhost:9000/api/system/status
 | `DB_MIGRATION_NEEDED` | A new version is waiting for you to open `/setup` and migrate |
 | `DOWN` | Check `logs/sonar.log`, `web.log`, `es.log`, and `ce.log` |
 
+### Default Port and Login
+
+SonarQube listens on port **9000** by default: open `http://localhost:9000`. The first login is username **`admin`**, password **`admin`**, and SonarQube makes you change the password straight away. Do it before you create any projects or tokens. If the server is reachable from a network, change it before anyone else can reach the page.
+
+Forgot the new admin password? Reset it in the database, as described in the SonarQube documentation for your version. Reinstalling doesn't reset it, because the password lives in PostgreSQL, not in the SonarQube files.
+
 ## Common Mistakes
 
 - Skipping `vm.max_map_count`, so `es.log` shows `max virtual memory areas vm.max_map_count [65530] is too low` and the server never comes up.

@@ -92,6 +92,19 @@ ansible [core 2.17.4]
 
 This output tells you four things worth reading every time something behaves unexpectedly: the **ansible-core version**, which **config file** (if any) is active, which **Python interpreter** Ansible itself is running under, and whether **libyaml** is available (the fast C-based YAML parser — if `False`, YAML parsing is slower and it's worth installing `libyaml-dev`/`libyaml-devel` and reinstalling PyYAML).
 
+## "ansible-playbook: command not found"
+
+The install worked, but the directory that holds the commands isn't on your `PATH`, or the commands were never exposed:
+
+| Installed with | Cause | Fix |
+|---|---|---|
+| `pipx install ansible-core` | `~/.local/bin` isn't on `PATH` | `pipx ensurepath`, then open a new shell |
+| `pipx install ansible` (without `--include-deps`) | The commands belong to the `ansible-core` dependency, which pipx doesn't expose by default | `pipx install --include-deps ansible`, or install `ansible-core` instead |
+| `pip install --user` | `~/.local/bin` (Linux) or `~/Library/Python/3.x/bin` (macOS) isn't on `PATH` | Add that directory to `PATH` in your shell profile |
+| A virtualenv | The environment isn't active in this shell | `source .venv/bin/activate` |
+
+Check with `command -v ansible-playbook`. If it prints nothing, the shell can't find the command.
+
 ## Common Mistakes
 
 - Installing globally with `sudo pip install ansible`, then fighting version conflicts with the OS package manager forever after.

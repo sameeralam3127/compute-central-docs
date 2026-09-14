@@ -1,13 +1,15 @@
 ---
-title: "Ansible Control Node vs Managed Node Explained"
+title: "Ansible Control Node vs Managed Node: What Each Needs"
 icon: lucide/network
-description: Control node vs. managed node — what software each one actually needs, and why the requirements are asymmetric.
+description: "What an Ansible control node and a managed node are, what software each needs, and which operating systems can be a control node."
 tags:
   - Ansible
   - Getting Started
 ---
 
 # Control Node vs. Managed Nodes
+
+The **Ansible control node** is the machine where Ansible is installed and where you run `ansible-playbook`. **Managed nodes** are the servers and devices it configures. They need no Ansible and no agent: only SSH access and Python, or WinRM for Windows hosts.
 
 ## What You'll Learn
 

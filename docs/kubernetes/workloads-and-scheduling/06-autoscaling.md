@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Autoscaling: HPA, VPA, and Cluster Autoscaler"
+title: "Kubernetes Autoscaling: HPA vs VPA vs Cluster Autoscaler"
 icon: lucide/trending-up
 description: How HorizontalPodAutoscaler, VerticalPodAutoscaler, and Cluster Autoscaler/Karpenter each scale a different dimension, and where they conflict.
 tags:
@@ -128,6 +128,17 @@ spec:
 ```
 
 VPA watches actual usage over time and recommends (or, in `Auto`/`Recreate` mode, applies) better `requests`/`limits` — it fixes the "everyone guessed their resource requests wrong" problem HPA can't touch, because HPA only changes replica *count*, never per-pod sizing. Applying a new recommendation requires **recreating the pod** (there's no in-place resize in most cluster versions), which briefly disrupts that pod.
+
+## HPA vs VPA: Which One to Use
+
+| | HPA | VPA |
+|---|---|---|
+| Changes | Number of replicas | CPU and memory requests of each pod |
+| Fits | Stateless services where more copies share the load | Workloads that can't scale out, or whose requests were guessed |
+| Applies a change by | Adding or removing pods | Recreating pods with new requests (unless `updateMode` is `Off` or `Initial`) |
+| Built in | Yes, `autoscaling/v2` | No, you install the VPA components separately |
+
+Start with HPA for stateless services. Run VPA with `updateMode: "Off"` to get sizing recommendations without restarts. Use both on the same workload only when they watch different signals, as the table below explains.
 
 ## Cluster Autoscaler and Karpenter
 

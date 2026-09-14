@@ -1,7 +1,7 @@
 ---
-title: "PersistentVolumes and PersistentVolumeClaims Explained"
+title: "Kubernetes Persistent Storage: PV, PVC, and Reclaim Policy"
 icon: lucide/hard-drive-download
-description: The PersistentVolume and PersistentVolumeClaim lifecycle, binding, access modes, and reclaim policies that decouple storage from any single pod.
+description: "Kubernetes persistent storage explained — PersistentVolume vs PersistentVolumeClaim, binding, access modes, and the Retain and Delete reclaim policies."
 tags:
   - Kubernetes
   - Storage

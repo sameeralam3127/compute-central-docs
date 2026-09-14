@@ -1,7 +1,7 @@
 ---
-title: "Kubernetes Logging: kubectl logs and Cluster-Wide Patterns"
+title: "Kubernetes Logging Architecture: kubectl logs, Node Logs, Agents"
 icon: lucide/file-text
-description: How container logs flow from stdout/stderr to kubectl logs, node-level log rotation, and cluster-wide logging patterns with node agents versus sidecars.
+description: "Kubernetes logging architecture — how container logs reach kubectl logs, kubelet and node logs, log rotation, and cluster-wide log aggregation with node agents or sidecars."
 tags:
   - Kubernetes
   - Observability & Health
@@ -72,6 +72,18 @@ kubectl logs -l app=checkout --all-containers --prefix
 ### Node-level log rotation
 
 Node disks aren't infinite, so `kubelet` enforces rotation on container log files — by default, based on size (`containerLogMaxSize`) and count of retained files (`containerLogMaxFiles`), both configurable in the kubelet config. Once a pod's logs roll past retention or the pod itself is deleted, `kubectl logs` has nothing left to return — this is the fundamental reason cluster-wide log aggregation exists: to move logs off short-lived node disks before rotation or pod deletion erases them.
+
+### Node, kubelet, and control plane logs
+
+The kubelet and the container runtime run as system services, not containers, so `kubectl logs` can't show them. On systemd-based nodes they write to the journal:
+
+```bash
+journalctl -u kubelet --since "1 hour ago"
+journalctl -u containerd -f
+ls /var/log/pods/     # one directory per pod: <namespace>_<pod>_<uid>
+```
+
+On kubeadm clusters, the API server, scheduler, controller manager, and etcd run as static pods, so `kubectl logs -n kube-system kube-apiserver-<node-name>` works. Managed services (EKS, GKE, AKS) hide the control plane; turn on the provider's control plane logging instead.
 
 ### Cluster-wide logging patterns
 
