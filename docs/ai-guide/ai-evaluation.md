@@ -1,5 +1,5 @@
 ---
-title: "AI Evaluation: Metrics, Test Sets, and LLM-as-a-Judge"
+title: "AI Model Evaluation: Metrics, Test Sets, LLM-as-a-Judge"
 icon: lucide/bar-chart
 description: Evaluate AI systems with quantitative, qualitative, benchmark, LLM-as-judge, and reliability-focused methods for safer production AI workflows.
 tags:

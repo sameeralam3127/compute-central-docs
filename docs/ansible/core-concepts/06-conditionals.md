@@ -1,7 +1,7 @@
 ---
-title: "Ansible when Conditional: Syntax and Examples"
+title: "Ansible when Conditionals: If/Else, AND, OR, and NOT Examples"
 icon: lucide/git-fork
-description: Ansible conditionals with when — skipping or running tasks based on facts, variables, and registered results.
+description: "Ansible when conditional examples — if/else logic, multiple conditions with and/or/not, facts, registered results, and when with loops."
 tags:
   - Ansible
   - Core Concepts
@@ -58,6 +58,44 @@ A YAML **list** under `when:` is an implicit AND. For OR, use Jinja2's `or` dire
 ```yaml
 when: ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
 ```
+
+For NOT, use `not`, `!=`, or a negated test:
+
+```yaml
+when: not maintenance_mode
+when: env != "production"
+when: app_version is not defined
+```
+
+## If/Else in Ansible
+
+Ansible has no `if`/`else` keyword for tasks. Pick the form that fits what you're choosing:
+
+**Choosing a value.** Use a Jinja2 inline `if`:
+
+```yaml
+- name: Pick the web server package for this OS family
+  ansible.builtin.set_fact:
+    web_package: "{{ 'apache2' if ansible_facts['os_family'] == 'Debian' else 'httpd' }}"
+```
+
+**Running one task or another.** Write two tasks with opposite conditions:
+
+```yaml
+- name: Start the service in production
+  ansible.builtin.service:
+    name: checkout
+    state: started
+  when: env == "production"
+
+- name: Stop the service everywhere else
+  ansible.builtin.service:
+    name: checkout
+    state: stopped
+  when: env != "production"
+```
+
+**Running one group of tasks or another.** Put the `when:` on a [block](../playbook-engineering/01-blocks-rescue-always.md), which applies it to every task inside.
 
 ## `when:` With `loop`
 

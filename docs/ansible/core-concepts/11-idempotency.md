@@ -12,6 +12,9 @@ tags:
 
 This is the single most important mental model in Ansible. "Why did this task change something on the second run?" and "why is my playbook not safe to re-run?" both trace back to the declarative/imperative distinction covered here.
 
+!!! question "Is Ansible declarative or imperative?"
+    Both, at different levels. Each **task** is declarative: `ansible.builtin.package` with `state: present` describes an end state, and the module changes nothing if the host already matches. The **playbook** is procedural: tasks run top to bottom in the order you wrote them, steered by `when`, `loop`, and handlers. Tasks that use `command` or `shell` are imperative unless you add `creates`, `removes`, or `changed_when`.
+
 ## What You Will Learn
 
 - The difference between imperative, declarative, and procedural automation

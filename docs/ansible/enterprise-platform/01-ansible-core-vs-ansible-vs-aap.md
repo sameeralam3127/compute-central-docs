@@ -1,7 +1,7 @@
 ---
 title: "ansible-core vs ansible vs AWX vs AAP"
 icon: lucide/layers-3
-description: ansible-core vs. the ansible community package vs. AWX vs. Red Hat Ansible Automation Platform — four things that share a name, disambiguated precisely.
+description: "ansible-core vs ansible vs AWX vs AAP (formerly Ansible Tower) — what each one is, how AWX relates to Ansible Automation Platform, and which one a team needs."
 tags:
   - Ansible
   - Enterprise Platform
@@ -34,6 +34,9 @@ flowchart TD
 - **`ansible` (the community package)** — `ansible-core` plus a curated bundle of community collections, installed together for convenience. Most beginners who `pip install ansible` (rather than `ansible-core`) get this — see [Installing Ansible](../getting-started/04-installing-ansible.md).
 - **AWX** — the open-source, community-supported web UI/API control plane. Job scheduling, RBAC, credential storage, and a REST API sit in front of the same `ansible-core` engine underneath. No formal vendor support or backport guarantees.
 - **Red Hat Ansible Automation Platform (AAP)** — the same Controller technology as AWX, stabilized and backported onto a supported release cadence, packaged with Execution Environments and Automation Hub (certified content), and backed by a Red Hat support contract.
+
+!!! note "Where Ansible Tower went"
+    **Ansible Tower** was the earlier name of AAP's web UI and API. With AAP 2.0 in 2021, Red Hat renamed it **automation controller**. "AWX vs Tower" and "AWX vs AAP" are the same question.
 
 **AWX is to AAP roughly what Fedora is to RHEL** — the fast-moving open-source upstream that AAP's Controller is a stabilized, commercially supported downstream of. AWX gets new features first; AAP gets long-term support and vendor SLAs.
 

@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Multi-Cluster and Multi-Region Architecture"
+title: "Kubernetes Multi-Cluster Management and Multi-Region Design"
 icon: lucide/globe
 description: "Multi-cluster and multi-region Kubernetes — why teams split clusters, traffic and data strategies, GitOps across clusters, and failover."
 tags:

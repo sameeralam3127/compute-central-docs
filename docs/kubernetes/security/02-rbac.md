@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes RBAC: Roles, ClusterRoles, and Bindings"
+title: "Kubernetes RBAC Explained: Roles, ClusterRoles, and Bindings"
 icon: lucide/lock
 description: How Kubernetes RBAC works — Role vs ClusterRole, RoleBinding vs ClusterRoleBinding, verbs and resources, and a least-privilege design walkthrough.
 tags:
@@ -8,6 +8,8 @@ tags:
 ---
 
 # RBAC
+
+**Kubernetes RBAC (role-based access control)** decides what an authenticated user or service account may do: which verbs (`get`, `list`, `create`, `delete`, and so on) on which resources, in which namespaces. It is built from four objects in the `rbac.authorization.k8s.io` API group: Role, ClusterRole, RoleBinding, and ClusterRoleBinding.
 
 ## What You'll Learn
 

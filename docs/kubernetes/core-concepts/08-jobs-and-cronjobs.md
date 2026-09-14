@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Jobs and CronJobs: Batch and Scheduled Workloads"
 icon: lucide/clock
-description: "Kubernetes Jobs and CronJobs — completions, parallelism, backoffLimit, schedules, concurrencyPolicy, and when to use them over Deployments."
+description: "Kubernetes Jobs and CronJobs — batch vs long-running workloads, completions, parallelism, backoffLimit and BackoffLimitExceeded, schedules, and concurrencyPolicy."
 tags:
   - Kubernetes
   - Core Concepts
@@ -92,6 +92,29 @@ kubectl get cronjobs
 kubectl get jobs --watch                    # watch new Jobs appear as the schedule fires
 kubectl create job --from=cronjob/nightly-cleanup manual-run-now   # trigger one run immediately, outside the schedule
 ```
+
+## When a Job Fails: BackoffLimitExceeded
+
+```text
+$ kubectl describe job db-migration
+...
+Conditions:
+  Type    Status  Reason
+  ----    ------  ------
+  Failed  True    BackoffLimitExceeded
+```
+
+The Job's Pods failed more times than `backoffLimit` allows (6 if you don't set it), so the Job controller stopped retrying and marked the Job `Failed`. The Job object is fine. The question is why its Pods failed:
+
+```bash
+kubectl get pods -l job-name=db-migration
+kubectl logs job/db-migration              # logs from one of the Job's Pods
+kubectl describe pod <failed-pod>          # exit code, OOMKilled, image pull errors
+```
+
+- With `restartPolicy: Never`, every failure leaves a failed Pod behind to inspect. With `OnFailure`, the container restarts inside the same Pod, so check `kubectl logs --previous`.
+- A Job stopped by `activeDeadlineSeconds` shows the reason `DeadlineExceeded` instead.
+- A failed Job doesn't restart. Fix the cause, then delete and recreate the Job. For a CronJob, trigger a fresh run with `kubectl create job --from=cronjob/<name>`.
 
 ## Use Cases
 
