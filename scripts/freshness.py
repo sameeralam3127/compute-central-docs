@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
-"""Add git-based "last updated" dates to the site.
+"""Add git-based "last updated" and "first published" dates to the site.
 
 Two steps, run in CI around `zensical build`:
 
   python scripts/freshness.py frontmatter   # before the build
   python scripts/freshness.py sitemap       # after the build
 
-`frontmatter` reads each page's last commit date from git and writes it into
-the page's front matter as `last_updated` (ISO date) and
-`last_updated_display` (human-readable). The templates use these for the
-byline and structured data. It rewrites files in docs/, so it refuses to run
-outside CI unless you pass --force — don't commit the result.
+`frontmatter` reads each page's first and last commit dates from git and
+writes them into the page's front matter as `last_updated` /
+`last_updated_display` and `date_published` / `date_published_display`
+(ISO and human-readable). The templates use these for the byline and
+structured data (dateModified / datePublished). It rewrites files in docs/,
+so it refuses to run outside CI unless you pass --force — don't commit the
+result.
 
 `sitemap` adds <lastmod> to site/sitemap.xml using the same dates.
 
@@ -58,6 +60,22 @@ def last_commit_dates() -> dict[Path, str]:
     return dates
 
 
+def first_commit_dates() -> dict[Path, str]:
+    """Map every tracked Markdown file to the date of its first (oldest) commit."""
+    out = subprocess.run(
+        ["git", "log", "--format=%x00%cs", "--name-only", "--", str(DOCS)],
+        capture_output=True, text=True, check=True,
+    ).stdout
+    dates: dict[Path, str] = {}
+    current = None
+    for line in out.splitlines():
+        if line.startswith("\x00"):
+            current = line[1:]
+        elif line.endswith(".md") and current:
+            dates[Path(line)] = current  # log is newest first: last write wins = oldest
+    return dates
+
+
 def display(iso: str) -> str:
     d = date.fromisoformat(iso)
     return f"{d.day} {d:%B %Y}"
@@ -80,12 +98,14 @@ def cmd_frontmatter(force: bool) -> None:
         )
 
     dates = last_commit_dates()
+    created = first_commit_dates()
     by_url: dict[str, str] = {}
     written = 0
     for md in sorted(DOCS.rglob("*.md")):
         iso = dates.get(md)
         if not iso:
             continue  # untracked file
+        published_iso = created.get(md, iso)
         by_url[url_path(md)] = iso
         text = md.read_text(encoding="utf-8")
         if re.search(r"^last_updated:", text, re.M):
@@ -93,6 +113,8 @@ def cmd_frontmatter(force: bool) -> None:
         fields = (
             f'last_updated: "{iso}"\n'
             f'last_updated_display: "{display(iso)}"\n'
+            f'date_published: "{published_iso}"\n'
+            f'date_published_display: "{display(published_iso)}"\n'
         )
         if text.startswith("---\n"):
             end = text.index("\n---", 3)

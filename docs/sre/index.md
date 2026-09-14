@@ -56,6 +56,11 @@ DevOps describes a culture of shared ownership between building and running soft
 | Safe changes | [Progressive delivery](../kubernetes/cicd-and-gitops/03-progressive-delivery-canary-and-blue-green.md) and [CI/CD](../cicd/index.md) |
 | Diagnosing incidents | [Linux performance](../foundations/linux/07-performance-troubleshooting.md), [network troubleshooting](../foundations/networking/05-network-troubleshooting-toolkit.md), [Kubernetes troubleshooting](../kubernetes/troubleshooting/index.md) |
 
+## Further Reading
+
+- [Google - Site Reliability Engineering](https://sre.google/sre-book/table-of-contents/) — the original SRE book, free online
+- [Google - The Site Reliability Workbook](https://sre.google/workbook/table-of-contents/)
+
 ## Next
 
 Start with [SLIs, SLOs, and Error Budgets](01-slis-slos-and-error-budgets.md).

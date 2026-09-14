@@ -64,6 +64,12 @@ flowchart TB
 !!! warning "Some resources cost money even when idle"
     NAT gateways, load balancers, EKS control planes, RDS instances, and public IPv4 addresses all bill by the hour whether or not they receive traffic. Delete them when a lab is done.
 
+## Further Reading
+
+- [AWS Documentation](https://docs.aws.amazon.com/)
+- [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)
+- [AWS Free Tier](https://aws.amazon.com/free/)
+
 ## Next
 
 Start with [Accounts, CLI, and Organizations](01-accounts-cli-and-organizations.md).

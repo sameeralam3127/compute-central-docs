@@ -92,3 +92,9 @@ application → image → container process → namespaces + cgroups + filesyste
 ```
 
 You will also know where the abstractions stop: a container shares a kernel, an image is not a running service, a published port is not a complete network design, and Docker does not make a distributed system simple by itself.
+
+## Further Reading
+
+- [Docker Documentation](https://docs.docker.com/)
+- [Moby Project on GitHub](https://github.com/moby/moby) — the open-source engine Docker is built on
+- [Open Container Initiative specifications](https://opencontainers.org/)

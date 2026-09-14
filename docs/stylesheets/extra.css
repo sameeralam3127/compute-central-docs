@@ -459,7 +459,9 @@ html {
   border: 1px solid var(--md-default-fg-color--lightest);
   border-radius: 999px;
   background: var(--md-default-bg-color);
-  color: var(--md-default-fg-color--light);
+  /* Full-strength foreground, not --light: at this font-size --light fails
+     WCAG AA contrast against the chip background in both palettes. */
+  color: var(--md-default-fg-color);
   font: inherit;
   font-size: 0.66rem;
   font-weight: 600;

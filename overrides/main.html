@@ -4,8 +4,25 @@
   Practical DevOps, cloud, Kubernetes, automation, monitoring, and SRE notes for hands-on learning.
 {% endblock %}
 
+{#-
+  Same fallback order as the stock block, but the site-name suffix is
+  dropped once it would push the tag past ~70 characters, which is where
+  Google starts truncating titles in search results.
+-#}
+{% block htmltitle %}
+  {% set base_title = (page.meta.title if page.meta and page.meta.title else (page.title | striptags if page.title else none)) %}
+  {% if not base_title %}
+    <title>{{ config.site_name }}</title>
+  {% elif (base_title ~ " - " ~ config.site_name) | length > 70 %}
+    <title>{{ base_title }}</title>
+  {% else %}
+    <title>{{ base_title }} - {{ config.site_name }}</title>
+  {% endif %}
+{% endblock %}
+
 {% block extrahead %}
   <link rel="preconnect" href="https://unpkg.com">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
 
   {#- zensical leaves page.is_homepage undefined; the homepage has an empty url -#}
   {% set is_home = page.url in ["", "index.html"] %}
@@ -14,6 +31,7 @@
   {% set page_description = (page.meta.description if page.meta and page.meta.description else config.site_description) %}
   {% set page_url = (page.canonical_url if page.canonical_url else config.site_url) %}
   {% set updated = page.meta.last_updated if page.meta and page.meta.last_updated else none %}
+  {% set published = page.meta.date_published if page.meta and page.meta.date_published else none %}
   {% set author_url = config.site_url ~ "about/" %}
   {% set person_id = author_url ~ "#person" %}
 
@@ -130,8 +148,9 @@
       "mainEntityOfPage": {{ page_url | tojson }},
       "image": {{ page_image | tojson }},
       "inLanguage": "en",
+      {% if published %}"datePublished": {{ published | tojson }},{% endif %}
       {% if updated %}"dateModified": {{ updated | tojson }},{% endif %}
-      "author": { "@type": "Person", "@id": {{ person_id | tojson }}, "name": {{ config.site_author | tojson }}, "url": {{ author_url | tojson }} },
+      "author": {{ person }},
       "publisher": {
         "@type": "Organization",
         "name": {{ config.site_name | tojson }},

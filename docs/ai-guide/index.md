@@ -434,3 +434,9 @@ If you are new to this space, a helpful learning sequence is:
 4. Learn how evaluation works so quality can be measured instead of guessed
 
 That combination gives you a much stronger foundation for building AI systems that are useful, reliable, and maintainable.
+
+## Further Reading
+
+- [Anthropic Documentation](https://docs.anthropic.com/)
+- [OpenAI Documentation](https://platform.openai.com/docs)
+- [Hugging Face Documentation](https://huggingface.co/docs)
