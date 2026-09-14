@@ -95,4 +95,4 @@ Each project uses only what the previous ones already taught you. Skip ahead if 
 - [Kubernetes Documentation](https://kubernetes.io/docs/)
 - [Kubernetes on GitHub](https://github.com/kubernetes/kubernetes)
 - [CNCF](https://www.cncf.io/)
-- [Red Hat OpenShift Documentation](https://docs.openshift.com/)
+- [Red Hat OpenShift Documentation](https://docs.redhat.com/en/documentation/openshift_container_platform/)

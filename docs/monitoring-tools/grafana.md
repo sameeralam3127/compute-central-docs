@@ -21,7 +21,7 @@ Grafana provides the dashboards and log views for the monitoring lab.
 
 - `grafana/provisioning/datasources/datasources.yml`
 - `grafana/provisioning/dashboards/dashboards.yml`
-- `grafana/dashboards/advanced-monitoring-dashboard.json`
+- `grafana/dashboards/node-exporter-full.json` — downloaded during [lab setup](overview.md#2-grafana)
 
 ## What Happens Automatically
 

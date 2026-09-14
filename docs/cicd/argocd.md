@@ -145,7 +145,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/sameeralam3127/fastapi-demo.git
+    repoURL: https://github.com/example-org/fastapi-demo.git
     targetRevision: main
     path: k8s                        # folder containing the manifests
 
@@ -208,7 +208,7 @@ Add this job after `build-image` in the GitHub Actions workflow. It uses **Kusto
       - name: Check out config repo
         uses: actions/checkout@v4
         with:
-          repository: sameeralam3127/fastapi-demo-config
+          repository: example-org/fastapi-demo-config
           token: ${{ secrets.CONFIG_REPO_PAT }}   # PAT with repo write access
 
       - name: Bump image tag
@@ -234,7 +234,7 @@ resources:
   - deployment.yaml
   - service.yaml
 images:
-  - name: ghcr.io/sameeralam3127/fastapi-demo
+  - name: ghcr.io/example-org/fastapi-demo
     newTag: abc1234        # CI rewrites this line on every release
 ```
 
@@ -295,7 +295,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/sameeralam3127/argocd-apps.git
+    repoURL: https://github.com/example-org/argocd-apps.git
     targetRevision: main
     path: apps
   destination:

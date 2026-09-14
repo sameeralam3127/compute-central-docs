@@ -245,10 +245,12 @@ Use self-hosted runners when you need more CPU/RAM, access to a private network,
 1. In the repo (or org): **Settings → Actions → Runners → New self-hosted runner** — GitHub shows a personalized token with these steps:
 
 ```bash
-# Download the runner
+# Download the runner — use the version GitHub shows, or the latest from
+# https://github.com/actions/runner/releases
+RUNNER_VERSION=2.337.0
 mkdir actions-runner && cd actions-runner
 curl -o actions-runner-linux-x64.tar.gz -L \
-  https://github.com/actions/runner/releases/latest/download/actions-runner-linux-x64-2.319.1.tar.gz
+  "https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz"
 tar xzf actions-runner-linux-x64.tar.gz
 
 # Register it (token comes from the GitHub UI)

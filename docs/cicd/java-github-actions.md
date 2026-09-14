@@ -218,7 +218,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}   # e.g. sameeralam3127/spring-demo
+  IMAGE_NAME: ${{ github.repository }}   # e.g. example-org/spring-demo
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

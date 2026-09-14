@@ -17,7 +17,7 @@ tags:
 - How to choose Loki labels that keep queries fast instead of exploding stream counts
 
 !!! warning "Promtail reached end of life on March 2, 2026"
-    Promtail entered long-term support in February 2025 and is no longer maintained. **Grafana Alloy** is the supported collector for Loki. The [Monitoring lab repository](https://github.com/sameeralam3127/Monitoring) still ships a `promtail/` directory — it keeps working for local practice, but use Alloy for anything new and follow the migration steps below for existing setups.
+    Promtail entered long-term support in February 2025 and is no longer maintained. **Grafana Alloy** is the supported collector for Loki, and the [monitoring lab](overview.md) uses it. If you still run Promtail somewhere, follow the migration steps below.
 
 ## Why This Matters
 
@@ -49,7 +49,7 @@ flowchart LR
 |---|---|
 | `loki/loki-config.yml` | Loki storage, retention, and limits |
 | `alloy/config.alloy` | Log discovery, labels, and where to push |
-| `promtail/promtail-config.yml` | Legacy collector config in the lab repo — convert it, then retire it |
+| `promtail/promtail-config.yml` | Legacy collector config, if you are migrating — convert it, then retire it |
 
 ## A Working Alloy Config
 
