@@ -266,6 +266,7 @@ Monitoring = [
   "code-quality/paid-platforms.md",
   "code-quality/installation.md",
   "code-quality/configuration.md",
+  "code-quality/quality-gates.md",
   "code-quality/jenkins-integration.md",
   "code-quality/pipeline-example.md",
 ]
