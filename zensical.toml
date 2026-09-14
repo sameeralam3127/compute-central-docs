@@ -11,6 +11,153 @@ Copyright © 2016–2026 Sameer Alam · <a href="#__consent">Cookie settings</a>
 extra_css = ["stylesheets/extra.css"]
 extra_javascript = ["javascripts/extra.js"]
 
+# Explicit navigation. The order is deliberate: footer prev/next links follow it,
+# so sections hand off to each other in a curated sequence.
+nav = [
+  { "Compute Central" = "index.md" },
+  { "Foundations" = [
+    "foundations/index.md",
+    { "Linux" = ["foundations/linux/index.md", "foundations/linux/01-filesystem-and-permissions.md", "foundations/linux/02-processes-and-signals.md", "foundations/linux/03-systemd-and-journald.md", "foundations/linux/04-storage-disks-and-lvm.md", "foundations/linux/05-users-sudo-and-ssh-hardening.md", "foundations/linux/06-package-management-and-updates.md", "foundations/linux/07-performance-troubleshooting.md"] },
+    { "Shell Scripting" = ["foundations/shell-scripting/index.md", "foundations/shell-scripting/01-bash-fundamentals.md", "foundations/shell-scripting/02-text-processing.md", "foundations/shell-scripting/03-testing-linting-and-debugging.md", "foundations/shell-scripting/04-production-ready-scripts.md"] },
+    { "Networking" = ["foundations/networking/index.md", "foundations/networking/01-tcp-ip-ports-and-sockets.md", "foundations/networking/02-dns.md", "foundations/networking/03-http-and-tls.md", "foundations/networking/04-load-balancers-and-reverse-proxies.md", "foundations/networking/05-network-troubleshooting-toolkit.md"] },
+    { "Git and Branching" = ["foundations/git/index.md", "foundations/git/01-how-git-works.md", "foundations/git/02-everyday-workflow.md", "foundations/git/03-branching-strategies.md", "foundations/git/04-undo-and-recovery.md", "foundations/git/05-collaboration-and-repository-hygiene.md"] },
+    { "Python Automation" = ["foundations/python/index.md", "foundations/python/01-project-setup.md", "foundations/python/02-cli-tools-and-subprocess.md", "foundations/python/03-working-with-http-apis.md", "foundations/python/04-aws-automation-with-boto3.md", "foundations/python/05-files-config-and-templates.md", "foundations/python/06-testing-linting-and-packaging.md"] },
+  ] },
+  { "AI Guide" = [
+    "ai-guide/index.md",
+    "ai-guide/llm-fundamentals.md",
+    "ai-guide/ai-agents.md",
+    "ai-guide/ai-evaluation.md",
+    "ai-guide/terminology.md",
+  ] },
+  { "Ansible" = [
+    "ansible/index.md",
+    { "Getting Started" = ["ansible/getting-started/index.md", "ansible/getting-started/00-history-and-why-ansible.md", "ansible/getting-started/01-what-is-ansible.md", "ansible/getting-started/02-architecture-and-execution.md", "ansible/getting-started/03-control-node-vs-managed-nodes.md", "ansible/getting-started/04-installing-ansible.md", "ansible/getting-started/05-ssh-and-connectivity.md", "ansible/getting-started/06-your-first-playbook.md"] },
+    { "Core Concepts" = ["ansible/core-concepts/index.md", "ansible/core-concepts/01-inventory.md", "ansible/core-concepts/02-ad-hoc-commands.md", "ansible/core-concepts/03-playbooks-plays-tasks.md", "ansible/core-concepts/04-modules.md", "ansible/core-concepts/05-variables-overview.md", "ansible/core-concepts/06-conditionals.md", "ansible/core-concepts/07-loops.md", "ansible/core-concepts/08-handlers.md", "ansible/core-concepts/09-tags.md", "ansible/core-concepts/10-check-mode-and-diff-mode.md", "ansible/core-concepts/11-idempotency.md"] },
+    { "YAML & Execution Model" = ["ansible/yaml-and-execution-model/index.md", "ansible/yaml-and-execution-model/01-yaml-essentials.md", "ansible/yaml-and-execution-model/02-yaml-to-python-mental-model.md"] },
+    { "Variables & Data" = ["ansible/variables-and-data/index.md", "ansible/variables-and-data/01-variable-types-and-sources.md", "ansible/variables-and-data/02-variable-precedence.md", "ansible/variables-and-data/03-facts.md", "ansible/variables-and-data/04-registered-variables.md", "ansible/variables-and-data/05-magic-variables-and-hostvars.md", "ansible/variables-and-data/06-set-fact-and-combine.md"] },
+    { "Jinja2 & Templates" = ["ansible/jinja2-and-templates/index.md", "ansible/jinja2-and-templates/01-jinja2-basics.md", "ansible/jinja2-and-templates/02-filters-and-tests.md", "ansible/jinja2-and-templates/03-templates-for-config-generation.md", "ansible/jinja2-and-templates/04-advanced-jinja2.md"] },
+    { "Modules" = ["ansible/modules/index.md", "ansible/modules/01-command-vs-shell-vs-raw-vs-script.md", "ansible/modules/02-module-decision-trees.md", "ansible/modules/03-file-package-service-user-modules.md", "ansible/modules/04-uri-and-api-automation.md", "ansible/modules/05-collections-catalog.md"] },
+    { "Playbook Engineering" = ["ansible/playbook-engineering/index.md", "ansible/playbook-engineering/01-blocks-rescue-always.md", "ansible/playbook-engineering/02-error-handling.md", "ansible/playbook-engineering/03-imports-vs-includes.md", "ansible/playbook-engineering/04-delegation-and-become.md", "ansible/playbook-engineering/05-async-and-poll.md"] },
+    { "Advanced Execution" = ["ansible/advanced-execution/index.md", "ansible/advanced-execution/01-forks-serial-strategy-throttle.md", "ansible/advanced-execution/02-fact-caching.md", "ansible/advanced-execution/03-connection-plugins.md", "ansible/advanced-execution/04-lookup-and-filter-plugins.md", "ansible/advanced-execution/05-dynamic-inventory.md"] },
+    { "Roles" = ["ansible/roles/index.md", "ansible/roles/01-role-structure.md", "ansible/roles/02-role-variables-and-interfaces.md", "ansible/roles/03-production-role-design.md"] },
+    { "Collections" = ["ansible/collections/index.md", "ansible/collections/01-collection-structure.md", "ansible/collections/02-installing-and-using-collections.md", "ansible/collections/03-publishing-collections.md"] },
+    { "Build Your Own" = ["ansible/build-your-own/index.md", "ansible/build-your-own/01-build-a-custom-module.md", "ansible/build-your-own/02-argumentspec-checkmode-idempotency-diff.md", "ansible/build-your-own/03-build-a-collection-from-zero.md"] },
+    { "Production Engineering" = ["ansible/production-engineering/index.md", "ansible/production-engineering/01-project-layout.md", "ansible/production-engineering/02-ansible-cfg.md", "ansible/production-engineering/03-secrets-and-vault.md", "ansible/production-engineering/04-security.md", "ansible/production-engineering/05-performance.md", "ansible/production-engineering/06-cicd-and-linting.md", "ansible/production-engineering/07-molecule-testing.md", "ansible/production-engineering/08-ansible-dev-tools.md"] },
+    { "Enterprise Platform (AAP & AWX)" = ["ansible/enterprise-platform/index.md", "ansible/enterprise-platform/01-ansible-core-vs-ansible-vs-aap.md", "ansible/enterprise-platform/02-automation-controller-and-mesh.md", "ansible/enterprise-platform/03-execution-environments-and-hub.md", "ansible/enterprise-platform/04-licensing-and-adoption.md"] },
+    { "Case Studies" = ["ansible/case-studies/index.md", "ansible/case-studies/01-rolling-nginx-deployment.md", "ansible/case-studies/02-multi-environment-inventory.md", "ansible/case-studies/03-linux-server-hardening.md", "ansible/case-studies/04-user-and-ssh-access.md", "ansible/case-studies/05-vault-secrets-case-study.md", "ansible/case-studies/06-dynamic-inventory-case-study.md", "ansible/case-studies/07-api-automation-with-uri.md"] },
+    { "Troubleshooting" = ["ansible/troubleshooting/index.md", "ansible/troubleshooting/01-ssh-and-connection-problems.md", "ansible/troubleshooting/02-become-and-permission-problems.md", "ansible/troubleshooting/03-yaml-and-variable-errors.md", "ansible/troubleshooting/04-module-and-execution-errors.md"] },
+    { "Interview Preparation" = ["ansible/interview-prep/index.md", "ansible/interview-prep/01-core-concepts-questions.md", "ansible/interview-prep/02-architecture-and-performance-questions.md", "ansible/interview-prep/03-scenario-based-questions.md", "ansible/interview-prep/04-roles-collections-and-modules-questions.md", "ansible/interview-prep/05-senior-and-architect-questions.md"] },
+    { "Quick Reference" = ["ansible/quick-reference/index.md", "ansible/quick-reference/01-cli-cheat-sheet.md", "ansible/quick-reference/02-yaml-cheat-sheet.md", "ansible/quick-reference/03-variable-precedence-cheat-sheet.md", "ansible/quick-reference/04-ansible-cfg-cheat-sheet.md", "ansible/quick-reference/05-module-cheat-sheet.md"] },
+  ] },
+  { "Docker" = [
+    "docker/index.md",
+    "docker/01-before-containers.md",
+    "docker/02-virtual-machines-and-kvm.md",
+    "docker/03-application-dependencies.md",
+    "docker/04-linux-namespaces.md",
+    "docker/05-cgroups.md",
+    "docker/06-build-a-container-with-linux.md",
+    "docker/07-oci-standards.md",
+    "docker/08-runc-containerd-and-docker.md",
+    "docker/09-what-docker-solves.md",
+    "docker/10-installation-and-engine.md",
+    "docker/11-essential-docker-commands.md",
+    "docker/12-networking-fundamentals.md",
+    "docker/13-docker-networking.md",
+    "docker/14-caddy-web-app-lab.md",
+    "docker/15-storage.md",
+    "docker/16-container-images.md",
+    "docker/17-dockerfiles.md",
+    "docker/18-docker-compose.md",
+    "docker/19-registries-and-publishing.md",
+    "docker/20-podman.md",
+    "docker/21-kubernetes-runtimes.md",
+    "docker/22-macos-containers.md",
+    "docker/23-monoliths-and-microservices.md",
+    "docker/24-production-troubleshooting.md",
+    "docker/25-course-wrap-up.md",
+    "docker/docker.md",
+  ] },
+  { "CI/CD Pipelines" = [
+    "cicd/index.md",
+    "cicd/github-actions.md",
+    "cicd/java-github-actions.md",
+    "cicd/python-github-actions.md",
+    "cicd/gitlab-ci.md",
+    "cicd/argocd.md",
+    "cicd/jenkins.md",
+    { "Code Quality" = ["cicd/code-quality/index.md", "cicd/code-quality/code-quality-ecosystem.md", "cicd/code-quality/paid-platforms.md", "cicd/code-quality/installation.md", "cicd/code-quality/configuration.md", "cicd/code-quality/quality-gates.md", "cicd/code-quality/jenkins-integration.md", "cicd/code-quality/pipeline-example.md"] },
+  ] },
+  { "Kubernetes" = [
+    "kubernetes/index.md",
+    { "Getting Started" = ["kubernetes/getting-started/index.md", "kubernetes/getting-started/00-history-and-why-kubernetes.md", "kubernetes/getting-started/01-what-is-kubernetes.md", "kubernetes/getting-started/02-architecture-and-control-plane.md", "kubernetes/getting-started/03-installing-kubectl-and-a-local-cluster.md", "kubernetes/getting-started/04-your-first-deployment.md"] },
+    { "Core Concepts" = ["kubernetes/core-concepts/index.md", "kubernetes/core-concepts/01-pods.md", "kubernetes/core-concepts/02-replicasets-and-deployments.md", "kubernetes/core-concepts/03-services.md", "kubernetes/core-concepts/04-namespaces.md", "kubernetes/core-concepts/05-labels-selectors-and-annotations.md", "kubernetes/core-concepts/06-configmaps-and-secrets.md", "kubernetes/core-concepts/07-volumes-and-storage-basics.md", "kubernetes/core-concepts/08-jobs-and-cronjobs.md"] },
+    { "Workloads & Scheduling" = ["kubernetes/workloads-and-scheduling/index.md", "kubernetes/workloads-and-scheduling/01-deployment-strategies.md", "kubernetes/workloads-and-scheduling/02-statefulsets.md", "kubernetes/workloads-and-scheduling/03-daemonsets.md", "kubernetes/workloads-and-scheduling/04-scheduling-affinity-and-taints.md", "kubernetes/workloads-and-scheduling/05-resource-requests-limits-and-qos.md", "kubernetes/workloads-and-scheduling/06-autoscaling.md"] },
+    { "Networking" = ["kubernetes/networking/index.md", "kubernetes/networking/01-cluster-networking-model.md", "kubernetes/networking/02-services-deep-dive.md", "kubernetes/networking/03-ingress-and-ingress-controllers.md", "kubernetes/networking/04-network-policies.md", "kubernetes/networking/05-dns-and-coredns.md", "kubernetes/networking/06-cni-plugins.md", "kubernetes/networking/07-gateway-api.md"] },
+    { "Storage" = ["kubernetes/storage/index.md", "kubernetes/storage/01-volumes.md", "kubernetes/storage/02-persistentvolumes-and-claims.md", "kubernetes/storage/03-storageclasses-and-dynamic-provisioning.md", "kubernetes/storage/04-statefulset-storage-patterns.md"] },
+    { "Configuration & Packaging" = ["kubernetes/configuration-and-packaging/index.md", "kubernetes/configuration-and-packaging/01-configmaps-in-depth.md", "kubernetes/configuration-and-packaging/02-secrets-in-depth.md", "kubernetes/configuration-and-packaging/03-injecting-config-env-and-volumes.md", "kubernetes/configuration-and-packaging/04-helm-fundamentals-and-writing-charts.md", "kubernetes/configuration-and-packaging/05-kustomize.md", "kubernetes/configuration-and-packaging/06-external-secrets-and-secret-stores.md"] },
+    { "Security" = ["kubernetes/security/index.md", "kubernetes/security/01-authentication-and-authorization.md", "kubernetes/security/02-rbac.md", "kubernetes/security/03-service-accounts.md", "kubernetes/security/04-pod-security-standards.md", "kubernetes/security/05-image-and-supply-chain-security.md", "kubernetes/security/06-secrets-and-encryption-at-rest.md"] },
+    { "Observability & Health" = ["kubernetes/observability/index.md", "kubernetes/observability/01-probes-liveness-readiness-startup.md", "kubernetes/observability/02-logging.md", "kubernetes/observability/03-metrics-and-metrics-server.md", "kubernetes/observability/04-events-and-debugging.md"] },
+    { "Cluster Administration" = ["kubernetes/cluster-administration/index.md", "kubernetes/cluster-administration/01-kubeadm-cluster-setup.md", "kubernetes/cluster-administration/02-etcd-and-control-plane-internals.md", "kubernetes/cluster-administration/03-node-management.md", "kubernetes/cluster-administration/04-cluster-upgrades.md", "kubernetes/cluster-administration/05-backup-and-restore.md", "kubernetes/cluster-administration/06-multi-tenancy.md"] },
+    { "CI/CD & GitOps" = ["kubernetes/cicd-and-gitops/index.md", "kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes.md", "kubernetes/cicd-and-gitops/02-scripting-and-automation-with-kubectl.md", "kubernetes/cicd-and-gitops/03-progressive-delivery-canary-and-blue-green.md", "kubernetes/cicd-and-gitops/04-gitops-with-argocd-and-flux.md"] },
+    { "Production Engineering" = ["kubernetes/production-engineering/index.md", "kubernetes/production-engineering/01-cluster-sizing-and-capacity-planning.md", "kubernetes/production-engineering/02-cost-optimization.md", "kubernetes/production-engineering/03-multi-cluster-and-multi-region.md", "kubernetes/production-engineering/04-disaster-recovery.md", "kubernetes/production-engineering/05-production-readiness-checklist.md"] },
+    { "OpenShift" = ["kubernetes/openshift/index.md", "kubernetes/openshift/01-what-is-openshift.md", "kubernetes/openshift/02-oc-cli-and-projects.md", "kubernetes/openshift/03-routes-and-networking.md", "kubernetes/openshift/04-source-to-image-and-builds.md", "kubernetes/openshift/05-operators-and-olm.md"] },
+    { "Labs" = ["kubernetes/labs/index.md", "kubernetes/labs/01-minikube-lab.md", "kubernetes/labs/02-kind-lab.md", "kubernetes/labs/03-docker-desktop-lab.md", "kubernetes/labs/04-podman-lab.md", "kubernetes/labs/05-hands-on-scenarios.md"] },
+    { "Case Studies" = ["kubernetes/case-studies/index.md", "kubernetes/case-studies/01-rolling-deployment-with-zero-downtime.md", "kubernetes/case-studies/02-blue-green-and-canary-releases.md", "kubernetes/case-studies/03-multi-tenant-namespace-setup.md", "kubernetes/case-studies/04-autoscaling-under-load.md", "kubernetes/case-studies/05-secrets-rotation.md", "kubernetes/case-studies/06-debugging-a-crashloopbackoff-incident.md"] },
+    { "Troubleshooting" = ["kubernetes/troubleshooting/index.md", "kubernetes/troubleshooting/01-pod-scheduling-and-startup-problems.md", "kubernetes/troubleshooting/02-networking-and-service-problems.md", "kubernetes/troubleshooting/03-storage-problems.md", "kubernetes/troubleshooting/04-cluster-and-node-problems.md"] },
+    { "Interview Preparation" = ["kubernetes/interview-prep/index.md", "kubernetes/interview-prep/01-core-concepts-questions.md", "kubernetes/interview-prep/02-architecture-and-networking-questions.md", "kubernetes/interview-prep/03-scenario-based-questions.md", "kubernetes/interview-prep/04-security-and-rbac-questions.md", "kubernetes/interview-prep/05-senior-and-architect-questions.md"] },
+    { "Quick Reference" = ["kubernetes/quick-reference/index.md", "kubernetes/quick-reference/01-kubectl-cheat-sheet.md", "kubernetes/quick-reference/02-yaml-cheat-sheet.md", "kubernetes/quick-reference/03-rbac-cheat-sheet.md", "kubernetes/quick-reference/04-troubleshooting-cheat-sheet.md", "kubernetes/quick-reference/05-resource-units-and-ports-cheat-sheet.md"] },
+  ] },
+  { "Monitoring" = [
+    "monitoring-tools/index.md",
+    "monitoring-tools/observability-fundamentals.md",
+    "monitoring-tools/overview.md",
+    "monitoring-tools/prometheus.md",
+    "monitoring-tools/node-exporter.md",
+    "monitoring-tools/grafana.md",
+    "monitoring-tools/alertmanager.md",
+    "monitoring-tools/logging.md",
+    "monitoring-tools/python-logging.md",
+    "monitoring-tools/opentelemetry-platforms.md",
+    "monitoring-tools/blackbox.md",
+    "monitoring-tools/troubleshooting.md",
+  ] },
+  { "Terraform" = [
+    "terraform/index.md",
+    "terraform/overview.md",
+    "terraform/variables-outputs-and-locals.md",
+    "terraform/state-and-backends.md",
+    "terraform/modules.md",
+    "terraform/environments-and-workspaces.md",
+    "terraform/testing-and-ci.md",
+    "terraform/interview-questions.md",
+  ] },
+  { "Cloud" = [
+    "cloud/index.md",
+    { "AWS" = ["cloud/aws/index.md", "cloud/aws/01-accounts-cli-and-organizations.md", "cloud/aws/02-iam.md", "cloud/aws/03-vpc-networking.md", "cloud/aws/04-ec2-and-auto-scaling.md", "cloud/aws/05-load-balancing-and-route53.md", "cloud/aws/06-s3-and-storage.md", "cloud/aws/07-containers-ecs-and-eks.md", "cloud/aws/08-databases.md", "cloud/aws/09-observability-cloudwatch.md", "cloud/aws/10-security-and-secrets.md", "cloud/aws/11-cost-optimization.md"] },
+  ] },
+  { "SRE" = [
+    "sre/index.md",
+    "sre/01-slis-slos-and-error-budgets.md",
+    "sre/02-alerting-on-slos.md",
+    "sre/03-incident-response.md",
+    "sre/04-postmortems.md",
+    "sre/05-on-call.md",
+    "sre/06-toil-and-automation.md",
+    "sre/07-capacity-planning-and-load-testing.md",
+  ] },
+  { "Security" = [
+    "security/index.md",
+    "security/01-devsecops-and-threat-modeling.md",
+    "security/02-secrets-management-with-vault.md",
+    "security/03-software-supply-chain-security.md",
+    "security/04-container-and-iac-scanning.md",
+    "security/05-identity-and-zero-trust.md",
+    "security/06-hardening-and-compliance.md",
+  ] },
+]
+
 # Keep Zensical's recommended extension set explicit. Adding one extension table
 # disables the implicit defaults, so `meta` is included to strip Markdown front matter.
 [project.markdown_extensions.meta]
@@ -137,173 +284,3 @@ actions = ["accept", "reject", "manage"]
 [project.extra.consent.cookies.analytics]
 name = "Google Analytics"
 checked = false
-
-# Explicit navigation. Each top-level section is one array-of-tables entry so
-# that footer prev/next links stay a deliberate, curated handoff between
-# sections instead of falling out of alphabetical directory order.
-
-[[project.nav]]
-"Compute Central" = "index.md"
-
-[[project.nav]]
-Foundations = [
-  "foundations/index.md",
-  { "Linux" = ["foundations/linux/index.md", "foundations/linux/01-filesystem-and-permissions.md", "foundations/linux/02-processes-and-signals.md", "foundations/linux/03-systemd-and-journald.md", "foundations/linux/04-storage-disks-and-lvm.md", "foundations/linux/05-users-sudo-and-ssh-hardening.md", "foundations/linux/06-package-management-and-updates.md", "foundations/linux/07-performance-troubleshooting.md"] },
-  { "Shell Scripting" = ["foundations/shell-scripting/index.md", "foundations/shell-scripting/01-bash-fundamentals.md", "foundations/shell-scripting/02-text-processing.md", "foundations/shell-scripting/03-testing-linting-and-debugging.md", "foundations/shell-scripting/04-production-ready-scripts.md"] },
-  { "Networking" = ["foundations/networking/index.md", "foundations/networking/01-tcp-ip-ports-and-sockets.md", "foundations/networking/02-dns.md", "foundations/networking/03-http-and-tls.md", "foundations/networking/04-load-balancers-and-reverse-proxies.md", "foundations/networking/05-network-troubleshooting-toolkit.md"] },
-  { "Git and Branching" = ["foundations/git/index.md", "foundations/git/01-how-git-works.md", "foundations/git/02-everyday-workflow.md", "foundations/git/03-branching-strategies.md", "foundations/git/04-undo-and-recovery.md", "foundations/git/05-collaboration-and-repository-hygiene.md"] },
-  { "Python Automation" = ["foundations/python/index.md", "foundations/python/01-project-setup.md", "foundations/python/02-cli-tools-and-subprocess.md", "foundations/python/03-working-with-http-apis.md", "foundations/python/04-aws-automation-with-boto3.md", "foundations/python/05-files-config-and-templates.md", "foundations/python/06-testing-linting-and-packaging.md"] },
-]
-
-[[project.nav]]
-"AI Guide" = [
-  "ai-guide/index.md",
-  "ai-guide/llm-fundamentals.md",
-  "ai-guide/ai-agents.md",
-  "ai-guide/ai-evaluation.md",
-  "ai-guide/terminology.md",
-]
-
-[[project.nav]]
-Ansible = [
-  "ansible/index.md",
-  { "Getting Started" = ["ansible/getting-started/index.md", "ansible/getting-started/00-history-and-why-ansible.md", "ansible/getting-started/01-what-is-ansible.md", "ansible/getting-started/02-architecture-and-execution.md", "ansible/getting-started/03-control-node-vs-managed-nodes.md", "ansible/getting-started/04-installing-ansible.md", "ansible/getting-started/05-ssh-and-connectivity.md", "ansible/getting-started/06-your-first-playbook.md"] },
-  { "Core Concepts" = ["ansible/core-concepts/index.md", "ansible/core-concepts/01-inventory.md", "ansible/core-concepts/02-ad-hoc-commands.md", "ansible/core-concepts/03-playbooks-plays-tasks.md", "ansible/core-concepts/04-modules.md", "ansible/core-concepts/05-variables-overview.md", "ansible/core-concepts/06-conditionals.md", "ansible/core-concepts/07-loops.md", "ansible/core-concepts/08-handlers.md", "ansible/core-concepts/09-tags.md", "ansible/core-concepts/10-check-mode-and-diff-mode.md", "ansible/core-concepts/11-idempotency.md"] },
-  { "YAML & Execution Model" = ["ansible/yaml-and-execution-model/index.md", "ansible/yaml-and-execution-model/01-yaml-essentials.md", "ansible/yaml-and-execution-model/02-yaml-to-python-mental-model.md"] },
-  { "Variables & Data" = ["ansible/variables-and-data/index.md", "ansible/variables-and-data/01-variable-types-and-sources.md", "ansible/variables-and-data/02-variable-precedence.md", "ansible/variables-and-data/03-facts.md", "ansible/variables-and-data/04-registered-variables.md", "ansible/variables-and-data/05-magic-variables-and-hostvars.md", "ansible/variables-and-data/06-set-fact-and-combine.md"] },
-  { "Jinja2 & Templates" = ["ansible/jinja2-and-templates/index.md", "ansible/jinja2-and-templates/01-jinja2-basics.md", "ansible/jinja2-and-templates/02-filters-and-tests.md", "ansible/jinja2-and-templates/03-templates-for-config-generation.md", "ansible/jinja2-and-templates/04-advanced-jinja2.md"] },
-  { "Modules" = ["ansible/modules/index.md", "ansible/modules/01-command-vs-shell-vs-raw-vs-script.md", "ansible/modules/02-module-decision-trees.md", "ansible/modules/03-file-package-service-user-modules.md", "ansible/modules/04-uri-and-api-automation.md", "ansible/modules/05-collections-catalog.md"] },
-  { "Playbook Engineering" = ["ansible/playbook-engineering/index.md", "ansible/playbook-engineering/01-blocks-rescue-always.md", "ansible/playbook-engineering/02-error-handling.md", "ansible/playbook-engineering/03-imports-vs-includes.md", "ansible/playbook-engineering/04-delegation-and-become.md", "ansible/playbook-engineering/05-async-and-poll.md"] },
-  { "Advanced Execution" = ["ansible/advanced-execution/index.md", "ansible/advanced-execution/01-forks-serial-strategy-throttle.md", "ansible/advanced-execution/02-fact-caching.md", "ansible/advanced-execution/03-connection-plugins.md", "ansible/advanced-execution/04-lookup-and-filter-plugins.md", "ansible/advanced-execution/05-dynamic-inventory.md"] },
-  { "Roles" = ["ansible/roles/index.md", "ansible/roles/01-role-structure.md", "ansible/roles/02-role-variables-and-interfaces.md", "ansible/roles/03-production-role-design.md"] },
-  { "Collections" = ["ansible/collections/index.md", "ansible/collections/01-collection-structure.md", "ansible/collections/02-installing-and-using-collections.md", "ansible/collections/03-publishing-collections.md"] },
-  { "Build Your Own" = ["ansible/build-your-own/index.md", "ansible/build-your-own/01-build-a-custom-module.md", "ansible/build-your-own/02-argumentspec-checkmode-idempotency-diff.md", "ansible/build-your-own/03-build-a-collection-from-zero.md"] },
-  { "Production Engineering" = ["ansible/production-engineering/index.md", "ansible/production-engineering/01-project-layout.md", "ansible/production-engineering/02-ansible-cfg.md", "ansible/production-engineering/03-secrets-and-vault.md", "ansible/production-engineering/04-security.md", "ansible/production-engineering/05-performance.md", "ansible/production-engineering/06-cicd-and-linting.md", "ansible/production-engineering/07-molecule-testing.md", "ansible/production-engineering/08-ansible-dev-tools.md"] },
-  { "Enterprise Platform (AAP & AWX)" = ["ansible/enterprise-platform/index.md", "ansible/enterprise-platform/01-ansible-core-vs-ansible-vs-aap.md", "ansible/enterprise-platform/02-automation-controller-and-mesh.md", "ansible/enterprise-platform/03-execution-environments-and-hub.md", "ansible/enterprise-platform/04-licensing-and-adoption.md"] },
-  { "Case Studies" = ["ansible/case-studies/index.md", "ansible/case-studies/01-rolling-nginx-deployment.md", "ansible/case-studies/02-multi-environment-inventory.md", "ansible/case-studies/03-linux-server-hardening.md", "ansible/case-studies/04-user-and-ssh-access.md", "ansible/case-studies/05-vault-secrets-case-study.md", "ansible/case-studies/06-dynamic-inventory-case-study.md", "ansible/case-studies/07-api-automation-with-uri.md"] },
-  { "Troubleshooting" = ["ansible/troubleshooting/index.md", "ansible/troubleshooting/01-ssh-and-connection-problems.md", "ansible/troubleshooting/02-become-and-permission-problems.md", "ansible/troubleshooting/03-yaml-and-variable-errors.md", "ansible/troubleshooting/04-module-and-execution-errors.md"] },
-  { "Interview Preparation" = ["ansible/interview-prep/index.md", "ansible/interview-prep/01-core-concepts-questions.md", "ansible/interview-prep/02-architecture-and-performance-questions.md", "ansible/interview-prep/03-scenario-based-questions.md", "ansible/interview-prep/04-roles-collections-and-modules-questions.md", "ansible/interview-prep/05-senior-and-architect-questions.md"] },
-  { "Quick Reference" = ["ansible/quick-reference/index.md", "ansible/quick-reference/01-cli-cheat-sheet.md", "ansible/quick-reference/02-yaml-cheat-sheet.md", "ansible/quick-reference/03-variable-precedence-cheat-sheet.md", "ansible/quick-reference/04-ansible-cfg-cheat-sheet.md", "ansible/quick-reference/05-module-cheat-sheet.md"] },
-]
-
-[[project.nav]]
-Docker = [
-  "docker/index.md",
-  "docker/01-before-containers.md",
-  "docker/02-virtual-machines-and-kvm.md",
-  "docker/03-application-dependencies.md",
-  "docker/04-linux-namespaces.md",
-  "docker/05-cgroups.md",
-  "docker/06-build-a-container-with-linux.md",
-  "docker/07-oci-standards.md",
-  "docker/08-runc-containerd-and-docker.md",
-  "docker/09-what-docker-solves.md",
-  "docker/10-installation-and-engine.md",
-  "docker/11-essential-docker-commands.md",
-  "docker/12-networking-fundamentals.md",
-  "docker/13-docker-networking.md",
-  "docker/14-caddy-web-app-lab.md",
-  "docker/15-storage.md",
-  "docker/16-container-images.md",
-  "docker/17-dockerfiles.md",
-  "docker/18-docker-compose.md",
-  "docker/19-registries-and-publishing.md",
-  "docker/20-podman.md",
-  "docker/21-kubernetes-runtimes.md",
-  "docker/22-macos-containers.md",
-  "docker/23-monoliths-and-microservices.md",
-  "docker/24-production-troubleshooting.md",
-  "docker/25-course-wrap-up.md",
-  "docker/docker.md",
-]
-
-[[project.nav]]
-"CI/CD Pipelines" = [
-  "cicd/index.md",
-  "cicd/github-actions.md",
-  "cicd/java-github-actions.md",
-  "cicd/python-github-actions.md",
-  "cicd/gitlab-ci.md",
-  "cicd/argocd.md",
-  "cicd/jenkins.md",
-  { "Code Quality" = ["cicd/code-quality/index.md", "cicd/code-quality/code-quality-ecosystem.md", "cicd/code-quality/paid-platforms.md", "cicd/code-quality/installation.md", "cicd/code-quality/configuration.md", "cicd/code-quality/quality-gates.md", "cicd/code-quality/jenkins-integration.md", "cicd/code-quality/pipeline-example.md"] },
-]
-
-[[project.nav]]
-Kubernetes = [
-  "kubernetes/index.md",
-  { "Getting Started" = ["kubernetes/getting-started/index.md", "kubernetes/getting-started/00-history-and-why-kubernetes.md", "kubernetes/getting-started/01-what-is-kubernetes.md", "kubernetes/getting-started/02-architecture-and-control-plane.md", "kubernetes/getting-started/03-installing-kubectl-and-a-local-cluster.md", "kubernetes/getting-started/04-your-first-deployment.md"] },
-  { "Core Concepts" = ["kubernetes/core-concepts/index.md", "kubernetes/core-concepts/01-pods.md", "kubernetes/core-concepts/02-replicasets-and-deployments.md", "kubernetes/core-concepts/03-services.md", "kubernetes/core-concepts/04-namespaces.md", "kubernetes/core-concepts/05-labels-selectors-and-annotations.md", "kubernetes/core-concepts/06-configmaps-and-secrets.md", "kubernetes/core-concepts/07-volumes-and-storage-basics.md", "kubernetes/core-concepts/08-jobs-and-cronjobs.md"] },
-  { "Workloads & Scheduling" = ["kubernetes/workloads-and-scheduling/index.md", "kubernetes/workloads-and-scheduling/01-deployment-strategies.md", "kubernetes/workloads-and-scheduling/02-statefulsets.md", "kubernetes/workloads-and-scheduling/03-daemonsets.md", "kubernetes/workloads-and-scheduling/04-scheduling-affinity-and-taints.md", "kubernetes/workloads-and-scheduling/05-resource-requests-limits-and-qos.md", "kubernetes/workloads-and-scheduling/06-autoscaling.md"] },
-  { "Networking" = ["kubernetes/networking/index.md", "kubernetes/networking/01-cluster-networking-model.md", "kubernetes/networking/02-services-deep-dive.md", "kubernetes/networking/03-ingress-and-ingress-controllers.md", "kubernetes/networking/04-network-policies.md", "kubernetes/networking/05-dns-and-coredns.md", "kubernetes/networking/06-cni-plugins.md", "kubernetes/networking/07-gateway-api.md"] },
-  { "Storage" = ["kubernetes/storage/index.md", "kubernetes/storage/01-volumes.md", "kubernetes/storage/02-persistentvolumes-and-claims.md", "kubernetes/storage/03-storageclasses-and-dynamic-provisioning.md", "kubernetes/storage/04-statefulset-storage-patterns.md"] },
-  { "Configuration & Packaging" = ["kubernetes/configuration-and-packaging/index.md", "kubernetes/configuration-and-packaging/01-configmaps-in-depth.md", "kubernetes/configuration-and-packaging/02-secrets-in-depth.md", "kubernetes/configuration-and-packaging/03-injecting-config-env-and-volumes.md", "kubernetes/configuration-and-packaging/04-helm-fundamentals-and-writing-charts.md", "kubernetes/configuration-and-packaging/05-kustomize.md", "kubernetes/configuration-and-packaging/06-external-secrets-and-secret-stores.md"] },
-  { "Security" = ["kubernetes/security/index.md", "kubernetes/security/01-authentication-and-authorization.md", "kubernetes/security/02-rbac.md", "kubernetes/security/03-service-accounts.md", "kubernetes/security/04-pod-security-standards.md", "kubernetes/security/05-image-and-supply-chain-security.md", "kubernetes/security/06-secrets-and-encryption-at-rest.md"] },
-  { "Observability & Health" = ["kubernetes/observability/index.md", "kubernetes/observability/01-probes-liveness-readiness-startup.md", "kubernetes/observability/02-logging.md", "kubernetes/observability/03-metrics-and-metrics-server.md", "kubernetes/observability/04-events-and-debugging.md"] },
-  { "Cluster Administration" = ["kubernetes/cluster-administration/index.md", "kubernetes/cluster-administration/01-kubeadm-cluster-setup.md", "kubernetes/cluster-administration/02-etcd-and-control-plane-internals.md", "kubernetes/cluster-administration/03-node-management.md", "kubernetes/cluster-administration/04-cluster-upgrades.md", "kubernetes/cluster-administration/05-backup-and-restore.md", "kubernetes/cluster-administration/06-multi-tenancy.md"] },
-  { "CI/CD & GitOps" = ["kubernetes/cicd-and-gitops/index.md", "kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes.md", "kubernetes/cicd-and-gitops/02-scripting-and-automation-with-kubectl.md", "kubernetes/cicd-and-gitops/03-progressive-delivery-canary-and-blue-green.md", "kubernetes/cicd-and-gitops/04-gitops-with-argocd-and-flux.md"] },
-  { "Production Engineering" = ["kubernetes/production-engineering/index.md", "kubernetes/production-engineering/01-cluster-sizing-and-capacity-planning.md", "kubernetes/production-engineering/02-cost-optimization.md", "kubernetes/production-engineering/03-multi-cluster-and-multi-region.md", "kubernetes/production-engineering/04-disaster-recovery.md", "kubernetes/production-engineering/05-production-readiness-checklist.md"] },
-  { "OpenShift" = ["kubernetes/openshift/index.md", "kubernetes/openshift/01-what-is-openshift.md", "kubernetes/openshift/02-oc-cli-and-projects.md", "kubernetes/openshift/03-routes-and-networking.md", "kubernetes/openshift/04-source-to-image-and-builds.md", "kubernetes/openshift/05-operators-and-olm.md"] },
-  { "Labs" = ["kubernetes/labs/index.md", "kubernetes/labs/01-minikube-lab.md", "kubernetes/labs/02-kind-lab.md", "kubernetes/labs/03-docker-desktop-lab.md", "kubernetes/labs/04-podman-lab.md", "kubernetes/labs/05-hands-on-scenarios.md"] },
-  { "Case Studies" = ["kubernetes/case-studies/index.md", "kubernetes/case-studies/01-rolling-deployment-with-zero-downtime.md", "kubernetes/case-studies/02-blue-green-and-canary-releases.md", "kubernetes/case-studies/03-multi-tenant-namespace-setup.md", "kubernetes/case-studies/04-autoscaling-under-load.md", "kubernetes/case-studies/05-secrets-rotation.md", "kubernetes/case-studies/06-debugging-a-crashloopbackoff-incident.md"] },
-  { "Troubleshooting" = ["kubernetes/troubleshooting/index.md", "kubernetes/troubleshooting/01-pod-scheduling-and-startup-problems.md", "kubernetes/troubleshooting/02-networking-and-service-problems.md", "kubernetes/troubleshooting/03-storage-problems.md", "kubernetes/troubleshooting/04-cluster-and-node-problems.md"] },
-  { "Interview Preparation" = ["kubernetes/interview-prep/index.md", "kubernetes/interview-prep/01-core-concepts-questions.md", "kubernetes/interview-prep/02-architecture-and-networking-questions.md", "kubernetes/interview-prep/03-scenario-based-questions.md", "kubernetes/interview-prep/04-security-and-rbac-questions.md", "kubernetes/interview-prep/05-senior-and-architect-questions.md"] },
-  { "Quick Reference" = ["kubernetes/quick-reference/index.md", "kubernetes/quick-reference/01-kubectl-cheat-sheet.md", "kubernetes/quick-reference/02-yaml-cheat-sheet.md", "kubernetes/quick-reference/03-rbac-cheat-sheet.md", "kubernetes/quick-reference/04-troubleshooting-cheat-sheet.md", "kubernetes/quick-reference/05-resource-units-and-ports-cheat-sheet.md"] },
-]
-
-[[project.nav]]
-Monitoring = [
-  "monitoring-tools/index.md",
-  "monitoring-tools/observability-fundamentals.md",
-  "monitoring-tools/overview.md",
-  "monitoring-tools/prometheus.md",
-  "monitoring-tools/node-exporter.md",
-  "monitoring-tools/grafana.md",
-  "monitoring-tools/alertmanager.md",
-  "monitoring-tools/logging.md",
-  "monitoring-tools/python-logging.md",
-  "monitoring-tools/opentelemetry-platforms.md",
-  "monitoring-tools/blackbox.md",
-  "monitoring-tools/troubleshooting.md",
-]
-
-[[project.nav]]
-Terraform = [
-  "terraform/index.md",
-  "terraform/overview.md",
-  "terraform/variables-outputs-and-locals.md",
-  "terraform/state-and-backends.md",
-  "terraform/modules.md",
-  "terraform/environments-and-workspaces.md",
-  "terraform/testing-and-ci.md",
-  "terraform/interview-questions.md",
-]
-
-[[project.nav]]
-Cloud = [
-  "cloud/index.md",
-  { "AWS" = ["cloud/aws/index.md", "cloud/aws/01-accounts-cli-and-organizations.md", "cloud/aws/02-iam.md", "cloud/aws/03-vpc-networking.md", "cloud/aws/04-ec2-and-auto-scaling.md", "cloud/aws/05-load-balancing-and-route53.md", "cloud/aws/06-s3-and-storage.md", "cloud/aws/07-containers-ecs-and-eks.md", "cloud/aws/08-databases.md", "cloud/aws/09-observability-cloudwatch.md", "cloud/aws/10-security-and-secrets.md", "cloud/aws/11-cost-optimization.md"] },
-]
-
-[[project.nav]]
-SRE = [
-  "sre/index.md",
-  "sre/01-slis-slos-and-error-budgets.md",
-  "sre/02-alerting-on-slos.md",
-  "sre/03-incident-response.md",
-  "sre/04-postmortems.md",
-  "sre/05-on-call.md",
-  "sre/06-toil-and-automation.md",
-  "sre/07-capacity-planning-and-load-testing.md",
-]
-
-[[project.nav]]
-Security = [
-  "security/index.md",
-  "security/01-devsecops-and-threat-modeling.md",
-  "security/02-secrets-management-with-vault.md",
-  "security/03-software-supply-chain-security.md",
-  "security/04-container-and-iac-scanning.md",
-  "security/05-identity-and-zero-trust.md",
-  "security/06-hardening-and-compliance.md",
-]
