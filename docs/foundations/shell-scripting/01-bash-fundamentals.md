@@ -594,4 +594,4 @@ Use shell scripts for what they do best: command orchestration, operational auto
 
 ## Next
 
-Continue to [Ansible](../ansible/index.md) when scripts need to run idempotently across many hosts, or to the [Docker course](../docker/index.md) to package them.
+Continue to [Text Processing](02-text-processing.md) to slice logs, config files, and JSON with `grep`, `sed`, `awk`, and `jq`. When scripts need to run idempotently across many hosts, move to [Ansible](../../ansible/index.md).
