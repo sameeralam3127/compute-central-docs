@@ -24,6 +24,62 @@
   <link rel="preconnect" href="https://unpkg.com">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
+  {#-
+    Load the search index only when a reader shows intent to search.
+    The theme requests search.json on every page load; at ~600 KB compressed
+    it was most of the bytes on a typical page. This holds that one request
+    back until the search box is hovered, focused or opened (including the
+    / and Ctrl/Cmd+K shortcuts), or the page was opened from a search result with ?h=
+    (search.highlight needs the index). Search itself is unchanged.
+  -#}
+  <script>
+    (function () {
+      var proto = XMLHttpRequest.prototype, open = proto.open, send = proto.send;
+      var wanted = /[?&]h=/.test(location.search), waiting = [];
+      function load() {
+        wanted = true;
+        waiting.splice(0).forEach(function (go) { go(); });
+      }
+      proto.open = function (method, url) {
+        this._ccDefer = /\/search\.json$/.test(new URL(url, location.href).pathname);
+        return open.apply(this, arguments);
+      };
+      // The theme only binds Ctrl/Cmd+K once the index has arrived, so until
+      // then that shortcut opens search through the header button, as / does.
+      var ready = false;
+      proto.send = function () {
+        var xhr = this, args = arguments;
+        if (!xhr._ccDefer) return send.apply(xhr, args);
+        xhr.addEventListener("load", function () { ready = true; });
+        if (wanted) return send.apply(xhr, args);
+        waiting.push(function () { send.apply(xhr, args); });
+      };
+      function onIntent(event) {
+        var t = event.target;
+        if (event.type === "keydown") {
+          var modified = event.ctrlKey || event.metaKey;
+          var shortcut = modified ? event.key.toLowerCase() === "k" : event.key === "/" && !event.altKey;
+          if (!shortcut) return;
+          if (!modified && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+          if (modified && !ready) {
+            event.preventDefault();
+            var button = document.querySelector("[data-md-component=search] button");
+            if (button) button.click();
+          }
+        } else if (!(t.closest && t.closest(".md-search, label[for='__search']"))) {
+          return;
+        }
+        load();
+      }
+      ["keydown", "focusin", "pointerover", "pointerdown"].forEach(function (type) {
+        document.addEventListener(type, onIntent, true);
+      });
+      document.addEventListener("change", function (e) {
+        if (e.target.id === "__search") load();
+      }, true);
+    })();
+  </script>
+
   {#- zensical leaves page.is_homepage undefined; the homepage has an empty url -#}
   {% set is_home = page.url in ["", "index.html"] %}
   {% set is_about = page.url == "about/" %}
