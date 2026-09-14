@@ -52,7 +52,7 @@ flowchart LR
 | AWS IAM, KMS, GuardDuty, and WAF | [AWS IAM](../cloud/aws/02-iam.md), [AWS Security and Secrets](../cloud/aws/10-security-and-secrets.md) |
 | Kubernetes RBAC, Pod Security, and image policy | [Kubernetes Security](../kubernetes/security/index.md) |
 | Ansible Vault | [Secrets and Vault in Ansible](../ansible/production-engineering/03-secrets-and-vault.md) |
-| SAST, SCA, and secrets scanning tools | [Code Quality](../code-quality/code-quality-ecosystem.md) |
+| SAST, SCA, and secrets scanning tools | [Code Quality](../cicd/code-quality/code-quality-ecosystem.md) |
 | Running a security incident | [Incident Response](../sre/03-incident-response.md) |
 
 ## Next

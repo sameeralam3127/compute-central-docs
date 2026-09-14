@@ -105,9 +105,10 @@ flowchart TD
 | [GitLab CI/CD](gitlab-ci.md) | `.gitlab-ci.yml`, runner installation, built-in registry, Java and Python examples |
 | [ArgoCD and GitOps](argocd.md) | Install ArgoCD on Kubernetes, Application manifests, CI + GitOps end-to-end flow |
 | [Jenkins](jenkins.md) | Installation on Ubuntu, first pipeline, core concepts |
+| [Code Quality](code-quality/index.md) | Linters and scanners, SonarQube installation and quality gates, and enforcing them in Jenkins, GitHub Actions, and GitLab CI |
 
 !!! note "Suggested reading order"
-    Start with the GitHub Actions deep dive, then follow the Java **or** Python pipeline page end-to-end (they are parallel tracks — same pipeline, different stack). Finish with ArgoCD to see how GitOps replaces the deploy stage.
+    Start with the GitHub Actions deep dive, then follow the Java **or** Python pipeline page end-to-end (they are parallel tracks — same pipeline, different stack). Finish with ArgoCD to see how GitOps replaces the deploy stage, then add [Code Quality](code-quality/index.md) checks as a gate before deployment.
 
 ## Common Mistakes
 

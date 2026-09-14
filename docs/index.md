@@ -42,7 +42,7 @@ hide:
 </div>
 
 <div class="cc-stat" markdown>
-**0**{: .cc-stat-number data-count="12" }
+**0**{: .cc-stat-number data-count="11" }
 <span>Learning tracks, foundations to production</span>
 </div>
 
@@ -72,7 +72,7 @@ Pick a track, or filter by what you're working on. Every track stands on its own
   <button type="button" class="cc-chip" data-cc-value="operations" aria-pressed="false">Operations</button>
   <button type="button" class="cc-chip" data-cc-value="security" aria-pressed="false">Security</button>
   <button type="button" class="cc-chip" data-cc-value="ai" aria-pressed="false">AI</button>
-  <span class="cc-filter-count" data-cc-count aria-live="polite">12 tracks</span>
+  <span class="cc-filter-count" data-cc-count aria-live="polite">11 tracks</span>
 </div>
 
 <div class="cc-card-grid" data-cc-reveal markdown>
@@ -119,18 +119,11 @@ Pick a track, or filter by what you're working on. Every track stands on its own
   <span class="cc-card-meta">17 sections · 104 pages</span>
 </a>
 
-<a class="cc-card" href="cicd/" data-cc-tags="delivery">
+<a class="cc-card" href="cicd/" data-cc-tags="delivery security">
   <span class="cc-card-icon">:lucide-infinity:</span>
-  <strong>CI/CD Pipelines</strong>
-  <span class="cc-card-desc">GitHub Actions, GitLab CI, Jenkins, and ArgoCD — from commit to tested image to a GitOps deployment.</span>
-  <span class="cc-card-meta">7 guides</span>
-</a>
-
-<a class="cc-card" href="code-quality/" data-cc-tags="delivery security">
-  <span class="cc-card-icon">:lucide-badge-check:</span>
-  <strong>Code Quality</strong>
-  <span class="cc-card-desc">SonarQube installation and quality gates, open-source linters and scanners, and pipelines that enforce them.</span>
-  <span class="cc-card-meta">8 guides</span>
+  <strong>CI/CD Pipelines and Code Quality</strong>
+  <span class="cc-card-desc">GitHub Actions, GitLab CI, Jenkins, and ArgoCD, plus SonarQube quality gates and scanners that keep every change clean.</span>
+  <span class="cc-card-meta">15 guides</span>
 </a>
 
 <a class="cc-card" href="monitoring-tools/" data-cc-tags="operations">
@@ -229,7 +222,7 @@ Pick the goal closest to yours — each tab is a short, ordered route through th
 
 === ":lucide-infinity: Improve delivery pipelines"
 
-    Start with [branching strategies](foundations/git/03-branching-strategies.md) and the [CI/CD overview](cicd/index.md), add [SonarQube quality gates](code-quality/quality-gates.md), then wire in [Kubernetes CI/CD](kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes.md).
+    Start with [branching strategies](foundations/git/03-branching-strategies.md) and the [CI/CD overview](cicd/index.md), add [SonarQube quality gates](cicd/code-quality/quality-gates.md), then wire in [Kubernetes CI/CD](kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes.md).
 
 === ":lucide-life-buoy: Operate reliable systems"
 
@@ -262,7 +255,7 @@ Start with the topic you need, then follow the examples in a local or test envir
     - **Terraform** — [Overview](terraform/index.md), [first project](terraform/overview.md), [state and backends](terraform/state-and-backends.md), [modules](terraform/modules.md), [testing and CI/CD](terraform/testing-and-ci.md), [interview questions](terraform/interview-questions.md)
     - **Ansible** — [Overview](ansible/index.md), [Getting Started](ansible/getting-started/index.md), [Core Concepts](ansible/core-concepts/index.md), [Modules](ansible/modules/index.md), [Case Studies](ansible/case-studies/index.md), [Troubleshooting](ansible/troubleshooting/index.md), [Interview Prep](ansible/interview-prep/index.md)
     - **CI/CD Pipelines** — [Overview](cicd/index.md), [GitHub Actions](cicd/github-actions.md), [GitLab CI/CD](cicd/gitlab-ci.md), [ArgoCD](cicd/argocd.md), [Jenkins](cicd/jenkins.md)
-    - **Code Quality** — [Overview](code-quality/index.md), [open-source tools](code-quality/code-quality-ecosystem.md), [SonarQube installation](code-quality/installation.md), [quality gates](code-quality/quality-gates.md), [pipeline examples](code-quality/pipeline-example.md)
+    - **Code Quality** — [Overview](cicd/code-quality/index.md), [open-source tools](cicd/code-quality/code-quality-ecosystem.md), [SonarQube installation](cicd/code-quality/installation.md), [quality gates](cicd/code-quality/quality-gates.md), [pipeline examples](cicd/code-quality/pipeline-example.md)
     - **Monitoring** — [Stack overview](monitoring-tools/index.md), [monitoring lab](monitoring-tools/overview.md), [Prometheus](monitoring-tools/prometheus.md), [Grafana](monitoring-tools/grafana.md), [Alertmanager](monitoring-tools/alertmanager.md)
     - **SRE** — [Overview](sre/index.md), [SLOs](sre/01-slis-slos-and-error-budgets.md), [alerting](sre/02-alerting-on-slos.md), [incident response](sre/03-incident-response.md), [postmortems](sre/04-postmortems.md), [on-call](sre/05-on-call.md)
     - **Security** — [Overview](security/index.md), [threat modeling](security/01-devsecops-and-threat-modeling.md), [Vault](security/02-secrets-management-with-vault.md), [supply chain](security/03-software-supply-chain-security.md), [scanning](security/04-container-and-iac-scanning.md), [zero trust](security/05-identity-and-zero-trust.md)
