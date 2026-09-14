@@ -1,7 +1,7 @@
 ---
-title: "Docker Quick Reference: Commands and Cheat Sheet"
+title: "What Is a Docker Container? Quick Reference and Cheat Sheet"
 icon: lucide/scroll-text
-description: "A Docker cheat sheet — containers, images, builds, logs, networks, volumes, Compose, registries, cleanup, and troubleshooting one-liners."
+description: "What a Docker container is, in plain terms, plus a cheat sheet for containers, images, builds, logs, networks, volumes, Compose, and cleanup."
 tags:
   - Docker
   - Quick Reference
@@ -9,7 +9,15 @@ tags:
 
 # Docker Quick Reference
 
-Commands only, grouped by task. Every section links to the course chapter that explains it. New to containers? Start with [Docker and Linux Containers: From First Principles](index.md).
+## What Is a Docker Container?
+
+A **Docker container** is an ordinary Linux process that runs in isolation. The kernel gives it its own view of the system: its own process IDs, network interfaces, hostname, and mounts, through [namespaces](04-linux-namespaces.md). [cgroups](05-cgroups.md) cap how much CPU and memory it can use. Its filesystem comes from an [image](16-container-images.md), a read-only package holding the application and everything it depends on.
+
+- **Image vs container:** the image is the packaged template. A container is one running (or stopped) instance of it, with a thin writable layer on top. You can start many containers from one image.
+- **Container vs virtual machine:** a VM boots its own kernel on virtual hardware. A container shares the host's kernel, so it starts in milliseconds and uses far less memory, at the cost of weaker isolation. See [Virtual Machines and KVM](02-virtual-machines-and-kvm.md).
+- **What Docker adds:** the kernel features existed before Docker. Docker made them practical: a standard image format, a build tool (`Dockerfile`), registries for sharing images, and one CLI to run it all. See [What Docker Actually Solves](09-what-docker-solves.md).
+
+The rest of this page is commands only, grouped by task. Every section links to the course chapter that explains it. New to containers? Start with [Docker and Linux Containers: From First Principles](index.md).
 
 ## Install and Check
 
