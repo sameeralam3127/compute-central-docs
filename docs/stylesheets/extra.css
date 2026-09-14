@@ -134,8 +134,7 @@ html {
   margin: 0 0 1.2rem;
 }
 
-.md-typeset .cc-hero-actions .md-button,
-.md-typeset .cc-about .md-button {
+.md-typeset .cc-hero-actions .md-button {
   margin: 0;
   border-radius: 10px;
   font-size: 0.72rem;
@@ -147,8 +146,7 @@ html {
     border-color 160ms ease;
 }
 
-.md-typeset .cc-hero-actions .md-button:hover,
-.md-typeset .cc-about .md-button:hover {
+.md-typeset .cc-hero-actions .md-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 22px -12px color-mix(in srgb, var(--md-accent-fg-color) 70%, transparent);
 }
@@ -216,7 +214,13 @@ html {
   gap: 0.35rem;
   padding: 0.55rem 0.8rem;
   border-bottom: 1px solid var(--md-default-fg-color--lightest);
-  background: var(--md-code-bg-color);
+  background: color-mix(in srgb, var(--md-default-fg-color) 5%, var(--md-default-bg-color));
+}
+
+/* The theme treats any pre > code as a code block; the terminal isn't one */
+.md-typeset .cc-terminal .md-clipboard,
+.md-typeset .cc-terminal .md-code__nav {
+  display: none !important;
 }
 
 .md-typeset .cc-dot {
@@ -241,6 +245,9 @@ html {
 .md-typeset pre.cc-terminal-body {
   margin: 0;
   min-height: 12.5rem;
+  border: 0;
+  background: var(--md-default-bg-color);
+  box-shadow: none;
 }
 
 .md-typeset pre.cc-terminal-body > code {
@@ -719,43 +726,169 @@ html {
 /* ---------- About ---------- */
 
 .md-typeset .cc-about {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 1.2rem;
-  align-items: start;
+  grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
   margin: 1rem 0 1.5rem;
-  padding: 1.3rem 1.4rem;
   border: 1px solid var(--md-default-fg-color--lightest);
   border-radius: 14px;
-  background: var(--md-code-bg-color);
+  background:
+    radial-gradient(50% 120% at 0% 0%, color-mix(in srgb, var(--md-accent-fg-color) 9%, transparent), transparent 70%),
+    var(--md-code-bg-color);
 }
 
-.md-typeset .cc-about > p:first-child {
-  margin: 0;
+/* Thin accent strip along the top edge */
+.md-typeset .cc-about::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--md-accent-fg-color), var(--md-primary-fg-color));
+}
+
+.md-typeset .cc-about-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.6rem 1.2rem;
+  border-right: 1px solid var(--md-default-fg-color--lightest);
+  text-align: center;
 }
 
 .md-typeset .cc-avatar {
+  position: relative;
   display: grid;
   place-items: center;
-  width: 3.4rem;
-  height: 3.4rem;
+  width: 4.2rem;
+  height: 4.2rem;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--md-accent-fg-color), var(--md-primary-fg-color));
   color: #fff;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 800;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
+  box-shadow:
+    0 0 0 4px var(--md-default-bg-color),
+    0 0 0 5px color-mix(in srgb, var(--md-accent-fg-color) 35%, transparent),
+    0 14px 30px -14px color-mix(in srgb, var(--md-accent-fg-color) 80%, transparent);
 }
 
-.md-typeset .cc-about-text p:first-child {
-  margin-top: 0;
+/* Profile photo: same ring and size as the initials avatar, cropped to a circle */
+.md-typeset img.cc-avatar {
+  display: block;
+  width: 5.2rem;
+  height: 5.2rem;
+  max-width: none;
+  object-fit: cover;
+  object-position: 50% 40%;
+  background: var(--md-default-bg-color);
 }
 
-.md-typeset .cc-about-text p:last-child {
+.md-typeset .cc-about-id {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.md-typeset .cc-about-name {
+  color: var(--md-default-fg-color);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.md-typeset .cc-about-role {
+  color: var(--md-accent-fg-color);
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.md-typeset .cc-about-since {
+  margin-top: 0.35rem;
+  color: var(--md-default-fg-color--lighter);
+  font-size: 0.6rem;
+}
+
+.md-typeset .cc-about-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1.6rem 1.7rem;
+}
+
+.md-typeset .cc-about-body > * {
+  margin: 0;
+}
+
+.md-typeset .cc-about-lead {
+  max-width: 42rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+
+[dir] .md-typeset ul.cc-about-focus,
+.md-typeset ul.cc-about-focus {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.md-typeset ul.cc-about-focus li {
+  margin: 0;
+  padding: 0.2rem 0.65rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 999px;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color--light);
+  font-size: 0.62rem;
+  font-weight: 600;
+}
+
+.md-typeset .cc-about-links p {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 0;
+  margin: 0;
+}
+
+.md-typeset a.cc-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.38rem 0.85rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 10px;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  font-size: 0.66rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.md-typeset a.cc-social svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.md-typeset a.cc-social:hover,
+.md-typeset a.cc-social:focus-visible {
+  border-color: var(--md-accent-fg-color);
+  background: var(--md-accent-fg-color);
+  color: var(--md-accent-bg-color);
+  transform: translateY(-2px);
 }
 
 /* ---------- Scroll reveal (classes set by extra.js) ---------- */
@@ -868,6 +1001,25 @@ html {
 
   .md-typeset .cc-about {
     grid-template-columns: 1fr;
+  }
+
+  .md-typeset .cc-about-profile {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 1.4rem 1.2rem 1rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--md-default-fg-color--lightest);
+    text-align: left;
+  }
+
+  .md-typeset .cc-avatar {
+    width: 3.4rem;
+    height: 3.4rem;
+    font-size: 1rem;
+  }
+
+  .md-typeset .cc-about-body {
+    padding: 1.1rem 1.2rem 1.3rem;
   }
 
   .md-typeset .cc-filter-count {

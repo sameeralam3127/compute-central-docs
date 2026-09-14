@@ -26,7 +26,7 @@ hide:
       <span class="cc-dot cc-dot-r"></span><span class="cc-dot cc-dot-y"></span><span class="cc-dot cc-dot-g"></span>
       <span class="cc-terminal-title">~/compute-central</span>
     </div>
-    <pre class="cc-terminal-body"><code data-cc-terminal-body><span class="cc-t-line cc-t-cmd"><span class="cc-t-prompt">$ </span>docker compose up -d</span><span class="cc-t-line cc-t-out">✔ Container caddylab-db-1      Healthy</span><span class="cc-t-line cc-t-out">✔ Container caddylab-api-1     Started</span><span class="cc-t-line cc-t-out">✔ Container caddylab-caddy-1   Started</span><span class="cc-t-line cc-t-cmd"><span class="cc-t-prompt">$ </span>curl -s localhost/api/todos | jq length</span><span class="cc-t-line cc-t-out cc-t-ok">3</span></code></pre>
+    <pre class="cc-terminal-body"><code data-cc-terminal-body><span class="cc-t-line cc-t-cmd"><span class="cc-t-prompt">$ </span>docker compose up -d</span><span class="cc-t-line cc-t-out">✔ Container caddylab-db-1  Healthy</span><span class="cc-t-line cc-t-out">✔ Container caddylab-api-1  Started</span><span class="cc-t-line cc-t-out">✔ Container caddylab-caddy-1  Started</span><span class="cc-t-line cc-t-cmd"><span class="cc-t-prompt">$ </span>curl -s localhost/api/todos | jq length</span><span class="cc-t-line cc-t-out cc-t-ok">3</span></code></pre>
     <div class="cc-terminal-foot">
       <div class="cc-terminal-tabs" role="tablist" aria-label="Example commands from the guides" data-cc-terminal-tabs hidden></div>
       <a class="cc-terminal-link" href="docker/14-caddy-web-app-lab/" data-cc-terminal-link>Open the Docker guide →</a>
@@ -233,15 +233,32 @@ Start with the topic you need, then follow the examples in a local or test envir
 
 <div class="cc-about" data-cc-reveal markdown>
 
-<span class="cc-avatar" aria-hidden="true">SA</span>
+<div class="cc-about-profile">
+  <img class="cc-avatar" src="assets/sameer-avatar.jpg" alt="Sameer Alam" width="240" height="240" loading="lazy" decoding="async">
+  <div class="cc-about-id">
+    <strong class="cc-about-name">Sameer Alam</strong>
+    <span class="cc-about-role">DevOps Engineer · SRE</span>
+    <span class="cc-about-since">Writing since 2016</span>
+  </div>
+</div>
 
-<div class="cc-about-text" markdown>
+<div class="cc-about-body" markdown>
 
-I’m **Sameer Alam**, a DevOps Engineer and SRE practitioner focused on reliable, automated, observable, and secure systems. My work spans infrastructure design, deployment automation, monitoring, incident response, and platform operations.
+<p class="cc-about-lead">I build and run reliable, automated, observable, and secure systems — and write down what I learn along the way. Compute Central brings a decade of notes, experiments, and real-world lessons into one organized place.</p>
 
-I started documenting what I learned in **2016**. Compute Central brings those notes, experiments, and real-world lessons into one organized place.
+<ul class="cc-about-focus" aria-label="Focus areas">
+  <li>Infrastructure design</li>
+  <li>Deployment automation</li>
+  <li>Monitoring</li>
+  <li>Incident response</li>
+  <li>Platform operations</li>
+</ul>
 
-[:fontawesome-brands-github: GitHub](https://github.com/sameeralam3127){ .md-button } [:fontawesome-brands-medium: Medium](https://medium.com/@sameeralam3127){ .md-button } [:lucide-archive: Blog archive](https://compute-central.blogspot.com/){ .md-button }
+<div class="cc-about-links" markdown>
+
+[:fontawesome-brands-github: GitHub](https://github.com/sameeralam3127){ .cc-social } [:fontawesome-brands-medium: Medium](https://medium.com/@sameeralam3127){ .cc-social } [:lucide-archive: Blog archive](https://compute-central.blogspot.com/){ .cc-social }
+
+</div>
 
 </div>
 

@@ -74,9 +74,9 @@
       href: "docker/14-caddy-web-app-lab/",
       lines: [
         { cmd: "docker compose up -d" },
-        { out: "✔ Container caddylab-db-1      Healthy" },
-        { out: "✔ Container caddylab-api-1     Started" },
-        { out: "✔ Container caddylab-caddy-1   Started" },
+        { out: "✔ Container caddylab-db-1  Healthy" },
+        { out: "✔ Container caddylab-api-1  Started" },
+        { out: "✔ Container caddylab-caddy-1  Started" },
         { cmd: "curl -s localhost/api/todos | jq length" },
         { out: "3", ok: true }
       ]
@@ -370,7 +370,7 @@
           observer.unobserve(entry.target);
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0.05 }
     );
 
     sections.forEach(function (section) {
