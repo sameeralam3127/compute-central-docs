@@ -254,4 +254,4 @@ The `rules` limit analysis to the default branch, which matches what Community B
 
 ## Next
 
-Continue to [CI/CD Pipelines](../cicd/index.md) to build the rest of the delivery pipeline around these quality checks.
+Continue to [CI/CD Pipelines](../index.md) to build the rest of the delivery pipeline around these quality checks.

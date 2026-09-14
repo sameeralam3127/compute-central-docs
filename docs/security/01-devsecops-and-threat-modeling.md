@@ -39,7 +39,7 @@ Traditional security reviewed a finished system just before release: slow, adver
 | **Test** | Dynamic testing against running apps | ZAP, API fuzzers |
 | **Run** | Runtime detection, audit logging, vulnerability monitoring, patching | Falco, GuardDuty, CloudTrail, Inspector |
 
-Start with the controls that catch the most common real incidents — leaked secrets, known-vulnerable dependencies, and cloud misconfigurations — before investing in the rest. See [Code Quality: Open-Source Tools](../code-quality/code-quality-ecosystem.md) for SAST and SCA setup.
+Start with the controls that catch the most common real incidents — leaked secrets, known-vulnerable dependencies, and cloud misconfigurations — before investing in the rest. See [Code Quality: Open-Source Tools](../cicd/code-quality/code-quality-ecosystem.md) for SAST and SCA setup.
 
 ## Shift Left, and Shift Right
 

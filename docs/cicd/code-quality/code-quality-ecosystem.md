@@ -202,7 +202,7 @@ flowchart LR
 
 - **Semgrep** — pattern-based static analysis with thousands of community rules; write custom rules in near-source syntax. The open-source engine is free; [Semgrep AppSec Platform is the paid tier](paid-platforms.md).
 - **Gitleaks** — scans the working tree *and git history* for API keys, tokens, and passwords.
-- **Trivy** — one binary that scans dependency lockfiles, **container images** (perfect after the [Docker build stage](../cicd/java-github-actions.md)), Kubernetes manifests, and Terraform.
+- **Trivy** — one binary that scans dependency lockfiles, **container images** (perfect after the [Docker build stage](../java-github-actions.md)), Kubernetes manifests, and Terraform.
 
 ```bash
 # All three, locally
@@ -215,7 +215,7 @@ trivy image ghcr.io/owner/app:latest
 
 ## Putting It in CI
 
-A quality job that slots straight into the [GitHub Actions pipelines](../cicd/github-actions.md) from the CI/CD section — Python flavor:
+A quality job that slots straight into the [GitHub Actions pipelines](../github-actions.md) from the CI/CD section — Python flavor:
 
 ```yaml
   quality:
@@ -305,4 +305,4 @@ flowchart LR
 
 ## Next
 
-Continue to [Paid and SaaS Platforms](paid-platforms.md). To scan container images and infrastructure as code as well, see [Container and IaC Scanning](../security/04-container-and-iac-scanning.md).
+Continue to [Paid and SaaS Platforms](paid-platforms.md). To scan container images and infrastructure as code as well, see [Container and IaC Scanning](../../security/04-container-and-iac-scanning.md).

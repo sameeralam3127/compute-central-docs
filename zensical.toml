@@ -226,6 +226,7 @@ Docker = [
   "cicd/gitlab-ci.md",
   "cicd/argocd.md",
   "cicd/jenkins.md",
+  { "Code Quality" = ["cicd/code-quality/index.md", "cicd/code-quality/code-quality-ecosystem.md", "cicd/code-quality/paid-platforms.md", "cicd/code-quality/installation.md", "cicd/code-quality/configuration.md", "cicd/code-quality/quality-gates.md", "cicd/code-quality/jenkins-integration.md", "cicd/code-quality/pipeline-example.md"] },
 ]
 
 [[project.nav]]
@@ -264,18 +265,6 @@ Monitoring = [
   "monitoring-tools/opentelemetry-platforms.md",
   "monitoring-tools/blackbox.md",
   "monitoring-tools/troubleshooting.md",
-]
-
-[[project.nav]]
-"Code Quality" = [
-  "code-quality/index.md",
-  "code-quality/code-quality-ecosystem.md",
-  "code-quality/paid-platforms.md",
-  "code-quality/installation.md",
-  "code-quality/configuration.md",
-  "code-quality/quality-gates.md",
-  "code-quality/jenkins-integration.md",
-  "code-quality/pipeline-example.md",
 ]
 
 [[project.nav]]
