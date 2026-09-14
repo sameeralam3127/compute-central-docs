@@ -62,7 +62,7 @@ jobs:
         run: python scripts/freshness.py sitemap
       - name: Shrink search index
         run: python scripts/slim_search_index.py
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: site
       - uses: actions/deploy-pages@v4
