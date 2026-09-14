@@ -7,9 +7,15 @@
 {% block extrahead %}
   <link rel="preconnect" href="https://unpkg.com">
 
+  {#- zensical leaves page.is_homepage undefined; the homepage has an empty url -#}
+  {% set is_home = page.url in ["", "index.html"] %}
+  {% set is_about = page.url == "about/" %}
   {% set page_title = (page.meta.title if page.meta and page.meta.title else page.title | striptags if page.title else config.site_name) %}
   {% set page_description = (page.meta.description if page.meta and page.meta.description else config.site_description) %}
   {% set page_url = (page.canonical_url if page.canonical_url else config.site_url) %}
+  {% set updated = page.meta.last_updated if page.meta and page.meta.last_updated else none %}
+  {% set author_url = config.site_url ~ "about/" %}
+  {% set person_id = author_url ~ "#person" %}
 
   {# Per-section social preview cards for the Ansible docs; everything else keeps the site hero image. #}
   {% set u = page.url or "" %}
@@ -53,19 +59,67 @@
     {% set page_image = config.site_url ~ "assets/compute-central-hero.jpg" %}
   {% endif %}
 
-  <meta property="og:type" content="{{ 'website' if page.is_homepage else 'article' }}">
+  <meta property="og:type" content="{{ 'website' if is_home else ('profile' if is_about else 'article') }}">
   <meta property="og:title" content="{{ page_title }}">
   <meta property="og:description" content="{{ page_description }}">
   <meta property="og:url" content="{{ page_url }}">
   <meta property="og:image" content="{{ page_image }}">
   <meta property="og:site_name" content="{{ config.site_name }}">
+  {% if updated and not is_home %}
+  <meta property="article:modified_time" content="{{ updated }}">
+  {% endif %}
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ page_title }}">
   <meta name="twitter:description" content="{{ page_description }}">
   <meta name="twitter:image" content="{{ page_image }}">
 
-  {% if not page.is_homepage %}
+  {#- The author entity is defined once and referenced by @id everywhere else. -#}
+  {% set person %}
+    {
+      "@type": "Person",
+      "@id": {{ person_id | tojson }},
+      "name": {{ config.site_author | tojson }},
+      "url": {{ author_url | tojson }},
+      "jobTitle": "DevOps Engineer and SRE",
+      "sameAs": [
+        "https://github.com/sameeralam3127",
+        "https://medium.com/@sameeralam3127",
+        "https://compute-central.blogspot.com/"
+      ]
+    }
+  {% endset %}
+
+  {% if is_home %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": {{ (config.site_url ~ "#website") | tojson }},
+          "url": {{ config.site_url | tojson }},
+          "name": {{ config.site_name | tojson }},
+          "description": {{ config.site_description | tojson }},
+          "inLanguage": "en",
+          "publisher": { "@id": {{ person_id | tojson }} }
+        },
+        {{ person }}
+      ]
+    }
+    </script>
+  {% elif is_about %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      "url": {{ page_url | tojson }},
+      "name": {{ page_title | tojson }},
+      {% if updated %}"dateModified": {{ updated | tojson }},{% endif %}
+      "mainEntity": {{ person }}
+    }
+    </script>
+  {% else %}
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -73,15 +127,41 @@
       "headline": {{ page_title | tojson }},
       "description": {{ page_description | tojson }},
       "url": {{ page_url | tojson }},
+      "mainEntityOfPage": {{ page_url | tojson }},
       "image": {{ page_image | tojson }},
-      "author": {
-        "@type": "Person",
-        "name": "{{ config.site_author }}"
-      },
+      "inLanguage": "en",
+      {% if updated %}"dateModified": {{ updated | tojson }},{% endif %}
+      "author": { "@type": "Person", "@id": {{ person_id | tojson }}, "name": {{ config.site_author | tojson }}, "url": {{ author_url | tojson }} },
       "publisher": {
         "@type": "Organization",
-        "name": "{{ config.site_name }}"
+        "name": {{ config.site_name | tojson }},
+        "url": {{ config.site_url | tojson }},
+        "logo": { "@type": "ImageObject", "url": {{ (config.site_url ~ "assets/logo.png") | tojson }} }
       }
+    }
+    </script>
+
+    {#- Breadcrumbs mirror the visible navigation path: Home, each section with an index page, this page. -#}
+    {% set crumb = namespace(position=1, items=[]) %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": {{ config.site_name | tojson }}, "item": {{ config.site_url | tojson }} }
+        {%- for ancestor in page.ancestors | reverse %}
+          {%- set section = namespace(url=none) %}
+          {%- for child in ancestor.children or [] %}
+            {%- if child.is_index and section.url is none %}{% set section.url = child.url %}{% endif %}
+          {%- endfor %}
+          {%- if section.url is not none and section.url != page.url %}
+            {%- set crumb.position = crumb.position + 1 %},
+        { "@type": "ListItem", "position": {{ crumb.position }}, "name": {{ ancestor.title | tojson }}, "item": {{ (config.site_url ~ section.url) | tojson }} }
+          {%- endif %}
+        {%- endfor %}
+        {%- set crumb.position = crumb.position + 1 %},
+        { "@type": "ListItem", "position": {{ crumb.position }}, "name": {{ page_title | tojson }}, "item": {{ page_url | tojson }} }
+      ]
     }
     </script>
   {% endif %}

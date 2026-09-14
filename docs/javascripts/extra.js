@@ -385,6 +385,120 @@
   }
 
   /* ---------------------------------------------------------------------------
+     Diagrams: load Mermaid only when a diagram is about to scroll into view.
+     The theme would otherwise download ~1 MB of Mermaid on every page that
+     contains a diagram, before the reader has seen any of them.
+     ------------------------------------------------------------------------- */
+
+  var MERMAID_SRC = "https://unpkg.com/mermaid@11.17.2/dist/mermaid.min.js";
+  var mermaidPromise = null;
+  var renderChain = Promise.resolve();
+  var diagramId = 0;
+  var themeWatcher = null;
+
+  function loadMermaid() {
+    if (!mermaidPromise) {
+      mermaidPromise = new Promise(function (resolve, reject) {
+        var script = document.createElement("script");
+        script.src = MERMAID_SRC;
+        script.async = true;
+        script.onload = function () {
+          resolve(window.mermaid);
+        };
+        script.onerror = function () {
+          mermaidPromise = null;
+          reject(new Error("Could not load Mermaid from " + MERMAID_SRC));
+        };
+        document.head.appendChild(script);
+      });
+    }
+    return mermaidPromise;
+  }
+
+  function darkScheme() {
+    return document.body.getAttribute("data-md-color-scheme") === "slate";
+  }
+
+  // Mermaid keeps global configuration, so renders run one at a time.
+  function renderSvg(source) {
+    var job = renderChain.then(function () {
+      return loadMermaid().then(function (mermaid) {
+        mermaid.initialize({
+          startOnLoad: false,
+          securityLevel: "strict",
+          theme: darkScheme() ? "dark" : "default"
+        });
+        diagramId += 1;
+        return mermaid.render("cc-diagram-" + diagramId, source);
+      });
+    });
+    renderChain = job.catch(function () {});
+    return job.then(function (result) {
+      return result.svg;
+    });
+  }
+
+  function renderBlock(pre) {
+    var source = pre.getAttribute("data-source");
+    renderSvg(source).then(
+      function (svg) {
+        if (!pre.isConnected) return;
+        var figure = document.createElement("div");
+        figure.className = "cc-diagram";
+        figure.setAttribute("data-source", source);
+        figure.innerHTML = svg;
+        pre.replaceWith(figure);
+      },
+      function (error) {
+        // Leave the diagram source visible rather than an empty box.
+        if (window.console) window.console.warn(error);
+      }
+    );
+  }
+
+  function watchTheme() {
+    if (themeWatcher || !("MutationObserver" in window)) return;
+    themeWatcher = new MutationObserver(function () {
+      document.querySelectorAll(".cc-diagram[data-source]").forEach(function (figure) {
+        renderSvg(figure.getAttribute("data-source")).then(function (svg) {
+          if (figure.isConnected) figure.innerHTML = svg;
+        });
+      });
+    });
+    themeWatcher.observe(document.body, { attributes: true, attributeFilter: ["data-md-color-scheme"] });
+  }
+
+  function setupDiagrams() {
+    var blocks = Array.prototype.slice.call(document.querySelectorAll("pre.mermaid-lazy"));
+    if (!blocks.length) return;
+
+    blocks.forEach(function (pre) {
+      var code = pre.querySelector("code");
+      pre.setAttribute("data-source", (code || pre).textContent);
+    });
+    watchTheme();
+
+    if (!("IntersectionObserver" in window)) {
+      blocks.forEach(renderBlock);
+      return;
+    }
+
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          observer.unobserve(entry.target);
+          renderBlock(entry.target);
+        });
+      },
+      { rootMargin: "800px 0px" }
+    );
+    blocks.forEach(function (pre) {
+      observer.observe(pre);
+    });
+  }
+
+  /* ---------------------------------------------------------------------------
      Wiring
      ------------------------------------------------------------------------- */
 
@@ -395,6 +509,7 @@
     setupFilter();
     setupSpotlight();
     setupReveal();
+    setupDiagrams();
   }
 
   if (typeof document$ !== "undefined") {

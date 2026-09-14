@@ -47,7 +47,29 @@ venv/bin/pip install zensical
 venv/bin/zensical build --clean
 ```
 
-GitHub Actions builds the site on every push to `main` and deploys it to GitHub Pages.
+GitHub Actions builds the site on every push to `main` and deploys it to GitHub Pages. The workflow also runs two scripts around the build:
+
+| Script | When | What it does |
+|---|---|---|
+| `scripts/freshness.py frontmatter` | Before `zensical build` | Writes each page's last git commit date into its front matter, for the "Updated" byline and structured data |
+| `scripts/freshness.py sitemap` | After the build | Adds `<lastmod>` dates to `site/sitemap.xml` |
+| `scripts/slim_search_index.py` | After the build | Removes code blocks from `site/search.json`, which every page downloads |
+| `scripts/check_urls.py` | After the build | Fails if any URL in `scripts/published-urls.txt` no longer resolves |
+
+`freshness.py frontmatter` rewrites files in `docs/`, so it only runs in CI unless you pass `--force` — don't commit its changes. The deploy checkout uses `fetch-depth: 0` because dates come from git history.
+
+### Keeping URLs Stable
+
+Search engines and other sites link to existing URLs, so prefer adding a hub page over moving pages. If a page must move or be removed:
+
+1. Add `"old/path.md" = "new/path.md"` under `[project.plugins.redirects.redirect_maps]` in `zensical.toml`.
+2. Build, then run `python scripts/check_urls.py` to confirm every published URL still resolves.
+
+After adding pages, run `python scripts/check_urls.py --update` and commit `scripts/published-urls.txt` so those URLs are protected too.
+
+### Measuring Traffic
+
+Google Analytics only loads after a visitor accepts cookies, so it undercounts visits by design. Use Google Search Console for search clicks, impressions, indexing, and 404 reports.
 
 ## About
 

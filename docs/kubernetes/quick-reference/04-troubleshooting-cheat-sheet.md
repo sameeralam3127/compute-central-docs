@@ -16,11 +16,11 @@ A fast first-command lookup. For the full diagnosis, causes, and fix per symptom
 
 | Symptom | First command | Likely fix |
 |---|---|---|
-| `Pending` | `kubectl describe pod <name>` | Lower requests, add capacity, fix taint/toleration or nodeSelector — [details](../troubleshooting/01-pod-scheduling-and-startup-problems.md#pod-stuck-in-pending) |
-| `ImagePullBackOff` / `ErrImagePull` | `kubectl describe pod <name>` | Fix image tag, add `imagePullSecrets` — [details](../troubleshooting/01-pod-scheduling-and-startup-problems.md#imagepullbackoff-errimagepull) |
-| `CrashLoopBackOff` | `kubectl logs <name> --previous` | Fix app config, tune/add `startupProbe` — [details](../troubleshooting/01-pod-scheduling-and-startup-problems.md#crashloopbackoff) |
-| `OOMKilled` | `kubectl top pod <name>` | Raise `resources.limits.memory` or fix the leak — [details](../troubleshooting/01-pod-scheduling-and-startup-problems.md#oomkilled) |
-| `Init:CrashLoopBackOff` | `kubectl logs <name> -c <init-container>` | Fix the init container's command/dependency wait — [details](../troubleshooting/01-pod-scheduling-and-startup-problems.md#init-container-failures-blocking-the-main-container) |
+| `Pending` | `kubectl describe pod <name>` | Lower requests, add capacity, fix taint/toleration or nodeSelector — [details](../troubleshooting/pod-pending.md) |
+| `ImagePullBackOff` / `ErrImagePull` | `kubectl describe pod <name>` | Fix image tag, add `imagePullSecrets` — [details](../troubleshooting/imagepullbackoff.md) |
+| `CrashLoopBackOff` | `kubectl logs <name> --previous` | Fix app config, tune/add `startupProbe` — [details](../troubleshooting/crashloopbackoff.md) |
+| `OOMKilled` | `kubectl top pod <name>` | Raise `resources.limits.memory` or fix the leak — [details](../troubleshooting/oomkilled.md) |
+| `Init:CrashLoopBackOff` | `kubectl logs <name> -c <init-container>` | Fix the init container's command/dependency wait — [details](../troubleshooting/init-container-failures.md) |
 
 ## Networking
 

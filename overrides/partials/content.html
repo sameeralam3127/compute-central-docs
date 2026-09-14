@@ -1,0 +1,33 @@
+{#-
+  Override of the theme's content partial.
+  Identical to the stock template, except article pages get a byline under the
+  H1: author (linked to the About page) and, when CI has added it to the front
+  matter, the last-updated date.
+-#}
+{% include "partials/actions.html" %}
+{% if "<h1" not in page.content %}
+  <h1 id="__skip">{{ page.title | d(config.site_name, true)}}</h1>
+{% endif %}
+{#- zensical leaves page.is_homepage undefined; the homepage has an empty url -#}
+{% if page.url in ["", "index.html", "about/"] %}
+  {{ page.content }}
+{% else %}
+  {% set byline %}
+    <p class="cc-byline">
+      By <a href="{{ config.site_url }}about/" rel="author">{{ config.site_author }}</a>
+      {%- if page.meta and page.meta.last_updated %}
+        <span aria-hidden="true">·</span> Updated <time datetime="{{ page.meta.last_updated }}">{{ page.meta.last_updated_display }}</time>
+      {%- endif %}
+    </p>
+  {% endset %}
+  {% if "</h1>" in page.content %}
+    {{ page.content | replace("</h1>", "</h1>" ~ byline) }}
+  {% else %}
+    {{ byline }}
+    {{ page.content }}
+  {% endif %}
+{% endif %}
+{% include "partials/tags.html" %}
+{% include "partials/source-file.html" %}
+{% include "partials/feedback.html" %}
+{% include "partials/comments.html" %}

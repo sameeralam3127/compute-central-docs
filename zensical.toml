@@ -105,7 +105,7 @@ nav = [
     { "OpenShift" = ["kubernetes/openshift/index.md", "kubernetes/openshift/01-what-is-openshift.md", "kubernetes/openshift/02-oc-cli-and-projects.md", "kubernetes/openshift/03-routes-and-networking.md", "kubernetes/openshift/04-source-to-image-and-builds.md", "kubernetes/openshift/05-operators-and-olm.md"] },
     { "Labs" = ["kubernetes/labs/index.md", "kubernetes/labs/01-minikube-lab.md", "kubernetes/labs/02-kind-lab.md", "kubernetes/labs/03-docker-desktop-lab.md", "kubernetes/labs/04-podman-lab.md", "kubernetes/labs/05-hands-on-scenarios.md"] },
     { "Case Studies" = ["kubernetes/case-studies/index.md", "kubernetes/case-studies/01-rolling-deployment-with-zero-downtime.md", "kubernetes/case-studies/02-blue-green-and-canary-releases.md", "kubernetes/case-studies/03-multi-tenant-namespace-setup.md", "kubernetes/case-studies/04-autoscaling-under-load.md", "kubernetes/case-studies/05-secrets-rotation.md", "kubernetes/case-studies/06-debugging-a-crashloopbackoff-incident.md"] },
-    { "Troubleshooting" = ["kubernetes/troubleshooting/index.md", "kubernetes/troubleshooting/01-pod-scheduling-and-startup-problems.md", "kubernetes/troubleshooting/02-networking-and-service-problems.md", "kubernetes/troubleshooting/03-storage-problems.md", "kubernetes/troubleshooting/04-cluster-and-node-problems.md"] },
+    { "Troubleshooting" = ["kubernetes/troubleshooting/index.md", "kubernetes/troubleshooting/01-pod-scheduling-and-startup-problems.md", "kubernetes/troubleshooting/pod-pending.md", "kubernetes/troubleshooting/imagepullbackoff.md", "kubernetes/troubleshooting/crashloopbackoff.md", "kubernetes/troubleshooting/oomkilled.md", "kubernetes/troubleshooting/init-container-failures.md", "kubernetes/troubleshooting/02-networking-and-service-problems.md", "kubernetes/troubleshooting/03-storage-problems.md", "kubernetes/troubleshooting/04-cluster-and-node-problems.md"] },
     { "Interview Preparation" = ["kubernetes/interview-prep/index.md", "kubernetes/interview-prep/01-core-concepts-questions.md", "kubernetes/interview-prep/02-architecture-and-networking-questions.md", "kubernetes/interview-prep/03-scenario-based-questions.md", "kubernetes/interview-prep/04-security-and-rbac-questions.md", "kubernetes/interview-prep/05-senior-and-architect-questions.md"] },
     { "Quick Reference" = ["kubernetes/quick-reference/index.md", "kubernetes/quick-reference/01-kubectl-cheat-sheet.md", "kubernetes/quick-reference/02-yaml-cheat-sheet.md", "kubernetes/quick-reference/03-rbac-cheat-sheet.md", "kubernetes/quick-reference/04-troubleshooting-cheat-sheet.md", "kubernetes/quick-reference/05-resource-units-and-ports-cheat-sheet.md"] },
   ] },
@@ -156,6 +156,7 @@ nav = [
     "security/05-identity-and-zero-trust.md",
     "security/06-hardening-and-compliance.md",
   ] },
+  { "About" = "about/index.md" },
 ]
 
 # Keep Zensical's recommended extension set explicit. Adding one extension table
@@ -188,7 +189,7 @@ pygments_lang_class = true
 [project.markdown_extensions.pymdownx.smartsymbols]
 [project.markdown_extensions.pymdownx.superfences]
 custom_fences = [
-  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+  { name = "mermaid", class = "mermaid-lazy", format = "pymdownx.superfences.fence_code_format" },
 ]
 [project.markdown_extensions.pymdownx.tabbed]
 alternate_style = true
@@ -202,6 +203,8 @@ language = "en"
 favicon = "assets/logo.png"
 logo = "assets/logo.png"
 custom_dir = "overrides"
+# System font stack: Google Fonts was render-blocking and cost ~4.5 s of mobile LCP in Lighthouse tests
+font = false
 
 features = [
   "announce.dismiss",
@@ -284,3 +287,32 @@ actions = ["accept", "reject", "manage"]
 [project.extra.consent.cookies.analytics]
 name = "Google Analytics"
 checked = false
+
+# Old URLs that search engines and other sites may still link to. Each old page
+# becomes a small HTML page that sends readers (and search engines) to the new
+# one. scripts/check_urls.py fails the build if a published URL disappears
+# without an entry here, so move pages only when you have to.
+[project.plugins.redirects.redirect_maps]
+"jenkins/argocd.md" = "cicd/argocd.md"
+"jenkins/github-actions.md" = "cicd/github-actions.md"
+"jenkins/gitlab-ci.md" = "cicd/gitlab-ci.md"
+"jenkins/index.md" = "cicd/index.md"
+"jenkins/java-github-actions.md" = "cicd/java-github-actions.md"
+"jenkins/jenkins.md" = "cicd/jenkins.md"
+"jenkins/python-github-actions.md" = "cicd/python-github-actions.md"
+"sonarqube/code-quality-ecosystem.md" = "cicd/code-quality/code-quality-ecosystem.md"
+"sonarqube/configuration.md" = "cicd/code-quality/configuration.md"
+"sonarqube/index.md" = "cicd/code-quality/index.md"
+"sonarqube/installation.md" = "cicd/code-quality/installation.md"
+"sonarqube/jenkins-integration.md" = "cicd/code-quality/jenkins-integration.md"
+"sonarqube/paid-platforms.md" = "cicd/code-quality/paid-platforms.md"
+"sonarqube/pipeline-example.md" = "cicd/code-quality/pipeline-example.md"
+"code-quality/code-quality-ecosystem.md" = "cicd/code-quality/code-quality-ecosystem.md"
+"code-quality/configuration.md" = "cicd/code-quality/configuration.md"
+"code-quality/index.md" = "cicd/code-quality/index.md"
+"code-quality/installation.md" = "cicd/code-quality/installation.md"
+"code-quality/jenkins-integration.md" = "cicd/code-quality/jenkins-integration.md"
+"code-quality/paid-platforms.md" = "cicd/code-quality/paid-platforms.md"
+"code-quality/pipeline-example.md" = "cicd/code-quality/pipeline-example.md"
+"code-quality/quality-gates.md" = "cicd/code-quality/quality-gates.md"
+"shell-scripts/scripts.md" = "foundations/shell-scripting/01-bash-fundamentals.md"
