@@ -1,7 +1,7 @@
 ---
 title: Ansible SSH Setup and Connectivity Guide
 icon: lucide/key-round
-description: A complete SSH learning path for Ansible — keys, ssh-agent, known_hosts, ansible_user/host/port/private_key_file, bastion hosts and ProxyJump, become vs. SSH auth, and troubleshooting connection failures.
+description: "Set up SSH for Ansible — keys, ssh-agent, known_hosts, connection variables, bastions with ProxyJump, become, and fixing connection failures."
 tags:
   - Ansible
   - Getting Started

@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Logging: Architecture, kubectl logs, and Cluster-Wide Patterns"
+title: "Kubernetes Logging: kubectl logs and Cluster-Wide Patterns"
 icon: lucide/file-text
 description: How container logs flow from stdout/stderr to kubectl logs, node-level log rotation, and cluster-wide logging patterns with node agents versus sidecars.
 tags:

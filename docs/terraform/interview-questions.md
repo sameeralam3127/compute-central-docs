@@ -1,7 +1,7 @@
 ---
 title: "Terraform Interview Questions and Answers"
 icon: lucide/messages-square
-description: Prepare practical Terraform interview answers covering state, providers, modules, plans, variables, workspaces, drift, remote backends, import, refactoring, CI/CD, and senior-level scenario questions.
+description: "Practical Terraform interview questions and answers — state, providers, modules, plans, workspaces, drift, import, refactoring, and CI/CD."
 tags:
   - Terraform
   - Interview Preparation

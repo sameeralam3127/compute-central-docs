@@ -1,7 +1,7 @@
 ---
 title: "Ansible Scenario-Based Interview Questions"
 icon: lucide/puzzle
-description: Scenario-based Ansible interview questions that test reasoning through an open-ended production problem, not memorized definitions — with a full expected thought process for each.
+description: "Scenario-based Ansible interview questions that test reasoning through open-ended production problems, with the expected thought process."
 tags:
   - Ansible
   - Interview Preparation

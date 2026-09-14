@@ -1,7 +1,7 @@
 ---
-title: "Dockerfiles: Build Context, Caching, Multi-Stage Builds, and Secure Images"
+title: "Dockerfiles: Caching, Multi-Stage Builds, and Secure Images"
 icon: lucide/file-code
-description: Learn Dockerfile instructions, build context and .dockerignore, layer caching, multi-stage builds, BuildKit cache and secret mounts, non-root users, signals, health checks, and multi-platform builds.
+description: "Write better Dockerfiles — build context, layer caching, multi-stage builds, BuildKit secret mounts, non-root users, signals, and health checks."
 tags:
   - Docker
   - Dockerfile

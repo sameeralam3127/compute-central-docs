@@ -1,7 +1,7 @@
 ---
-title: "What's Inside an Application: Runtimes, Libraries, and Configuration"
+title: "Inside an Application: Runtimes, Libraries, and Configuration"
 icon: lucide/package
-description: Learn what an application actually needs at runtime, compare Python, Node.js, and Java dependency stacks, and understand the technical causes of “it works on my machine.”
+description: "What an application needs at runtime — Python, Node.js, and Java dependency stacks compared, and the real causes of “it works on my machine.”"
 tags:
   - Docker
   - Why Containers Exist

@@ -188,4 +188,4 @@ See [Case Study: Vault Secrets](../case-studies/05-vault-secrets-case-study.md).
 
 ## Next
 
-Continue to [Security](04-security.md).
+Continue to [Security](04-security.md). When secrets outgrow Ansible Vault, see [Secrets Management With HashiCorp Vault](../../security/02-secrets-management-with-vault.md).

@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Scheduling: Affinity, Anti-Affinity, and Taints"
 icon: lucide/route
-description: How the Kubernetes scheduler picks a node, and how to steer or restrict that choice with node/pod affinity, taints and tolerations, and topology spread constraints.
+description: "Control Kubernetes scheduling — nodeSelector, node and pod affinity, taints and tolerations, topology spread, and priority classes."
 tags:
   - Kubernetes
   - Workloads & Scheduling

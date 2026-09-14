@@ -1,7 +1,7 @@
 ---
 title: "Install Docker Engine and Understand the Daemon"
 icon: lucide/download
-description: Install Docker Engine on Linux, understand the CLI and daemon, configure logging and live restore, use contexts, choose rootless mode, and know how Docker Desktop differs on macOS and Windows.
+description: "Install Docker Engine on Linux, understand the CLI and daemon, configure logging and live restore, use contexts, and compare Docker Desktop."
 tags:
   - Docker
   - Docker Workflows

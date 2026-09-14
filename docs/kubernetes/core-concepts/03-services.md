@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Services Explained: ClusterIP, NodePort, LoadBalancer"
 icon: lucide/network
-description: Services as stable network identity for a moving set of Pods, and an intro-level look at the four Service types — ClusterIP, NodePort, LoadBalancer, and ExternalName.
+description: "Kubernetes Services as stable network identity for Pods, with an introduction to ClusterIP, NodePort, LoadBalancer, and ExternalName."
 tags:
   - Kubernetes
   - Core Concepts

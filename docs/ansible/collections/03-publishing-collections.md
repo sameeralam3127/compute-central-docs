@@ -140,11 +140,11 @@ jobs:
       run:
         working-directory: ansible_collections/acme/platform
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           path: ansible_collections/acme/platform
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 

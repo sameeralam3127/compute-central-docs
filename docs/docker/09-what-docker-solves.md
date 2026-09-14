@@ -1,7 +1,7 @@
 ---
 title: "What Docker Actually Solves (and What It Doesn't)"
 icon: lucide/puzzle
-description: Map every Docker workflow to the Linux container concepts it automates, compare a manual deployment with a Docker one, and learn the problems Docker leaves to you.
+description: "What Docker actually solves — packaging, isolation, and consistent delivery — and the problems containers don't solve on their own."
 tags:
   - Docker
   - Docker Workflows

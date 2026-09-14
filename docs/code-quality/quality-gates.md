@@ -1,7 +1,7 @@
 ---
 title: "SonarQube Quality Gates, Quality Profiles, and New Code"
 icon: lucide/traffic-cone
-description: Understand SonarQube quality gates, quality profiles, the new code period, and security hotspots — and design a gate that blocks bad changes without blocking the team.
+description: "SonarQube quality gates and profiles explained — rules, issues and security hotspots, the new code period, custom gates, and coverage."
 tags:
   - SonarQube
   - Quality Gates

@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Cluster Upgrades: Version Skew and kubeadm Upgrade Workflow"
+title: "Kubernetes Cluster Upgrades: Version Skew and kubeadm Workflow"
 icon: lucide/arrow-up-circle
 description: The Kubernetes version skew policy, the kubeadm control-plane-first upgrade order, and how EKS, GKE, and AKS manage upgrades differently.
 tags:

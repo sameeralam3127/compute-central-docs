@@ -1,7 +1,7 @@
 ---
 title: "OpenShift Operators, OLM, and OperatorHub"
 icon: lucide/puzzle
-description: The Operator pattern for managing application lifecycle, how the Operator Lifecycle Manager installs and upgrades operators, and OperatorHub as the built-in catalog.
+description: "Operators and the Operator Lifecycle Manager on OpenShift — how operators work, installing from OperatorHub, and managing upgrades."
 tags:
   - Kubernetes
   - OpenShift

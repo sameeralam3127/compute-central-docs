@@ -1,7 +1,7 @@
 ---
 title: "Terraform State, Remote Backends, Locking, Drift, and Import"
 icon: lucide/database
-description: Understand what Terraform state contains, move it to an S3 backend with native locking and encryption, handle drift and lock errors, and refactor safely with import, moved, and removed blocks.
+description: "Terraform state explained — S3 backends with native locking and encryption, drift, stuck locks, and refactoring with import, moved, and removed."
 tags:
   - Terraform
   - State

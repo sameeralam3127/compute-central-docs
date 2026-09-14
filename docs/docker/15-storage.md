@@ -1,5 +1,5 @@
 ---
-title: "Docker Storage: Writable Layers, Volumes, Bind Mounts, and Backups"
+title: "Docker Storage: Layers, Volumes, Bind Mounts, and Backups"
 icon: lucide/hard-drive
 description: Learn the container writable layer, named volumes, bind mounts, and tmpfs, fix permission problems, and back up and restore container data safely.
 tags:

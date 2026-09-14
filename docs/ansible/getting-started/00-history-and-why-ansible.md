@@ -1,7 +1,7 @@
 ---
 title: "Ansible History: Why It Was Created and Who Built It"
 icon: lucide/history
-description: Why Ansible was created — the pain of pre-Ansible automation (CFEngine, Puppet, Chef, Salt, Fabric), who Michael DeHaan was, the five founding design bets, and the timeline from first commit to Red Hat Ansible Automation Platform.
+description: "Why Ansible was created — the pain of CFEngine, Puppet, and Chef, Michael DeHaan's design bets, and the road to Ansible Automation Platform."
 tags:
   - Ansible
   - Getting Started

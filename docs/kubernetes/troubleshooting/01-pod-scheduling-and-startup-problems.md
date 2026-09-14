@@ -1,5 +1,5 @@
 ---
-title: "Fix Kubernetes Pod Pending, ImagePullBackOff, and CrashLoopBackOff"
+title: "Fix Pod Pending, ImagePullBackOff, and CrashLoopBackOff"
 icon: lucide/box
 description: Diagnosing and fixing pods stuck Pending, ImagePullBackOff, CrashLoopBackOff, OOMKilled, and init containers that block startup.
 tags:

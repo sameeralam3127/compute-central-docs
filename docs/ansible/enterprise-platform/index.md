@@ -1,7 +1,7 @@
 ---
 title: "Ansible Automation Platform (AAP) and AWX Guide"
 icon: lucide/building-2
-description: Ansible's commercial and upstream ecosystem — ansible-core vs. the ansible package vs. AWX vs. Red Hat Ansible Automation Platform (AAP), Automation Controller, Mesh, Execution Environments, and licensing.
+description: "The Ansible ecosystem explained — ansible-core, the ansible package, AWX, Red Hat Ansible Automation Platform, Controller, Mesh, and licensing."
 tags:
   - Ansible
   - Enterprise Platform

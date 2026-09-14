@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Production Readiness Checklist"
 icon: lucide/clipboard-check
-description: A concrete production readiness checklist for Kubernetes workloads — probes, resource limits, PodDisruptionBudgets, RBAC, NetworkPolicies, monitoring, backups, and upgrade planning.
+description: "A Kubernetes production readiness checklist — probes, limits, PodDisruptionBudgets, RBAC, NetworkPolicies, monitoring, backups, and upgrades."
 tags:
   - Kubernetes
   - Production Engineering

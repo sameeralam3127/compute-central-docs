@@ -1,7 +1,7 @@
 ---
-title: "Terraform Testing and CI/CD: Lint, Scan, terraform test, and Plan-and-Apply Pipelines"
+title: "Terraform Testing and CI/CD: Lint, Scan, Test, and Pipelines"
 icon: lucide/git-merge
-description: Test Terraform with fmt, validate, TFLint, Trivy, and terraform test with mock providers, then run a GitHub Actions pipeline that plans on pull requests, applies on merge with approval, authenticates with OIDC, and detects drift.
+description: "Test Terraform with fmt, validate, TFLint, Trivy, and terraform test, then plan and apply in GitHub Actions with OIDC and drift detection."
 tags:
   - Terraform
   - Testing
@@ -189,13 +189,13 @@ jobs:
       run:
         working-directory: ${{ env.WORKDIR }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "~1.14.0"
 
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: arn:aws:iam::111122223333:role/terraform-prod-plan
           aws-region: us-east-1
@@ -227,11 +227,11 @@ jobs:
       run:
         working-directory: ${{ env.WORKDIR }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "~1.14.0"
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: arn:aws:iam::111122223333:role/terraform-prod
           aws-region: us-east-1
@@ -266,11 +266,11 @@ jobs:
       run:
         working-directory: envs/prod
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "~1.14.0"
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: arn:aws:iam::111122223333:role/terraform-prod-plan
           aws-region: us-east-1

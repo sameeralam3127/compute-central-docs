@@ -1,7 +1,7 @@
 ---
 title: "Ansible Advanced Execution and Performance"
 icon: lucide/gauge
-description: How Ansible executes across many hosts at once — forks, serial, strategy, throttle, delegation, connection plugins, fact caching, dynamic inventory, and lookup/filter plugins.
+description: "How Ansible runs across many hosts — forks, serial, strategy, throttle, delegation, connection plugins, fact caching, and dynamic inventory."
 tags:
   - Ansible
   - Advanced Execution

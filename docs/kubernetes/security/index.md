@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Security: RBAC, Pod Security, and Supply Chain"
 icon: lucide/shield
-description: Start here for Kubernetes security — authentication and authorization, RBAC, service accounts, Pod Security Admission, image supply chain, and secrets encryption.
+description: "Kubernetes security — authentication, RBAC, service accounts, Pod Security Standards, image and supply chain security, and secrets encryption."
 tags:
   - Kubernetes
   - Security

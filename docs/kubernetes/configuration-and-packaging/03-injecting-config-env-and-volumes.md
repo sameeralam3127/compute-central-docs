@@ -1,7 +1,7 @@
 ---
 title: "Injecting Kubernetes Config: 12-Factor Patterns for Real Apps"
 icon: lucide/plug
-description: Practical 12-factor configuration for a real application — combining ConfigMaps, Secrets, env vars, and projected volumes, plus env var precedence and reload patterns.
+description: "Practical 12-factor configuration for Kubernetes apps — ConfigMaps, Secrets, env vars, projected volumes, precedence, and reload patterns."
 tags:
   - Kubernetes
   - Configuration & Packaging

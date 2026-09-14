@@ -1,7 +1,7 @@
 ---
-title: "Docker Networking: Bridges, Port Publishing, and Service Discovery"
+title: "Docker Networking: Bridges, Port Publishing, and Discovery"
 icon: lucide/waypoints
-description: Learn how Docker bridge networks, veth pairs, NAT, and port publishing work, why user-defined networks provide DNS-based service discovery, and how to troubleshoot container connectivity.
+description: "How Docker bridge networks, veth pairs, NAT, and port publishing work, why user-defined networks give DNS discovery, and how to debug them."
 tags:
   - Docker
   - Networking

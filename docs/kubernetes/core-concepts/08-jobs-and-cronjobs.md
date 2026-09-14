@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Jobs and CronJobs: Batch and Scheduled Workloads"
 icon: lucide/clock
-description: Job completions, parallelism, and backoffLimit; CronJob schedule syntax, concurrencyPolicy, and startingDeadlineSeconds; and when to reach for each instead of a Deployment.
+description: "Kubernetes Jobs and CronJobs — completions, parallelism, backoffLimit, schedules, concurrencyPolicy, and when to use them over Deployments."
 tags:
   - Kubernetes
   - Core Concepts

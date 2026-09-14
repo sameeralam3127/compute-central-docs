@@ -1,7 +1,7 @@
 ---
-title: "Containers on macOS: Docker Desktop, Alternatives, and Apple container"
+title: "Containers on macOS: Docker Desktop and Alternatives"
 icon: lucide/laptop
-description: Understand why Linux containers on macOS run inside virtual machines, how Docker Desktop, Colima, OrbStack, Podman Desktop, and Apple's container tool differ, and how to avoid Apple silicon and file-sharing pitfalls.
+description: "Why Linux containers on macOS run in VMs, how Docker Desktop, Colima, OrbStack, Podman Desktop, and Apple's container tool compare."
 tags:
   - Docker
   - macOS

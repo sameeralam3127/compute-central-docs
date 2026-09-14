@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Namespaces: Scope, Defaults, and When to Split"
 icon: lucide/folder
-description: What namespaces actually scope in Kubernetes, cluster-scoped vs. namespaced resources, the built-in default/kube-system/kube-public namespaces, and when to split by namespace vs. by cluster.
+description: "What Kubernetes namespaces scope, cluster-scoped vs namespaced resources, the built-in namespaces, and when to split by namespace or cluster."
 tags:
   - Kubernetes
   - Core Concepts

@@ -1,7 +1,7 @@
 ---
 title: "How Ansible YAML Becomes Python Execution"
 icon: lucide/workflow
-description: What actually happens between writing YAML and a module executing on a remote machine — the real pipeline, and why "YAML compiles to Python" is a misleading way to describe it.
+description: "What happens between writing Ansible YAML and a module running on a remote host — the real execution pipeline, step by step."
 tags:
   - Ansible
   - YAML

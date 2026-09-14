@@ -1,7 +1,7 @@
 ---
 title: "Paid Code Quality and Security Platforms Compared"
 icon: lucide/badge-dollar-sign
-description: Paid and SaaS code quality platforms compared — SonarCloud, GitHub Advanced Security with CodeQL, Snyk, Codacy, Qlty, DeepSource, Codecov, Veracode, and Checkmarx — with pricing models and CI examples.
+description: "Paid code quality and security platforms compared — SonarQube Cloud, GitHub Advanced Security, Snyk, Codacy, Qlty, DeepSource, and Codecov."
 tags:
   - Code Quality
   - SaaS
@@ -133,7 +133,7 @@ jobs:
       matrix:
         language: [java, python]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}

@@ -1,7 +1,7 @@
 ---
 title: "How to Build an Ansible Collection From Scratch"
 icon: lucide/package-plus
-description: A complete, start-to-finish tutorial building an Ansible collection — namespace, galaxy.yml, packaging a custom module and a role together, building, installing, and publishing.
+description: "Build an Ansible collection end to end — namespace, galaxy.yml, packaging a module and a role, building, installing, and publishing."
 tags:
   - Ansible
   - Build Your Own

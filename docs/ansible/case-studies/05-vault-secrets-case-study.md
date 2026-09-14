@@ -178,7 +178,7 @@ jobs:
     runs-on: [self-hosted, production-network]
     environment: production              # requires approval; holds the secrets
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Install toolchain
         run: |

@@ -1,5 +1,5 @@
 ---
-title: "Python Logging in Practice: Structured JSON, Levels, and Correlation IDs"
+title: "Python Logging in Practice: JSON, Levels, and Correlation IDs"
 icon: lucide/file-code
 description: Implement practical Python logging with levels, structured JSON, handlers, exception logging, correlation IDs, and safe production defaults.
 tags:

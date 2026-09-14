@@ -1,7 +1,7 @@
 ---
 title: "How to Write a Custom Ansible Module (Python)"
 icon: lucide/code
-description: Writing a real Ansible module from scratch with AnsibleModule — argument_spec, check mode, diff mode, idempotency, and the exit_json/fail_json contract — built around a genuinely useful JSON-config-key module, not a toy example.
+description: "Write a real Ansible module in Python with AnsibleModule — argument_spec, check mode, diff mode, idempotency, and the exit_json contract."
 tags:
   - Ansible
   - Build Your Own

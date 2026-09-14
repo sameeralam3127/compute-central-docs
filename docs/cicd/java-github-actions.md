@@ -1,7 +1,7 @@
 ---
-title: "Java CI/CD Pipeline With GitHub Actions: Spring Boot to Production"
+title: "Java CI/CD With GitHub Actions: Spring Boot to Production"
 icon: lucide/coffee
-description: Complete CI/CD pipeline for a Java Spring Boot web app with GitHub Actions — JUnit tests, Maven build, multi-stage Docker image, push to GHCR, and deployment to a VM or Kubernetes.
+description: "A complete Spring Boot pipeline with GitHub Actions — JUnit, Maven, a multi-stage Docker image, GHCR, and deployment to a VM or Kubernetes."
 tags:
   - CI/CD
   - GitHub Actions
@@ -229,7 +229,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -259,7 +259,7 @@ jobs:
     outputs:
       image-tag: ${{ steps.meta.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Log in to GHCR
         uses: docker/login-action@v3

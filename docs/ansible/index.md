@@ -1,7 +1,7 @@
 ---
 title: "Ansible Tutorial: Learn Automation From Scratch"
 icon: lucide/workflow
-description: A practical Ansible learning platform and reference — get started, build real automation, go deep on internals, troubleshoot production, and prepare for interviews.
+description: "Learn Ansible from first playbook to production — inventory, modules, roles, collections, Vault, Molecule, AAP, case studies, and interview prep."
 tags:
   - Ansible
   - Overview

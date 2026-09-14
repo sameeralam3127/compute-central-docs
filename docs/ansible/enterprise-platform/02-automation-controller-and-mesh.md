@@ -1,7 +1,7 @@
 ---
 title: "Ansible Automation Controller and Mesh Explained"
 icon: lucide/layout-dashboard
-description: Automation Controller's job templates, workflows, and RBAC, and how Automation Mesh extends execution across distributed, firewalled, or geographically spread infrastructure.
+description: "Automation Controller job templates, workflows, and RBAC, and how Automation Mesh runs Ansible across distributed and firewalled networks."
 tags:
   - Ansible
   - Enterprise Platform

@@ -1,7 +1,7 @@
 ---
 title: "Container Images: Layers, Copy-on-Write, Tags, and Digests"
 icon: lucide/layers-3
-description: Learn how container images are built from content-addressed layers, how copy-on-write works, the difference between tags and digests, multi-architecture images, and how to inspect and shrink images.
+description: "How container images work — content-addressed layers, copy-on-write, tags vs digests, multi-architecture images, and shrinking images."
 tags:
   - Docker
   - Images

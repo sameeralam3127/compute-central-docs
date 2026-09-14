@@ -1,7 +1,7 @@
 ---
 title: "Ansible Cheat Sheet and Quick Reference"
 icon: lucide/zap
-description: Fast-lookup Ansible cheat sheets — CLI, YAML, variable precedence, ansible.cfg, and module selection — for engineers who already know Ansible and need an answer now.
+description: "Ansible quick reference — CLI, YAML, variable precedence, ansible.cfg, and module cheat sheets for fast lookups while writing playbooks."
 tags:
   - Ansible
   - Quick Reference

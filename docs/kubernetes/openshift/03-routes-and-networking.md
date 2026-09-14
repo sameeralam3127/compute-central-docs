@@ -1,7 +1,7 @@
 ---
 title: "OpenShift Routes vs. Ingress and the SDN/OVN-Kubernetes Layer"
 icon: lucide/route
-description: How OpenShift Routes compare to Kubernetes Ingress, how the built-in HAProxy router works, and how OpenShift's SDN and OVN-Kubernetes networking layers fit together.
+description: "OpenShift Routes and networking — how Routes compare to Ingress, TLS termination modes, and exposing services on an OpenShift cluster."
 tags:
   - Kubernetes
   - OpenShift

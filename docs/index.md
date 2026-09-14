@@ -1,6 +1,6 @@
 ---
-title: "DevOps, Kubernetes, Ansible & Cloud Engineering Guides"
-description: Learn DevOps, Kubernetes, Docker, Terraform, Ansible, CI/CD, monitoring, and AI engineering through practical infrastructure guides.
+title: "DevOps, Kubernetes, Cloud & SRE Engineering Guides"
+description: Learn Linux, networking, Docker, Kubernetes, AWS, Terraform, Ansible, CI/CD, SRE, and security through practical, lab-tested infrastructure guides.
 hide:
   - navigation
   - toc
@@ -10,13 +10,13 @@ hide:
   <div class="cc-hero-copy">
     <p class="cc-eyebrow">DevOps · SRE · Platform engineering</p>
     <h1>Compute Central</h1>
-    <p class="cc-hero-lead">Practical, lab-tested guides for the infrastructure you actually run — <strong>Linux, containers, Kubernetes, automation, CI/CD, observability, and AI engineering</strong>, explained from first principles all the way to production.</p>
+    <p class="cc-hero-lead">Practical, lab-tested guides for the infrastructure you actually run — <strong>Linux, networking, containers, Kubernetes, cloud, automation, CI/CD, reliability, and security</strong>, explained from first principles all the way to production.</p>
     <div class="cc-hero-actions">
-      <a class="md-button md-button--primary" href="docker/">Start with Docker <span aria-hidden="true">→</span></a>
+      <a class="md-button md-button--primary" href="foundations/">Start with the foundations <span aria-hidden="true">→</span></a>
       <a class="md-button" href="#learning-tracks">Explore all tracks</a>
     </div>
     <ul class="cc-hero-points">
-      <li>Free and open source</li>
+      <li>Free to read</li>
       <li>Hands-on labs and case studies</li>
       <li>Updated September 2026</li>
     </ul>
@@ -37,12 +37,12 @@ hide:
 <div class="cc-stats" markdown>
 
 <div class="cc-stat" markdown>
-**0**{: .cc-stat-number data-count="280" data-suffix="+" }
+**0**{: .cc-stat-number data-count="340" data-suffix="+" }
 <span>Guides and lab-tested chapters</span>
 </div>
 
 <div class="cc-stat" markdown>
-**0**{: .cc-stat-number data-count="9" }
+**0**{: .cc-stat-number data-count="12" }
 <span>Learning tracks, foundations to production</span>
 </div>
 
@@ -64,15 +64,25 @@ Pick a track, or filter by what you're working on. Every track stands on its own
 
 <div class="cc-filter" role="toolbar" aria-label="Filter learning tracks" data-cc-filter hidden>
   <button type="button" class="cc-chip" data-cc-value="all" aria-pressed="true">All</button>
+  <button type="button" class="cc-chip" data-cc-value="foundations" aria-pressed="false">Foundations</button>
   <button type="button" class="cc-chip" data-cc-value="containers" aria-pressed="false">Containers</button>
+  <button type="button" class="cc-chip" data-cc-value="cloud" aria-pressed="false">Cloud</button>
   <button type="button" class="cc-chip" data-cc-value="automation" aria-pressed="false">Automation</button>
   <button type="button" class="cc-chip" data-cc-value="delivery" aria-pressed="false">Delivery</button>
   <button type="button" class="cc-chip" data-cc-value="operations" aria-pressed="false">Operations</button>
+  <button type="button" class="cc-chip" data-cc-value="security" aria-pressed="false">Security</button>
   <button type="button" class="cc-chip" data-cc-value="ai" aria-pressed="false">AI</button>
-  <span class="cc-filter-count" data-cc-count aria-live="polite">9 tracks</span>
+  <span class="cc-filter-count" data-cc-count aria-live="polite">12 tracks</span>
 </div>
 
 <div class="cc-card-grid" data-cc-reveal markdown>
+
+<a class="cc-card" href="foundations/" data-cc-tags="foundations automation">
+  <span class="cc-card-icon">:lucide-graduation-cap:</span>
+  <strong>DevOps Foundations</strong>
+  <span class="cc-card-desc">Linux administration, shell scripting, networking from TCP to TLS, Git workflows, and Python automation.</span>
+  <span class="cc-card-meta">5 tracks · 33 guides</span>
+</a>
 
 <a class="cc-card" href="docker/" data-cc-tags="containers">
   <span class="cc-card-icon">:lucide-container:</span>
@@ -88,6 +98,20 @@ Pick a track, or filter by what you're working on. Every track stands on its own
   <span class="cc-card-meta">17 sections · 108 pages</span>
 </a>
 
+<a class="cc-card" href="cloud/" data-cc-tags="cloud operations">
+  <span class="cc-card-icon">:fontawesome-brands-aws:</span>
+  <strong>Cloud Engineering on AWS</strong>
+  <span class="cc-card-desc">Accounts and IAM, VPC networking, EC2, load balancing, S3, ECS and EKS, databases, CloudWatch, security, and cost.</span>
+  <span class="cc-card-meta">12 guides</span>
+</a>
+
+<a class="cc-card" href="terraform/" data-cc-tags="automation cloud">
+  <span class="cc-card-icon">:lucide-layers:</span>
+  <strong>Terraform</strong>
+  <span class="cc-card-desc">Infrastructure as code from a first project to remote state, modules, environments, testing, and CI/CD.</span>
+  <span class="cc-card-meta">8 guides</span>
+</a>
+
 <a class="cc-card" href="ansible/" data-cc-tags="automation">
   <span class="cc-card-icon">:lucide-workflow:</span>
   <strong>Ansible Automation</strong>
@@ -95,32 +119,39 @@ Pick a track, or filter by what you're working on. Every track stands on its own
   <span class="cc-card-meta">17 sections · 104 pages</span>
 </a>
 
-<a class="cc-card" href="terraform/" data-cc-tags="automation">
-  <span class="cc-card-icon">:lucide-layers:</span>
-  <strong>Terraform</strong>
-  <span class="cc-card-desc">Infrastructure as code from a first project to remote state, modules, environments, testing, and CI/CD.</span>
-  <span class="cc-card-meta">8 guides</span>
-</a>
-
-<a class="cc-card" href="cicd" data-cc-tags="delivery">
+<a class="cc-card" href="cicd/" data-cc-tags="delivery">
   <span class="cc-card-icon">:lucide-infinity:</span>
   <strong>CI/CD Pipelines</strong>
   <span class="cc-card-desc">GitHub Actions, GitLab CI, Jenkins, and ArgoCD — from commit to tested image to a GitOps deployment.</span>
   <span class="cc-card-meta">7 guides</span>
 </a>
 
-<a class="cc-card" href="code-quality" data-cc-tags="delivery">
-  <span class="cc-card-icon">:lucide-shield-check:</span>
+<a class="cc-card" href="code-quality/" data-cc-tags="delivery security">
+  <span class="cc-card-icon">:lucide-badge-check:</span>
   <strong>Code Quality</strong>
-  <span class="cc-card-desc">SonarQube quality gates, open-source linters and scanners, and the paid platforms that compete with them.</span>
-  <span class="cc-card-meta">7 guides</span>
+  <span class="cc-card-desc">SonarQube installation and quality gates, open-source linters and scanners, and pipelines that enforce them.</span>
+  <span class="cc-card-meta">8 guides</span>
 </a>
 
 <a class="cc-card" href="monitoring-tools/" data-cc-tags="operations">
   <span class="cc-card-icon">:lucide-activity:</span>
-  <strong>Monitoring and SRE</strong>
-  <span class="cc-card-desc">Prometheus, Grafana, Alertmanager, Loki with Grafana Alloy, OpenTelemetry, and synthetic checks.</span>
+  <strong>Monitoring and Observability</strong>
+  <span class="cc-card-desc">A complete local lab with Prometheus, Grafana, Alertmanager, Loki and Grafana Alloy, OpenTelemetry, and synthetic checks.</span>
   <span class="cc-card-meta">12 guides</span>
+</a>
+
+<a class="cc-card" href="sre/" data-cc-tags="operations">
+  <span class="cc-card-icon">:lucide-life-buoy:</span>
+  <strong>Site Reliability Engineering</strong>
+  <span class="cc-card-desc">SLOs and error budgets, burn-rate alerting, incident response, postmortems, on-call, toil, and capacity planning.</span>
+  <span class="cc-card-meta">7 guides</span>
+</a>
+
+<a class="cc-card" href="security/" data-cc-tags="security delivery">
+  <span class="cc-card-icon">:lucide-shield-check:</span>
+  <strong>Security and DevSecOps</strong>
+  <span class="cc-card-desc">Threat modeling, Vault, supply chain security with Sigstore, scanning, zero trust identity, and hardening.</span>
+  <span class="cc-card-meta">6 guides</span>
 </a>
 
 <a class="cc-card" href="ai-guide/" data-cc-tags="ai">
@@ -130,13 +161,6 @@ Pick a track, or filter by what you're working on. Every track stands on its own
   <span class="cc-card-meta">5 guides</span>
 </a>
 
-<a class="cc-card" href="shell-scripts/scripts/" data-cc-tags="automation operations">
-  <span class="cc-card-icon">:lucide-terminal:</span>
-  <strong>Shell Scripts</strong>
-  <span class="cc-card-desc">Safe Bash structure, health checks, log scanners, backups, deployment helpers, and debugging.</span>
-  <span class="cc-card-meta">6 example scripts</span>
-</a>
-
 </div>
 
 ## The path through this site
@@ -144,37 +168,37 @@ Pick a track, or filter by what you're working on. Every track stands on its own
 Most readers move left to right — but jump in wherever your work is today.
 
 <ol class="cc-journey" data-cc-reveal>
-  <li><a href="shell-scripts/scripts/"><span class="cc-step">1</span><span class="cc-journey-text"><strong>Linux &amp; shell</strong><small>Safe scripts and system basics</small></span></a></li>
+  <li><a href="foundations/"><span class="cc-step">1</span><span class="cc-journey-text"><strong>Foundations</strong><small>Linux, networking, Git, scripting</small></span></a></li>
   <li><a href="docker/"><span class="cc-step">2</span><span class="cc-journey-text"><strong>Containers</strong><small>How Docker really works</small></span></a></li>
   <li><a href="kubernetes/"><span class="cc-step">3</span><span class="cc-journey-text"><strong>Kubernetes</strong><small>Orchestrate workloads</small></span></a></li>
-  <li><a href="ansible/"><span class="cc-step">4</span><span class="cc-journey-text"><strong>Automation</strong><small>Ansible and Terraform</small></span></a></li>
-  <li><a href="cicd"><span class="cc-step">5</span><span class="cc-journey-text"><strong>Delivery</strong><small>CI/CD and code quality</small></span></a></li>
-  <li><a href="monitoring-tools/"><span class="cc-step">6</span><span class="cc-journey-text"><strong>Observability</strong><small>Metrics, logs, traces</small></span></a></li>
-  <li><a href="ai-guide/"><span class="cc-step">7</span><span class="cc-journey-text"><strong>AI engineering</strong><small>LLMs, RAG, and agents</small></span></a></li>
+  <li><a href="cloud/"><span class="cc-step">4</span><span class="cc-journey-text"><strong>Cloud &amp; IaC</strong><small>AWS, Terraform, Ansible</small></span></a></li>
+  <li><a href="cicd/"><span class="cc-step">5</span><span class="cc-journey-text"><strong>Delivery</strong><small>CI/CD and code quality</small></span></a></li>
+  <li><a href="sre/"><span class="cc-step">6</span><span class="cc-journey-text"><strong>Reliability</strong><small>Observability and SRE</small></span></a></li>
+  <li><a href="security/"><span class="cc-step">7</span><span class="cc-journey-text"><strong>Security</strong><small>DevSecOps and zero trust</small></span></a></li>
 </ol>
 
 ## What's new
 
 <div class="cc-news" data-cc-reveal markdown>
 
-<a class="cc-news-item" href="terraform/">
+<a class="cc-news-item" href="foundations/">
   <span class="cc-badge">New</span>
-  <span class="cc-news-text"><strong>Terraform learning path</strong><span>State and S3 native locking, modules, environments, and CI/CD with OIDC.</span></span>
+  <span class="cc-news-text"><strong>DevOps Foundations</strong><span>Linux, networking, Git, and Python automation tracks, plus an expanded shell scripting course.</span></span>
 </a>
 
-<a class="cc-news-item" href="kubernetes/networking/07-gateway-api/">
+<a class="cc-news-item" href="cloud/aws/">
   <span class="cc-badge">New</span>
-  <span class="cc-news-text"><strong>Gateway API</strong><span>The successor to Ingress, and how to migrate off retired ingress-nginx.</span></span>
+  <span class="cc-news-text"><strong>AWS learning path</strong><span>IAM and OIDC, VPC design, ECS and EKS, databases, observability, security, and cost.</span></span>
 </a>
 
-<a class="cc-news-item" href="docker/06-build-a-container-with-linux/">
-  <span class="cc-badge">Expanded</span>
-  <span class="cc-news-text"><strong>Docker course labs</strong><span>Build a container by hand, then run a four-tier app on segmented networks.</span></span>
+<a class="cc-news-item" href="sre/">
+  <span class="cc-badge">New</span>
+  <span class="cc-news-text"><strong>SRE practices</strong><span>SLOs, tested burn-rate alerts, incident response, postmortems, and load testing with k6.</span></span>
 </a>
 
-<a class="cc-news-item" href="monitoring-tools/logging/">
-  <span class="cc-badge">Updated</span>
-  <span class="cc-news-text"><strong>Loki with Grafana Alloy</strong><span>Promtail is end-of-life — the supported collector and migration path.</span></span>
+<a class="cc-news-item" href="security/">
+  <span class="cc-badge">New</span>
+  <span class="cc-news-text"><strong>Security and DevSecOps</strong><span>Vault dynamic secrets, Sigstore signing, SBOMs, policy as code, and zero trust.</span></span>
 </a>
 
 </div>
@@ -182,6 +206,10 @@ Most readers move left to right — but jump in wherever your work is today.
 ## Learning paths by goal
 
 Pick the goal closest to yours — each tab is a short, ordered route through the material.
+
+=== ":lucide-graduation-cap: Build strong foundations"
+
+    Start with [Linux for DevOps](foundations/linux/index.md) and [Networking](foundations/networking/index.md), then [Git](foundations/git/index.md), [Shell Scripting](foundations/shell-scripting/index.md), and [Python Automation](foundations/python/index.md).
 
 === ":lucide-container: Containers & orchestration"
 
@@ -191,17 +219,25 @@ Pick the goal closest to yours — each tab is a short, ordered route through th
 
     Try the [Minikube lab](kubernetes/labs/01-minikube-lab.md), the [kind lab](kubernetes/labs/02-kind-lab.md), or the [Podman lab](kubernetes/labs/04-podman-lab.md).
 
+=== ":lucide-cloud: Run on AWS"
+
+    Set up [accounts and IAM](cloud/aws/01-accounts-cli-and-organizations.md), design a [VPC](cloud/aws/03-vpc-networking.md), run [containers on ECS or EKS](cloud/aws/07-containers-ecs-and-eks.md), and provision it all with [Terraform](terraform/index.md).
+
 === ":lucide-workflow: Automate infrastructure"
 
-    Provision with [Terraform](terraform/index.md), configure hosts with [Ansible](ansible/index.md), and glue it together with [shell scripts](shell-scripts/scripts.md).
+    Provision with [Terraform](terraform/index.md), configure hosts with [Ansible](ansible/index.md), and glue it together with [production-ready scripts](foundations/shell-scripting/04-production-ready-scripts.md).
 
 === ":lucide-infinity: Improve delivery pipelines"
 
-    Start with the [CI/CD overview](cicd/index.md) and [GitHub Actions](cicd/github-actions.md), add [SonarQube quality gates](code-quality/jenkins-integration.md), then wire in [Kubernetes CI/CD](kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes.md).
+    Start with [branching strategies](foundations/git/03-branching-strategies.md) and the [CI/CD overview](cicd/index.md), add [SonarQube quality gates](code-quality/quality-gates.md), then wire in [Kubernetes CI/CD](kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes.md).
 
-=== ":lucide-activity: Operate production-style systems"
+=== ":lucide-life-buoy: Operate reliable systems"
 
-    Stand up the [monitoring stack](monitoring-tools/index.md) and review [Kubernetes troubleshooting](kubernetes/troubleshooting/index.md).
+    Stand up the [monitoring lab](monitoring-tools/overview.md), define [SLOs](sre/01-slis-slos-and-error-budgets.md), alert on [burn rate](sre/02-alerting-on-slos.md), and practice [incident response](sre/03-incident-response.md).
+
+=== ":lucide-shield-check: Secure delivery"
+
+    Threat model with [STRIDE](security/01-devsecops-and-threat-modeling.md), centralize [secrets with Vault](security/02-secrets-management-with-vault.md), and sign what you ship with [Sigstore](security/03-software-supply-chain-security.md).
 
 === ":lucide-brain: Understand AI engineering basics"
 
@@ -219,15 +255,18 @@ Start with the topic you need, then follow the examples in a local or test envir
 
 ??? note ":lucide-layout-list: Browse every section"
 
+    - **Foundations** — [Overview](foundations/index.md), [Linux](foundations/linux/index.md), [Shell Scripting](foundations/shell-scripting/index.md), [Networking](foundations/networking/index.md), [Git](foundations/git/index.md), [Python Automation](foundations/python/index.md)
     - **Docker** — [Course index](docker/index.md), [Dockerfiles](docker/17-dockerfiles.md), [Compose](docker/18-docker-compose.md), [quick reference](docker/docker.md)
     - **Kubernetes** — [Core Concepts](kubernetes/core-concepts/index.md), [labs](kubernetes/labs/05-hands-on-scenarios.md), [OpenShift](kubernetes/openshift/index.md), [troubleshooting](kubernetes/troubleshooting/index.md), [quick reference](kubernetes/quick-reference/index.md)
+    - **Cloud** — [Overview](cloud/index.md), [AWS](cloud/aws/index.md), [IAM](cloud/aws/02-iam.md), [VPC networking](cloud/aws/03-vpc-networking.md), [cost optimization](cloud/aws/11-cost-optimization.md)
+    - **Terraform** — [Overview](terraform/index.md), [first project](terraform/overview.md), [state and backends](terraform/state-and-backends.md), [modules](terraform/modules.md), [testing and CI/CD](terraform/testing-and-ci.md), [interview questions](terraform/interview-questions.md)
     - **Ansible** — [Overview](ansible/index.md), [Getting Started](ansible/getting-started/index.md), [Core Concepts](ansible/core-concepts/index.md), [Modules](ansible/modules/index.md), [Case Studies](ansible/case-studies/index.md), [Troubleshooting](ansible/troubleshooting/index.md), [Interview Prep](ansible/interview-prep/index.md)
     - **CI/CD Pipelines** — [Overview](cicd/index.md), [GitHub Actions](cicd/github-actions.md), [GitLab CI/CD](cicd/gitlab-ci.md), [ArgoCD](cicd/argocd.md), [Jenkins](cicd/jenkins.md)
-    - **Code Quality** — [Overview](code-quality/index.md), [open-source tools](code-quality/code-quality-ecosystem.md), [SonarQube installation](code-quality/installation.md), [Jenkins integration](code-quality/jenkins-integration.md)
-    - **Monitoring** — [Stack overview](monitoring-tools/index.md), [Prometheus](monitoring-tools/prometheus.md), [Grafana](monitoring-tools/grafana.md), [Alertmanager](monitoring-tools/alertmanager.md)
+    - **Code Quality** — [Overview](code-quality/index.md), [open-source tools](code-quality/code-quality-ecosystem.md), [SonarQube installation](code-quality/installation.md), [quality gates](code-quality/quality-gates.md), [pipeline examples](code-quality/pipeline-example.md)
+    - **Monitoring** — [Stack overview](monitoring-tools/index.md), [monitoring lab](monitoring-tools/overview.md), [Prometheus](monitoring-tools/prometheus.md), [Grafana](monitoring-tools/grafana.md), [Alertmanager](monitoring-tools/alertmanager.md)
+    - **SRE** — [Overview](sre/index.md), [SLOs](sre/01-slis-slos-and-error-budgets.md), [alerting](sre/02-alerting-on-slos.md), [incident response](sre/03-incident-response.md), [postmortems](sre/04-postmortems.md), [on-call](sre/05-on-call.md)
+    - **Security** — [Overview](security/index.md), [threat modeling](security/01-devsecops-and-threat-modeling.md), [Vault](security/02-secrets-management-with-vault.md), [supply chain](security/03-software-supply-chain-security.md), [scanning](security/04-container-and-iac-scanning.md), [zero trust](security/05-identity-and-zero-trust.md)
     - **AI Engineering** — [Guide](ai-guide/index.md), [LLM fundamentals](ai-guide/llm-fundamentals.md), [AI agents](ai-guide/ai-agents.md), [evaluation](ai-guide/ai-evaluation.md)
-    - **Terraform** — [Overview](terraform/index.md), [first project](terraform/overview.md), [state and backends](terraform/state-and-backends.md), [modules](terraform/modules.md), [testing and CI/CD](terraform/testing-and-ci.md), [interview questions](terraform/interview-questions.md)
-    - **Shell Scripts** — [Practical scripts](shell-scripts/scripts.md)
 
 ## About
 

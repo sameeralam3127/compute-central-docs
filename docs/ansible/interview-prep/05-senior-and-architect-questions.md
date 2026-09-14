@@ -110,7 +110,7 @@ Related: [Publishing Collections](../collections/03-publishing-collections.md), 
 
 **Senior signals:** doesn't reflexively say "always Ansible"; considers team skills, lifetime of the system, and incremental migration with measurable wins.
 
-Related: [Shell Scripts](../../shell-scripts/scripts.md), [Command vs. Shell](../modules/01-command-vs-shell-vs-raw-vs-script.md), [Idempotency](../core-concepts/11-idempotency.md)
+Related: [Shell Scripts](../../foundations/shell-scripting/01-bash-fundamentals.md), [Command vs. Shell](../modules/01-command-vs-shell-vs-raw-vs-script.md), [Idempotency](../core-concepts/11-idempotency.md)
 
 ## 6. Scaling Ansible to thousands of hosts
 

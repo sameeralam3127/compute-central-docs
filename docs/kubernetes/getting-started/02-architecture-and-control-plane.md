@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Architecture: Control Plane and Worker Nodes Explained"
 icon: lucide/server
-description: Kubernetes architecture end to end — kube-apiserver, etcd, kube-scheduler, kube-controller-manager, kubelet, kube-proxy, the CRI, and the control-loop mental model that ties them together.
+description: "Kubernetes architecture end to end — API server, etcd, scheduler, controller manager, kubelet, kube-proxy, the CRI, and control loops."
 tags:
   - Kubernetes
   - Getting Started

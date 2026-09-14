@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Ingress and Ingress Controllers Explained"
 icon: lucide/signpost
-description: The difference between the Ingress resource and an Ingress controller, path/host-based routing, TLS termination with cert-manager, and why Ingress needs a controller.
+description: "Ingress resources vs Ingress controllers — host and path routing, TLS termination with cert-manager, and why Ingress needs a controller."
 tags:
   - Kubernetes
   - Networking

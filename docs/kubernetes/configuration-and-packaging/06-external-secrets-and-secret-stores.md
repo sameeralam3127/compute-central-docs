@@ -1,7 +1,7 @@
 ---
 title: "External Secrets and Secret Stores: Vault, ESO, Sealed Secrets"
 icon: lucide/shield-check
-description: Why native Kubernetes Secrets aren't a complete secrets-management strategy, and a decision-level comparison of External Secrets Operator, Vault, Sealed Secrets, and cloud secret managers.
+description: "Why native Kubernetes Secrets aren't enough, and how External Secrets Operator, Vault, Sealed Secrets, and cloud secret managers compare."
 tags:
   - Kubernetes
   - Configuration & Packaging
@@ -131,4 +131,4 @@ See [Interview Prep](../interview-prep/index.md) for full answers.
 
 ## Next
 
-Continue to [Security](../security/index.md) to see how these secret-delivery mechanisms fit into the cluster's broader security model — RBAC, Pod Security Standards, network policy, and encryption at rest.
+Continue to [Security](../security/index.md) to see how these secret-delivery mechanisms fit into the cluster's broader security model — RBAC, Pod Security Standards, network policy, and encryption at rest. For hands-on Vault setup — dynamic database credentials and Kubernetes authentication — see [Secrets Management With Vault](../../security/02-secrets-management-with-vault.md).

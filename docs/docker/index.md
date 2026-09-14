@@ -1,7 +1,7 @@
 ---
 title: "Docker and Linux Containers: From First Principles"
 icon: lucide/container
-description: "Learn Docker and Linux containers from first principles: application deployment, virtual machines, Linux isolation, OCI runtimes, Docker workflows, networking, storage, and production troubleshooting."
+description: "Learn Docker and Linux containers from first principles — VMs, Linux isolation, OCI runtimes, images, networking, storage, and troubleshooting."
 tags:
   - Docker
   - Overview

@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Pods Explained: Multi-Container, Init Containers, Lifecycle"
+title: "Kubernetes Pods Explained: Sidecars, Init Containers, Lifecycle"
 icon: lucide/package
 description: What a Pod actually is — the smallest deployable unit in Kubernetes, multi-container sidecar patterns, init containers, and the five Pod lifecycle phases.
 tags:

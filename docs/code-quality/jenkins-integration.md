@@ -1,7 +1,7 @@
 ---
 title: "Integrate SonarQube With Jenkins: Tokens, Scanner, and Webhooks"
 icon: lucide/plug
-description: Connect Jenkins to SonarQube step by step — analysis tokens, Jenkins credentials, the SonarQube Scanner plugin, scanner tools, and the webhook quality gates need.
+description: "Connect Jenkins to SonarQube — scoped analysis tokens, Jenkins credentials, the SonarQube Scanner plugin, scanner tools, and the webhook."
 tags:
   - SonarQube
   - Jenkins

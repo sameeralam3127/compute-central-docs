@@ -1,7 +1,7 @@
 ---
 title: "Essential Docker Commands as Lifecycle Tools"
 icon: lucide/terminal-square
-description: Practice the essential Docker commands through the container lifecycle — run, inspect, exec, logs, stop, and clean up — with exit codes, restart policies, and common mistakes.
+description: "Essential Docker commands through the container lifecycle — run, inspect, exec, logs, stop, and clean up — with exit codes and restarts."
 tags:
   - Docker
   - Docker Workflows

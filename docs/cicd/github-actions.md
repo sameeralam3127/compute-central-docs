@@ -1,7 +1,7 @@
 ---
-title: "GitHub Actions Deep Dive: Workflows, Runners, Secrets, and Environments"
+title: "GitHub Actions Deep Dive: Workflows, Runners, and Secrets"
 icon: lucide/workflow
-description: GitHub Actions deep dive — workflow anatomy, events, runners, secrets, caching, matrix builds, environments, and self-hosted runner installation with complete YAML examples.
+description: "GitHub Actions in depth — workflow anatomy, events, runners, secrets, caching, matrix builds, environments, and self-hosted runners."
 tags:
   - CI/CD
   - GitHub Actions
@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Say hello
         run: echo "Pipeline is alive on $(uname -a)"
@@ -136,9 +136,9 @@ jobs:
       matrix:                            # run the job once per combination
         python-version: ["3.11", "3.12", "3.13"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip                     # built-in dependency caching
@@ -152,7 +152,7 @@ jobs:
     needs: test                          # only runs if every matrix leg passed
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Build artifact
         run: echo "build something here"
       - name: Upload artifact
@@ -292,7 +292,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: docker build -t ${{ inputs.image-name }} .
 ```
 

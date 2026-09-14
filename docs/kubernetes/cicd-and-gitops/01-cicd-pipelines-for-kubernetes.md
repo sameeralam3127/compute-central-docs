@@ -1,5 +1,5 @@
 ---
-title: "CI/CD Pipelines for Kubernetes: GitHub Actions, Jenkins, GitLab CI"
+title: "Kubernetes CI/CD Pipelines: GitHub Actions, Jenkins, GitLab"
 icon: lucide/workflow
 description: Build a build-test-scan-push-deploy pipeline that ships to Kubernetes, with working examples in GitHub Actions, Jenkins, and GitLab CI.
 tags:
@@ -64,7 +64,7 @@ jobs:
     outputs:
       image_tag: ${{ steps.meta.outputs.tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Run unit tests
         run: |

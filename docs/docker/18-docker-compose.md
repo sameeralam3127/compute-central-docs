@@ -1,7 +1,7 @@
 ---
 title: "Docker Compose: Multi-Container Applications as Configuration"
 icon: lucide/boxes
-description: Learn Docker Compose services, networks, volumes, environment and .env interpolation, health-based startup order, profiles, override files, secrets, watch mode, and troubleshooting.
+description: "Docker Compose in practice — services, networks, volumes, .env interpolation, health-based startup, profiles, overrides, secrets, and watch."
 tags:
   - Docker
   - Docker Compose

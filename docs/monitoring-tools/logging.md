@@ -1,7 +1,7 @@
 ---
 title: "Loki Logging With Grafana Alloy (and Migrating From Promtail)"
 icon: lucide/scroll-text
-description: Learn the Loki logging flow with Grafana Alloy as the collector, migrate an existing Promtail configuration, label logs well, and validate the pipeline in a local monitoring lab.
+description: "Loki logging with Grafana Alloy — the log pipeline, migrating from Promtail, choosing low-cardinality labels, and validating in a local lab."
 tags:
   - Monitoring
   - Logging

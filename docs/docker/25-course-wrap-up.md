@@ -1,7 +1,7 @@
 ---
 title: "Docker Course Wrap-Up: Mental Model, Capstone, and Next Steps"
 icon: lucide/graduation-cap
-description: Review the full container mental model from application dependencies to OCI runtimes, complete a capstone project with an acceptance checklist, and choose your next learning path.
+description: "Review the container mental model, complete a capstone project with an acceptance checklist, and choose your next learning path."
 tags:
   - Docker
   - Course
