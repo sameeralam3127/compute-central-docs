@@ -1,7 +1,7 @@
 ---
 title: "Ansible Inventory Explained: Static and Dynamic"
 icon: lucide/list-tree
-description: Ansible inventory — static INI and YAML formats, groups and children, host patterns, ranges, and when to move to dynamic inventory.
+description: "An Ansible inventory is the list of hosts you manage, in INI or YAML, organized into groups so a playbook can target exactly the machines you mean."
 tags:
   - Ansible
   - Core Concepts
@@ -9,6 +9,8 @@ tags:
 ---
 
 # Inventory
+
+An inventory is the list of hosts Ansible manages, written in INI or YAML and organized into groups, so a play can target `webservers` instead of naming machines one by one.
 
 ## What You'll Learn
 

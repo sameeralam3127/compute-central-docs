@@ -1,7 +1,7 @@
 ---
 title: "Ansible Check Mode and Diff Mode (Dry Run)"
 icon: lucide/eye
-description: Ansible --check and --diff — dry-running a playbook to see what would change before it actually changes anything.
+description: "Ansible --check dry-runs a playbook without changing anything, and --diff shows the exact lines that would change. Plus the modules that can't be dry-run."
 tags:
   - Ansible
   - Core Concepts
@@ -9,6 +9,8 @@ tags:
 ---
 
 # Check Mode and Diff Mode
+
+`--check` runs a playbook without changing anything, and `--diff` shows the exact lines that would change. Run both together for a dry run you can read.
 
 ## What You'll Learn
 

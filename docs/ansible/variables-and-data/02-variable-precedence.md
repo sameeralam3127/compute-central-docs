@@ -1,7 +1,7 @@
 ---
 title: "Ansible Variable Precedence Order Explained"
 icon: lucide/layers
-description: Ansible's full variable precedence order, highest to lowest, with a decision tree for debugging which source actually won and a runnable lab to prove it.
+description: "Ansible variable precedence, highest to lowest: extra vars (-e) always win, role defaults always lose. Plus how to debug which source actually set a value."
 tags:
   - Ansible
   - Variables

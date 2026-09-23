@@ -1,13 +1,15 @@
 ---
 title: "Ansible Role Directory Structure Explained"
 icon: lucide/folder-tree
-description: The standard Ansible role directory structure — tasks, handlers, defaults, vars, files, templates, and meta — and how including a role auto-wires all of it.
+description: "An Ansible role is a directory of tasks, handlers, defaults, vars, files, templates, and meta. Each main.yml is loaded automatically when the role runs."
 tags:
   - Ansible
   - Roles
 ---
 
 # Role Structure
+
+A role is a directory with a fixed layout — `tasks/`, `handlers/`, `defaults/`, `vars/`, `files/`, `templates/`, `meta/`. Ansible loads the `main.yml` in each one automatically, with no wiring from you.
 
 ## What You'll Learn
 

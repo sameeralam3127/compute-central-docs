@@ -1,13 +1,15 @@
 ---
 title: "Ansible set_fact and combine Filter Explained"
 icon: lucide/merge
-description: Defining runtime variables with set_fact, and merging dictionaries safely with combine instead of overwriting them.
+description: "set_fact defines a variable at runtime on a host; the combine filter merges dictionaries instead of replacing them, which is where most data loss happens."
 tags:
   - Ansible
   - Variables
 ---
 
 # set_fact and combine
+
+`set_fact` defines a variable at run time, scoped to the host. The `combine` filter merges dictionaries instead of overwriting them — the fix for "my other keys disappeared".
 
 ## What You'll Learn
 

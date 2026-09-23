@@ -1,5 +1,5 @@
 ---
-title: "Deployment Strategies: Rolling, Recreate, Blue-Green, Canary"
+title: "Kubernetes Deployment Strategies: Rolling, Recreate, Canary"
 icon: lucide/refresh-cw
 description: "Deployment strategies compared for Kubernetes — rolling update vs recreate, tuning maxSurge and maxUnavailable, and when to use blue-green or canary releases."
 tags:

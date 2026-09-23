@@ -1,7 +1,7 @@
 ---
 title: "Ansible import_tasks vs include_tasks"
 icon: lucide/file-symlink
-description: Static vs. dynamic inclusion in Ansible — import_tasks/include_tasks and import_playbook, plus how each interacts with tags, loops, and --list-tasks.
+description: "import_tasks is static and resolved when the playbook is parsed; include_tasks is dynamic and resolved when the task runs. That drives tags, loops, and --list-tasks."
 tags:
   - Ansible
   - Playbook Engineering

@@ -1,13 +1,15 @@
 ---
 title: "Ansible async and poll for Long-Running Tasks"
 icon: lucide/clock
-description: Ansible async and poll — running long tasks in the background and checking on them later, instead of blocking the whole play.
+description: "Ansible async sets how long a task may run in the background; poll: 0 is fire-and-forget, and poll: N checks every N seconds. For reboots and long installs."
 tags:
   - Ansible
   - Playbook Engineering
 ---
 
 # Async and Poll
+
+`async` says how long a task may run in the background. `poll: N` checks it every N seconds; `poll: 0` is fire-and-forget, to be checked later with `async_status`.
 
 ## What You'll Learn
 

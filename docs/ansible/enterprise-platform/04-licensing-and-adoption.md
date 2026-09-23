@@ -1,7 +1,7 @@
 ---
 title: "AWX vs AAP: Licensing and Adoption Guide"
 icon: lucide/scale
-description: "How Ansible Automation Platform subscriptions work, what AWX offers as the open-source upstream, and how to choose between them."
+description: "AWX is free and community-supported; AAP is a paid Red Hat subscription, priced per managed node, that adds support, certified content, and backported fixes."
 tags:
   - Ansible
   - Enterprise Platform
@@ -10,6 +10,8 @@ tags:
 ---
 
 # Licensing and Adoption
+
+**AWX is free** and community-supported. **AAP is a paid Red Hat subscription**, priced per managed node, that adds vendor support, certified content, and backported fixes on a stable release cadence.
 
 ## What You'll Learn
 

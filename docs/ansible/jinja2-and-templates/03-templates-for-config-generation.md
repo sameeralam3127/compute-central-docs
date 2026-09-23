@@ -1,7 +1,7 @@
 ---
 title: "Ansible Template Module: Config File Example"
 icon: lucide/file-cog
-description: "Generate real config files with the Ansible template module — .j2 files, loops and conditionals, and why template beats lineinfile."
+description: "The Ansible template module renders a Jinja2 .j2 file with the host's variables and copies the result to the target. Loops, conditionals, and why not lineinfile."
 tags:
   - Ansible
   - Jinja2
@@ -9,6 +9,8 @@ tags:
 ---
 
 # Templates for Config Generation
+
+`ansible.builtin.template` renders a Jinja2 `.j2` file using that host's variables and copies the result to the target — the right way to manage a whole config file.
 
 ## What You'll Learn
 
