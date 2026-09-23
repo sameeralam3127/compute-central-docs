@@ -5,7 +5,7 @@ site_author = "Sameer Alam"
 site_url = "https://computecentral.in/"
 
 copyright = """
-Copyright © 2016–2026 Sameer Alam · <a href="#__consent">Cookie settings</a>
+Copyright © 2016–2026 Sameer Alam · <a href="/privacy/">Privacy</a> · <a href="#__consent">Cookie settings</a>
 """
 
 extra_css = ["stylesheets/extra.css"]
@@ -157,6 +157,7 @@ nav = [
     "security/06-hardening-and-compliance.md",
   ] },
   { "About" = "about/index.md" },
+  { "Privacy" = "privacy.md" },
 ]
 
 # Keep Zensical's recommended extension set explicit. Adding one extension table
@@ -280,7 +281,10 @@ title = "Cookie consent"
 description = """
   We use optional analytics cookies to understand repeated visits, improve this
   documentation, and learn whether readers find what they are looking for.
-  You can change your choice at any time using the Cookie settings link below.
+  This site also shows ads, and Google may set advertising cookies — readers in
+  the EEA, the UK, and Switzerland get Google's own consent message for those.
+  You can change your choice at any time using the Cookie settings link below,
+  and the Privacy Policy explains every cookie in use.
 """
 actions = ["accept", "reject", "manage"]
 

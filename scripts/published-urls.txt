@@ -413,6 +413,7 @@ monitoring-tools/overview/
 monitoring-tools/prometheus/
 monitoring-tools/python-logging/
 monitoring-tools/troubleshooting/
+privacy/
 security/
 security/01-devsecops-and-threat-modeling/
 security/02-secrets-management-with-vault/
