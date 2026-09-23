@@ -1,7 +1,7 @@
 ---
 title: "Ansible History: Why It Was Created and Who Built It"
 icon: lucide/history
-description: "Why Ansible was created — the pain of CFEngine, Puppet, and Chef, Michael DeHaan's design bets, and the road to Ansible Automation Platform."
+description: "Ansible was created by Michael DeHaan and first released in February 2012; Red Hat acquired it in October 2015. Why it was built, and what it replaced."
 tags:
   - Ansible
   - Getting Started
@@ -9,6 +9,8 @@ tags:
 ---
 
 # History and Why Ansible Exists
+
+Ansible was created by **Michael DeHaan** and first released in **February 2012**. Red Hat acquired Ansible, Inc. in **October 2015**, and the commercial platform became Ansible Automation Platform.
 
 ## What You'll Learn
 

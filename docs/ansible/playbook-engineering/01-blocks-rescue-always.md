@@ -1,7 +1,7 @@
 ---
 title: "Ansible block, rescue, always Explained"
 icon: lucide/shield-alert
-description: Ansible blocks, rescue, and always — grouping tasks, catching failures, and running cleanup logic regardless of outcome.
+description: "Ansible block, rescue, and always work like try/except/finally: rescue runs only if a task in the block fails, always runs either way. With worked examples."
 tags:
   - Ansible
   - Playbook Engineering
@@ -9,6 +9,8 @@ tags:
 ---
 
 # Blocks, Rescue, and Always
+
+`block` groups tasks, `rescue` runs only if a task inside the block fails, and `always` runs either way — Ansible's version of try/except/finally.
 
 ## What You'll Learn
 

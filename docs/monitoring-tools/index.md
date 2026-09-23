@@ -1,5 +1,5 @@
 ---
-title: "Monitoring Stack: Prometheus, Grafana, Loki, and Alertmanager"
+title: "Monitoring Stack: Prometheus, Grafana, and Loki"
 icon: lucide/activity
 description: "A practical observability stack — Prometheus, Grafana, Alertmanager, Loki with Grafana Alloy, exporters, synthetic checks, and troubleshooting."
 tags:

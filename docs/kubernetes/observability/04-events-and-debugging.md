@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Debugging: Events, describe, exec, Debug Containers"
+title: "Kubernetes Debugging: Events, describe, and exec"
 icon: lucide/search
 description: A repeatable Kubernetes debugging methodology using kubectl describe, get events, ephemeral debug containers, exec, port-forward, and cp.
 tags:

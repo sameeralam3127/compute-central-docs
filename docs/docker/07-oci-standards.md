@@ -1,5 +1,5 @@
 ---
-title: "OCI Standards: Image, Runtime, and Distribution Specifications"
+title: "OCI Standards: Image, Runtime, and Distribution Specs"
 icon: lucide/file-badge
 description: "The OCI image, runtime, and distribution specs — inspect a real image manifest and runtime bundle, and see why container tools interoperate."
 tags:

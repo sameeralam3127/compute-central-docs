@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Architecture: Control Plane and Worker Nodes Explained"
+title: "Kubernetes Architecture: Control Plane and Worker Nodes"
 icon: lucide/server
 description: "Kubernetes architecture end to end — API server, etcd, scheduler, controller manager, kubelet, kube-proxy, the CRI, and control loops."
 tags:
@@ -115,6 +115,11 @@ Every arrow in that sequence is a watch-compare-act loop, not a single script ru
 - What is the Container Runtime Interface, and why did its introduction matter for Kubernetes's design?
 
 See [Interview Prep](../interview-prep/index.md) for full answers.
+
+## Related
+
+- [The cluster networking model](../networking/01-cluster-networking-model.md)
+- [Authentication and authorization](../security/01-authentication-and-authorization.md)
 
 ## Next
 

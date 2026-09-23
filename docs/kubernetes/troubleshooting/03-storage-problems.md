@@ -150,6 +150,11 @@ spec:
 - Why can a `ReadWriteOnce` volume cause a rollout to hang, and how would you fix it without downtime?
 - The application logs `EACCES` on a path that's clearly mounted — what's actually wrong, and which field fixes it?
 
+## Related
+
+- [PersistentVolumes and PersistentVolumeClaims](../storage/02-persistentvolumes-and-claims.md)
+- [StorageClasses and dynamic provisioning](../storage/03-storageclasses-and-dynamic-provisioning.md)
+
 ## Next
 
 Continue to [Cluster and Node Problems](04-cluster-and-node-problems.md).

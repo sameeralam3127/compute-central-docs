@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes and OpenShift Tutorial: Learn Container Orchestration"
+title: "Kubernetes and OpenShift Tutorial for Beginners"
 icon: lucide/ship-wheel
 description: "Learn Kubernetes and OpenShift — get started, master core objects, go deep on networking and security, troubleshoot production, and prepare for interviews."
 tags:

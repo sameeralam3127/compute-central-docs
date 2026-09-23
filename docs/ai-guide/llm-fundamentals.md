@@ -1,7 +1,7 @@
 ---
 title: "LLM Fundamentals: Tokens, Context Windows, and Prediction"
 icon: lucide/cpu
-description: Understand LLM fundamentals including tokens, tokenization, next-token prediction, probability, context windows, hallucinations, and DevOps use cases.
+description: "How an LLM works: it predicts the next token from everything before it, one token at a time. Tokens, context windows, probability, and why models hallucinate."
 tags:
   - AI
   - LLM
@@ -9,6 +9,8 @@ tags:
 ---
 
 # LLM Fundamentals: Tokens, Context, and Next-Token Prediction
+
+A large language model does one thing: it predicts the **next token** from all the text before it, one token at a time. Everything else — chat, summarizing, code — is that loop repeated.
 
 ## What You'll Learn
 
@@ -299,6 +301,10 @@ For the wider vocabulary, see [AI terminology in plain English](terminology.md).
 - What is a token, and why does it matter for cost and context limits?
 - Why do LLMs hallucinate, and what reduces it?
 - How would you use an LLM to help triage an incident without leaking sensitive data?
+
+## Related
+
+- [AI model evaluation: metrics and test sets](ai-evaluation.md)
 
 ## Next
 

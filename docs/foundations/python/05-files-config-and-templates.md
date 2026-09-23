@@ -1,5 +1,5 @@
 ---
-title: "Python Config Files and Templates: pathlib, YAML, JSON, Jinja2"
+title: "Python Config Files and Templates: YAML, JSON, Jinja2"
 icon: lucide/file-cog
 description: Handle files and configuration in Python automation — pathlib, JSON, YAML, TOML, environment overrides, Jinja2 templates, validation, and atomic writes.
 tags:

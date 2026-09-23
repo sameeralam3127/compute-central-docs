@@ -1,5 +1,5 @@
 ---
-title: "Inside an Application: Runtimes, Libraries, and Configuration"
+title: "Inside an App: Runtimes, Libraries, and Config"
 icon: lucide/package
 description: "What an application needs at runtime — Python, Node.js, and Java dependency stacks compared, and the real causes of “it works on my machine.”"
 tags:

@@ -1,7 +1,7 @@
 ---
 title: "Ansible Jinja2 and Templates Guide"
 icon: lucide/braces
-description: Jinja2 in Ansible — expressions, filters, tests, and generating real config files with the template module.
+description: "Jinja2 in Ansible: expressions, filters and tests, and generating real config files with the template module — the templating half of every playbook."
 tags:
   - Ansible
   - Jinja2

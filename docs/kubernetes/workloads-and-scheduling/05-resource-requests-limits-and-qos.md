@@ -137,6 +137,10 @@ If a `ResourceQuota` covers `requests.cpu`/`requests.memory`, every pod in that 
 
 See [Interview Prep](../interview-prep/index.md) for full answers.
 
+## Related
+
+- [Cluster sizing and capacity planning](../production-engineering/01-cluster-sizing-and-capacity-planning.md)
+
 ## Next
 
 Continue to [Autoscaling](06-autoscaling.md) to see how requests feed directly into HPA, VPA, and Cluster Autoscaler decisions.

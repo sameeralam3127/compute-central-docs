@@ -1,7 +1,7 @@
 ---
 title: "How to Publish an Ansible Collection"
 icon: lucide/upload
-description: Publishing an Ansible collection to Galaxy or a private Automation Hub — building, versioning, and releasing.
+description: "Publish an Ansible collection to Galaxy or a private Automation Hub: build the tarball, test before release, version deliberately, and publish from CI."
 tags:
   - Ansible
   - Collections

@@ -1,7 +1,7 @@
 ---
 title: "Ansible Variable Precedence Order Explained"
 icon: lucide/layers
-description: Ansible's full variable precedence order, highest to lowest, with a decision tree for debugging which source actually won and a runnable lab to prove it.
+description: "Ansible variable precedence, highest to lowest: extra vars (-e) always win, role defaults always lose. Plus how to debug which source actually set a value."
 tags:
   - Ansible
   - Variables
@@ -116,6 +116,10 @@ shows task-level variable resolution as the play runs, which catches sources tha
 - How would you debug which source is actually setting a variable's value, without reading every file by hand?
 
 See [Interview Prep: Core Concepts](../interview-prep/01-core-concepts-questions.md) for the full leveled answers.
+
+## Related
+
+- [Variable precedence cheat sheet](../quick-reference/03-variable-precedence-cheat-sheet.md)
 
 ## Next
 

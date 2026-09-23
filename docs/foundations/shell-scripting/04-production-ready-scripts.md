@@ -1,5 +1,5 @@
 ---
-title: "Production-Ready Bash Scripts: Arguments, Locking, and Retries"
+title: "Production-Ready Bash Scripts: Locking and Retries"
 icon: lucide/shield-check
 description: "Write Bash scripts that are safe unattended — getopts, logging, exit codes, flock locking, dry-run mode, idempotency, retries, and cleanup."
 tags:

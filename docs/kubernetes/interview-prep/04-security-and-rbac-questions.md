@@ -50,6 +50,11 @@ tags:
 
 **Senior follow-up:** "A contractor's laptop with cluster access is compromised — how fast can you rotate every secret they could have read, and what does that reveal about your setup?" — if secrets live natively in Kubernetes, rotation means updating every `Secret` object and restarting every consumer; if they're centralized in an external manager, rotation happens in one place and propagates. The speed difference is usually the real argument for external secrets management in any team past a certain size.
 
+## Related
+
+- [Kubernetes RBAC explained](../security/02-rbac.md)
+- [RBAC cheat sheet](../quick-reference/03-rbac-cheat-sheet.md)
+
 ## Next
 
 Continue to [Senior & Architect Questions](05-senior-and-architect-questions.md).

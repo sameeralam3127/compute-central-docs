@@ -1,7 +1,7 @@
 ---
 title: "Ansible Forks vs Serial vs Strategy Explained"
 icon: lucide/gauge
-description: Ansible forks, serial, strategy, and throttle explained precisely — how many hosts run in parallel, how a rollout is batched, and what changes at 100+ hosts.
+description: "forks is how many hosts run a task at once (default 5); serial is the batch size of a rolling play. Plus what throttle and strategy change, and tuning at scale."
 tags:
   - Ansible
   - Advanced Execution

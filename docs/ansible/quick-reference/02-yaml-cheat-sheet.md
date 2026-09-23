@@ -1,7 +1,7 @@
 ---
 title: "Ansible YAML Cheat Sheet"
 icon: lucide/file-text
-description: YAML cheat sheet for Ansible — lists, mappings, block scalars, anchors, and the Norway problem.
+description: "YAML cheat sheet for Ansible playbooks: lists, mappings, block scalars, anchors, quoting rules, and the Norway problem that silently turns NO into false."
 tags:
   - Ansible
   - Quick Reference

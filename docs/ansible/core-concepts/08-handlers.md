@@ -1,7 +1,7 @@
 ---
 title: "Ansible Handlers and notify Explained"
 icon: lucide/bell
-description: Ansible handlers and notify — running a follow-up action only when a task actually changed something, deduplicated, at the end of a play.
+description: "An Ansible handler runs once at the end of the play, and only if a task that notified it reported changed. How notify works, and how to flush handlers early."
 tags:
   - Ansible
   - Core Concepts
@@ -9,6 +9,8 @@ tags:
 ---
 
 # Handlers
+
+A handler is a task that runs **once, at the end of the play**, and only when a task that notified it actually reported `changed`. That is what makes "restart nginx only if the config changed" work.
 
 ## What You'll Learn
 

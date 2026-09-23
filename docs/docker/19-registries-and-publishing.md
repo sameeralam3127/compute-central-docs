@@ -1,5 +1,5 @@
 ---
-title: "Image Registries: Tagging, Authentication, and Publishing Safely"
+title: "Docker Registries: Tagging, Auth, and Publishing"
 icon: lucide/package-check
 description: "Image registries — tags and digests, authentication, tagging strategy, multi-arch publishing from CI, local registries, and image signing."
 tags:

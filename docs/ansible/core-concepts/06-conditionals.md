@@ -1,5 +1,5 @@
 ---
-title: "Ansible when Conditionals: If/Else, AND, OR, and NOT Examples"
+title: "Ansible when Conditionals: If/Else, AND, OR Examples"
 icon: lucide/git-fork
 description: "Ansible when conditional examples — if/else logic, multiple conditions with and/or/not, facts, registered results, and when with loops."
 tags:

@@ -1,5 +1,5 @@
 ---
-title: "kubeadm Cluster Setup: init, join, and Control-Plane Topology"
+title: "kubeadm Cluster Setup: init, join, and Topology"
 icon: lucide/server-cog
 description: How to bootstrap a Kubernetes cluster with kubeadm, why nodes stay NotReady until a CNI is installed, and stacked versus external etcd topologies.
 tags:

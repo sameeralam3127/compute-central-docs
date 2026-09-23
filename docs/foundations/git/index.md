@@ -1,5 +1,5 @@
 ---
-title: "Git for DevOps: Internals, Workflows, Branching, and Recovery"
+title: "Git for DevOps: Internals, Workflows, and Branching"
 icon: lucide/git-branch
 description: "Git the way DevOps teams use it — how Git stores history, daily workflows, branching strategies, safe recovery, and repository hygiene."
 tags:

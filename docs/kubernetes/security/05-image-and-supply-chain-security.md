@@ -1,7 +1,7 @@
 ---
-title: "Kubernetes Image Security: Scanning, Signing, and Supply Chain"
+title: "Kubernetes Image Security: Scanning and Signing"
 icon: lucide/package-check
-description: "Kubernetes image security — container image scanning, signing images with cosign, admission policies with Kyverno and OPA Gatekeeper, private registries, and minimal base images."
+description: "Kubernetes image security: scanning images for CVEs, signing with cosign, admission policies with Kyverno or Gatekeeper, and minimal base images."
 tags:
   - Kubernetes
   - Security

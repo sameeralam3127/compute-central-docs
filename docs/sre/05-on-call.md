@@ -1,5 +1,5 @@
 ---
-title: "Sustainable On-Call: Rotations, Escalation, and Alert Hygiene"
+title: "Sustainable On-Call: Rotations and Alert Hygiene"
 icon: lucide/phone-call
 description: "Design sustainable on-call — rotations, handoffs, escalation policies, responder expectations, alert noise reduction, and on-call health metrics."
 tags:

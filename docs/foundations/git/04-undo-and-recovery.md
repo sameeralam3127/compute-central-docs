@@ -1,5 +1,5 @@
 ---
-title: "Undo Anything in Git: restore, reset, revert, reflog, and bisect"
+title: "Undo Anything in Git: reset, revert, reflog, bisect"
 icon: lucide/undo-2
 description: "Undo Git mistakes safely — restore, amend, reset vs revert, recovering lost commits with reflog, cherry-pick, stash, and bisect."
 tags:

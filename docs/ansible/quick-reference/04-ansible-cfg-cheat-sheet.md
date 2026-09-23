@@ -1,7 +1,7 @@
 ---
 title: "ansible.cfg Cheat Sheet"
 icon: lucide/settings
-description: ansible.cfg quick reference — search order and the settings that matter most in production.
+description: "ansible.cfg cheat sheet: the search order Ansible uses to find the file, and the settings that matter most in production — forks, pipelining, and become."
 tags:
   - Ansible
   - Quick Reference

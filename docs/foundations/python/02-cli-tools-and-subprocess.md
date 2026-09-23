@@ -1,5 +1,5 @@
 ---
-title: "Python CLI Tools: Typer, argparse, subprocess, and Exit Codes"
+title: "Python CLI Tools: Typer, argparse, and subprocess"
 icon: lucide/square-terminal
 description: "Build Python CLIs for operations — Typer and argparse, safe subprocess calls, logging, exit codes, environment variables, and signals."
 tags:

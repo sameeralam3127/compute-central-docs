@@ -1,5 +1,5 @@
 ---
-title: "StatefulSet Storage Patterns: volumeClaimTemplates in Practice"
+title: "StatefulSet Storage: volumeClaimTemplates in Practice"
 icon: lucide/database-zap
 description: How volumeClaimTemplates give each StatefulSet replica its own stable PVC, and what happens to that storage on pod deletion versus StatefulSet deletion.
 tags:

@@ -1,5 +1,5 @@
 ---
-title: "Container and IaC Scanning: Trivy, Checkov, Hadolint, Conftest"
+title: "Container and IaC Scanning: Trivy, Checkov, Hadolint"
 icon: lucide/scan-search
 description: "Scan images, Dockerfiles, Terraform, and Kubernetes manifests with Trivy, Checkov, Hadolint, and Conftest, with CI integration and triage."
 tags:

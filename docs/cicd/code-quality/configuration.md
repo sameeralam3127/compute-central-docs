@@ -1,5 +1,5 @@
 ---
-title: "SonarQube Configuration: Database, systemd, HTTPS, and Backups"
+title: "SonarQube Configuration: Database, systemd, HTTPS"
 icon: lucide/settings
 description: Configure SonarQube for real use — database settings, JVM memory, a systemd service, an Nginx HTTPS proxy, first-login hardening, backups, and upgrades.
 tags:

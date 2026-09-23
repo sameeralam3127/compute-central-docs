@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Multi-Tenancy: Namespaces, Quotas, and NetworkPolicy"
+title: "Kubernetes Multi-Tenancy: Namespaces and Quotas"
 icon: lucide/users
 description: Namespace-based multi-tenancy in Kubernetes with ResourceQuota, LimitRange, NetworkPolicy, and RBAC, versus separate clusters or vcluster.
 tags:
@@ -157,6 +157,11 @@ The honest trade-off: namespace-based multi-tenancy is cheap and usually suffici
 - When would you choose vcluster or separate physical clusters over namespace-based multi-tenancy?
 
 See [Interview Prep](../interview-prep/index.md) for full answers.
+
+## Related
+
+- [Kubernetes RBAC explained](../security/02-rbac.md)
+- [Multi-cluster and multi-region design](../production-engineering/03-multi-cluster-and-multi-region.md)
 
 ## Next
 

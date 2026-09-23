@@ -1,5 +1,5 @@
 ---
-title: "Build a Container Without Docker: Namespaces, veth, and cgroups"
+title: "Build a Container Without Docker: Namespaces and cgroups"
 icon: lucide/hammer
 description: A hands-on lab combining Linux namespaces, a root filesystem, a veth network pair, and a cgroup to build container-style isolation without Docker.
 tags:

@@ -1,5 +1,5 @@
 ---
-title: "AWS Accounts, Organizations, IAM Identity Center, and the CLI"
+title: "AWS Accounts, Organizations, and IAM Identity Center"
 icon: lucide/building-2
 description: "Set up AWS properly — regions and AZs, multi-account Organizations with SCPs, IAM Identity Center, AWS CLI SSO profiles, and budget alerts."
 tags:

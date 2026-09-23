@@ -1,7 +1,7 @@
 ---
 title: "Ansible Facts: gather_facts, Common Facts, and Custom Facts"
 icon: lucide/scan-search
-description: "Ansible facts explained — gather_facts and the setup module, how to print all facts, common facts like ansible_memtotal_mb and ansible_default_ipv4, subsets, and custom facts."
+description: "Ansible facts explained: gather_facts and the setup module, how to print all facts, common facts like ansible_memtotal_mb, subsets, and custom facts."
 tags:
   - Ansible
   - Variables

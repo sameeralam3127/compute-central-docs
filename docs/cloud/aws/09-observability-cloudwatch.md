@@ -1,5 +1,5 @@
 ---
-title: "AWS Observability: CloudWatch, Logs Insights, CloudTrail, Config"
+title: "AWS Observability: CloudWatch, Logs Insights, CloudTrail"
 icon: lucide/activity
 description: "Observe AWS with CloudWatch metrics, alarms, and Logs Insights, OpenTelemetry tracing, CloudTrail auditing, EventBridge, and AWS Config."
 tags:

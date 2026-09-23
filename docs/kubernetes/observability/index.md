@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Observability: Probes, Logs, Metrics, and Debugging"
+title: "Kubernetes Observability: Probes, Logs, and Metrics"
 icon: lucide/activity
 description: Start here for Kubernetes observability — health probes, container logging architecture, metrics-server, and a repeatable debugging methodology.
 tags:

@@ -1,5 +1,5 @@
 ---
-title: "External Secrets and Secret Stores: Vault, ESO, Sealed Secrets"
+title: "External Secrets: Vault, ESO, and Sealed Secrets"
 icon: lucide/shield-check
 description: "Why native Kubernetes Secrets aren't enough, and how External Secrets Operator, Vault, Sealed Secrets, and cloud secret managers compare."
 tags:

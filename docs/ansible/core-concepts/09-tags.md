@@ -1,7 +1,7 @@
 ---
 title: "Ansible Tags: Run Part of a Playbook with --tags"
 icon: lucide/tag
-description: Ansible tags — running or skipping part of a playbook with --tags and --skip-tags, without editing the file.
+description: "Ansible tags run or skip part of a playbook with --tags and --skip-tags, without editing the file. Tagging tasks, blocks and roles, plus the special tags."
 tags:
   - Ansible
   - Core Concepts

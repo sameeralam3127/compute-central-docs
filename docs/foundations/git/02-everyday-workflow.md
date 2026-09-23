@@ -1,5 +1,5 @@
 ---
-title: "Everyday Git Workflow: Branch, Commit, Rebase, Merge, and Push"
+title: "Everyday Git Workflow: Branch, Commit, Rebase, Push"
 icon: lucide/git-pull-request
 description: "A clean daily Git workflow — useful config, feature branches, good commits, rebase vs merge, resolving conflicts, and force-with-lease."
 tags:

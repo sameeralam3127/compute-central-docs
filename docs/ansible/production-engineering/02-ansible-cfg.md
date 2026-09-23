@@ -1,7 +1,7 @@
 ---
 title: "ansible.cfg Settings Explained"
 icon: lucide/settings
-description: Every ansible.cfg setting that matters in production — search order and precedence, forks, SSH args, pipelining, timeouts, and privilege escalation.
+description: "ansible.cfg configures Ansible, and only the first file found is used: ANSIBLE_CONFIG, then ./ansible.cfg, then ~/.ansible.cfg, then /etc/ansible/ansible.cfg."
 tags:
   - Ansible
   - Production

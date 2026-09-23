@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Services Explained: ClusterIP, NodePort, LoadBalancer"
+title: "Kubernetes Services: ClusterIP, NodePort, LoadBalancer"
 icon: lucide/network
 description: "Kubernetes Services as stable network identity for Pods, with an introduction to ClusterIP, NodePort, LoadBalancer, and ExternalName."
 tags:

@@ -1,5 +1,5 @@
 ---
-title: "Hardening and Compliance: CIS Benchmarks and Vulnerability SLAs"
+title: "Hardening and Compliance: CIS Benchmarks and SLAs"
 icon: lucide/clipboard-check
 description: "Harden systems and keep compliance continuous — CIS benchmarks, Lynis, kube-bench, Prowler, vulnerability SLAs with KEV and EPSS."
 tags:

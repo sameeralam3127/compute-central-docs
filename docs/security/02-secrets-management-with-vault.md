@@ -1,5 +1,5 @@
 ---
-title: "Secrets Management With Vault: Dynamic Secrets and Workload Auth"
+title: "Secrets Management With Vault: Dynamic Secrets and Auth"
 icon: lucide/vault
 description: "Manage secrets with Vault or OpenBao — KV, policies, dynamic database credentials, Kubernetes and GitHub Actions auth, and External Secrets."
 tags:

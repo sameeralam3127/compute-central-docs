@@ -1,5 +1,5 @@
 ---
-title: "Deployment Strategies: Rolling, Recreate, Blue-Green, Canary"
+title: "Kubernetes Deployment Strategies: Rolling, Recreate, Canary"
 icon: lucide/refresh-cw
 description: "Deployment strategies compared for Kubernetes — rolling update vs recreate, tuning maxSurge and maxUnavailable, and when to use blue-green or canary releases."
 tags:
@@ -127,6 +127,10 @@ A Deployment alone can approximate both crudely (two Deployments + a Service sel
 - How does a canary release differ from what a Deployment's `RollingUpdate` already gives you?
 
 See [Interview Prep](../interview-prep/index.md) for full answers.
+
+## Related
+
+- [Autoscaling: HPA, VPA, and Cluster Autoscaler](06-autoscaling.md)
 
 ## Next
 

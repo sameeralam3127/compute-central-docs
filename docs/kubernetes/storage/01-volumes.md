@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Volumes: emptyDir, hostPath, and Projected Volumes"
+title: "Kubernetes Volumes: emptyDir, hostPath, Projected"
 icon: lucide/hard-drive
 description: The ephemeral Kubernetes volume types attached directly to a pod spec, why hostPath is dangerous, and why none of them survive a pod being rescheduled.
 tags:

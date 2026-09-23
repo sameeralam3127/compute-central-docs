@@ -1,5 +1,5 @@
 ---
-title: "Progressive Delivery in Kubernetes: Argo Rollouts and Flagger"
+title: "Progressive Delivery: Argo Rollouts and Flagger"
 icon: lucide/git-compare
 description: Operationalize canary and blue-green releases in Kubernetes with Argo Rollouts and Flagger, including weighted traffic shifting and automated rollback.
 tags:

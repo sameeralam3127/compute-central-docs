@@ -1,5 +1,5 @@
 ---
-title: "SLIs, SLOs, and Error Budgets: Defining Reliability That Matters"
+title: "SLIs, SLOs, and Error Budgets Explained"
 icon: lucide/target
 description: "Define reliability with SLIs, SLOs, and error budgets — user-centric indicators, realistic targets, PromQL recording rules, and budget policies."
 tags:

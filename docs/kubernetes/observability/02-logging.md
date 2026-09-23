@@ -1,7 +1,7 @@
 ---
-title: "Kubernetes Logging Architecture: kubectl logs, Node Logs, Agents"
+title: "Kubernetes Logging Architecture: kubectl logs and Agents"
 icon: lucide/file-text
-description: "Kubernetes logging architecture — how container logs reach kubectl logs, kubelet and node logs, log rotation, and cluster-wide log aggregation with node agents or sidecars."
+description: "Kubernetes logging architecture: how container logs reach kubectl logs, kubelet and node logs, rotation, and cluster-wide aggregation with node agents."
 tags:
   - Kubernetes
   - Observability & Health
@@ -117,6 +117,10 @@ A common cluster-wide stack pairs a DaemonSet log shipper (Fluent Bit or Grafana
 - What happens to a pod's logs after the pod is deleted, and how does that shape cluster logging architecture?
 
 See [Interview Prep](../interview-prep/index.md) for full answers.
+
+## Related
+
+- [Node Exporter: host metrics for Prometheus](../../monitoring-tools/node-exporter.md)
 
 ## Next
 

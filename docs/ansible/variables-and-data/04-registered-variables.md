@@ -1,7 +1,7 @@
 ---
 title: "Ansible register Variable Explained"
 icon: lucide/save
-description: Capturing a task's result with register, and using it in later conditionals, loops, and templates.
+description: "Ansible register captures a task's result — rc, stdout, changed, failed — for use in later when conditions, loops, and templates, with the common fields."
 tags:
   - Ansible
   - Variables

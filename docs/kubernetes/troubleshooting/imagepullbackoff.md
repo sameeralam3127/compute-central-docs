@@ -1,7 +1,7 @@
 ---
 title: "Fix Kubernetes ImagePullBackOff and ErrImagePull"
 icon: lucide/cloud-off
-description: "Fix Kubernetes ImagePullBackOff and ErrImagePull — decode registry errors for bad tags, missing credentials, rate limits, architecture mismatches, and network problems."
+description: "Fix Kubernetes ImagePullBackOff and ErrImagePull: bad tags, missing registry credentials, rate limits, and architecture mismatches, with the commands."
 tags:
   - Kubernetes
   - Troubleshooting

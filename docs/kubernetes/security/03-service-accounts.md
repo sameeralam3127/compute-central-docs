@@ -137,6 +137,10 @@ Both patterns achieve the same goal: cloud permissions are scoped per-workload v
 
 See [Interview Prep](../interview-prep/index.md) for full answers.
 
+## Related
+
+- [Kubernetes RBAC explained](02-rbac.md)
+
 ## Next
 
 Continue to [Pod Security Standards](04-pod-security-standards.md) to lock down what a pod's containers are allowed to do at runtime, independent of what API calls they can make.

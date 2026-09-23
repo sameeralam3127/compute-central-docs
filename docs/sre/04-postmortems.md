@@ -1,5 +1,5 @@
 ---
-title: "Blameless Postmortems: Timelines, Contributing Factors, Actions"
+title: "Blameless Postmortems: Timelines and Action Items"
 icon: lucide/notebook-pen
 description: "Write blameless postmortems — timelines, contributing factors beyond one root cause, action items that get done, a template, and reviews."
 tags:
