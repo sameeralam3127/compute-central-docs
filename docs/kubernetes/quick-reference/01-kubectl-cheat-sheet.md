@@ -154,4 +154,6 @@ kubectl get pods -o custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE
 
 ## Related
 
+- [RBAC cheat sheet](03-rbac-cheat-sheet.md)
+- [Resource units and ports cheat sheet](05-resource-units-and-ports-cheat-sheet.md)
 [Troubleshooting Cheat Sheet](04-troubleshooting-cheat-sheet.md) · [YAML Cheat Sheet](02-yaml-cheat-sheet.md)

@@ -1,5 +1,5 @@
 ---
-title: "Observability Fundamentals: Metrics, Logs, Traces, and Events"
+title: "Observability Fundamentals: Metrics, Logs, Traces"
 icon: lucide/radar
 description: Understand observability theory and use logs, events, metrics, and traces together for practical monitoring and incident response.
 tags:
@@ -103,6 +103,11 @@ These fields make Grafana links, Loki queries, and trace searches practical inst
 - Explain SLI, SLO, and error budget with an example.
 - What's the difference between the RED and USE methods?
 - How would you move from an alert to the root cause using metrics, logs, and traces together?
+
+## Related
+
+- [Node Exporter: host metrics for Prometheus](node-exporter.md)
+- [Kubernetes logging architecture](../kubernetes/observability/02-logging.md)
 
 ## Next
 

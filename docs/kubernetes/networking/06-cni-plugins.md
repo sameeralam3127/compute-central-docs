@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes CNI Plugins Compared: Calico, Cilium, Flannel, Weave"
+title: "Kubernetes CNI Compared: Calico, Cilium, Flannel"
 icon: lucide/puzzle
 description: Comparing Calico, Flannel, Cilium, and Weave at a decision-making level — overlay vs native routing, eBPF vs iptables, and NetworkPolicy support.
 tags:

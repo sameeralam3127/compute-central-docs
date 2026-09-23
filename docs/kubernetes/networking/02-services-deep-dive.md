@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Services Deep Dive: Types, kube-proxy, EndpointSlices"
+title: "Kubernetes Services Deep Dive: kube-proxy and Endpoints"
 icon: lucide/share-2
 description: All four Kubernetes Service types, headless Services, how kube-proxy implements them in iptables vs IPVS mode, EndpointSlices, and session affinity.
 tags:

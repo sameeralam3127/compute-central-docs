@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes NetworkPolicy: Default-Deny and Segmentation Patterns"
+title: "Kubernetes NetworkPolicy: Default-Deny Patterns"
 icon: lucide/shield
 description: The default-allow-all reality of Kubernetes networking, default-deny patterns, ingress/egress rules with podSelector and namespaceSelector, and CNI dependency.
 tags:

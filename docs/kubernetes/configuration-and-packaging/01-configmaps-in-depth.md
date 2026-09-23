@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes ConfigMaps In Depth: Consumption Patterns and Updates"
+title: "Kubernetes ConfigMaps in Depth: Patterns and Updates"
 icon: lucide/file-cog
 description: Every way to consume a ConfigMap in a pod, immutable ConfigMaps, and why volume-mounted updates propagate while environment variables don't.
 tags:

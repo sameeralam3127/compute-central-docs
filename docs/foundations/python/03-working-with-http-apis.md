@@ -1,5 +1,5 @@
 ---
-title: "Python HTTP APIs for Automation: httpx, Retries, and Pagination"
+title: "Python HTTP APIs: httpx, Retries, and Pagination"
 icon: lucide/webhook
 description: "Call HTTP APIs reliably from Python — httpx clients, timeouts, retries with backoff and jitter, rate limits, pagination, and authentication."
 tags:

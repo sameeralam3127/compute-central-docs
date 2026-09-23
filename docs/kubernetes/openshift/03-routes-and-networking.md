@@ -1,5 +1,5 @@
 ---
-title: "OpenShift Routes vs. Ingress and the SDN/OVN-Kubernetes Layer"
+title: "OpenShift Route vs Ingress: Routes and OVN Networking"
 icon: lucide/route
 description: "An OpenShift Route exposes a Service through the built-in HAProxy router; Ingress is the Kubernetes standard, and OpenShift turns Ingress objects into Routes."
 tags:

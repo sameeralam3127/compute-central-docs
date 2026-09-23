@@ -302,6 +302,10 @@ For the wider vocabulary, see [AI terminology in plain English](terminology.md).
 - Why do LLMs hallucinate, and what reduces it?
 - How would you use an LLM to help triage an incident without leaking sensitive data?
 
+## Related
+
+- [AI model evaluation: metrics and test sets](ai-evaluation.md)
+
 ## Next
 
 Continue to [AI Agents](ai-agents.md).

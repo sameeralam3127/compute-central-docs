@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Probes: Liveness, Readiness, and Startup Explained"
+title: "Kubernetes Probes: Liveness, Readiness, and Startup"
 icon: lucide/heart-pulse
 description: What liveness, readiness, and startup probes each control, their timing fields, and the classic misconfiguration that causes restart-loop death spirals.
 tags:

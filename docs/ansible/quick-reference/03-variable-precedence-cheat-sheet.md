@@ -1,7 +1,7 @@
 ---
 title: "Ansible Variable Precedence Cheat Sheet"
 icon: lucide/layers
-description: The full Ansible variable precedence order, highest to lowest, as a quick-lookup table and diagram.
+description: "Ansible variable precedence as a lookup table, highest to lowest: extra vars beat everything, role defaults lose to everything, with every level in between."
 tags:
   - Ansible
   - Quick Reference

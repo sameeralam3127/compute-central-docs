@@ -1,5 +1,5 @@
 ---
-title: "ReplicaSets vs Deployments: Why You Rarely Write a ReplicaSet"
+title: "ReplicaSet vs Deployment in Kubernetes Explained"
 icon: lucide/refresh-cw
 description: How ReplicaSets reconcile a fixed Pod count, why Deployments wrap them instead of you writing ReplicaSets directly, and how basic rolling updates work.
 tags:

@@ -1,7 +1,7 @@
 ---
 title: "Ansible Module Cheat Sheet"
 icon: lucide/package
-description: A quick module-selection reference — which ansible.builtin module to reach for, by task.
+description: "Ansible module cheat sheet: which ansible.builtin module to reach for by task — files, packages, services, users, and API calls — with the FQCN to use."
 tags:
   - Ansible
   - Quick Reference

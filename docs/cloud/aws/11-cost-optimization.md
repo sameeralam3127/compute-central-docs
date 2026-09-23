@@ -1,5 +1,5 @@
 ---
-title: "AWS Cost Optimization: Visibility, Rightsizing, Savings Plans"
+title: "AWS Cost Optimization: Rightsizing and Savings Plans"
 icon: lucide/piggy-bank
 description: "Control AWS costs — cost allocation tags, Cost Explorer, rightsizing, Savings Plans, Spot, Graviton, data transfer, and common hidden waste."
 tags:

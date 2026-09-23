@@ -1,5 +1,5 @@
 ---
-title: "Incident Response for SRE Teams: Roles, Severity, Communication"
+title: "Incident Response for SRE Teams: Roles and Severity"
 icon: lucide/siren
 description: "Run incidents well — severity levels, the incident commander role, mitigation before root cause, status updates, and runbooks that help."
 tags:

@@ -128,6 +128,10 @@ A Deployment alone can approximate both crudely (two Deployments + a Service sel
 
 See [Interview Prep](../interview-prep/index.md) for full answers.
 
+## Related
+
+- [Autoscaling: HPA, VPA, and Cluster Autoscaler](06-autoscaling.md)
+
 ## Next
 
 Continue to [StatefulSets](02-statefulsets.md) for workloads that need stable identity instead of interchangeable pods.

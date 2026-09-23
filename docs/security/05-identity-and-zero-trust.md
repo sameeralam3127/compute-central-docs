@@ -1,5 +1,5 @@
 ---
-title: "Identity and Zero Trust: SSO, MFA, Workload Identity, and mTLS"
+title: "Identity and Zero Trust: SSO, MFA, and mTLS"
 icon: lucide/fingerprint
 description: "Replace network trust with identity — zero trust principles, SSO and phishing-resistant MFA, just-in-time access, workload identity, and mTLS."
 tags:

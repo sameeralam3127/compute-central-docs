@@ -142,6 +142,10 @@ For a full monitoring stack — historical data, dashboards, alerting, and the P
 
 See [Interview Prep](../interview-prep/index.md) for full answers.
 
+## Related
+
+- [Node Exporter: host metrics for Prometheus](../../monitoring-tools/node-exporter.md)
+
 ## Next
 
 Continue to [Events and Debugging](04-events-and-debugging.md) to turn probes, logs, and metrics into a repeatable process for diagnosing a broken workload. metrics-server only keeps current values for autoscaling; for history, dashboards, and alerting, see [Prometheus](../../monitoring-tools/prometheus.md) and [Grafana](../../monitoring-tools/grafana.md).

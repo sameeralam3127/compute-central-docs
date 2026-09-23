@@ -1,5 +1,5 @@
 ---
-title: "Git Branching Strategies: Trunk-Based, GitHub Flow, and GitFlow"
+title: "Git Branching Strategies: Trunk-Based vs GitFlow"
 icon: lucide/git-fork
 description: "Compare Git branching strategies — trunk-based development, GitHub flow, GitFlow, and release branches — plus merge methods and GitOps."
 tags:

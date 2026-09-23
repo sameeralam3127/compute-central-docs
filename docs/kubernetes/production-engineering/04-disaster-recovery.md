@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Disaster Recovery: RTO, RPO, Backups, and Failover"
+title: "Kubernetes Disaster Recovery: RTO, RPO, and Backups"
 icon: lucide/shield-alert
 description: Kubernetes disaster recovery in practice — RTO/RPO targets, Velero and etcd snapshot backup strategy, multi-region failover, and what a real DR runbook needs.
 tags:
@@ -109,6 +109,10 @@ A runbook that only exists as institutional knowledge is not a DR plan. A usable
 - What does a DR runbook need to contain to actually be useful during an incident?
 
 See [Interview Prep](../interview-prep/index.md) for full answers.
+
+## Related
+
+- [Multi-cluster and multi-region design](03-multi-cluster-and-multi-region.md)
 
 ## Next
 

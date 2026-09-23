@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Node Management: Cordon, Drain, and Node Conditions"
+title: "Kubernetes Node Management: Cordon, Drain, Conditions"
 icon: lucide/wrench
 description: How to safely take a Kubernetes node in and out of service with cordon, drain, and uncordon, and how node conditions drive scheduling and eviction.
 tags:

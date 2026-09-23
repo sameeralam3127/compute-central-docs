@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes YAML Cheat Sheet: Pod, Deployment, Service, and More"
+title: "Kubernetes YAML Cheat Sheet: Pod, Deployment, Service"
 icon: lucide/file-code
 description: Minimal correct YAML skeletons for Pod, Deployment, Service, ConfigMap, Secret, Ingress, PVC, HPA, and NetworkPolicy.
 tags:

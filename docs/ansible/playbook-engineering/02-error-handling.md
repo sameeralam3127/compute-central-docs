@@ -1,7 +1,7 @@
 ---
 title: "Ansible Error Handling: ignore_errors and failed_when"
 icon: lucide/octagon-alert
-description: Ansible error handling — ignore_errors, failed_when, any_errors_fatal, and max_fail_percentage.
+description: "Ansible error handling: define failure with failed_when, keep going with ignore_errors, and stop a rollout with any_errors_fatal or max_fail_percentage."
 tags:
   - Ansible
   - Playbook Engineering

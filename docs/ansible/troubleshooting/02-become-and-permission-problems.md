@@ -1,5 +1,5 @@
 ---
-title: "Fix Ansible become Errors: sudo Password, requiretty, PowerShell"
+title: "Fix Ansible become Errors: sudo Password, PowerShell"
 icon: lucide/shield-alert
 description: "Fix Ansible become and permission failures — missing sudo password, requiretty with pipelining, the PowerShell shell family error on Windows, and permission denied."
 tags:

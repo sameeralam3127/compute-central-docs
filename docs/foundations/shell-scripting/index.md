@@ -1,5 +1,5 @@
 ---
-title: "Shell Scripting for DevOps: Bash, Text Processing, and Testing"
+title: "Shell Scripting for DevOps: Bash and Text Processing"
 icon: lucide/terminal
 description: Learn Bash scripting for DevOps and SRE work — safe script structure, grep, sed, awk, and jq, testing with ShellCheck and Bats, and production-ready automation.
 tags:

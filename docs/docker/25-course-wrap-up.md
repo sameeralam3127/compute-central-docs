@@ -1,5 +1,5 @@
 ---
-title: "Docker Course Wrap-Up: Mental Model, Capstone, and Next Steps"
+title: "Docker Course Wrap-Up: Mental Model and Capstone"
 icon: lucide/graduation-cap
 description: "Review the container mental model, complete a capstone project with an acceptance checklist, and choose your next learning path."
 tags:

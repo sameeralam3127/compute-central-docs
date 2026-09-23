@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Secrets, etcd Encryption at Rest, and Audit Logging"
+title: "Kubernetes Secrets and etcd Encryption at Rest"
 icon: lucide/lock-keyhole
 description: Why a Kubernetes Secret is only base64-encoded by default, how to enable etcd encryption at rest with a KMS provider, and the basics of audit logging.
 tags:

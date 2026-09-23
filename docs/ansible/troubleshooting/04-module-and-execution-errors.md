@@ -1,7 +1,7 @@
 ---
 title: "Fix Ansible Module Errors: Not Found, MODULE FAILURE, setup"
 icon: lucide/octagon-x
-description: "Fix Ansible module and execution errors — couldn't resolve module, missing Python, MODULE FAILURE, ansible.legacy.setup failed to execute, and module result deserialization failed."
+description: "Fix Ansible module errors: couldn't resolve module, missing Python, MODULE FAILURE, ansible.legacy.setup failures, and result deserialization errors."
 tags:
   - Ansible
   - Troubleshooting

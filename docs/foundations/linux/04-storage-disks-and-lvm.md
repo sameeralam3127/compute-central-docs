@@ -1,5 +1,5 @@
 ---
-title: "Linux Storage: Disks, Filesystems, fstab, LVM, and Full Disks"
+title: "Linux Storage: Disks, Filesystems, fstab, and LVM"
 icon: lucide/hard-drive
 description: "Linux storage — block devices, filesystems, fstab with UUIDs, LVM, growing cloud disks online, inodes, and fixing “No space left on device.”"
 tags:

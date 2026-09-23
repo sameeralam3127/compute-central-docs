@@ -1,5 +1,5 @@
 ---
-title: "Code Quality: SonarQube, Linters, Scanners, and Quality Gates"
+title: "Code Quality: SonarQube, Linters, and Quality Gates"
 icon: lucide/shield-check
 description: Build automated code quality checks — open-source linters and scanners, SonarQube installation and quality gates, and CI pipelines that enforce them.
 tags:

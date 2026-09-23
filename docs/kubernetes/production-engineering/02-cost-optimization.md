@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Cost Optimization: Right-Sizing, Spot, and Autoscaling"
+title: "Kubernetes Cost Optimization: Right-Sizing and Spot"
 icon: lucide/circle-dollar-sign
 description: Practical Kubernetes cost optimization — right-sizing from real usage, spot node pools, Cluster Autoscaler vs. Karpenter, bin-packing, and cost visibility.
 tags:

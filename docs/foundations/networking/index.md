@@ -1,5 +1,5 @@
 ---
-title: "Networking for DevOps: TCP/IP, DNS, HTTP, TLS, Load Balancers"
+title: "Networking for DevOps: TCP/IP, DNS, HTTP, and TLS"
 icon: lucide/network
 description: "Networking for DevOps and SRE — IP and TCP, DNS, HTTP and TLS, load balancers and reverse proxies, and a practical troubleshooting toolkit."
 tags:

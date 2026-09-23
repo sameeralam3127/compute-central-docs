@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes First Deployment Tutorial: Create, Expose, and Verify"
+title: "Kubernetes First Deployment Tutorial: Create and Expose"
 icon: lucide/play
 description: A hands-on lab — create a Deployment, expose it with a Service, watch the rollout, and inspect logs, with full expected kubectl output.
 tags:

@@ -1,5 +1,5 @@
 ---
-title: "Scripting kubectl: jsonpath, jq, wait, and Idempotent Deploys"
+title: "Scripting kubectl: jsonpath, jq, and wait"
 icon: lucide/terminal
 description: Write reliable Kubernetes automation scripts using kubectl -o json/jsonpath with jq, kubectl wait for real readiness gating, and idempotent apply patterns.
 tags:

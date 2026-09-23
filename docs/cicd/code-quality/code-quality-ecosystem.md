@@ -1,5 +1,5 @@
 ---
-title: "Open-Source Code Quality Tools: Linters, Scanners, and Coverage"
+title: "Open-Source Code Quality Tools: Linters and Scanners"
 icon: lucide/wrench
 description: "Open-source code quality tools — linters, formatters, type checkers, security scanners, and coverage for Java, Python, and JavaScript in CI."
 tags:

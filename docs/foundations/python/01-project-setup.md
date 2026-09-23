@@ -1,5 +1,5 @@
 ---
-title: "Python Project Setup With uv: Versions, venvs, and Lock Files"
+title: "Python Project Setup With uv: venvs and Lock Files"
 icon: lucide/folder-cog
 description: "Set up Python automation projects — install Python with uv, virtual environments, pyproject.toml, lock files, and the src layout."
 tags:

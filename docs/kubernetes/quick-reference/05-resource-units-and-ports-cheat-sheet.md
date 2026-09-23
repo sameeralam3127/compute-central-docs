@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Resource Units, Ports, and Pod Lifecycle Cheat Sheet"
+title: "Kubernetes Resource Units and Ports Cheat Sheet"
 icon: lucide/ruler
 description: CPU and memory unit reference, well-known Kubernetes and common service ports, and the pod lifecycle phases table.
 tags:

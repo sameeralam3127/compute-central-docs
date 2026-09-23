@@ -1,5 +1,5 @@
 ---
-title: "Helm Fundamentals: Installing Helm and Writing Your First Chart"
+title: "Helm Fundamentals: Install Helm and Write a Chart"
 icon: lucide/package
 description: Installing Helm, the core repo/install/upgrade/rollback workflow, chart anatomy, and writing a minimal Helm chart from scratch with a real example.
 tags:

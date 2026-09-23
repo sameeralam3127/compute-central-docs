@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes StatefulSets: Ordered, Stateful Workloads Explained"
+title: "Kubernetes StatefulSets Explained With Examples"
 icon: lucide/database
 description: How StatefulSets provide ordered deployment, stable network identity, and per-pod persistent storage for databases, queues, and other stateful workloads.
 tags:
@@ -137,6 +137,10 @@ This is what lets replication configs, seed lists, and peer-discovery logic refe
 - Why does a StatefulSet create and delete pods in order, and when would you relax that with `Parallel`?
 
 See [Interview Prep](../interview-prep/index.md) for full answers.
+
+## Related
+
+- [PersistentVolumes and PersistentVolumeClaims](../storage/02-persistentvolumes-and-claims.md)
 
 ## Next
 

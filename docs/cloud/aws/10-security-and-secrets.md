@@ -1,5 +1,5 @@
 ---
-title: "AWS Security and Secrets: KMS, Secrets Manager, GuardDuty, WAF"
+title: "AWS Security and Secrets: KMS, Secrets Manager, WAF"
 icon: lucide/shield
 description: "Secure AWS workloads — KMS key policies, Secrets Manager vs Parameter Store, GuardDuty, Security Hub, WAF, and an account security baseline."
 tags:

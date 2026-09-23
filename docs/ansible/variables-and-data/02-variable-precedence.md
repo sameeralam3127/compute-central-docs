@@ -117,6 +117,10 @@ shows task-level variable resolution as the play runs, which catches sources tha
 
 See [Interview Prep: Core Concepts](../interview-prep/01-core-concepts-questions.md) for the full leveled answers.
 
+## Related
+
+- [Variable precedence cheat sheet](../quick-reference/03-variable-precedence-cheat-sheet.md)
+
 ## Next
 
 Continue to [Facts](03-facts.md).

@@ -1,5 +1,5 @@
 ---
-title: "AWS Load Balancing and Route 53: ALB, NLB, ACM, and DNS Routing"
+title: "AWS Load Balancing and Route 53: ALB, NLB, and DNS"
 icon: lucide/split
 description: "AWS load balancing and DNS — ALB vs NLB, listener rules, target groups, health checks, ACM certificates, Route 53 aliases, and failover."
 tags:

@@ -64,6 +64,10 @@ A module has to be written to support it (`supports_check_mode=True` internally,
 - Why are `command`/`shell` tasks skipped in check mode by default?
 - What does `--diff` add on top of `--check`?
 
+## Related
+
+- [Testing roles with Molecule](../production-engineering/07-molecule-testing.md)
+
 ## Next
 
 Continue to [Idempotency](11-idempotency.md) — the concept this entire section has been building toward.

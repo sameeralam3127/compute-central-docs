@@ -1,5 +1,5 @@
 ---
-title: "Loki Logging With Grafana Alloy (and Migrating From Promtail)"
+title: "Loki Logging With Grafana Alloy (From Promtail)"
 icon: lucide/scroll-text
 description: "Loki logging with Grafana Alloy — the log pipeline, migrating from Promtail, choosing low-cardinality labels, and validating in a local lab."
 tags:

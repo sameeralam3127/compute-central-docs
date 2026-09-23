@@ -65,6 +65,10 @@ tags:
 - What does `uri`'s `status_code:` parameter actually control?
 - Why is `uri` preferred over `shell: curl` for API automation in a reviewed playbook?
 
+## Related
+
+- [Case study: API automation with uri](../case-studies/07-api-automation-with-uri.md)
+
 ## Next
 
 Continue to [Playbook Engineering](../playbook-engineering/index.md).

@@ -199,3 +199,8 @@ Declarative, idempotent automation is what makes "just run the playbook again" a
 ## Next Lesson
 
 Continue to [Playbooks, Plays, and Tasks](03-playbooks-plays-tasks.md), or jump to the [Interview Prep: Core Concepts](../interview-prep/01-core-concepts-questions.md) page for the leveled version of the questions above.
+
+## Related
+
+- [Command vs. shell vs. raw vs. script](../modules/01-command-vs-shell-vs-raw-vs-script.md)
+

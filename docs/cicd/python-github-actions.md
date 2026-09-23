@@ -1,5 +1,5 @@
 ---
-title: "Python CI/CD Pipeline With GitHub Actions: FastAPI to Production"
+title: "Python CI/CD With GitHub Actions: FastAPI to Production"
 icon: lucide/code
 description: Complete CI/CD pipeline for a Python FastAPI web app with GitHub Actions — pytest, ruff linting, multi-stage Docker image, push to Docker Hub, and deployment.
 tags:

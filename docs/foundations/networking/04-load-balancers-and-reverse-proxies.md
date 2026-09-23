@@ -1,5 +1,5 @@
 ---
-title: "Load Balancers and Reverse Proxies: L4 vs L7, Health, Timeouts"
+title: "Load Balancers and Reverse Proxies: L4 vs L7"
 icon: lucide/split
 description: "Load balancers and reverse proxies — L4 vs L7, algorithms, health checks, draining, TLS termination, client IPs, timeouts, and 502/503/504."
 tags:

@@ -1,5 +1,5 @@
 ---
-title: "Docker Compose: Multi-Container Applications as Configuration"
+title: "Docker Compose: Multi-Container Apps as Configuration"
 icon: lucide/boxes
 description: "Docker Compose in practice — services, networks, volumes, .env interpolation, health-based startup, profiles, overrides, secrets, and watch."
 tags:

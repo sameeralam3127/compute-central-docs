@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Interview Questions: Pods, Deployments, and Services"
+title: "Kubernetes Interview Questions: Pods and Deployments"
 icon: lucide/message-circle-question
 description: Leveled Kubernetes interview questions on Pods, Deployments, Services, namespaces, ConfigMaps/Secrets, and label selectors, with detailed model answers.
 tags:
