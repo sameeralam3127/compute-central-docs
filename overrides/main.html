@@ -25,6 +25,15 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   {#-
+    Google AdSense. Loaded on every page, which is what AdSense's site review
+    and Auto ads expect. The publisher ID is not a secret — it is visible in
+    the served HTML of every AdSense site.
+  -#}
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5904111027897114"
+          crossorigin="anonymous"></script>
+
+  {#-
     Load the search index only when a reader shows intent to search.
     The theme requests search.json on every page load; at ~600 KB compressed
     it was most of the bytes on a typical page. This holds that one request
