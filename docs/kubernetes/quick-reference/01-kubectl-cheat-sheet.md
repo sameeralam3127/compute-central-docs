@@ -92,13 +92,20 @@ kubectl cp <pod>:/path/to/file ./local-file
 kubectl cp ./local-file <pod>:/path/to/file
 
 # Ephemeral debug container (v1.25+ stable)
-kubectl debug <pod> -it --image=busybox:1.36.1
-kubectl run debug --rm -it --image=nicolaka/netshoot:v0.13 -- bash
+kubectl debug <pod> -it --image=busybox:1.36.1 --target=<container>
+kubectl debug <pod> -it --image=nicolaka/netshoot --profile=netadmin   # tcpdump, iptables
+kubectl debug <pod> -it --copy-to=<pod>-debug --container=<container> -- sh   # crash-looping pod
+kubectl debug node/<node> -it --image=busybox:1.36.1                     # node shell; host fs at /host
+kubectl run debug --rm -it --image=nicolaka/netshoot -- bash
 
 # Events
-kubectl get events --sort-by=.metadata.creationTimestamp
+kubectl events --for pod/<pod>                        # events for one object, oldest first
+kubectl events -A --types=Warning                     # only warnings, cluster-wide
 kubectl get events -A --sort-by=.metadata.creationTimestamp
 kubectl get events -w
+
+# Which pods back a Service
+kubectl get endpointslices -l kubernetes.io/service-name=<service>
 ```
 
 ## Rollout Management

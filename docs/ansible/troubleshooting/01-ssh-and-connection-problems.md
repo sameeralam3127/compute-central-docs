@@ -1,7 +1,7 @@
 ---
 title: "Fix Ansible SSH Permission Denied (publickey)"
 icon: lucide/key-round
-description: Diagnosing Ansible SSH and connection failures — UNREACHABLE, Permission denied (publickey), timeouts, and how to read -vvv output.
+description: "Fix Ansible SSH failures: UNREACHABLE, Permission denied (publickey), timeouts, host key verification, and no matching host key type (ssh-rsa)."
 tags:
   - Ansible
   - Troubleshooting
@@ -56,6 +56,22 @@ ssh web01.example.com               # reconnect, verify the NEW fingerprint out-
 
 Never set `host_key_checking = False` as a blanket fix in production — see the security note in [SSH and Connectivity](../getting-started/05-ssh-and-connectivity.md#known_hosts-and-host-key-verification).
 
+## `Unable to negotiate ... no matching host key type found. Their offer: ssh-rsa`
+
+```text
+fatal: [switch01]: UNREACHABLE! => {"msg": "Failed to connect to the host via ssh: Unable to negotiate with 10.0.5.20 port 22: no matching host key type found. Their offer: ssh-rsa"}
+```
+
+Your control node's OpenSSH is newer than the target's. Current OpenSSH releases no longer accept the legacy SHA-1 `ssh-rsa` signature algorithm or DSA keys, which old appliances, network gear, and end-of-life distributions still use. It usually appears right after the control node, CI image, or Execution Environment was upgraded, against hosts nobody touched.
+
+The real fix is on the old host: upgrade it, or generate an `ed25519` or RSA-SHA2 host key. As a temporary exception, re-enable the algorithm for those hosts only:
+
+```yaml title="group_vars/legacy_network.yml"
+ansible_ssh_common_args: "-o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa"
+```
+
+A variant with the same cause is `no matching key exchange method found`; add `-o KexAlgorithms=+diffie-hellman-group14-sha1` the same way. Track these exceptions and remove them when the host is fixed.
+
 ## Task Succeeds to Connect, but Fails on the Module Itself
 
 ```text
@@ -79,6 +95,7 @@ Two independent layers again — SSH auth succeeded, `become` (privilege escalat
 | `Permission denied (publickey)` | SSH auth | `ssh -vvv`, check `authorized_keys` |
 | `Connection timed out` | Network | `nc -zv host port`, check firewall/security group |
 | `Host key verification failed` | Known hosts | `ssh-keygen -R`, reconnect and verify |
+| `no matching host key type found` | SSH algorithms | Upgrade the old host; per-host `+ssh-rsa` exception meanwhile |
 | `/usr/bin/python: not found` | Managed node | Bootstrap with `raw`, see [Architecture and Execution](../getting-started/02-architecture-and-execution.md) |
 | `Missing sudo password` | `become` | See [Become and Permission Problems](02-become-and-permission-problems.md) |
 

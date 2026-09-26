@@ -1,7 +1,7 @@
 ---
 title: "Fix Kubernetes Node NotReady and Control Plane Failures"
 icon: lucide/server
-description: Diagnosing Node NotReady, DiskPressure and MemoryPressure evictions, and unreachable control-plane components like the API server and etcd.
+description: "Fix Kubernetes Node NotReady, DiskPressure and MemoryPressure evictions, pods stuck in Terminating, and failing control-plane components like etcd."
 tags:
   - Kubernetes
   - Troubleshooting
@@ -10,7 +10,7 @@ tags:
 
 # Cluster and Node Problems
 
-Everything on this page sits below the workload layer — a perfectly healthy Deployment can still fail if the node it lands on is unhealthy, or if the control plane itself can't schedule or record anything. Confirm the layer with `kubectl get nodes` and `kubectl get componentstatuses` before chasing application-level explanations.
+Everything on this page sits below the workload layer — a perfectly healthy Deployment can still fail if the node it lands on is unhealthy, or if the control plane itself can't schedule or record anything. Confirm the layer with `kubectl get nodes` and `kubectl get --raw='/readyz?verbose'` before chasing application-level explanations.
 
 ## Node `NotReady`
 
@@ -108,7 +108,7 @@ If `kubectl` itself is slow or timing out, the failure is in the API server or e
 **Diagnosis:**
 
 ```bash
-kubectl get componentstatuses          # deprecated but still useful on self-managed clusters
+kubectl get --raw='/readyz?verbose'    # per-check API server health, including etcd connectivity
 kubectl get pods -n kube-system -l component=etcd
 kubectl get pods -n kube-system -l component=kube-apiserver
 
@@ -123,18 +123,47 @@ On a managed platform (EKS, GKE, AKS), you don't have node access to the control
 **Fix:** control-plane recovery is highly environment-specific — restoring `etcd` from a snapshot, restarting a crash-looping static pod by fixing its manifest in `/etc/kubernetes/manifests/`, or failing over to a healthy control-plane node in a multi-master setup. The universal first step is always the same: confirm which specific component is down before touching anything, since restarting the wrong one can turn a partial outage into a full one.
 
 ```bash
-# Restore etcd from a snapshot (self-managed clusters, high-level shape)
-etcdctl snapshot restore /backups/etcd-snapshot.db \
+# Restore etcd from a snapshot (self-managed clusters, high-level shape; etcdutl on etcd 3.5+)
+etcdutl snapshot restore /backups/etcd-snapshot.db \
   --data-dir /var/lib/etcd-restored
 ```
 
 **Prevention:** run an odd number of etcd members (3 or 5) so quorum survives a single-node failure, take regular etcd snapshots, and alert on API server latency/error rate as a leading indicator, not just on outright downtime.
+
+## Pods Stuck in `Terminating`
+
+```bash
+kubectl get pods -n orders
+# orders-api-7c9d8b6f5-k2x4p   1/1   Terminating   0   3h
+```
+
+A Pod that stays `Terminating` long past its grace period is waiting on something specific. Find out what before forcing anything:
+
+```bash
+kubectl get pod orders-api-7c9d8b6f5-k2x4p -n orders -o jsonpath='{.metadata.finalizers}{"\n"}{.spec.nodeName}{"\n"}'
+kubectl get node "$(kubectl get pod orders-api-7c9d8b6f5-k2x4p -n orders -o jsonpath='{.spec.nodeName}')"
+```
+
+| What you find | Cause | Fix |
+|---|---|---|
+| The node is `NotReady` or gone | The kubelet that must confirm the container stopped can't be reached | Fix or remove the node; if the machine is definitely dead, deleting the Node object lets the Pod be cleaned up |
+| A finalizer is listed | A controller hasn't finished its cleanup (a storage detach, a custom operator) | Check that controller's logs; remove the finalizer only if that controller is gone |
+| Node is healthy, no finalizers | The container ignores `SIGTERM`, or a volume unmount is hanging | Check `journalctl -u kubelet` on the node for the stuck step |
+
+The last resort, once you understand why:
+
+```bash
+kubectl delete pod orders-api-7c9d8b6f5-k2x4p -n orders --grace-period=0 --force
+```
+
+A force delete only removes the Pod **object** from the API; it doesn't stop a container still running on an unreachable node. For a StatefulSet that's dangerous: a replacement `orders-db-0` can start while the old one is still writing to the same volume. Make sure the old node is really down (or fenced) before force-deleting StatefulSet Pods.
 
 ## Quick Reference
 
 | Symptom | Layer | Fix starting point |
 |---|---|---|
 | Node `NotReady` | kubelet/CNI | `journalctl -u kubelet`, check CNI pod on that node |
+| Pod stuck `Terminating` | Node / finalizer | Check the node's state and the Pod's finalizers before `--force` |
 | Pods `Evicted`, node under pressure | Node disk/memory | `df -h`, `crictl rmi --prune`, cordon/drain |
 | `kubectl` slow or timing out cluster-wide | Control plane | `kubectl get --raw /healthz`, check etcd/apiserver pods |
 

@@ -72,11 +72,15 @@ flowchart TD
     B --> C["AnsibleWorks founded\ncommercial entity"]
     C --> D["2013–2014\nModule ecosystem grows,\nAnsible Galaxy launches,\nAnsible Tower introduced"]
     D --> E["October 2015\nRed Hat acquires Ansible"]
-    E --> F["2019–2020\nCollections model introduced —\ncontent decoupled from ansible-core"]
-    F --> G["2020–present\nAnsible Tower open-sourced as AWX;\ncommercial product becomes\nRed Hat Ansible Automation Platform (AAP)"]
+    E --> F["2017\nTower's code open-sourced as AWX"]
+    F --> G["2019–2021\nCollections split content from the engine:\nansible-base 2.10, then ansible-core 2.11;\nTower becomes automation controller in AAP 2.0"]
+    G --> H["2023–2025\nEvent-Driven Ansible; AAP 2.5 unifies\ncontroller, hub, and EDA behind one gateway;\nansible-core 2.19 rewrites templating"]
 ```
 
 The **Tower → AWX/AAP** naming split matters enough that it gets its own page once you're past the fundamentals: [ansible-core vs. ansible vs. AAP](../enterprise-platform/01-ansible-core-vs-ansible-vs-aap.md).
+
+!!! note "What changed recently, and why it matters to you"
+    `ansible-core` 2.19 (mid-2025) changed how templating works under the hood. Conditionals must now produce a real boolean, templates embedded inside a `when:` expression are rejected, and strings that came from outside the playbook are no longer templated automatically. Playbooks that leaned on the old, looser behavior can fail after an upgrade. [YAML and Variable Errors](../troubleshooting/03-yaml-and-variable-errors.md#upgrade-errors-after-ansible-core-219) covers the errors you'll see and how to fix each one.
 
 ## Common Mistakes
 

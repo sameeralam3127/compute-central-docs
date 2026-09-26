@@ -27,10 +27,13 @@ tags:
 
 ### Workload configuration
 
-- [ ] **Liveness and readiness probes are configured**, and readiness fails independently of liveness when a dependency (database, cache) is unavailable. Taught in [Workloads and Scheduling](../workloads-and-scheduling/index.md).
+- [ ] **Liveness and readiness probes are configured**, and readiness fails independently of liveness when a dependency (database, cache) is unavailable. Slow starters have a startup probe. Taught in [Probes](../observability/01-probes-liveness-readiness-startup.md).
+- [ ] **Graceful shutdown works**: the app handles `SIGTERM`, finishes in-flight requests within `terminationGracePeriodSeconds`, and has a short `preStop` delay so traffic drains before it exits. Taught in [Pods](../core-concepts/01-pods.md#pod-termination-briefly).
 - [ ] **Resource requests and limits are set** on every container, derived from measured usage, not guesses. Memory limits are set close to actual peak usage (memory is not compressible — an unbounded container can OOM the node). Taught in [Cost Optimization](02-cost-optimization.md) and [Cluster Sizing and Capacity Planning](01-cluster-sizing-and-capacity-planning.md).
-- [ ] **A PodDisruptionBudget exists** for every multi-replica Deployment/StatefulSet, so a node drain or cluster upgrade can't take out every replica at once. Taught in [Workloads and Scheduling](../workloads-and-scheduling/index.md).
+- [ ] **A PodDisruptionBudget exists** for every multi-replica Deployment/StatefulSet, so a node drain or cluster upgrade can't take out every replica at once — and it allows at least one disruption, so it can't block maintenance forever. Taught in [PodDisruptionBudgets](../workloads-and-scheduling/01-deployment-strategies.md#poddisruptionbudgets-availability-during-maintenance).
 - [ ] **At least 2 replicas**, spread across nodes/zones with `topologySpreadConstraints` or anti-affinity, for anything that isn't explicitly single-instance-by-design.
+- [ ] **Images are pinned** to an immutable tag or digest (never `:latest`), come from your own registry or a trusted mirror, and were scanned in CI. Taught in [Image and Supply Chain Security](../security/05-image-and-supply-chain-security.md).
+- [ ] **The Pod runs as non-root** with `allowPrivilegeEscalation: false`, dropped capabilities, and a `RuntimeDefault` seccomp profile, so it's admitted under the Restricted Pod Security Standard. Taught in [Pod Security Standards](../security/04-pod-security-standards.md).
 
 ```bash
 # Spot-check: does this Deployment have a matching PDB?

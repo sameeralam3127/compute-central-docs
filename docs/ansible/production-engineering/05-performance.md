@@ -18,7 +18,7 @@ tags:
 
 ## Why Ansible's Defaults Are Conservative
 
-`forks=5`, no pipelining, host key checking on — Ansible's out-of-the-box defaults are tuned for **correctness on an unknown environment**, not speed on a known one. A playbook that takes two minutes against 10 hosts can take hours against 2,000 with the same untouched defaults. Closing that gap deliberately is what this page is about.
+`forks=5`, no pipelining, facts gathered on every play — Ansible's out-of-the-box defaults are tuned for **correctness on an unknown environment**, not speed on a known one. (SSH connection reuse through `ControlPersist` is already on by default, as long as you don't override `ssh_args` without it.) A playbook that takes two minutes against 10 hosts can take hours against 2,000 with the same untouched defaults. Closing that gap deliberately is what this page is about.
 
 ## The Core Levers, in Order of Leverage
 
@@ -44,7 +44,24 @@ pipelining = True
 ssh_args = -o ControlMaster=auto -o ControlPersist=60s
 ```
 
-A playbook gathering facts and installing one package across 200 hosts, with default settings, processes hosts in batches of 5 with a fresh SSH handshake and full module-file transfer for every task. With the tuned config above, the same run uses batches of 20, reuses connections, and pipes modules directly — the difference is routinely several times faster on a real fleet, though the exact multiplier depends on network latency and target host load.
+A playbook gathering facts and installing one package across 200 hosts, with default settings, processes hosts in batches of 5 and, for every task, creates a remote temp directory, uploads the module file, runs it, and cleans up. With the tuned config above, the same run uses batches of 20 and pipes each module straight into the remote Python in one operation — routinely several times faster on a real fleet, though the exact multiplier depends on network latency and target host load.
+
+Measure instead of guessing. Enable the task profiler and the slowest tasks are listed at the end of every run:
+
+```ini title="ansible.cfg"
+[defaults]
+callbacks_enabled = ansible.posix.profile_tasks, ansible.posix.timer
+```
+
+```text
+Thursday 24 September 2026  10:42:17 +0000 (0:00:41.220)       0:03:12.004 *****
+===============================================================================
+common : Install base packages ----------------------------------------- 41.22s
+Gathering Facts --------------------------------------------------------- 18.90s
+nginx : Render vhosts ---------------------------------------------------- 9.31s
+```
+
+Here a per-item package loop is the real problem. Passing the whole list to one `package` task fixes more than any `forks` change would.
 
 ## Scaling to Thousands of Hosts
 
@@ -54,7 +71,7 @@ A playbook gathering facts and installing one package across 200 hosts, with def
 
 ## A Note on Mitogen
 
-You may see **Mitogen** referenced in older Ansible performance discussions — a third-party strategy plugin that kept a persistent Python interpreter and connection state on the control node, avoiding repeated interpreter startup cost. It was a meaningful speedup at the time. As pipelining and `ControlPersist` matured in Ansible core, and Mitogen's own maintenance slowed, its relevance faded — worth knowing the name if it comes up, not something to reach for by default today.
+You may see **Mitogen** referenced in Ansible performance discussions — a third-party strategy plugin that keeps a persistent Python interpreter on each target, avoiding repeated interpreter startup cost. It can still be a real speedup, but it hooks deep into Ansible internals, has historically lagged behind new `ansible-core` releases, and isn't supported in Automation Platform. Check its compatibility with your exact `ansible-core` version before depending on it; for most teams, pipelining plus the settings above get most of the benefit with none of the risk.
 
 ## Common Mistakes
 

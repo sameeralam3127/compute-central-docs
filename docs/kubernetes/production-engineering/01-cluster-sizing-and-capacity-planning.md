@@ -88,8 +88,8 @@ The trade-off is real: managed control planes remove an entire category of 2 a.m
 
 Kubernetes doesn't have a documented maximum number of pods or nodes so much as etcd has practical limits that everything else runs into first:
 
-- **Database size**: etcd defaults to an 8 GiB storage quota (`--quota-backend-bytes`); upstream guidance caps recommended size around 8 GiB even when raised, because compaction and defragmentation get slower and riskier past that point.
-- **Object count**: Kubernetes' own scale targets (roughly 150,000 total objects, 5,000 nodes, 110 pods per node in the official scalability thresholds) exist because etcd's watch and range-query performance degrades as object count and resource-version churn grow.
+- **Database size**: etcd's default storage quota is 2 GiB (`--quota-backend-bytes`); upstream guidance caps the recommended maximum at 8 GiB even when raised, because compaction and defragmentation get slower and riskier past that point. When the quota is hit, etcd raises a `NOSPACE` alarm and refuses writes until you compact, defragment, and disarm the alarm.
+- **Object count**: Kubernetes' published scalability thresholds (5,000 nodes, 150,000 total Pods, 300,000 total containers, 110 Pods per node) exist largely because etcd's watch and range-query performance degrades as object count and resource-version churn grow. Managed services publish their own, sometimes lower, limits.
 - **Request size**: individual objects (a giant ConfigMap holding an entire application config, for example) are capped around 1.5 MiB — hitting this shows up as an "etcdserver: request is too large" error.
 
 The practical warning signs that a cluster is approaching etcd limits: slow `kubectl get`/`list` calls across the board, API server timeouts under load, and rising etcd `db_size_in_use_in_bytes` with infrequent compaction. Check it directly:

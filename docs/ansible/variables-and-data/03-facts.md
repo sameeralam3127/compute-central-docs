@@ -67,7 +67,7 @@ To print all facts from inside a playbook:
 
 ## Commonly Used Facts
 
-| Fact inside `ansible_facts` | Top-level variable | Example value |
+| Fact inside `ansible_facts` | Legacy top-level variable (deprecated) | Example value |
 |---|---|---|
 | `hostname` | `ansible_hostname` | `web01` |
 | `fqdn` | `ansible_fqdn` | `web01.example.internal` |
@@ -111,7 +111,17 @@ To print all facts from inside a playbook:
   when: ansible_facts['memtotal_mb'] >= 4096
 ```
 
-Inside `ansible_facts`, keys have no `ansible_` prefix. Ansible also injects the same facts as top-level variables (`ansible_distribution`, `ansible_default_ipv4`) for backward compatibility. Newer `ansible-core` releases are moving away from that injection, so write new playbooks against `ansible_facts['...']`.
+Inside `ansible_facts`, keys have no `ansible_` prefix. Ansible also injects the same facts as top-level variables (`ansible_distribution`, `ansible_default_ipv4`) for backward compatibility, controlled by the `INJECT_FACTS_AS_VARS` setting.
+
+!!! warning "Injected fact variables are deprecated"
+    Starting with `ansible-core` 2.20, reading an injected top-level fact such as `ansible_distribution` prints a deprecation warning, and the injection is scheduled to be turned off by default in a future release. Write new playbooks against `ansible_facts['distribution']`. To find old references in an existing repository:
+
+    ```bash
+    grep -rnE '\bansible_(distribution|os_family|hostname|fqdn|default_ipv4|memtotal_mb|processor_vcpus|architecture|kernel|mounts|pkg_mgr|service_mgr)\b' \
+      --include='*.yml' --include='*.yaml' --include='*.j2' .
+    ```
+
+    Then replace `ansible_os_family` with `ansible_facts['os_family']`, and so on. `ansible_facts` keys drop the `ansible_` prefix.
 
 ## Controlling What Gets Gathered
 

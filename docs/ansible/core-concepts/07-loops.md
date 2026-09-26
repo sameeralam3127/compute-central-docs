@@ -60,6 +60,40 @@ Runs the task three times, once per list item, with `item` bound to the current 
 
 `loop_control.loop_var` matters when a loop is inside an `include_tasks` that itself contains another loop — without renaming, the inner loop's `item` would shadow the outer one.
 
+## Keeping Output Readable: `label`
+
+By default, Ansible prints the **whole item** for every iteration. For a list of dictionaries that's noisy, and if an item contains a password or token it's a leak:
+
+```yaml
+- name: Create database users
+  community.postgresql.postgresql_user:
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+  loop: "{{ db_users }}"
+  loop_control:
+    label: "{{ item.name }}"      # prints (item=checkout), not the whole dict
+  no_log: true
+```
+
+`label` only changes what's displayed; `no_log` is still what keeps the secret out of results and logs.
+
+## Retrying Until Something Is Ready: `until`
+
+A different kind of loop: repeat **one** task until a condition holds. This is the standard way to wait for a service after a restart, or for an API to report a job finished:
+
+```yaml
+- name: Wait for the app to report healthy after the restart
+  ansible.builtin.uri:
+    url: http://localhost:8080/healthz
+    return_content: true
+  register: health
+  until: health.status == 200 and (health.json.status | default('')) == 'ok'
+  retries: 20
+  delay: 3          # 20 × 3 s = give up after about a minute
+```
+
+The task fails only if the condition is still false after the last retry. To wait for a port to open, `ansible.builtin.wait_for: port=8080` is simpler.
+
 ## `loop` vs. Legacy `with_*`
 
 ```yaml
@@ -85,6 +119,8 @@ Runs the task three times, once per list item, with `item` bound to the current 
 - Using `with_items`/`with_dict` in new playbooks out of habit or copied examples.
 - Looping over hundreds of items expecting parallelism — by default, loop iterations run **sequentially** within a single host/task; see [Async and Poll](../playbook-engineering/05-async-and-poll.md) for genuinely parallel per-item work.
 - Nesting loops without renaming `loop_var`, causing the inner loop to silently overwrite the outer `item`.
+- Looping over a list of dictionaries that contain secrets without `no_log`, so every iteration prints them.
+- Installing packages one per loop iteration. `ansible.builtin.package` and `apt`/`dnf` accept a list in `name:` and install everything in one transaction, which is much faster.
 
 ## Interview Questions
 

@@ -35,7 +35,7 @@ tags:
 
 **Detailed:** In practice, production traffic almost never uses `NodePort` or `LoadBalancer` directly for HTTP/S — an Ingress (backed by a `ClusterIP` Service) handles routing for many hostnames through one load balancer, which is both cheaper and easier to manage than one `LoadBalancer` Service per application. `NodePort` shows up mostly in bare-metal clusters without a cloud load balancer integration, or as the mechanism an Ingress controller itself sometimes uses under the hood.
 
-**Common misconception:** That a Service is a load balancer that actively routes traffic. It's a stable virtual IP plus a set of iptables/IPVS rules maintained by `kube-proxy` on every node — there's no single process "in the middle" that packets pass through.
+**Common misconception:** That a Service is a load balancer that actively routes traffic. It's a stable virtual IP plus a set of iptables or nftables rules maintained by `kube-proxy` on every node (or an eBPF datapath such as Cilium's) — there's no single process "in the middle" that packets pass through.
 
 **Senior follow-up:** "A `LoadBalancer` Service has been `<pending>` for 10 minutes — what layer is that, and what would you check?" — it's a cloud-integration problem, not a Kubernetes scheduling problem; check the cloud-controller-manager logs and the cloud provider's own load balancer quota/permissions.
 
@@ -63,7 +63,7 @@ tags:
 
 **Short answer:** Labels are arbitrary key/value pairs attached to objects; a selector is a query against those labels, and it's the mechanism a Service uses to find its Pods, a Deployment uses to find the Pods it owns, and a NetworkPolicy uses to decide which Pods it applies to.
 
-**Detailed:** There's no naming convention or ownership pointer involved — a Service reaches its Pods purely because `spec.selector` on the Service matches `metadata.labels` on the Pods, evaluated fresh on every reconcile. This is also exactly why label mismatches are one of the most common Kubernetes outages: nothing errors when a selector matches zero Pods, it just silently produces an empty `endpoints` list.
+**Detailed:** There's no naming convention or ownership pointer involved — a Service reaches its Pods purely because `spec.selector` on the Service matches `metadata.labels` on the Pods, evaluated fresh on every reconcile. This is also exactly why label mismatches are one of the most common Kubernetes outages: nothing errors when a selector matches zero Pods, it just silently produces an EndpointSlice with no endpoints.
 
 **Common misconception:** That a Deployment's `spec.selector` can be changed freely after creation. It's immutable — changing which Pods a Deployment considers "mine" after the fact is disallowed specifically because it could orphan or double-adopt Pods.
 

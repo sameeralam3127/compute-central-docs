@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes CNI Compared: Calico, Cilium, Flannel"
 icon: lucide/puzzle
-description: Comparing Calico, Flannel, Cilium, and Weave at a decision-making level — overlay vs native routing, eBPF vs iptables, and NetworkPolicy support.
+description: "Kubernetes CNI plugins compared — Calico vs Cilium vs Flannel and cloud VPC CNIs: overlay vs native routing, eBPF vs iptables, and NetworkPolicy support."
 tags:
   - Kubernetes
   - Networking
@@ -12,7 +12,7 @@ tags:
 ## What You'll Learn
 
 - The two fundamental design choices every CNI plugin makes: overlay vs. native routing, and iptables/IPVS vs. eBPF
-- How Calico, Flannel, Cilium, and Weave compare on those axes, plus NetworkPolicy support
+- How Calico, Flannel, Cilium, and the cloud providers' VPC CNIs compare on those axes, plus NetworkPolicy support
 - A decision framework for picking a default, instead of picking by name recognition
 
 ## Why This Matters
@@ -33,7 +33,7 @@ Two questions decide almost everything about a CNI plugin's behavior:
 | **Flannel** | Overlay (VXLAN) by default; simplest option | iptables (via kube-proxy) | Not supported by Flannel itself — needs pairing with Calico ("Canal") for policy | Simplicity — minimal config, "just works" on almost any infrastructure |
 | **Calico** | Native routing (BGP) by default, VXLAN/IP-in-IP available as fallback | iptables or eBPF (Calico's own eBPF dataplane, optional) | Full support — one of the most complete NetworkPolicy implementations, plus its own `GlobalNetworkPolicy` extensions | Mature policy engine, works well on bare metal via BGP, widely deployed at scale |
 | **Cilium** | Native routing or overlay (VXLAN/Geneve), flexible | eBPF-native, typically replaces kube-proxy entirely | Full support, plus L7-aware policy (HTTP method/path, gRPC, Kafka) | Deepest observability (Hubble), identity-based security, best performance at high pod/Service counts |
-| **Weave (Weave Net)** | Overlay (VXLAN), with automatic mesh peer discovery | iptables | Basic support | Easy multi-cloud/mixed-network setups with minimal manual peering config; less actively developed than the others today |
+| **Cloud-native CNIs** (AWS VPC CNI, Azure CNI, GKE Dataplane V2) | Pods get real VPC IP addresses | Varies (GKE Dataplane V2 is Cilium-based) | Varies; often via Calico or Cilium add-on | The managed-cluster default; pods are first-class citizens of the VPC, with no overlay |
 
 ```mermaid
 flowchart TD
@@ -43,8 +43,11 @@ flowchart TD
     D -->|yes| E[Calico]
     D -->|no| F{Just need pods to talk across nodes, minimal config?}
     F -->|yes| G[Flannel]
-    F -->|no, mixed/dynamic networks| H[Weave]
+    D -->|managed cloud cluster| H[The provider's default CNI,\nplus Calico/Cilium for policy if needed]
 ```
+
+!!! warning "Weave Net is no longer maintained"
+    Weave Net appears in a lot of older tutorials. Its maintainer, Weaveworks, shut down in 2024 and the project was archived, so it receives no fixes. Don't choose it for a new cluster, and plan a migration if you still run it.
 
 ## How It Works
 
@@ -61,7 +64,7 @@ Traditional kube-proxy (iptables or IPVS mode) intercepts packets deep in the ke
 ### Checking what's installed on a cluster
 
 ```bash
-kubectl get pods -n kube-system -o wide | grep -Ei 'calico|flannel|cilium|weave'
+kubectl get pods -n kube-system -o wide | grep -Ei 'calico|flannel|cilium|aws-node|azure-cni|weave'
 kubectl get daemonset -n kube-system
 cilium status                      # if Cilium CLI is installed
 calicoctl node status              # if calicoctl is installed

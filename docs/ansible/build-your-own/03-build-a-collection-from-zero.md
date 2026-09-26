@@ -32,6 +32,8 @@ ansible-galaxy collection init yourname.utils
 yourname/
 └── utils/
     ├── galaxy.yml
+    ├── meta/
+    │   └── runtime.yml     # requires_ansible, plugin redirects
     ├── README.md
     ├── plugins/
     │   └── modules/

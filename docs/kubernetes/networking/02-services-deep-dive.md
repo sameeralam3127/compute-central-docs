@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Services Deep Dive: kube-proxy and Endpoints"
 icon: lucide/share-2
-description: All four Kubernetes Service types, headless Services, how kube-proxy implements them in iptables vs IPVS mode, EndpointSlices, and session affinity.
+description: "Kubernetes Services in depth — the four types, headless Services, kube-proxy iptables vs nftables vs IPVS, EndpointSlices, and externalTrafficPolicy."
 tags:
   - Kubernetes
   - Networking
@@ -12,7 +12,7 @@ tags:
 ## What You'll Learn
 
 - What each of the four Service types actually does, and when to use each
-- How kube-proxy turns a Service into real traffic routing — iptables mode vs. IPVS mode
+- How kube-proxy turns a Service into real traffic routing — iptables, nftables, and IPVS modes
 - How Endpoints/EndpointSlices track which pods are live, and how session affinity works
 
 ## Why This Matters
@@ -71,7 +71,24 @@ spec:
       nodePort: 31443   # optional explicit port, otherwise auto-assigned 30000-32767
 ```
 
-`LoadBalancer` is a superset of `NodePort`: the cloud controller manager provisions an external load balancer (ELB/ALB, Cloud Load Balancer, etc.) and points it at the NodePort on every node. In a bare-metal cluster with no cloud integration, `type: LoadBalancer` gets stuck `<pending>` forever unless something like MetalLB is installed to fulfill it.
+`LoadBalancer` is a superset of `NodePort`: the cloud controller manager provisions an external load balancer (ELB/ALB, Cloud Load Balancer, etc.) and points it at the NodePort on every node. In a bare-metal cluster with no cloud integration, `type: LoadBalancer` gets stuck `<pending>` forever unless something like MetalLB (or Cilium's LB IPAM) is installed to fulfill it.
+
+Two settings come up in almost every real LoadBalancer Service:
+
+```yaml
+metadata:
+  annotations:
+    # Keep it private to the VPC (AWS Load Balancer Controller; GKE and AKS have their own)
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internal
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local    # preserve the client's source IP
+```
+
+- **`externalTrafficPolicy: Local`** sends traffic only to Pods on the node that received it, so the Pod sees the **real client IP** (needed for IP allow-lists, rate limiting, and access logs) and skips an extra hop. The cost: nodes without a ready Pod fail the load balancer's health check and get no traffic, so spread replicas across nodes. The default, `Cluster`, balances evenly but replaces the client IP with a node IP.
+- **Internal load balancers** are the right default for anything that isn't meant for the internet. Load balancer annotations are provider-specific, so check your controller's documentation.
 
 ### ExternalName
 
@@ -93,26 +110,33 @@ No selector, no ports, no proxying — this just makes `legacy-db.default.svc.cl
 flowchart LR
     A[Pod dials ClusterIP:80] --> B{kube-proxy mode}
     B -->|iptables| C[DNAT rule rewrites dest to a randomly chosen pod IP]
+    B -->|nftables| N[nftables map lookup picks a backend, then DNAT]
     B -->|IPVS| D[IPVS virtual server load-balances across registered real servers]
     C --> E[Pod IP:targetPort]
+    N --> E
     D --> E
 ```
 
 | Mode | How it works | Trade-offs |
 |---|---|---|
-| `iptables` (long-time default) | Chains of DNAT rules per Service/endpoint, evaluated roughly linearly | Simple, but rule count grows with Service count — slower updates at very large scale |
-| `IPVS` | Kernel-level load balancer (Linux IPVS), Services registered as virtual servers | O(1) lookup regardless of Service count, more LB algorithm choices (round robin, least connection, etc.) — the better choice for large clusters |
+| `iptables` (still the default on most clusters) | Chains of DNAT rules per Service/endpoint, evaluated roughly linearly | Simple and universal, but rule count grows with Service count — slower updates at very large scale |
+| `nftables` (stable since v1.33) | The same job on the kernel's newer nftables framework, using map lookups instead of long rule chains | Scales much better than iptables and is where kube-proxy development is going; needs a recent kernel (5.13+) |
+| `IPVS` | Kernel-level load balancer (Linux IPVS), Services registered as virtual servers | Fast lookups and several balancing algorithms, but it has long lagged behind in features and was deprecated in v1.35 in favor of nftables |
 
-Some CNI plugins (notably Cilium) replace kube-proxy's job entirely with an eBPF datapath, skipping iptables/IPVS altogether for lower latency and better observability.
+```bash
+kubectl -n kube-system get configmap kube-proxy -o yaml | grep 'mode:'   # kubeadm clusters
+```
+
+For a new large cluster, prefer `nftables` (or an eBPF datapath) over IPVS. Some CNI plugins (notably Cilium) replace kube-proxy's job entirely with an eBPF datapath, skipping iptables/nftables altogether for lower latency and better observability.
 
 ### Endpoints and EndpointSlices
 
 ```bash
-kubectl get endpoints checkout-api
 kubectl get endpointslices -l kubernetes.io/service-name=checkout-api
+kubectl get endpointslices -l kubernetes.io/service-name=checkout-api -o yaml | grep -A3 conditions
 ```
 
-The classic `Endpoints` object lists every ready pod IP for a Service in one flat object — this doesn't scale well past a few thousand pods behind one Service. `EndpointSlices` (the modern default) shard that list into multiple smaller objects, which is both more efficient to update and lets kube-proxy/CNI process incremental changes instead of rewriting one giant object every time a pod's readiness flips.
+The classic `Endpoints` object lists every ready pod IP for a Service in one flat object — this doesn't scale well past a few thousand pods behind one Service, and it was deprecated in v1.33. `EndpointSlices` shard that list into multiple smaller objects, which is both more efficient to update and lets kube-proxy/CNI process incremental changes instead of rewriting one giant object every time a pod's readiness flips. Each endpoint also carries `ready`, `serving`, and `terminating` conditions, which is how a Pod that's shutting down can finish in-flight requests without receiving new ones.
 
 ### Session affinity
 
@@ -125,6 +149,7 @@ The classic `Endpoints` object lists every ready pod IP for a Service in one fla
 - Forgetting that Service selectors match on pod **labels**, not names — a typo'd label silently produces a Service with zero endpoints (`kubectl get endpoints` shows `<none>`).
 - Assuming `sessionAffinity: ClientIP` behaves like cookie-based sticky sessions — it keys purely on source IP, which breaks down behind NAT or shared corporate egress IPs.
 - Not checking kube-proxy mode when debugging performance at scale — a cluster still on `iptables` mode with thousands of Services can see real latency in rule evaluation and updates.
+- Wondering why the app logs a node IP instead of the client's — that's `externalTrafficPolicy: Cluster`, the default.
 
 ## Interview Questions
 

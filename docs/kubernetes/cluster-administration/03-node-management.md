@@ -74,7 +74,7 @@ The kubelet reports several conditions on its own `Node` object roughly every 10
 
 | Condition | Set when | What the cluster does |
 |---|---|---|
-| `Ready` | kubelet is healthy and can accept pods | `False`/`Unknown` for longer than `--pod-eviction-timeout` (default 5m) → pods evicted and rescheduled elsewhere |
+| `Ready` | kubelet is healthy and can accept pods | `False`/`Unknown` → the node gets a `node.kubernetes.io/not-ready` or `unreachable` taint with effect `NoExecute`; Pods are evicted once their toleration for it expires (300 seconds by default) |
 | `MemoryPressure` | Available node memory drops below an eviction threshold | kubelet starts evicting pods locally, lowest-QoS-class first (`BestEffort` before `Burstable` before `Guaranteed`) |
 | `DiskPressure` | Available disk or inodes drop below a threshold | kubelet stops scheduling new pods here and may evict existing ones; image garbage collection runs more aggressively |
 | `PIDPressure` | Available process IDs drop below a threshold | kubelet stops admitting new pods, to avoid the node running out of PIDs entirely |
@@ -86,6 +86,22 @@ NAME:.metadata.name,\
 READY:.status.conditions[-1].type,\
 STATUS:.status.conditions[-1].status
 ```
+
+That 300-second default comes from tolerations the API server adds to every Pod automatically. A latency-sensitive service can fail over faster by setting its own:
+
+```yaml
+      tolerations:
+        - key: node.kubernetes.io/unreachable
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 60      # move off a dead node after 1 minute, not 5
+        - key: node.kubernetes.io/not-ready
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 60
+```
+
+Don't set it too low: a node that drops off the network for 30 seconds would then trigger a wave of rescheduling.
 
 !!! note "Ready vs. reachable"
     A node can be `Ready` and still be unreachable from a specific pod's perspective (a network partition). Kubernetes' `Ready` condition reflects whether the *kubelet* can talk to the *API server* — it is not a full end-to-end network health check of the node.

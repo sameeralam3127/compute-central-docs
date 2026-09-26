@@ -102,6 +102,7 @@ previous_value:
 
 import json
 import os
+import tempfile
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -116,10 +117,15 @@ def read_config(path):
         return json.loads(content)
 
 
-def write_config(path, data):
-    with open(path, "w", encoding="utf-8") as f:
+def write_config(module, path, data):
+    # Write to a temp file in the same directory, then atomically replace the
+    # original, so a crash mid-write never leaves a half-written config.
+    directory = os.path.dirname(os.path.abspath(path))
+    fd, tmp_path = tempfile.mkstemp(dir=directory, prefix=".json_kv.")
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, sort_keys=True)
         f.write("\n")
+    module.atomic_move(tmp_path, path)   # also preserves the original's owner and mode
 
 
 def main():
@@ -164,7 +170,7 @@ def main():
 
     config[key] = desired_value
     try:
-        write_config(path, config)
+        write_config(module, path, config)
     except OSError as exc:
         module.fail_json(msg=f"Could not write {path}: {exc}")
 

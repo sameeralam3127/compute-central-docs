@@ -48,6 +48,8 @@ pip install ansible-core molecule "molecule-plugins[docker]"
 docker info    # Molecule's docker driver needs a working Docker daemon
 ```
 
+Podman works too: install `"molecule-plugins[podman]"` and set `driver: name: podman` — handy on RHEL-family workstations and CI runners without a Docker daemon.
+
 ## Create a Scenario
 
 ```bash

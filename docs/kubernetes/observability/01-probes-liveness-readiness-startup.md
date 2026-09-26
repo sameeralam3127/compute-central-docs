@@ -68,6 +68,22 @@ spec:
         failureThreshold: 3
 ```
 
+### Probe mechanisms
+
+| Mechanism | Passes when | Good for |
+|---|---|---|
+| `httpGet` | HTTP status is 200–399 | Most web services |
+| `tcpSocket` | A TCP connection opens | Databases, brokers, anything without an HTTP endpoint |
+| `grpc` | The standard gRPC health check returns `SERVING` | gRPC services, with no extra health-check binary in the image (stable since v1.27) |
+| `exec` | A command in the container exits 0 | Special cases only: it forks a process every period, which adds up at scale |
+
+```yaml
+      readinessProbe:
+        grpc:
+          port: 9090
+          service: orders.v1.OrderService   # optional: check a specific service
+```
+
 ### Timing fields, and how they interact
 
 | Field | Meaning |

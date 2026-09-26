@@ -23,6 +23,8 @@ Docker Desktop → **Settings** → **Kubernetes** → check **Enable Kubernetes
 
 This takes a couple of minutes the first time — Docker Desktop is pulling and starting the actual control-plane components.
 
+Recent Docker Desktop versions offer two cluster types in that settings page: the original single-node **kubeadm** cluster, and a **kind**-based cluster that can run several nodes and lets you pick the Kubernetes version. Either works for this lab; choose kind if you want to practice multi-node scheduling.
+
 ## 2. Confirm the context
 
 Docker Desktop registers a `docker-desktop` context and normally switches to it automatically. Don't skip this check if you also have minikube or kind clusters configured — it's easy to apply a manifest to the wrong one.

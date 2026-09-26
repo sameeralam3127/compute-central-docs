@@ -46,7 +46,7 @@ This asymmetry is the whole point of "agentless": you don't install or maintain 
 | Ansible installed | Required | Not needed |
 | Python | Required (runs Ansible itself) | Required for most modules (not for `raw`) |
 | SSH | Client | Server (`sshd`) |
-| OS | Linux or macOS | Linux, Unix, network device, or Windows (via WinRM) |
+| OS | Linux or macOS | Linux, Unix, network device, or Windows (via WinRM, or OpenSSH on current Windows releases) |
 | Persistent process | None between runs | None — no daemon |
 
 !!! warning "Windows cannot be a control node"

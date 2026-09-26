@@ -85,6 +85,8 @@ oc get packagemanifests -n openshift-marketplace
 oc describe packagemanifest cloudnative-pg -n openshift-marketplace
 ```
 
+Newer OpenShift releases also ship **OLM v1**, a simplified redesign in which a single `ClusterExtension` object installs an operator from a catalog. The `Subscription`-based model above (OLM v0) is still what most operators and existing clusters use, so it's the one to know first.
+
 On a **disconnected** (air-gapped) cluster, the default Red Hat catalog sources aren't reachable — teams instead mirror the specific operator images and catalog content they need into an internal registry and point a custom `CatalogSource` at it, which is a meaningfully different (and more manual) workflow than connected clusters get by default.
 
 ## Common Mistakes

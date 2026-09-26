@@ -79,7 +79,7 @@ jobs:
         run: docker build -t "$REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.tag }}" .
 
       - name: Scan image for critical/high CVEs
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@0.33.1   # in production, pin actions to a full commit SHA
         with:
           image-ref: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tag }}"
           severity: "CRITICAL,HIGH"
@@ -99,11 +99,18 @@ jobs:
     needs: build-test-scan
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      id-token: write        # lets the job request a short-lived OIDC token
+      contents: read
     steps:
+      - name: Authenticate to AWS with OIDC (no stored keys)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::123456789012:role/github-deploy-checkout
+          aws-region: eu-west-1
+
       - name: Configure kubeconfig
-        run: |
-          mkdir -p "$HOME/.kube"
-          echo "${{ secrets.KUBE_CONFIG_B64 }}" | base64 -d > "$HOME/.kube/config"
+        run: aws eks update-kubeconfig --name prod-eu --region eu-west-1
 
       - name: Deploy new image
         run: |
@@ -116,6 +123,11 @@ jobs:
 ```
 
 The `deploy` job only runs `needs: build-test-scan` — if the scan step's `exit-code: "1"` fires on a critical CVE, the job fails and `deploy` never runs. `environment: production` also lets you require manual approval on that job in GitHub's repo settings, without adding pipeline complexity.
+
+The deploy job never holds a long-lived credential. GitHub issues a short-lived OIDC token for this workflow run, AWS exchanges it for temporary credentials on an IAM role whose trust policy only accepts this repository's `main` branch and `production` environment, and that role maps to a Kubernetes identity with just the RBAC this deploy needs (an EKS access entry, or equivalent on GKE and AKS). A leaked kubeconfig secret, by contrast, is valid until someone notices.
+
+!!! warning "Pin third-party actions to a commit SHA"
+    In March 2025 the popular `tj-actions/changed-files` action was compromised, and its version tags were re-pointed at code that dumped CI secrets into build logs. A tag like `@v4` can be moved; a full commit SHA (`@8e5e7e5...`) can't. Pin third-party actions by SHA and let Dependabot or Renovate propose updates.
 
 ### Jenkins (declarative pipeline)
 

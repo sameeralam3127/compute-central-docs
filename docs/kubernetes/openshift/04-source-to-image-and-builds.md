@@ -93,7 +93,9 @@ Other build strategies exist alongside S2I for cases where a Dockerfile is prefe
 | **Source (S2I)** | Standard language/framework app, no custom build logic needed |
 | **Docker** | You already have (or want) a Dockerfile with custom build steps |
 | **Custom** | You need a fully custom builder image controlling the entire build process |
-| **Pipeline** | The build is driven by an external CI system (Jenkins, Tekton) rather than OpenShift's own build strategy |
+| ~~Pipeline~~ | Deprecated (the old JenkinsPipeline strategy). Use **OpenShift Pipelines** (Tekton) for multi-step CI inside the cluster |
+
+For new work, Red Hat also offers **Builds for OpenShift**, based on the upstream Shipwright project, which runs Buildah, S2I, or Cloud Native Buildpacks builds through a `Build`/`BuildRun` API that also works on other Kubernetes distributions. `BuildConfig` remains supported and is what most existing clusters use.
 
 ### ImageStreams: a stable pointer that triggers action
 
@@ -107,7 +109,20 @@ oc describe imagestream payments-api -n payments
 oc import-image payments-api:prod --from=quay.io/example/payments-api:1.4.2 --confirm
 ```
 
-Because the `BuildConfig` above has `triggers: [{type: ImageChange}]`, a successful build that updates the `payments-api:latest` ImageStreamTag can automatically kick off a new rollout — this is the "automatic deployment on new image" behavior that's native to OpenShift builds, distinct from a Deployment's own rolling-update mechanics.
+Two different triggers are easy to confuse:
+
+- The **BuildConfig's** `ImageChange` trigger rebuilds the app when its **builder image** changes (for example, Red Hat publishes a patched `nodejs:20-ubi9`), so security fixes in the base flow into your image automatically. `ConfigChange` builds once when the BuildConfig is created or edited.
+- Rolling out the **new app image** is a trigger on the **Deployment**. For a standard Kubernetes Deployment, add an annotation that tells OpenShift to update the container image whenever the ImageStreamTag changes:
+
+```yaml
+metadata:
+  annotations:
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"payments-api:latest"},
+        "fieldPath":"spec.template.spec.containers[?(@.name==\"payments-api\")].image"}]
+```
+
+Or run `oc set triggers deployment/payments-api --from-image=payments-api:latest -c payments-api`. With both in place, a push to Git produces a build, the build updates the ImageStream, and the Deployment rolls out the new image.
 
 ### `oc new-app`: the one-command version
 
@@ -132,7 +147,8 @@ oc expose service payments-api
 ## Common Mistakes
 
 - Treating S2I as mandatory — a plain Dockerfile-based build strategy is equally valid and sometimes simpler when the S2I builder image doesn't fit the app's actual build process.
-- Forgetting the `ImageChange` trigger is what makes a build automatically roll out a new Deployment — without it, a successful build updates the ImageStream but nothing downstream happens.
+- Expecting a successful build to roll out the app on its own — without an image trigger on the **Deployment**, the ImageStream updates but the running Pods keep the old image.
+- Using `DeploymentConfig` for new apps. It's deprecated since OpenShift 4.14; use a standard `Deployment` with the image trigger annotation instead.
 - Using `oc new-app`-generated objects as-is in production without reviewing the resource requests, probes, and security settings it defaulted to.
 - Confusing an ImageStream with the registry itself — deleting an ImageStream doesn't necessarily delete the underlying image layers in the registry.
 

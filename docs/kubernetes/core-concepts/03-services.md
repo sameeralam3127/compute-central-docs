@@ -38,13 +38,21 @@ spec:
       targetPort: 80
 ```
 
-That `selector` is the whole mechanism: the Service controller continuously watches for Pods matching `app: hello-web` and keeps an **Endpoints** (or `EndpointSlice`) object listing their current IPs up to date. `kube-proxy` on every node reads that list and programs local routing rules so traffic to the Service's virtual IP gets load-balanced across those Pods — see [Architecture and the Control Plane](../getting-started/02-architecture-and-control-plane.md) for where kube-proxy sits in the bigger picture.
+That `selector` is the whole mechanism: the EndpointSlice controller continuously watches for Pods matching `app: hello-web` and keeps **EndpointSlice** objects listing their current IPs and readiness up to date. `kube-proxy` on every node reads those slices and programs local routing rules so traffic to the Service's virtual IP gets load-balanced across those Pods — see [Architecture and the Control Plane](../getting-started/02-architecture-and-control-plane.md) for where kube-proxy sits in the bigger picture.
 
 ```bash
-kubectl get endpoints hello-web
+kubectl get endpointslices -l kubernetes.io/service-name=hello-web
 ```
 
-If that command shows no addresses, the Service's selector doesn't match any `Ready` Pod — the single most common "Service not working" root cause, covered fully in [Labels, Selectors, and Annotations](05-labels-selectors-and-annotations.md).
+```text
+NAME              ADDRESSTYPE   PORTS   ENDPOINTS                          AGE
+hello-web-7x9kq   IPv4          80      10.244.1.7,10.244.2.4,10.244.2.5   3m
+```
+
+If `ENDPOINTS` is empty (`<unset>`), the Service's selector doesn't match any `Ready` Pod — the single most common "Service not working" root cause, covered fully in [Labels, Selectors, and Annotations](05-labels-selectors-and-annotations.md).
+
+!!! note "`kubectl get endpoints` still works, with a warning"
+    The older `Endpoints` API was deprecated in Kubernetes v1.33 in favor of EndpointSlices, which scale to large Services and carry dual-stack and topology information. `kubectl get endpoints` still returns data, but tools and scripts should move to `endpointslices`.
 
 ## The Four Service Types (Intro Level)
 
@@ -70,7 +78,7 @@ A `LoadBalancer` Service is actually a superset of `NodePort`, which is itself a
 
 ## Where the Depth Actually Lives
 
-This page is deliberately the "know what to reach for" level. The mechanics of how `kube-proxy` implements Services under the hood (iptables vs. IPVS mode), headless Services (`clusterIP: None`) for direct Pod-to-Pod addressing — the pattern StatefulSets depend on — and multi-port/named-port Services all get the full treatment in [Services Deep Dive](../networking/02-services-deep-dive.md).
+This page is deliberately the "know what to reach for" level. The mechanics of how `kube-proxy` implements Services under the hood (iptables vs. nftables vs. IPVS mode), headless Services (`clusterIP: None`) for direct Pod-to-Pod addressing — the pattern StatefulSets depend on — and multi-port/named-port Services all get the full treatment in [Services Deep Dive](../networking/02-services-deep-dive.md).
 
 ## Common Mistakes
 

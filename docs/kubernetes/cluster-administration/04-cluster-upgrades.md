@@ -44,6 +44,18 @@ flowchart LR
 
 Upgrades happen one minor version at a time — you cannot skip from 1.35 straight to 1.37, you go 1.35 → 1.36 → 1.37, verifying health at each step.
 
+**0. Point the package repository at the new minor version (every node)**
+
+The `pkgs.k8s.io` repositories are **per minor version**, so `apt` can't see 1.37 packages until you change the repository line. Skipping this is the most common reason an upgrade "can't find" the new version:
+
+```bash
+sudo sed -i 's#/v1.36/#/v1.37/#' /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+apt-cache madison kubeadm | head -3        # confirm 1.37.x packages are now visible
+```
+
+Before touching anything: take an etcd snapshot ([Backup and Restore](05-backup-and-restore.md)), and check that nothing still uses an API removed in the target version (`kubent`, `pluto`, or the API server's `apiserver_requested_deprecated_apis` metric will tell you).
+
 **1. Upgrade the first control-plane node**
 
 ```bash
@@ -101,7 +113,13 @@ Repeat the drain → upgrade → uncordon cycle for every worker node, one at a 
 | Google GKE | Automatic by default (configurable maintenance windows); can be manual | Node auto-upgrade is on by default, respecting `PodDisruptionBudget`s during rolling replacement |
 | Azure AKS | `az aks upgrade` triggers a managed, orchestrated control-plane upgrade | Node pools upgrade via `az aks nodepool upgrade`, with configurable surge and max-unavailable settings |
 
-The version skew policy still applies underneath all three managed platforms — they just automate the sequencing and safety checks that `kubeadm upgrade` makes you run by hand. The trade-off is control: managed platforms often restrict how far you can defer an upgrade before they force one, since they don't want to support arbitrarily old minor versions either.
+The version skew policy still applies underneath all three managed platforms — they just automate the sequencing and safety checks that `kubeadm upgrade` makes you run by hand. The trade-off is control: managed platforms restrict how far you can defer an upgrade, and deferring can cost money:
+
+- **EKS** gives each version about 14 months of standard support, then an optional **extended support** period billed at a much higher per-cluster hourly rate. Clusters left on old versions quietly become one of the larger line items on the bill.
+- **GKE** enrolls clusters in **release channels** (Rapid, Regular, Stable, Extended) and upgrades them automatically within your maintenance windows and exclusions.
+- **AKS** offers a paid **long-term support** option for selected versions.
+
+Budget for a routine upgrade every quarter or so; it's far less work than a forced multi-version jump.
 
 ## Common Mistakes
 

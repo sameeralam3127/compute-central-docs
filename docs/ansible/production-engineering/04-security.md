@@ -56,16 +56,28 @@ ansible-playbook deploy.yml
 ```
 
 ```yaml
-# Scoped — only escalates to the service account this task actually needs
-- name: Restart the app service
-  ansible.builtin.systemd_service:
-    name: myapp
-    state: restarted
-  become: true
-  become_user: myapp
+# Scoped — root only where root is needed, the app account for app work
+- hosts: app
+  tasks:
+    - name: Install the runtime (needs root)
+      ansible.builtin.package:
+        name: python3.12
+        state: present
+      become: true
+
+    - name: Run database migrations as the application account
+      ansible.builtin.command: /opt/myapp/venv/bin/myapp migrate
+      become: true
+      become_user: myapp
+      register: migrate
+      changed_when: "'No migrations to apply' not in migrate.stdout"
+
+    - name: Check the app's health endpoint (no escalation at all)
+      ansible.builtin.uri:
+        url: http://localhost:8080/healthz
 ```
 
-Scope both SSH access and `become` targets to exactly what a given task needs — `become_user: root` by default, for tasks that only need a service-specific account's privileges, is one of the most common over-privileged patterns in real playbooks.
+Scope both SSH access and `become` targets to exactly what a given task needs. Running application commands as root "because the play has `become: true`" is one of the most common over-privileged patterns in real playbooks: a migration script run as root can write root-owned files the app later can't read, and any bug in it runs with full privileges. Managing system services still needs root (or a polkit rule), so that's where escalation belongs.
 
 ## SSH Key Hygiene
 
@@ -74,22 +86,23 @@ Key-based auth is the production default (see [SSH and Connectivity](../getting-
 ## Shell Injection
 
 ```yaml
-# Risky — a variable is interpolated directly into a shell command
+# Risky — a value like "x; rm -rf /" becomes a second shell command
 - ansible.builtin.shell: "curl {{ user_supplied_url }}"
 ```
 
 ```yaml
-# Safer — command avoids the shell entirely; no injection surface
-- ansible.builtin.command: "curl {{ user_supplied_url }}"
+# Safer — no shell, and argv keeps the value as exactly one argument
+- ansible.builtin.command:
+    argv: [curl, --fail, --silent, --, "{{ user_supplied_url }}"]
 ```
 
 ```yaml
-# Best — a real module, no shell involved at all
+# Best — a real module, no external process at all
 - ansible.builtin.uri:
     url: "{{ user_supplied_url }}"
 ```
 
-Any `shell:` task built from a variable that isn't fully trusted is a real command-injection vector — see [Command vs. Shell](../modules/01-command-vs-shell-vs-raw-vs-script.md). Prefer `command` (no shell, no injection surface) or a real module over `shell` whenever the input isn't a fixed, trusted string.
+Any `shell:` task built from a variable that isn't fully trusted is a real command-injection vector — see [Command vs. Shell](../modules/01-command-vs-shell-vs-raw-vs-script.md). `command` removes the shell, but a value that starts with `-` can still be read as an **option** (argument injection), which is why the example uses `argv` and ends options with `--`. When you genuinely need `shell`, escape each interpolated value with the `quote` filter: `"grep -- {{ pattern | quote }} /var/log/app.log"`.
 
 ## Common Mistakes
 

@@ -128,6 +128,20 @@ def get_with_retries(client: httpx.Client, url: str, **kwargs) -> httpx.Response
 
 ```python
 import time
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
+
+def retry_after_seconds(value: str | None, default: float = 5.0) -> float:
+    """Retry-After is either a number of seconds or an HTTP date."""
+    if not value:
+        return default
+    if value.isdigit():
+        return float(value)
+    try:
+        when = parsedate_to_datetime(value)
+        return max(0.0, (when - datetime.now(timezone.utc)).total_seconds())
+    except (TypeError, ValueError):
+        return default
 
 def get_respecting_rate_limit(client: httpx.Client, url: str) -> httpx.Response:
     for _ in range(5):
@@ -135,8 +149,8 @@ def get_respecting_rate_limit(client: httpx.Client, url: str) -> httpx.Response:
         if r.status_code != 429:
             r.raise_for_status()
             return r
-        wait = int(r.headers.get("Retry-After", "5"))
-        log.warning("rate limited, sleeping %ss", wait)
+        wait = retry_after_seconds(r.headers.get("Retry-After"))
+        log.warning("rate limited, sleeping %.0fs", wait)
         time.sleep(min(wait, 60))
     raise RuntimeError(f"still rate limited after 5 attempts: {url}")
 ```

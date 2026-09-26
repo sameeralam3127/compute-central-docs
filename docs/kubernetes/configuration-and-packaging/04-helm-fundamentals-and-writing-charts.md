@@ -35,9 +35,16 @@ Hand-applying YAML works until you need the same application deployed to five en
 ### Installing Helm
 
 ```bash
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+brew install helm                 # macOS / Linux with Homebrew
+sudo snap install helm --classic  # Ubuntu
+winget install Helm.Helm          # Windows
 helm version
 ```
+
+The [official install page](https://helm.sh/docs/intro/install/) also lists a verified install script and signed binaries. In CI, pin an exact Helm version rather than installing "latest".
+
+!!! note "Helm 4"
+    Helm 4 was released in November 2025, the first major version since Helm 3 in 2019. Existing charts (`apiVersion: v2`) keep working. The changes you'll notice: installs use Kubernetes **server-side apply**, `--wait` uses a more accurate readiness check, a new plugin system replaces the old one, and a few CLI flags were renamed. Helm 3 receives only security fixes during its wind-down, so plan the upgrade, and test CI pipelines against Helm 4 before switching.
 
 ### The core workflow
 
@@ -66,6 +73,20 @@ helm rollback my-ingress -n traefik
 helm diff upgrade my-ingress traefik/traefik -n traefik --set deployment.replicas=5   # requires the helm-diff plugin
 helm template my-ingress traefik/traefik --set deployment.replicas=5
 ```
+
+### Charts from OCI registries
+
+Most charts are now published to OCI registries (the same registries that store container images), not classic `index.yaml` repositories. There's no `helm repo add`; you reference the chart directly:
+
+```bash
+helm install cert-manager oci://quay.io/jetstack/charts/cert-manager \
+  --version v1.18.2 --namespace cert-manager --create-namespace --set crds.enabled=true
+
+helm package ./orders-api                                   # -> orders-api-0.1.0.tgz
+helm push orders-api-0.1.0.tgz oci://registry.example.com/charts
+```
+
+Publishing your own charts to the registry you already use for images (ECR, Artifact Registry, Harbor, GHCR) avoids running a separate chart repository.
 
 `helm rollback` works because every `helm upgrade` is stored as a new numbered revision (visible via `helm history my-ingress -n traefik`) — rolling back re-applies a prior revision's fully rendered manifests, it doesn't try to compute a reverse diff.
 
@@ -197,6 +218,8 @@ helm install orders-api-staging ./orders-api \
 - Confusing a chart's `version` (the chart's own release number) with `appVersion` (the application's version) — they change independently and mean different things.
 - Skipping `helm template` / `helm lint` before `helm install`, and finding out about a templating typo only after it half-applies to the cluster.
 - Treating `helm upgrade --install` casually in CI without pinning `--version` on third-party charts — an untagged `helm repo update` right before install can silently pull in a newer, behaviorally different chart version.
+- Letting a failed `helm upgrade` in CI leave a release half-applied. Use `--wait` with a `--timeout`, plus automatic rollback on failure (`--atomic` in Helm 3, `--rollback-on-failure` in Helm 4), so a failed deploy reverts itself.
+- Putting secrets in `values.yaml` or `--set`. Helm stores every revision's values in a Secret in the cluster, and they end up in CI logs. Reference an existing Secret (or use External Secrets) instead.
 
 ## Interview Questions
 

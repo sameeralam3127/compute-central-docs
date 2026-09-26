@@ -59,6 +59,8 @@ resources:
 
 The API server is started with `--encryption-provider-config=/path/to/config.yaml`. Providers are tried **in order for reads** (so old data written under a previous provider is still readable) and the **first provider in the list is used for all new writes** — this is exactly why `identity` should never be listed first once encryption is turned on, and why rotating providers means putting the new one first while keeping the old one available for decrypting existing data.
 
+On managed clusters much of this is handled for you, but check rather than assume: EKS encrypts all Kubernetes API data with KMS by default on current versions (you can supply your own key), GKE encrypts etcd at the storage layer and offers application-layer Secrets encryption with Cloud KMS as an option, and AKS offers KMS etcd encryption as an opt-in. Self-managed clusters (kubeadm, on-prem) have none of it until you configure it.
+
 Enabling this **does not retroactively encrypt existing Secrets** — they're only encrypted the next time they're written. A full rewrite is needed to bring existing data under the new provider:
 
 ```bash

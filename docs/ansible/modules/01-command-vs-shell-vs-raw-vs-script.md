@@ -20,7 +20,7 @@ tags:
 
 | | Requires shell on target | Requires Python on target | Supports check mode | Idempotent by default |
 |---|---|---|---|---|
-| `command` | No | Yes | Partial (skipped unless `changed_when` set) | No |
+| `command` | No | Yes | Partial (skipped, unless `creates`/`removes` lets Ansible decide) | No |
 | `shell` | Yes | Yes | Partial (same) | No |
 | `raw` | Yes | **No** | No | No |
 | `script` | Yes (runs a local script file remotely) | No (script itself may need it) | No | No |
@@ -39,14 +39,28 @@ tags:
 ```
 
 ```yaml
-# Better — a real module, idempotent, correct check-mode behavior
-- name: Restart nginx
+# Better — restart only when something changed, via a handler
+- name: Deploy nginx configuration
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    validate: nginx -t -c %s
+  notify: Reload nginx
+
+- name: Ensure nginx is running and enabled
   ansible.builtin.systemd_service:
     name: nginx
-    state: restarted
+    state: started
+    enabled: true
+
+# handlers:
+- name: Reload nginx
+  ansible.builtin.systemd_service:
+    name: nginx
+    state: reloaded
 ```
 
-The `shell` version restarts nginx **every single run**, forever, whether or not anything actually needs restarting — a real availability risk for a service under load. The `systemd_service` version only acts when `state: restarted` is genuinely needed to converge, and reports `changed`/`ok` honestly.
+The `shell` version restarts nginx **every single run**, forever, whether or not anything actually needs restarting — a real availability risk for a service under load. Swapping `shell` for `systemd_service: state=restarted` doesn't fix that on its own: `restarted` also restarts on every run. The fix is to express the desired state (`started`, `enabled`) as a normal task, and put the restart or reload in a [handler](../core-concepts/08-handlers.md) that only fires when the config actually changed.
 
 ## When `command`/`shell` Are Legitimate
 
@@ -54,8 +68,8 @@ Not every operation has a purpose-built module. When you do need `command`/`shel
 
 ```yaml
 - name: Run a one-time database migration
-  ansible.builtin.command: /opt/app/bin/migrate.py
-  args:
+  ansible.builtin.command:
+    cmd: /opt/app/bin/migrate.py
     creates: /opt/app/.migrated   # skip if this file already exists
   register: migration
 
@@ -63,7 +77,7 @@ Not every operation has a purpose-built module. When you do need `command`/`shel
   ansible.builtin.file:
     path: /opt/app/.migrated
     state: touch
-  when: migration.changed
+  when: migration is changed
 ```
 
 ```yaml
@@ -74,7 +88,7 @@ Not every operation has a purpose-built module. When you do need `command`/`shel
   failed_when: "'ERROR' in cert_check.stdout"
 ```
 
-- `creates:` / `removes:` — skip the task if a marker file already/doesn't exist. The single most common idempotency workaround for `command`/`shell`.
+- `creates:` / `removes:` — skip the task if a marker file already/doesn't exist. The single most common idempotency workaround for `command`/`shell`, and the only thing that lets these modules report a meaningful result under `--check`. They go directly under the module (as above); the older `args:` form still works.
 - `changed_when: false` — tell Ansible this task never changes anything (a pure read/check), overriding the default (misleading) behavior of reporting `changed` on any zero exit code.
 - `failed_when:` — define failure explicitly instead of relying on exit codes alone, when a tool's exit code doesn't map cleanly to success/failure.
 

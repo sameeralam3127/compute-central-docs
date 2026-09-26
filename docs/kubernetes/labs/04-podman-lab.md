@@ -9,7 +9,7 @@ tags:
 
 # Podman Lab
 
-Podman runs containers without a background daemon, and it speaks Kubernetes' pod model natively — `podman generate kube` turns a running container (or pod) into a Kubernetes manifest, and `podman play kube` runs that manifest locally without a cluster at all. This lab uses both, then applies the generated YAML to a real cluster to confirm it behaves the same way.
+Podman runs containers without a background daemon, and it speaks Kubernetes' pod model natively — `podman kube generate` turns a running container (or pod) into a Kubernetes manifest, and `podman kube play` runs that manifest locally without a cluster at all. (Older guides use `podman generate kube` and `podman play kube`; those still work as aliases.) This lab uses both, then applies the generated YAML to a real cluster to confirm it behaves the same way.
 
 ## Prerequisites
 
@@ -65,7 +65,7 @@ podman logs podman-web
 ## 3. Generate Kubernetes YAML from it
 
 ```bash
-podman generate kube podman-web > podman-web.yaml
+podman kube generate podman-web > podman-web.yaml
 ```
 
 ```yaml title="podman-web.yaml (excerpt)"
@@ -85,7 +85,9 @@ spec:
       resources: {}
 ```
 
-Podman generated a bare `Pod`, not a `Deployment` — fine for this lab, but note that a bare Pod has no self-healing or scaling. Real workloads should wrap this in a `Deployment` before running it anywhere persistent.
+Podman generated a bare `Pod`, not a `Deployment` — fine for this lab, but note that a bare Pod has no self-healing or scaling. `podman kube generate --type deployment podman-web` produces a `Deployment` instead, which is closer to what you'd actually run.
+
+Also delete the `hostPort: 8080` line before applying it to a real cluster: `hostPort` binds the port on whichever node the Pod lands on, which limits you to one such Pod per node and bypasses Services. It's only there because the Podman container published a port.
 
 ## 4. Apply it to a real cluster
 
@@ -120,18 +122,18 @@ Both should show the same nginx image serving the same default page — the mani
 
 ## 6. Optional: run the same manifest with no cluster at all
 
-`podman play kube` interprets Kubernetes YAML directly with Podman, no cluster required — useful for a quick local sanity check before you ever touch `kubectl`:
+`podman kube play` interprets Kubernetes YAML directly with Podman, no cluster required — useful for a quick local sanity check before you ever touch `kubectl`:
 
 ```bash
-podman play kube podman-web.yaml
+podman kube play podman-web.yaml
 podman pod ps
-podman play kube --down podman-web.yaml
+podman kube down podman-web.yaml
 ```
 
 ## Troubleshooting
 
 - **`curl localhost:8080` fails** — confirm the Podman container is actually running: `podman ps`. On macOS, confirm `podman machine list` shows the machine `Running`.
-- **`podman generate kube` errors** — double-check the container name matches exactly (`podman ps` output), and that the container is still running (a stopped container has no live config to inspect for some fields).
+- **`podman kube generate` errors** — double-check the container name matches exactly (`podman ps` output), and that the container is still running (a stopped container has no live config to inspect for some fields).
 - **`kubectl apply` fails or times out** — confirm a cluster is actually up and current (`kubectl config current-context`, `kubectl get nodes`).
 - **Pod can't pull the image on the cluster** — if you're using kind, remember it doesn't share Podman's local image store; the cluster pulls `nginx:1.27` from the registry independently, so this only fails if the cluster itself lacks network access.
 

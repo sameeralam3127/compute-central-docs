@@ -136,8 +136,8 @@ sudo systemctl reload ssh                # the service is "sshd" on RHEL-family 
 ssh priya@server.example.com
 ```
 
-!!! note "Changing the SSH port on Ubuntu 24.04"
-    Ubuntu uses socket activation for SSH by default, so the listening port comes from `ssh.socket`, not only `sshd_config`. Change it with `sudo systemctl edit ssh.socket` (clear and set `ListenStream=`), then `daemon-reload` and restart `ssh.socket`. A non-standard port reduces log noise; it isn't a security control.
+!!! note "Changing the SSH port on Ubuntu 22.10 and later"
+    Ubuntu uses socket activation for SSH by default, so `ssh.socket`, not the sshd process, owns the listening port. On 24.04 a systemd generator copies `Port` and `ListenAddress` from `sshd_config` into the socket, but only on `daemon-reload`: after changing the port, run `sudo systemctl daemon-reload && sudo systemctl restart ssh.socket`. (On 22.10–23.10, override `ListenStream=` with `sudo systemctl edit ssh.socket` instead.) Open the new port in the firewall first. A non-standard port reduces log noise; it isn't a security control.
 
 ## Host Firewall
 

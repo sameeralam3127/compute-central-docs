@@ -120,6 +120,7 @@ flowchart LR
 ```
 
 ```python title="src/opsctl/config.py"
+import copy
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -162,7 +163,7 @@ class Config:
 
 
 def load_config(environment: str, config_dir: Path = Path("config")) -> Config:
-    data = DEFAULTS
+    data = copy.deepcopy(DEFAULTS)   # never modify the module-level defaults
     for name in ("base.yaml", f"{environment}.yaml"):
         path = config_dir / name
         if path.exists():
@@ -183,7 +184,7 @@ def load_config(environment: str, config_dir: Path = Path("config")) -> Config:
     )
 ```
 
-Validating in one place means a typo like `timeout_seconds: "ten"` fails at startup with a clear message, not halfway through a run. For larger schemas, `pydantic` provides validation, type coercion, and good error messages.
+Validating in one place means a typo like `timeout_seconds: "ten"` fails at startup with a clear message, not halfway through a run. The `copy.deepcopy` matters too: assigning `data = DEFAULTS` and then setting `data["region"]` would silently change the defaults for every later call in the same process, a classic source of tests that pass alone and fail together. For larger schemas, `pydantic` provides validation, type coercion, and good error messages.
 
 Keep **secrets out of config files**. Reference them by name and fetch them at runtime from a secrets manager or environment variables injected by the platform.
 

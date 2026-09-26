@@ -60,11 +60,11 @@ port: "{{ base_port }}"
 port: "{{ base_port | int }}"
 ```
 
-Jinja2 renders every expression to a string by default unless the **entire** value is a single `{{ }}` expression — Ansible then attempts to preserve the underlying type (int, bool, list, dict) rather than stringify it. Mixing literal text with an expression (`"Port: {{ base_port }}"`) always produces a string.
+When the **entire** value is a single `{{ }}` expression, Ansible keeps the result's native type (int, bool, list, dict) instead of turning it into a string; since `ansible-core` 2.19 this is how every template behaves. Mixing literal text with an expression (`"Port: {{ base_port }}"`) always produces a string.
 
 ## Common Mistakes
 
-- Wrapping an already-Jinja2 field (like `when:`) in `{{ }}` — redundant, and non-idiomatic: `when: "{{ x == 1 }}"` works but should just be `when: x == 1`.
+- Wrapping an already-Jinja2 field (like `when:`) in `{{ }}` — `when: "{{ x == 1 }}"` triggers a warning, and a template embedded inside a larger expression (`when: "{{ env }} == 'prod'"`) is an error on `ansible-core` 2.19+. Write `when: x == 1`. See [Conditionals](../core-concepts/06-conditionals.md#conditionals-must-be-booleans-ansible-core-219).
 - Expecting `+` to concatenate a string and a number — use `~` for concatenation, reserve `+` for arithmetic between numbers.
 - Assuming a value stays an integer after being wrapped in surrounding text — `"Port: {{ port }}"` is always a string, regardless of `port`'s underlying type.
 

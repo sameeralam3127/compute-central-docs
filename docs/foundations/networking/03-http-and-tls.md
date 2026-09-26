@@ -123,6 +123,7 @@ sequenceDiagram
 
 - **SNI** (server name indication) sends the hostname in the first message, so one IP can serve certificates for many domains.
 - TLS 1.3 completes in one round trip. TLS 1.0 and 1.1 are obsolete; TLS 1.2 is still widely supported.
+- Current browsers, OpenSSL 3.5+, and major CDNs negotiate a **hybrid post-quantum key exchange** (`X25519MLKEM768`) by default, protecting today's traffic against future quantum decryption. Its larger `ClientHello` spans more than one packet, which occasionally breaks old firewalls and TLS-inspecting middleboxes: if new clients fail to connect through one specific network path while older clients work, suspect that.
 
 ### How a certificate is validated
 
@@ -171,13 +172,22 @@ openssl x509 -in /etc/ssl/certs/app.pem -noout -text | less
 | `certificate is not yet valid` | Clock skew on the client or server | Fix NTP (`timedatectl`) |
 | `wrong version number` | Speaking TLS to a plain HTTP port, or the reverse | Check the port and scheme |
 | `handshake failure` | No shared protocol version or cipher | Update the client, or review server TLS settings |
+| Connection reset during handshake, only from new clients or one network | A middlebox mishandling large post-quantum `ClientHello` messages | Update or bypass the middlebox; confirm by comparing with an older client |
 
 !!! warning "Never ship `curl -k` or `verify=False`"
     Disabling certificate verification removes authentication entirely — any machine in the path can impersonate the server. Fix the trust problem instead.
 
 ## Certificate Lifetimes and Automation
 
-Public TLS certificates are short-lived and getting shorter: browser and CA industry rules are steadily reducing maximum validity, and Let's Encrypt certificates already last 90 days. Manual renewal no longer works at any scale. Use:
+Public TLS certificates are short-lived and getting shorter. Under the CA/Browser Forum's 2025 decision, the maximum validity of a publicly trusted certificate is falling on a fixed schedule:
+
+| Issued on or after | Maximum validity |
+|---|---|
+| 15 March 2026 | 200 days |
+| 15 March 2027 | 100 days |
+| 15 March 2029 | 47 days |
+
+Let's Encrypt certificates already last 90 days, with shorter options available. The practical consequence: a certificate renewed by hand once a year is no longer possible, and even a quarterly manual renewal will soon miss. Automate renewal everywhere, and alert on expiry anyway. Use:
 
 - **ACME clients** such as Certbot for servers
 - **cert-manager** in Kubernetes

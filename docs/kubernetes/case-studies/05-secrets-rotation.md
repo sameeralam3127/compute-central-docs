@@ -43,23 +43,33 @@ Environment variables sourced from a Secret via `envFrom`/`secretKeyRef` are res
 !!! note "Volume-mounted Secrets behave differently, but not enough to solve this alone"
     A Secret mounted as a volume *does* update on the pod's filesystem automatically (via kubelet's periodic sync, usually within about a minute), unlike an env var. But that only helps if the application itself watches the file and reloads its DB connection pool — most apps, `orders-api` included, read the credential once at startup regardless of how it's delivered. The fix here is a controlled rollout either way.
 
-### Step 1: Create the new credential in the database first, without breaking the old one
+### Step 1: Make the new credential valid *alongside* the old one
 
-Rotate as a two-phase change at the database level, not a hard cutover — create the new password as an *additional* valid credential before touching Kubernetes at all:
+A zero-downtime rotation needs a window in which **both** the old and new credentials work, so pods on either side of the rollout can connect. Changing the password in place can't give you that: PostgreSQL's `ALTER USER ... PASSWORD` replaces the old password instantly, and every pod still on it starts failing at its next new connection.
+
+The standard pattern is **two database users that take turns**. Both have identical privileges through a shared role; each rotation switches the application to the idle one:
 
 ```sql
-ALTER USER orders_app WITH PASSWORD 'new-generated-password-456';
+-- One-time setup: privileges live on a role, not on the login users
+CREATE ROLE orders_rw;
+GRANT orders_rw TO orders_app_a, orders_app_b;
+
+-- This rotation: the app currently uses orders_app_a, so refresh the idle user
+ALTER USER orders_app_b WITH PASSWORD 'new-generated-password-456';
 ```
 
-At this point the database accepts the new password immediately. Whether the old password still works depends on the database engine — for PostgreSQL, `ALTER USER ... PASSWORD` replaces the credential outright, so plan the Kubernetes-side rollout to start right away rather than treating this as a long grace window with both valid simultaneously.
+`orders_app_a` keeps working untouched while the Kubernetes side rolls over to `orders_app_b`. Managed services support the same idea: AWS Secrets Manager's "alternating users" rotation and Vault's database secrets engine do exactly this for you.
 
 ### Step 2: Update the Secret
 
 ```bash
 kubectl create secret generic orders-db-credentials \
+  --from-literal=DB_USER='orders_app_b' \
   --from-literal=DB_PASSWORD='new-generated-password-456' \
   --dry-run=client -o yaml | kubectl apply -f -
 ```
+
+(Type the password into a prompt or pipe it from your secret manager rather than putting it on the command line, where it lands in shell history.)
 
 This alone changes nothing for already-running pods, per the explanation above — it only sets up what the *next* rollout will use.
 
@@ -103,13 +113,14 @@ deployment "orders-api" successfully rolled out
 
 ### Step 4: Confirm every pod is on the new credential before revoking the old one
 
-```bash
-for pod in $(kubectl get pods -l app=orders-api -o jsonpath='{.items[*].metadata.name}'); do
-  echo "$pod: $(kubectl exec "$pod" -- printenv DB_PASSWORD)"
-done
+Compare the **checksum annotation** on every running Pod rather than printing the password itself into your terminal (the Verification section below shows the command). Then confirm from the database side that nothing still uses the old user:
+
+```sql
+SELECT usename, count(*) FROM pg_stat_activity
+WHERE usename IN ('orders_app_a', 'orders_app_b') GROUP BY usename;
 ```
 
-Only proceed to revoke the old credential in the database once **every** pod listed shows the new value — if `orders_app`'s password was rotated as a hard replace in Step 1, this check is really confirming the rollout finished cleanly with no pod stuck on `ImagePullBackOff`/`CrashLoopBackOff` that would leave it holding a connection pool built with the now-invalid old password.
+When `orders_app_a` shows zero connections for a few minutes, lock it: `ALTER USER orders_app_a WITH PASSWORD NULL;` (or `NOLOGIN`). Next quarter's rotation refreshes `orders_app_a` and switches back.
 
 ## Verification
 
@@ -122,14 +133,17 @@ Every pod should show the same, current checksum — confirming there's no pod l
 
 ```bash
 kubectl logs deployment/orders-api --tail=50 | grep -i "database connection"
-kubectl exec deploy/orders-api -- pg_isready -h orders-db -U orders_app
+kubectl get pods -l app=orders-api    # all Ready: the readiness probe runs a real query against the database
 ```
+
+(`pg_isready` isn't enough here: it only checks that the server accepts connections, not that these credentials work.)
 
 Finally, confirm the rollout produced zero downtime the same way as the [zero-downtime rolling deployment case study](01-rolling-deployment-with-zero-downtime.md) — a continuous request loop against `orders-api` during the rollout window with a final failure count of `0`.
 
 ## What Could Go Wrong
 
 - **Editing the Secret and stopping there** — the original failure mode. Nothing forces existing pods to reread it; the rollout step is not optional.
+- **Rotating the password on the only database user** — there's no moment where both old and new work, so a zero-downtime rollout is impossible; pods on the old side fail as soon as they open a new connection. Use alternating users (above) or a secret manager that does it for you.
 - **Revoking the old database credential before the rollout finishes** — any pod still mid-rollout (or a pod that fails to become Ready and gets left behind by `maxUnavailable`) is now holding a permanently invalid credential and will fail every request until manually restarted. Always gate revocation on `kubectl rollout status` succeeding *and* the per-pod checksum check above, not on a timer.
 - **Using `kubectl rollout restart` without an annotation tied to the Secret's content** — this does force a restart, but it's disconnected from whether the Secret actually changed. It's easy to run it against the wrong Deployment, forget to run it at all after a Secret update, or run it redundantly when nothing changed — the checksum-annotation pattern makes the pod template's own diff the source of truth instead of a human remembering a manual step.
 - **Rotating the Secret's *name* instead of its content** — some teams create a new Secret object (`orders-db-credentials-v2`) and repoint the Deployment at it. This works, but leaves the old Secret object behind indefinitely unless someone remembers to clean it up, and doubles the RBAC surface (anyone with read access to Secrets in the namespace can now read both the old and new credential).

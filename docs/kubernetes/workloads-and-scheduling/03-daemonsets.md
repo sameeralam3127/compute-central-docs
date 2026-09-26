@@ -61,7 +61,7 @@ spec:
         kubernetes.io/os: linux
       containers:
         - name: fluent-bit
-          image: fluent/fluent-bit:3.1.4
+          image: fluent/fluent-bit:4.0.3
           resources:
             requests:
               cpu: 100m

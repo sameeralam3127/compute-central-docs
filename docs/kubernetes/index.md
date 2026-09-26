@@ -64,6 +64,22 @@ Each project uses only what the previous ones already taught you. Skip ahead if 
 10. **Practice debugging a real incident** — [Case Study: Debugging a CrashLoopBackOff Incident](case-studies/06-debugging-a-crashloopbackoff-incident.md)
 11. **Run the production readiness checklist against it** — [Production Readiness Checklist](production-engineering/05-production-readiness-checklist.md)
 
+## What Changed Recently
+
+Kubernetes moves fast, and a lot of tutorials online still teach patterns that no longer apply. The changes from the last few releases that most affect day-to-day work, and where each is covered:
+
+| Change | What it means for you | Covered in |
+|---|---|---|
+| **ingress-nginx retired** (March 2026) | No more security fixes; move to Gateway API or another maintained controller | [Gateway API](networking/07-gateway-api.md) |
+| **Native sidecar containers** stable (v1.33) | Sidecars start before and stop after the app, and don't block Jobs from completing | [Pods](core-concepts/01-pods.md#native-sidecar-containers-kubernetes-v133) |
+| **In-place Pod resize** stable (v1.35) | Change CPU/memory of a running Pod without restarting it; VPA can use it | [Autoscaling](workloads-and-scheduling/06-autoscaling.md#verticalpodautoscaler) |
+| **kube-proxy nftables mode** stable (v1.33), IPVS deprecated (v1.35) | Prefer nftables (or eBPF) for large clusters | [Services Deep Dive](networking/02-services-deep-dive.md) |
+| **Endpoints API** deprecated (v1.33) | Use `kubectl get endpointslices` in scripts and debugging | [Services](core-concepts/03-services.md) |
+| **ValidatingAdmissionPolicy** stable (v1.30) | Simple admission rules in CEL, with no webhook to run | [Authentication and Authorization](security/01-authentication-and-authorization.md#built-in-policies-validatingadmissionpolicy) |
+| **Helm 4** released (Nov 2025) | Server-side apply, new plugin system; test pipelines before upgrading | [Helm](configuration-and-packaging/04-helm-fundamentals-and-writing-charts.md) |
+| **cgroup v1** being removed; swap support stable | Nodes need cgroup v2; swap can now be enabled deliberately | [kubeadm Cluster Setup](cluster-administration/01-kubeadm-cluster-setup.md) |
+| **etcd 3.6** | Snapshot restore moved from `etcdctl` to `etcdutl` | [Backup and Restore](cluster-administration/05-backup-and-restore.md) |
+
 ## Every Section
 
 - [Getting Started](getting-started/index.md) — history and origins, what Kubernetes actually is, control-plane architecture, installing kubectl, your first deployment

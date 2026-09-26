@@ -58,10 +58,32 @@ OpenShift Container Platform (OCP) is Red Hat's supported, commercial product: a
 
 OKD ("The Origin Community Distribution of Kubernetes") is the open-source project OpenShift Container Platform is built from — same core codebase and architecture, without the Red Hat subscription, certified operator catalog curation, or commercial support SLA. OKD is a legitimate way to learn OpenShift's concepts and run it without a subscription, but production teams that need enterprise support run OCP, not OKD, for the same reason many teams pay for RHEL instead of running only its community-rebuild equivalents: support commitments and a guaranteed upgrade path matter once real revenue depends on the cluster.
 
+## Why Your Docker Hub Image Crashes on OpenShift
+
+The first thing most teams hit on OpenShift: an image that runs fine everywhere else fails with `Permission denied` or `CrashLoopBackOff`. The cause is the default **`restricted-v2` SCC**, which runs every container as a **random, high UID** (something like `1000680000`) assigned per project, with group `0`, and forbids running as root.
+
+```text
+nginx: [emerg] mkdir() "/var/cache/nginx/client_temp" failed (13: Permission denied)
+```
+
+The image expected to run as root (or as a fixed user) and to write into directories that user owns. The fix is in the image, not the cluster:
+
+```dockerfile
+# Make writable paths owned by group 0 and group-writable, so any UID in group 0 can use them
+RUN chgrp -R 0 /var/cache/nginx /var/run /var/log/nginx && \
+    chmod -R g=u /var/cache/nginx /var/run /var/log/nginx
+# Listen on a port above 1024; non-root processes can't bind to 80
+EXPOSE 8080
+USER 1001
+```
+
+Or use an image already built for this, such as `nginxinc/nginx-unprivileged` or Red Hat's UBI-based images. Granting the workload the `anyuid` SCC also makes it start, but it gives the container more privilege than it needs; keep that for software you can't change. The same image changes make an app work under the Kubernetes Restricted [Pod Security Standard](../security/04-pod-security-standards.md), so they're worth making anyway.
+
 ## Common Mistakes
 
 - Describing OpenShift as "a different Kubernetes" — it's the same Kubernetes API machinery with additions, not a fork or a reimplementation.
 - Assuming SCCs replaced PodSecurity admission — they coexist, and SCCs are OpenShift's own, older, more granular mechanism.
+- Fixing a permission error by granting `anyuid` or `privileged` to a whole namespace instead of fixing the image to run as an arbitrary non-root UID.
 - Confusing OKD with a "free trial" of OpenShift — it's the actual open-source upstream project, not a limited demo.
 - Assuming every vanilla Kubernetes manifest needs rewriting for OpenShift — most don't; only where a workload interacts with the additions (Routes, SCCs, builds) does OpenShift-specific knowledge matter.
 

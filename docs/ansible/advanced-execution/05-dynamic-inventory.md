@@ -33,11 +33,13 @@ regions:
 filters:
   tag:Environment: production
   instance-state-name: running
+hostnames:
+  - instance-id
 keyed_groups:
   - key: tags.Role
     prefix: role
 compose:
-  ansible_host: public_ip_address
+  ansible_host: private_ip_address
 cache: true
 cache_plugin: jsonfile
 cache_connection: /tmp/ansible_inventory_cache
@@ -49,7 +51,8 @@ Reading it field by field:
 - `plugin: amazon.aws.aws_ec2` — selects the plugin; the filename must end in `aws_ec2.yml`/`aws_ec2.yaml` for Ansible to recognize it as this plugin's config.
 - `filters` — scopes which EC2 instances are included at all; here, only running instances tagged `Environment: production`.
 - `keyed_groups` — auto-creates inventory groups from an EC2 tag. An instance tagged `Role: web` automatically lands in a group called `role_web` — no manual group maintenance.
-- `compose` — derives a variable from an existing attribute; here, `ansible_host` is set to the instance's public IP so Ansible knows how to connect without a separate lookup.
+- `hostnames` — what each host is called in inventory. Instance IDs are unique and stable; the [case study](../case-studies/06-dynamic-inventory-case-study.md) uses the `Name` tag instead, which reads better in output.
+- `compose` — derives a variable from an existing attribute; here, `ansible_host` is set to the instance's **private** IP. Production instances usually have no public address; the control node reaches them through the VPC, a bastion, or [SSM](03-connection-plugins.md) instead.
 - `cache` — caches the resolved inventory (distinct from [fact caching](02-fact-caching.md)) so every single run doesn't cost a fresh API round trip.
 
 ## Inspecting What It Resolved

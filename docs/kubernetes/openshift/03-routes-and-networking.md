@@ -72,7 +72,7 @@ oc get routes -n payments
 - **Passthrough** — TLS is not decrypted by the router at all; it passes straight through to the pod, which must terminate TLS itself. Needed when the application requires the client certificate or must manage its own TLS.
 - **Re-encrypt** — TLS terminates at the router, then the router re-encrypts a new TLS connection to the pod. Gives you router-level features (like host-based routing) while still encrypting traffic inside the cluster.
 
-A standard Ingress resource still works on OpenShift — the cluster's Ingress Operator watches Ingress objects and creates a corresponding Route on your behalf, so both APIs ultimately drive the same router. Teams writing portable manifests (meant to also run on vanilla Kubernetes) often stick to Ingress; teams that want OpenShift-specific features like traffic weighting or Passthrough TLS use Route directly.
+A standard Ingress resource still works on OpenShift — the cluster's Ingress Operator watches Ingress objects and creates a corresponding Route on your behalf, so both APIs ultimately drive the same router. Recent OpenShift releases also support the Kubernetes [Gateway API](../networking/07-gateway-api.md), which is the portable choice for new work that needs features beyond Ingress. Teams writing portable manifests (meant to also run on vanilla Kubernetes) often stick to Ingress; teams that want OpenShift-specific features like traffic weighting or Passthrough TLS use Route directly.
 
 ### The built-in HAProxy router
 
@@ -90,7 +90,7 @@ For high-traffic clusters, the default router can be scaled with more replicas, 
 
 ### SDN and OVN-Kubernetes
 
-OpenShift's pod networking is implemented by a CNI plugin, same as any Kubernetes distribution — OpenShift historically shipped its own **OpenShift SDN** plugin, and has moved to **OVN-Kubernetes** as the default network plugin (the default since OpenShift 4.12, and the only supported option in current 4.x releases going forward). OVN-Kubernetes is based on Open Virtual Network and Open vSwitch, and brings capabilities OpenShift SDN didn't have natively — including better NetworkPolicy egress support and IPv6/dual-stack networking.
+OpenShift's pod networking is implemented by a CNI plugin, same as any Kubernetes distribution — OpenShift historically shipped its own **OpenShift SDN** plugin, and has moved to **OVN-Kubernetes**: the default for new installs since OpenShift 4.12, and the only option since 4.17, which removed OpenShift SDN. Clusters still on SDN must migrate to OVN-Kubernetes before they can upgrade to 4.17 or later. OVN-Kubernetes is based on Open Virtual Network and Open vSwitch, and brings capabilities OpenShift SDN didn't have natively — including better NetworkPolicy egress support and IPv6/dual-stack networking.
 
 ```bash
 # Check which network plugin the cluster is running

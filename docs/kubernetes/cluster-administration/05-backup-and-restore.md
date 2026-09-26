@@ -36,8 +36,8 @@ sudo ETCDCTL_API=3 etcdctl snapshot save /var/backups/etcd-snapshot-$(date +%Y%m
   --cert=/etc/kubernetes/pki/etcd/server.crt \
   --key=/etc/kubernetes/pki/etcd/server.key
 
-# Verify it's a valid, complete snapshot before you trust it
-sudo ETCDCTL_API=3 etcdctl snapshot status /var/backups/etcd-snapshot-20260824-020000.db -w table
+# Verify it's a valid, complete snapshot before you trust it (etcdutl ships with etcd 3.5+)
+sudo etcdutl snapshot status /var/backups/etcd-snapshot-20260824-020000.db -w table
 ```
 
 Run this on a schedule (a systemd timer or cron job calling the script above) and, critically, ship the resulting file off the node it was taken on — a snapshot sitting on the same disk as the etcd it backs up doesn't survive a disk failure.
@@ -45,7 +45,7 @@ Run this on a schedule (a systemd timer or cron job calling the script above) an
 Restoring is not "load the file back into the running etcd" — it builds a **new** data directory from the snapshot, which then replaces the old one:
 
 ```bash
-sudo ETCDCTL_API=3 etcdctl snapshot restore /var/backups/etcd-snapshot-20260824-020000.db \
+sudo etcdutl snapshot restore /var/backups/etcd-snapshot-20260824-020000.db \
   --data-dir /var/lib/etcd-restored \
   --initial-cluster "cp-1=https://10.0.0.10:2380" \
   --initial-advertise-peer-urls https://10.0.0.10:2380 \
@@ -61,6 +61,8 @@ sudo mv /tmp/etcd.yaml /etc/kubernetes/manifests/
 # kubelet notices the manifest and starts the static pod against the restored data
 ```
 
+`etcdctl snapshot save` talks to a running etcd over the network; restoring and inspecting a snapshot file are offline operations, which moved to the separate `etcdutl` tool. The old `etcdctl snapshot restore` form was deprecated in etcd 3.5 and removed in 3.6, the version current Kubernetes releases ship, so older guides fail with an unknown-command error.
+
 For a multi-member etcd cluster, every member restores from the *same* snapshot with its own `--name` and `--initial-advertise-peer-urls`, so they form a fresh cluster with identical data rather than trying to sync from each other.
 
 !!! warning "Restoring loses everything written after the snapshot"
@@ -71,10 +73,11 @@ For a multi-member etcd cluster, every member restores from the *same* snapshot 
 Velero backs up via the Kubernetes API rather than etcd directly, which is what lets it target a single namespace, use label selectors, and coordinate persistent volume snapshots through your cloud provider or CSI driver.
 
 ```bash
-# Install Velero with an AWS S3 backup location and EBS snapshots (adjust for your cloud)
+# Install Velero with an AWS S3 backup location and EBS snapshots (adjust for your cloud).
+# Use the AWS plugin version listed as compatible with your Velero release.
 velero install \
   --provider aws \
-  --plugins velero/velero-plugin-for-aws:v1.9.2 \
+  --plugins velero/velero-plugin-for-aws:v1.12.0 \
   --bucket my-velero-backups \
   --backup-location-config region=us-west-2 \
   --snapshot-location-config region=us-west-2 \
@@ -122,6 +125,7 @@ Most production setups run both: scheduled etcd snapshots as the control-plane s
 - Assuming Velero backs up PV contents by default — it doesn't, unless `--snapshot-volumes` (or File System Backup) is explicitly configured.
 - Restoring an etcd snapshot without understanding it rolls back the *entire* cluster state, then being surprised recent changes vanished.
 - Forgetting that restoring a multi-member etcd cluster requires each member to restore from the same snapshot with distinct identity flags — not a rolling one-by-one restore.
+- Relying on etcd snapshots on a managed cluster (EKS, GKE, AKS). You can't reach etcd there; Velero (or the provider's backup service) is your only cluster-state backup.
 
 ## Interview Questions
 

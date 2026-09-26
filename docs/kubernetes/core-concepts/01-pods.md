@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Pods Explained: Sidecars and Init Containers"
 icon: lucide/package
-description: What a Pod actually is — the smallest deployable unit in Kubernetes, multi-container sidecar patterns, init containers, and the five Pod lifecycle phases.
+description: "What a Kubernetes Pod is — the smallest deployable unit, native sidecar containers, init containers, lifecycle phases, and graceful termination."
 tags:
   - Kubernetes
   - Core Concepts
@@ -12,7 +12,7 @@ tags:
 ## What You'll Learn
 
 - Why the Pod, not the container, is Kubernetes's smallest deployable unit
-- The sidecar pattern for multi-container Pods, and what init containers are for
+- The sidecar pattern for multi-container Pods, native sidecar containers, and what init containers are for
 - The five Pod lifecycle phases, and what actually happens during termination
 
 ## Why This Matters
@@ -61,6 +61,44 @@ spec:
 
 Both containers share the `logs` volume and can each reach `localhost:80` — that shared namespace is exactly what makes this pattern work without any extra networking setup.
 
+### Native Sidecar Containers (Kubernetes v1.33+)
+
+Declaring a sidecar as a second entry in `containers:` works, but it has two long-standing problems. Kubernetes starts and stops all regular containers in no guaranteed order, so the app can start before its proxy is ready, or the log shipper can be killed before it flushes. And in a Job, a sidecar that never exits keeps the Pod running forever, so the Job never completes.
+
+**Native sidecars** fix both. A sidecar is an init container with `restartPolicy: Always`:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-with-log-shipper
+spec:
+  initContainers:
+    - name: log-shipper
+      image: fluent/fluent-bit:4.0
+      restartPolicy: Always           # this is what makes it a sidecar
+      volumeMounts:
+        - name: logs
+          mountPath: /var/log/nginx
+          readOnly: true
+  containers:
+    - name: web
+      image: nginx:1.27
+      volumeMounts:
+        - name: logs
+          mountPath: /var/log/nginx
+  volumes:
+    - name: logs
+      emptyDir: {}
+```
+
+- It **starts before** the main containers (and, with a `startupProbe`, the app waits until it's ready).
+- It **keeps running** alongside them and is restarted if it crashes, like a regular container.
+- It **stops after** the main containers exit, so it can flush what they wrote.
+- A Job's Pod completes when its main containers finish, even though the sidecar was still running.
+
+Native sidecars went stable in v1.33 (they've been on by default since v1.29). Service meshes such as Istio use them for their proxies. Prefer them over the plain-container pattern on any current cluster.
+
 ## Init Containers
 
 An **init container** runs to completion *before* any regular container in the Pod starts. Kubernetes runs init containers sequentially, one at a time, and only starts the main containers once every init container has exited successfully.
@@ -100,6 +138,17 @@ These are Pod-level phases, distinct from per-container states (`Waiting`, `Runn
 
 When a Pod is deleted, Kubernetes doesn't just kill it — it runs a **graceful termination** sequence: the Pod is marked `Terminating`, removed from Service endpoints so no new traffic routes to it, sent `SIGTERM`, given `terminationGracePeriodSeconds` (default 30s) to shut down cleanly, and only then sent `SIGKILL` if it hasn't exited. An application that ignores `SIGTERM` entirely will always eat the full grace period on every restart or rollout.
 
+There's a race hidden in that sequence: removing the Pod from endpoints and sending `SIGTERM` happen **in parallel**, and it takes a moment for every node's kube-proxy (and any external load balancer) to stop sending new connections. An app that exits the instant it gets `SIGTERM` drops those last requests. The common production fix is a short `preStop` delay:
+
+```yaml
+    lifecycle:
+      preStop:
+        sleep:
+          seconds: 5        # keep serving while traffic drains away
+```
+
+(The built-in `sleep` action needs v1.30 or later; on older clusters use `exec: {command: ["sleep", "5"]}`, which requires a `sleep` binary in the image.)
+
 ## Common Mistakes
 
 - Treating "container" and "Pod" as interchangeable — the scheduler places Pods, not individual containers, and a multi-container Pod lives or dies as one unit.
@@ -110,7 +159,7 @@ When a Pod is deleted, Kubernetes doesn't just kill it — it runs a **graceful 
 ## Interview Questions
 
 - Why is the Pod, not the container, Kubernetes's smallest deployable unit?
-- What's the difference between an init container and a sidecar container?
+- What's the difference between an init container and a sidecar container, and how does a native sidecar (`restartPolicy: Always`) change a Job's behavior?
 - Walk through what happens, step by step, when a Pod is deleted.
 
 See [Interview Prep](../interview-prep/index.md) for full answers.

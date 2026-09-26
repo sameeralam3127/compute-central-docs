@@ -36,7 +36,7 @@ A strong answer narrates the *decision*, not just the commands: "the status colu
 **Expected thought process:**
 
 - First question: is this *every* client failing, or only some? All clients failing points at the Service/Pods; some clients failing (e.g., only from one namespace) points at a NetworkPolicy or DNS search-path issue instead.
-- `kubectl get endpoints <service>` first — an empty list means the Service has zero matching, ready Pods, which is a labels or readiness problem, not a networking problem at all.
+- `kubectl get endpointslices -l kubernetes.io/service-name=<service>` first — no endpoints means the Service has zero matching, ready Pods, which is a labels or readiness problem, not a networking problem at all.
 - If endpoints exist, test from inside the cluster directly: `kubectl run curl-test --rm -it --image=curlimages/curl:8.8.0 -- curl -sv http://svc.ns.svc.cluster.local`, bypassing DNS and Ingress one layer at a time until you find where it actually breaks.
 - "Nobody changed the application code" doesn't mean nothing changed — check `kubectl get events` for anything else that shifted: a NetworkPolicy applied by another team, a node pool change, a CNI upgrade.
 - Full depth: [Networking and Service Problems](../troubleshooting/02-networking-and-service-problems.md).

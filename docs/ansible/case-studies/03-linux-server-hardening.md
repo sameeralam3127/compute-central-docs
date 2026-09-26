@@ -146,15 +146,19 @@ X11Forwarding no
 
 ```yaml title="roles/hardening/tasks/ssh.yml"
 ---
-- name: Deploy hardened sshd settings, validating the full config before writing
+- name: Deploy hardened sshd settings, syntax-checking the drop-in before writing
   ansible.builtin.template:
     src: 00-hardening.conf.j2
     dest: /etc/ssh/sshd_config.d/00-hardening.conf
     owner: root
     group: root
     mode: "0600"
-    validate: /usr/sbin/sshd -t -f /etc/ssh/sshd_config
+    validate: /usr/sbin/sshd -t -f %s
   notify: Reload sshd
+
+- name: Test the complete sshd config, with every include merged
+  ansible.builtin.command: /usr/sbin/sshd -t
+  changed_when: false
 
 - name: Apply the SSH change now, while we can still verify it
   ansible.builtin.meta: flush_handlers
@@ -178,7 +182,21 @@ X11Forwarding no
 ```
 
 !!! note "validate and drop-in files"
-    `validate` receives the temporary file path as `%s`. Here we validate the **main** config instead, which includes the drop-in directory — so for a first rollout, stage the change on one host with `serial: 1` and watch for an SSH connection failure before continuing.
+    `validate` must contain `%s` (Ansible refuses the task otherwise), and it receives the path of the **temporary** file before it's moved into place. That checks the drop-in's own syntax. The next task then runs `sshd -t` against the complete configuration, with the new drop-in merged in, **before** the handler reloads sshd. If that check fails, the play stops and the running sshd keeps its old config. For a first rollout, stage the change on one host with `serial: 1` anyway.
+
+!!! warning "Changing the SSH port on Ubuntu 24.04"
+    Ubuntu 22.10 and later start sshd through **socket activation**: systemd's `ssh.socket` owns the listening port, not the sshd process. On 24.04 a systemd generator copies `Port` from `sshd_config` into the socket, but only when systemd reloads, so reloading sshd alone leaves it listening on the old port. After changing `hardening_ssh_port`, open the new port in the firewall first, then run:
+
+    ```yaml
+    - name: Move the SSH listener (Ubuntu socket activation)
+      ansible.builtin.systemd_service:
+        name: ssh.socket
+        state: restarted
+        daemon_reload: true
+      when: ansible_facts['distribution'] == 'Ubuntu'
+    ```
+
+    On RHEL-family systems sshd still owns the port directly, and SELinux must also allow it: `semanage port -a -t ssh_port_t -p tcp 2222`.
 
 `reload` rather than `restart` keeps existing sessions — including Ansible's own ControlPersist connection — alive while new connections use the new settings. `wait_for_connection` then proves a **new** connection still works before anything else runs.
 

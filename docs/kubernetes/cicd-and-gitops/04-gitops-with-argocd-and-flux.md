@@ -44,7 +44,8 @@ The drift-correction property is what push-based pipelines fundamentally can't o
 
 ```bash
 kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.12.4/manifests/install.yaml
+kubectl apply -n argocd --server-side --force-conflicts \
+  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 kubectl -n argocd rollout status deployment/argocd-server --timeout=180s
 
@@ -89,6 +90,8 @@ argocd app get checkout-api
 argocd app sync checkout-api     # force an immediate reconciliation
 argocd app history checkout-api  # every past sync, tied to a Git commit
 ```
+
+The `stable` URL is fine for a lab. In production, install a pinned release (Argo CD 3.x at the time of writing), usually through its Helm chart, and upgrade deliberately; Argo CD 3.0 tightened several defaults, such as RBAC for Pod logs, so read the upgrade notes when moving from 2.x. After first login, change the admin password, delete `argocd-initial-admin-secret`, and wire the UI to your SSO provider.
 
 `prune: true` and `selfHeal: true` are what make this genuinely GitOps rather than just "kubectl apply, but triggered by ArgoCD" — without `selfHeal`, ArgoCD only reports drift; with it, ArgoCD actively reverts it.
 
@@ -183,7 +186,7 @@ For the CI half of this flow — building the image and committing the new tag t
 
 | | ArgoCD | Flux |
 |---|---|---|
-| Interface | Full web UI plus CLI, app-centric view | CLI/CRD-first; UI available via Weave GitOps or ArgoCD-style add-ons |
+| Interface | Full web UI plus CLI, app-centric view | CLI/CRD-first; third-party UIs such as the Headlamp Flux plugin or Capacitor. (Weave GitOps lost its main backer when Weaveworks shut down in 2024; Flux itself continued under the CNCF with new maintainers.) |
 | Core unit | `Application` | `Kustomization` and/or `HelmRelease` |
 | Helm support | Renders Helm as a source type inside `Application` | Native `HelmRelease` CRD with its own reconciliation |
 | Multi-cluster fleet management | `ApplicationSet` generators | Flux's `Kustomization`/`GitRepository` composition, or Flux's multi-tenancy features |

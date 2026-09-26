@@ -36,7 +36,10 @@ Check it before writing a `shell`/`command` workaround (see [Command vs. Shell](
 | Kubernetes | `kubernetes.core` | `k8s`, `helm`, and the `k8s` dynamic inventory plugin |
 | Docker | `community.docker` | Containers, images, networks, `docker_compose_v2` |
 | Databases | `community.mysql`, `community.postgresql`, `community.mongodb` | Users, databases, replication, backups |
-| Network devices | `ansible.netcommon`, `cisco.ios`, `arista.eos`, `juniper.junos` | Vendor-specific network device configuration and facts |
+| Network devices | `ansible.netcommon`, `cisco.ios`, `cisco.nxos`, `arista.eos`, `junipernetworks.junos` | Vendor-specific network device configuration and facts |
+| Certificates and crypto | `community.crypto` | Private keys, CSRs, self-signed and ACME (Let's Encrypt) certificates, OpenSSH keys |
+| Podman | `containers.podman` | Podman containers, pods, images, and Quadlet systemd units |
+| VMware | `vmware.vmware`, `vmware.vmware_rest` | vSphere VMs, templates, and inventory |
 | HashiCorp | `community.hashi_vault` | Vault-backed lookups for secrets — see [Lookup and Filter Plugins](../advanced-execution/04-lookup-and-filter-plugins.md) |
 
 ## How to Use This Table

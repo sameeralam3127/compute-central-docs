@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Deployment Strategies: Rolling, Recreate, Canary"
 icon: lucide/refresh-cw
-description: "Deployment strategies compared for Kubernetes — rolling update vs recreate, tuning maxSurge and maxUnavailable, and when to use blue-green or canary releases."
+description: "Kubernetes deployment strategies — rolling update vs recreate, tuning maxSurge and maxUnavailable, PodDisruptionBudgets, and when to use blue-green or canary."
 tags:
   - Kubernetes
   - Workloads & Scheduling
@@ -14,6 +14,7 @@ tags:
 - How `RollingUpdate` and `Recreate` actually behave, pod by pod
 - How to tune `maxSurge` and `maxUnavailable` for your availability and cost trade-off
 - How `kubectl rollout status/history/undo` fit into a real release, and where blue-green and canary sit relative to a plain Deployment
+- How PodDisruptionBudgets keep a workload available during node drains and cluster upgrades
 
 ## Why This Matters
 
@@ -99,6 +100,41 @@ flowchart LR
     E -->|rollout undo| A
 ```
 
+## PodDisruptionBudgets: Availability During Maintenance
+
+A rollout is a disruption you start. Node drains, cluster upgrades, Cluster Autoscaler scale-downs, and spot reclaims are disruptions the **platform** starts, and a Deployment's `maxUnavailable` doesn't apply to them. A **PodDisruptionBudget (PDB)** is how a workload tells the cluster how many of its Pods may be taken down voluntarily at once:
+
+```yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: checkout-api
+spec:
+  minAvailable: 5            # or: maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: checkout-api
+  unhealthyPodEvictionPolicy: AlwaysAllow   # let drains evict Pods that are already broken
+```
+
+`kubectl drain`, managed node upgrades, and the autoscalers all use the **Eviction API**, which checks every matching PDB. If evicting a Pod would drop the workload below `minAvailable`, the eviction is refused and retried until another replica is ready elsewhere. With 6 replicas and `minAvailable: 5`, nodes drain one checkout Pod at a time.
+
+```bash
+kubectl get pdb -n production
+# NAME           MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
+# checkout-api   5               N/A               1                     12d
+```
+
+`ALLOWED DISRUPTIONS` is the number to watch. If it's `0` for long, drains and upgrades stall on this workload.
+
+| Guideline | Why |
+|---|---|
+| Prefer `maxUnavailable: 1` for most Deployments | Keeps working as replica counts change; `minAvailable` pinned to a number can block all drains after a scale-down |
+| Never set a PDB that allows zero disruptions (`minAvailable` equal to replicas, or `maxUnavailable: 0`) | Every node drain and cluster upgrade hangs on it forever |
+| Single-replica workloads can't be protected by a PDB | The only way to keep them available during maintenance is to run a second replica |
+| PDBs don't cover involuntary disruptions | A node crash or kernel panic ignores PDBs; replicas spread across nodes and zones are what protect against those |
+| Set `unhealthyPodEvictionPolicy: AlwaysAllow` | Otherwise a crash-looping Pod counts against the budget and blocks the drain that might fix it |
+
 ## Blue-Green and Canary, Conceptually
 
 `RollingUpdate` mixes old and new pods behind the same Service the entire time — fine for most apps, but it means both versions serve traffic simultaneously and you can't instantly cut back to 100% old version if something's wrong.
@@ -122,6 +158,7 @@ A Deployment alone can approximate both crudely (two Deployments + a Service sel
 ## Interview Questions
 
 - Walk through exactly what happens, pod by pod, during a `RollingUpdate` with `maxSurge: 1, maxUnavailable: 0`.
+- A cluster upgrade is stuck draining one node. How would a PodDisruptionBudget cause that, and how do you find which one?
 - Why would you choose `Recreate` over `RollingUpdate`, and what's the cost?
 - How does `kubectl rollout undo` work under the hood, given Deployments don't store "old pods" directly?
 - How does a canary release differ from what a Deployment's `RollingUpdate` already gives you?

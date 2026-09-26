@@ -30,6 +30,8 @@ spec:
   completions: 1
   parallelism: 1
   backoffLimit: 3
+  activeDeadlineSeconds: 900        # give up after 15 minutes, whatever the retries
+  ttlSecondsAfterFinished: 86400    # delete the Job and its Pods a day after it finishes
   template:
     spec:
       restartPolicy: OnFailure
@@ -45,6 +47,8 @@ spec:
 | `parallelism` | How many Pods can run at once while working toward `completions` |
 | `backoffLimit` | How many times a failing Pod is retried before the Job itself is marked `Failed` (with an exponential backoff between retries) |
 | `restartPolicy` | Must be `OnFailure` or `Never` for a Job's Pod template — `Always` (the Deployment default) isn't valid here, since it would fight the whole "run to completion" model |
+| `activeDeadlineSeconds` | A hard wall-clock limit for the whole Job; a hung migration fails instead of running forever |
+| `ttlSecondsAfterFinished` | Automatic cleanup of finished Jobs and their Pods, so they don't pile up |
 
 ```bash
 kubectl create job one-off-task --image=busybox:1.36 -- sh -c "echo done"
@@ -63,6 +67,7 @@ metadata:
   name: nightly-cleanup
 spec:
   schedule: "0 2 * * *"
+  timeZone: "Europe/London"         # without this, the schedule uses the controller's time zone (usually UTC)
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 300
   successfulJobsHistoryLimit: 3
@@ -80,6 +85,8 @@ spec:
 ```
 
 A CronJob is a template that creates a new Job object on the schedule you give it — `schedule` uses standard five-field cron syntax (minute, hour, day-of-month, month, day-of-week; `0 2 * * *` means 2 a.m. daily).
+
+`timeZone` takes an IANA name such as `Asia/Kolkata` or `America/New_York`. Without it, "2 a.m." means 2 a.m. in the kube-controller-manager's time zone, which on managed clusters is almost always UTC — a classic reason a "nightly" job runs in the middle of someone's working day. With a real time zone, daylight-saving shifts are handled for you, but a job scheduled inside the skipped or repeated hour may run zero or two times on those days.
 
 | Field | Controls |
 |---|---|
@@ -126,7 +133,9 @@ kubectl describe pod <failed-pod>          # exit code, OOMKilled, image pull er
 - Using a Deployment for a task meant to run once and exit — it will restart the container in a loop forever, since a Deployment has no concept of "done."
 - Setting `concurrencyPolicy: Allow` (the default) for a job that isn't safe to run twice concurrently — e.g., two overlapping backup jobs writing to the same location.
 - Forgetting `restartPolicy: OnFailure` or `Never` on a Job's Pod template — leaving the field unset does not default to something Job-compatible in every context, and `Always` is rejected.
-- Not setting `successfulJobsHistoryLimit`/`failedJobsHistoryLimit`, letting years of completed Job and Pod objects accumulate and clutter `kubectl get jobs` output.
+- Not setting `successfulJobsHistoryLimit`/`failedJobsHistoryLimit` (for CronJobs) or `ttlSecondsAfterFinished` (for one-off Jobs), letting finished Job and Pod objects accumulate.
+- Leaving out `timeZone` and scheduling a CronJob in local time when the cluster runs on UTC.
+- A retrying Job that isn't idempotent: with `backoffLimit: 3`, a migration that half-applied before crashing runs up to three more times. Make the work safe to repeat, or use `backoffLimit: 0` and handle failure by hand.
 
 ## Interview Questions
 

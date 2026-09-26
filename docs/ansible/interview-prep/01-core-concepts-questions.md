@@ -21,11 +21,11 @@ tags:
 
 ## What is Ansible's variable precedence order, from highest to lowest?
 
-**Short answer:** `-e` (extra vars) highest, role `defaults/main.yml` lowest, with task vars, block vars, role vars, `set_fact`/registered, play vars, `host_vars`, `group_vars`, inventory vars, and facts in between.
+**Short answer:** `-e` (extra vars) highest, role `defaults/main.yml` lowest. In between, roughly from high to low: include and role parameters, `set_fact`/registered vars, `include_vars`, task vars, block vars, role `vars/`, play `vars_files`/`vars`, facts, `host_vars`, `group_vars/<group>`, `group_vars/all`, and inventory-file vars.
 
 **Detailed:** Full order and the reasoning behind it (broad/overridable at the bottom, narrow/deliberate at the top): [Variable Precedence](../variables-and-data/02-variable-precedence.md).
 
-**Common misconception:** That `group_vars` beats role `vars/main.yml` — it's the opposite; role `vars` (not `defaults`) outranks `group_vars`.
+**Common misconception:** That `group_vars` beats role `vars/main.yml` — it's the opposite; role `vars` (not `defaults`) outranks `group_vars`. A second one: that inventory variables beat facts. Gathered facts outrank every `host_vars`/`group_vars` level, which is why naming your own variable `ansible_hostname` goes wrong.
 
 **Senior follow-up:** "Two roles are included in the same play and each defines a `defaults/main.yml` value for a same-named variable — which wins, and why is that a design smell?" — the *last*-included role's default typically applies in practice due to load order, but the real answer is that unnamespaced role variables colliding at all is the actual problem; see [Role Variables and Interfaces](../roles/02-role-variables-and-interfaces.md).
 
