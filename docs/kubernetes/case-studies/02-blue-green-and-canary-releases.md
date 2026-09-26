@@ -130,10 +130,10 @@ Cut all traffic over in one atomic step:
 
 ```bash
 kubectl patch service payments-ui -p '{"spec":{"selector":{"version":"green"}}}'
-kubectl get endpoints payments-ui
+kubectl get endpointslices -l kubernetes.io/service-name=payments-ui
 ```
 
-The Service's `Endpoints` list flips from the four blue pod IPs to the four green pod IPs immediately — every new connection to `payments-ui` reaches `v2.0.0` from that moment on, with no rolling window of mixed versions.
+The Service's endpoint list flips from the four blue pod IPs to the four green pod IPs immediately — every new connection to `payments-ui` reaches `v2.0.0` from that moment on, with no rolling window of mixed versions.
 
 **Rollback** is the identical command, reversed:
 
@@ -263,10 +263,11 @@ Once at 100% and confidence is fully established, promote for real: point the ma
 
 ## Verification
 
-**Blue-green:** confirm the switch was atomic by checking `Endpoints` before and after — there should be no window where the list contains a mix of blue and green IPs:
+**Blue-green:** confirm the switch was atomic by checking the endpoints before and after — there should be no window where the list contains a mix of blue and green IPs:
 
 ```bash
-kubectl get endpoints payments-ui -o jsonpath='{.subsets[*].addresses[*].ip}'
+kubectl get endpointslices -l kubernetes.io/service-name=payments-ui \
+  -o jsonpath='{.items[*].endpoints[*].addresses[*]}'
 ```
 
 **Canary:** confirm the split is roughly proportional by sending a batch of requests through the Ingress and tallying which track responded (assuming each version stamps a distinguishing response header or body marker):

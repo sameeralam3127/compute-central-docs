@@ -21,7 +21,7 @@ tags:
 
 ## AWX Is the Upstream, AAP Is the Supported Downstream
 
-**AWX** is the open-source project Automation Controller is built from — the same relationship Fedora has to RHEL. AWX gets new features first, with no formal long-term support guarantees or backports. **AAP** is the same underlying Controller technology, stabilized and backported onto a supported release cadence, bundled with [Execution Environments and Automation Hub](03-execution-environments-and-hub.md), and backed by a Red Hat support contract. Red Hat's subscription model is typically **node-based** (counted by managed hosts under automation) rather than per-seat — always confirm exact terms against Red Hat's current published pricing rather than assuming, since commercial terms change independently of the technology.
+**AWX** is the open-source project Automation Controller is built from — the same relationship Fedora has to RHEL — with no formal long-term support guarantees or backports. Its releases have been paused since mid-2024 (see the [note on AWX's status](01-ansible-core-vs-ansible-vs-aap.md#the-four-layers)), which weighs heavily on any new adoption decision. **AAP** is the same underlying Controller technology, stabilized and backported onto a supported release cadence, bundled with [Execution Environments and Automation Hub](03-execution-environments-and-hub.md), and backed by a Red Hat support contract. Red Hat's subscription model is typically **node-based** (counted by managed hosts under automation) rather than per-seat — always confirm exact terms against Red Hat's current published pricing rather than assuming, since commercial terms change independently of the technology.
 
 ## A Decision Framework
 
@@ -33,7 +33,7 @@ flowchart TD
     C -->|Yes| E[AAP subscription]
 ```
 
-A pragmatic path many teams take: pilot on AWX first to validate the Controller/Workflow model organizationally, before committing budget to an AAP subscription — especially if support/SLA guarantees aren't yet a hard requirement.
+A pragmatic path many teams take: run playbooks from CI with an approval gate first, which covers scheduling, audit history, and access control for many teams, and move to AAP when you need self-service surveys, fine-grained RBAC, Mesh, or vendor support. Red Hat offers trial subscriptions for evaluating AAP itself. Piloting on AWX used to be the default answer; with AWX releases paused, weigh that option against its missing security updates.
 
 ## Making the Business Case
 
@@ -45,7 +45,7 @@ The technical case for AAP (Controller, Mesh, Execution Environments) is only ha
 
 ## Common Mistakes
 
-- Assuming AWX and AAP are functionally identical long-term — AWX moves faster and drops the support guarantees that matter for regulated or mission-critical environments.
+- Assuming AWX and AAP are functionally identical long-term — AWX has no support guarantees, and with releases paused it currently receives no fixes at all.
 - Treating the licensing conversation as separate from the architecture conversation.
 
 ## Interview Questions
@@ -55,4 +55,4 @@ The technical case for AAP (Controller, Mesh, Execution Environments) is only ha
 
 ## Next
 
-Continue to [Case Studies](../case-studies/index.md), or back to [Enterprise Platform](index.md).
+Continue to [Event-Driven Ansible](05-event-driven-ansible.md).

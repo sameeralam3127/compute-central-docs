@@ -152,7 +152,7 @@ upstream orders_api {
 
 server {
     listen 443 ssl;
-    http2 on;
+    http2 on;                               # nginx 1.25.1+; older versions: listen 443 ssl http2;
     server_name api.example.com;
 
     ssl_certificate     /etc/ssl/api/fullchain.pem;

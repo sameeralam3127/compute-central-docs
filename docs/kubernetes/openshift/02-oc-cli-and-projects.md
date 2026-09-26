@@ -21,7 +21,7 @@ Teams new to OpenShift often ask "do I need to learn a whole new CLI?" The hones
 
 ## Mental Model
 
-> `oc` = `kubectl` + OpenShift-specific verbs and resources. Anything that works with `kubectl` works with `oc` using identical syntax; `oc` simply understands more resource types (Route, Project, BuildConfig, DeploymentConfig) and adds convenience commands (`oc new-app`, `oc new-project`, `oc rsh`) that have no direct `kubectl` equivalent.
+> `oc` = `kubectl` + OpenShift-specific verbs and resources. Anything that works with `kubectl` works with `oc` using identical syntax; `oc` simply understands more resource types (Route, Project, BuildConfig, ImageStream, and the deprecated DeploymentConfig) and adds convenience commands (`oc new-app`, `oc new-project`, `oc rsh`, `oc debug`) that have no direct `kubectl` equivalent.
 
 ```bash
 # These are interchangeable against an OpenShift cluster

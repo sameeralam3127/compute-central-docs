@@ -32,13 +32,16 @@ flowchart TD
 
 - **`ansible-core`** — the engine itself: the CLI tools, the task execution engine, the connection/module/plugin architecture, YAML and Jinja2 parsing. Everything in [Getting Started](../getting-started/index.md) through [Build Your Own](../build-your-own/index.md) is entirely `ansible-core`.
 - **`ansible` (the community package)** — `ansible-core` plus a curated bundle of community collections, installed together for convenience. Most beginners who `pip install ansible` (rather than `ansible-core`) get this — see [Installing Ansible](../getting-started/04-installing-ansible.md).
-- **AWX** — the open-source, community-supported web UI/API control plane. Job scheduling, RBAC, credential storage, and a REST API sit in front of the same `ansible-core` engine underneath. No formal vendor support or backport guarantees.
-- **Red Hat Ansible Automation Platform (AAP)** — the same Controller technology as AWX, stabilized and backported onto a supported release cadence, packaged with Execution Environments and Automation Hub (certified content), and backed by a Red Hat support contract.
+- **AWX** — the open-source, community-supported web UI/API control plane. Job scheduling, RBAC, credential storage, and a REST API sit in front of the same `ansible-core` engine underneath. No formal vendor support or backport guarantees. It runs on Kubernetes, installed with the AWX Operator.
+- **Red Hat Ansible Automation Platform (AAP)** — the same Controller technology as AWX, stabilized and backported onto a supported release cadence, packaged with Execution Environments, Automation Hub (certified content), and Event-Driven Ansible, and backed by a Red Hat support contract. Since AAP 2.5, one **platform gateway** gives all of these a single login, UI, and API, and the platform installs either as containers on RHEL or on OpenShift through an operator.
 
 !!! note "Where Ansible Tower went"
     **Ansible Tower** was the earlier name of AAP's web UI and API. With AAP 2.0 in 2021, Red Hat renamed it **automation controller**. "AWX vs Tower" and "AWX vs AAP" are the same question.
 
-**AWX is to AAP roughly what Fedora is to RHEL** — the fast-moving open-source upstream that AAP's Controller is a stabilized, commercially supported downstream of. AWX gets new features first; AAP gets long-term support and vendor SLAs.
+**AWX is to AAP roughly what Fedora is to RHEL** — the open-source upstream that AAP's Controller is a stabilized, commercially supported downstream of.
+
+!!! warning "AWX releases are paused"
+    AWX's last release was 24.6.1, in July 2024. The project then paused releases while it's re-architected, and it hasn't published one since. Existing installations keep working, but they get no new features or security fixes in the meantime. Check the [AWX repository](https://github.com/ansible/awx) for the current status before building anything new on it. For a free web UI today, [Semaphore UI](https://semaphoreui.com/) is a lightweight, actively maintained alternative, and many teams simply run playbooks from CI (GitHub Actions, GitLab CI) with an approval gate.
 
 ## A Decision Framework
 
@@ -46,7 +49,7 @@ flowchart TD
 flowchart TD
     A[Need a CLI tool for a\nsmall team to run playbooks?] -->|Yes, that's it| B[ansible-core is enough]
     A -->|Need shared scheduling,\nRBAC, audit history?| C{Comfortable\nself-supporting?}
-    C -->|Yes| D[AWX]
+    C -->|Yes| D["AWX (check its release status)\nor CI with approvals"]
     C -->|No — need vendor\nsupport / SLA / certified content| E[AAP subscription]
 ```
 

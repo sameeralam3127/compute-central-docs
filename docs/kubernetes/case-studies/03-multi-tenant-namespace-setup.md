@@ -32,6 +32,7 @@ metadata:
   labels:
     team: fraud-detection
     pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/warn: restricted    # surface what would break before tightening enforce
 ```
 
 ```bash
@@ -177,7 +178,7 @@ spec:
     - from:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: ingress-nginx
+              kubernetes.io/metadata.name: ingress-system   # the namespace your ingress/gateway controller runs in
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -202,7 +203,7 @@ kubectl apply -f networkpolicy-default-deny.yaml
 kubectl apply -f networkpolicy-allows.yaml
 ```
 
-Three separate allows, deliberately: same-namespace pod-to-pod traffic, ingress from the shared `ingress-nginx` namespace into anything labeled `tier: web`, and DNS egress to any namespace on port 53 — without that last one, cluster DNS resolution breaks for every pod in `fraud-detection`, which is the single most common self-inflicted outage after applying a default-deny policy.
+Three separate allows, deliberately: same-namespace pod-to-pod traffic, ingress from the shared ingress/gateway controller's namespace into anything labeled `tier: web`, and DNS egress to any namespace on port 53 — without that last one, cluster DNS resolution breaks for every pod in `fraud-detection`, which is the single most common self-inflicted outage after applying a default-deny policy.
 
 ## Verification
 

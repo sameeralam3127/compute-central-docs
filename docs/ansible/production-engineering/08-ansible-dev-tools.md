@@ -24,22 +24,24 @@ Building, testing, and shipping Ansible content well requires more than `ansible
 pip install ansible-dev-tools
 ```
 
-Requires **Python 3.10+**. As with any Ansible tooling, prefer pipx or a project virtualenv over a global install — see [Installing Ansible](../getting-started/04-installing-ansible.md) for why.
+Use **Python 3.12 or newer**: the tools themselves run on older versions, but pip can only install a current `ansible-core` on a Python it supports (see the [support matrix](../getting-started/04-installing-ansible.md#which-python-version-do-you-need)). As with any Ansible tooling, prefer pipx or a project virtualenv over a global install.
 
 ```bash
 $ adt --version
-ansible-builder                          3.1.1
-ansible-core                             2.21.1
-ansible-creator                          26.8.0
-ansible-dev-environment                  26.8.0
-ansible-dev-tools                        0.1.dev50
-ansible-lint                             26.8.0
-ansible-navigator                        26.8.0
-ansible-sign                             0.1.6
-molecule                                 26.8.0
-pytest-ansible                           26.8.0
-tox-ansible                              26.8.0
+ansible-builder                          3.x
+ansible-core                             2.20.x
+ansible-creator                          25.x
+ansible-dev-environment                  25.x
+ansible-dev-tools                        25.x
+ansible-lint                             25.x
+ansible-navigator                        25.x
+ansible-sign                             0.1.x
+molecule                                 25.x
+pytest-ansible                           25.x
+tox-ansible                              25.x
 ```
+
+(Your exact versions will differ; most of these tools use calendar versioning, `YY.M.patch`.)
 
 `adt --version` is the fast way to confirm exactly what's installed and at what version — useful when comparing a teammate's environment to CI's, the same way `ansible --version` is for `ansible-core` alone.
 

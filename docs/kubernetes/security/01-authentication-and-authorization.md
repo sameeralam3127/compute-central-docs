@@ -100,7 +100,43 @@ webhooks:
     failurePolicy: Fail
 ```
 
-`failurePolicy: Fail` means if the webhook endpoint is unreachable, the request is rejected — the safer default for security-critical policy, versus `Ignore`, which lets the request through if the webhook can't be reached.
+`failurePolicy: Fail` means if the webhook endpoint is unreachable, the request is rejected — the safer default for security-critical policy, versus `Ignore`, which lets the request through if the webhook can't be reached. The flip side is real: a `Fail` webhook whose Pods are down can block every Pod creation in the cluster, including the webhook's own replacement Pods. Exclude `kube-system` and the webhook's namespace with a `namespaceSelector`, run at least two replicas, and give it a PodDisruptionBudget.
+
+### Built-in Policies: ValidatingAdmissionPolicy
+
+Many policies are simple checks ("every Deployment needs a `team` label", "no more than 10 replicas in dev"). Running a webhook server for those means another service to keep available. **ValidatingAdmissionPolicy** (stable since v1.30) evaluates [CEL](https://kubernetes.io/docs/reference/using-api/cel/) expressions **inside the API server**, with no webhook:
+
+```yaml
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: require-team-label
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["deployments"]
+  validations:
+    - expression: "has(object.metadata.labels) && 'team' in object.metadata.labels"
+      message: "Deployments must have a 'team' label."
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: require-team-label
+spec:
+  policyName: require-team-label
+  validationActions: ["Deny"]        # or ["Warn", "Audit"] while rolling out
+  matchResources:
+    namespaceSelector:
+      matchLabels:
+        environment: production
+```
+
+Reach for Kyverno or Gatekeeper when you need what CEL policies can't do (mutation across many resource types, generating resources, image signature verification, a policy library); use ValidatingAdmissionPolicy for straightforward validation. A `MutatingAdmissionPolicy` counterpart is arriving in recent releases for simple defaulting.
 
 ### Verifying the pipeline yourself
 

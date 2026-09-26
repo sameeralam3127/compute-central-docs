@@ -131,7 +131,7 @@ team_access_shell: /bin/bash
     group: root
     mode: "0440"
     validate: /usr/sbin/visudo -cf %s
-  loop: "{{ team_members | rejectattr('sudo', 'equalto', 'none') }}"
+  loop: "{{ team_members | rejectattr('sudo', 'equalto', 'none') | list }}"
   loop_control:
     label: "{{ item.name }}"
 
@@ -139,7 +139,7 @@ team_access_shell: /bin/bash
   ansible.builtin.file:
     path: "/etc/sudoers.d/team-{{ item.name }}"
     state: absent
-  loop: "{{ team_members | selectattr('sudo', 'equalto', 'none') }}"
+  loop: "{{ team_members | selectattr('sudo', 'equalto', 'none') | list }}"
   loop_control:
     label: "{{ item.name }}"
 

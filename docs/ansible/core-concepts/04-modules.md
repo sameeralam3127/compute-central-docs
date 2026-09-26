@@ -63,7 +63,7 @@ As more collections get installed, short names can collide or resolve to the wro
 
 | Category | Examples |
 |---|---|
-| Package management | `ansible.builtin.package`, `apt`, `dnf`, `yum` |
+| Package management | `ansible.builtin.package`, `apt`, `dnf`, `dnf5` (the separate `yum` module was removed in ansible-core 2.17; `yum` now redirects to `dnf`) |
 | Service management | `ansible.builtin.service`, `systemd_service` |
 | Files | `copy`, `template`, `file`, `stat`, `lineinfile`, `blockinfile` |
 | Users | `user`, `group`, `authorized_key` |

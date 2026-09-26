@@ -72,7 +72,7 @@ Each project uses only what the previous ones already taught you. Skip ahead if 
 - [Collections](collections/index.md) — structure, installing, publishing
 - [Build Your Own](build-your-own/index.md) — writing a module, building a collection from zero
 - [Production Engineering](production-engineering/index.md) — project layout, `ansible.cfg`, security, performance, CI/CD, testing
-- [Enterprise Platform (AAP & AWX)](enterprise-platform/index.md) — ansible-core vs. ansible vs. AWX vs. AAP, Controller, Mesh, licensing
+- [Enterprise Platform (AAP & AWX)](enterprise-platform/index.md) — ansible-core vs. ansible vs. AWX vs. AAP, Controller, Mesh, licensing, Event-Driven Ansible
 - [Case Studies](case-studies/index.md) — full worked deployments, including the failure paths
 - [Troubleshooting](troubleshooting/index.md) — a real debugging methodology, not just a symptom list
 - [Interview Preparation](interview-prep/index.md) — by subject and by level, tied back to the concepts

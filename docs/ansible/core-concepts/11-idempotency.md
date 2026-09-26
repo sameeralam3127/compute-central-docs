@@ -165,7 +165,7 @@ The `lineinfile` version has no such failure mode: it can be run during every ma
 ## Production Best Practices
 
 - Write playbooks so they are safe to re-run in production: avoid `command`/`shell` tasks that aren't naturally idempotent, and reach for `creates`/`removes` guards or `changed_when` only when a real module genuinely doesn't exist for the job.
-- Treat a playbook's *second* run as a real test, not an afterthought — `--check` mode (Volume 2) and a genuine re-run both surface non-idempotent tasks before production does.
+- Treat a playbook's *second* run as a real test, not an afterthought — [check mode](10-check-mode-and-diff-mode.md) and a genuine re-run both surface non-idempotent tasks before production does. [Molecule](../production-engineering/07-molecule-testing.md) automates exactly this with its `idempotence` stage.
 
 ## Practice
 
@@ -198,7 +198,7 @@ Declarative, idempotent automation is what makes "just run the playbook again" a
 
 ## Next Lesson
 
-Continue to [Playbooks, Plays, and Tasks](03-playbooks-plays-tasks.md), or jump to the [Interview Prep: Core Concepts](../interview-prep/01-core-concepts-questions.md) page for the leveled version of the questions above.
+That completes Core Concepts. Continue to [YAML & Execution Model](../yaml-and-execution-model/index.md) to see what happens between your YAML and a module running on a host, or jump to [Interview Prep: Core Concepts](../interview-prep/01-core-concepts-questions.md) for the leveled version of the questions above.
 
 ## Related
 

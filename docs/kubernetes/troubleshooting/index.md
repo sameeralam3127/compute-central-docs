@@ -21,7 +21,7 @@ tags:
 | `kubectl get <kind> -o yaml` | The actual applied spec and live status, not what you think you applied |
 | `kubectl top nodes` / `kubectl top pods` | Real-time resource pressure — requires the metrics server |
 | `kubectl exec -it <pod> -- sh` or `kubectl debug` | A shell inside (or attached to) the failing container, for anything logs don't explain |
-| `kubectl get componentstatuses` / node `.status.conditions` | Control-plane and node health, one layer below the workload |
+| `kubectl get --raw='/readyz?verbose'` / node `.status.conditions` | Control-plane and node health, one layer below the workload |
 
 ## The Decision Tree
 
@@ -48,7 +48,7 @@ flowchart TD
     - [Init:CrashLoopBackOff and stuck init containers](init-container-failures.md)
 2. [Networking and Service Problems](02-networking-and-service-problems.md)
 3. [Storage Problems](03-storage-problems.md)
-4. [Cluster and Node Problems](04-cluster-and-node-problems.md)
+4. [Cluster and Node Problems](04-cluster-and-node-problems.md) — including pods stuck in `Terminating`
 
 ## Next
 

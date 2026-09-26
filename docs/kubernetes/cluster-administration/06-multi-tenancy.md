@@ -99,7 +99,7 @@ spec:
     - from:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: ingress-nginx
+              kubernetes.io/metadata.name: ingress-system   # the namespace your ingress/gateway controller runs in
         - podSelector: {}   # allow same-namespace traffic
 ```
 

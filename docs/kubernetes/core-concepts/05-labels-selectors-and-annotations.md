@@ -41,6 +41,23 @@ metadata:
 
 The rule of thumb: if you'll ever need to *find* objects by this value, it's a label. If it's just informational for humans or tools, it's an annotation.
 
+### The Recommended Labels
+
+Kubernetes defines a shared set of `app.kubernetes.io/*` labels that Helm, Argo CD, dashboards, and cost tools already understand. Using them means every tool can group your objects the same way:
+
+```yaml
+metadata:
+  labels:
+    app.kubernetes.io/name: checkout            # the application
+    app.kubernetes.io/instance: checkout-prod   # this installation of it
+    app.kubernetes.io/version: "2.14.1"
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: shop
+    app.kubernetes.io/managed-by: helm
+```
+
+Keep **selectors** on a small, stable subset (`app.kubernetes.io/name` and `app.kubernetes.io/instance`). `version` changes every release, and a Deployment's selector is immutable, so a selector that includes it would break the next rollout.
+
 ```bash
 kubectl label pods hello-web-6b9f4c8d7f-2xk4p env=prod
 kubectl annotate pods hello-web-6b9f4c8d7f-2xk4p description="Canary instance"
@@ -102,7 +119,7 @@ kubectl describe svc hello-web | grep Selector
 ## Common Mistakes
 
 - Putting information you'll need to query on later into an annotation instead of a label — it silently can't be used in a selector, and there's no error telling you why your `kubectl get -l` returned nothing.
-- A `Deployment.spec.selector` that doesn't match `Deployment.spec.template.metadata.labels` — this is actually rejected by the API server as immutable-selector validation, but it's a common first error to hit.
+- A `Deployment.spec.selector` that doesn't match `Deployment.spec.template.metadata.labels` — the API server rejects it with `selector does not match template labels`. A related trap: a Deployment's selector is **immutable** once created, so changing it later means deleting and recreating the Deployment.
 - Assuming `matchLabels` and `matchExpressions` combine with OR — they always combine with AND; there's no selector-level OR in Kubernetes's native selector syntax.
 - Changing a Pod's labels by hand (`kubectl label`) and being surprised a Service stops routing to it, or a Deployment's ReplicaSet "adopts" or "orphans" it.
 

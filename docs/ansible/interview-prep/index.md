@@ -59,11 +59,14 @@ Once, after the tasks in the current section of the play finish, and only if a t
 **`command` vs `shell`?**
 `command` runs a program directly with no shell; `shell` runs through `/bin/sh`, so pipes, redirects, and variables work, at the cost of injection risk. [Command vs. Shell vs. Raw vs. Script](../modules/01-command-vs-shell-vs-raw-vs-script.md)
 
+**What changed in ansible-core 2.19?**
+Templating was rebuilt: conditionals must evaluate to real booleans, templates embedded inside `when:` expressions are rejected, and values that arrive at run time are never treated as templates. [Upgrade errors after 2.19](../troubleshooting/03-yaml-and-variable-errors.md#upgrade-errors-after-ansible-core-219)
+
 **How do you handle secrets?**
 Encrypt them with Ansible Vault or fetch them from a secret manager with a lookup, and set `no_log: true` on tasks that handle them. [Secrets and Vault](../production-engineering/03-secrets-and-vault.md)
 
 **What's the difference between ansible-core, AWX, and AAP?**
-`ansible-core` is the engine; AWX is the open-source web UI and API around it; AAP is Red Hat's supported product built from AWX. [ansible-core vs. ansible vs. AAP](../enterprise-platform/01-ansible-core-vs-ansible-vs-aap.md)
+`ansible-core` is the engine; AWX is the open-source web UI and API around it (its releases have been paused since 2024); AAP is Red Hat's supported product built from AWX, which adds Automation Hub, Execution Environments, and Event-Driven Ansible. [ansible-core vs. ansible vs. AAP](../enterprise-platform/01-ansible-core-vs-ansible-vs-aap.md)
 
 ## Next
 

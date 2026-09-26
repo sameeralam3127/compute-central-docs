@@ -48,6 +48,7 @@ ansible/enterprise-platform/01-ansible-core-vs-ansible-vs-aap/
 ansible/enterprise-platform/02-automation-controller-and-mesh/
 ansible/enterprise-platform/03-execution-environments-and-hub/
 ansible/enterprise-platform/04-licensing-and-adoption/
+ansible/enterprise-platform/05-event-driven-ansible/
 ansible/facts-verbosity/
 ansible/getting-started/
 ansible/getting-started/00-history-and-why-ansible/

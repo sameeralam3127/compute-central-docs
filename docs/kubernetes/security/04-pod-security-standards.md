@@ -87,7 +87,9 @@ spec:
 | `capabilities.drop: [ALL]` | Removes every Linux capability by default; add back only the specific ones a workload genuinely needs (e.g. `NET_BIND_SERVICE` to bind port 80) |
 | `seccompProfile.type: RuntimeDefault` | Applies the container runtime's default seccomp filter, blocking a large set of rarely-needed, high-risk syscalls |
 
-All five together are effectively the checklist the Restricted standard is enforcing — a pod missing any one of them will fail admission in a namespace labeled `enforce: restricted`.
+What Restricted actually **requires**: `runAsNonRoot: true`, `allowPrivilegeEscalation: false`, `capabilities.drop: [ALL]` (only `NET_BIND_SERVICE` may be added back), a `RuntimeDefault` or `Localhost` seccomp profile, and volumes limited to safe types (no `hostPath`). A pod missing any of those fails admission in a namespace labeled `enforce: restricted`.
+
+`readOnlyRootFilesystem` and an explicit `runAsUser` aren't required by the standard, but they're strongly recommended hardening: a read-only root filesystem stops an attacker from dropping tools into the container, and a fixed UID avoids surprises with images whose `USER` is a name rather than a number. Give the app an `emptyDir` for any directory it genuinely writes to, such as `/tmp`.
 
 ### Checking compliance before you enforce
 

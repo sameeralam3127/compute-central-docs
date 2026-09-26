@@ -118,7 +118,10 @@ sequenceDiagram
 - **IRSA (IAM Roles for Service Accounts)** on EKS — the EKS cluster is registered as an OIDC identity provider in AWS IAM. A ServiceAccount is annotated with an IAM role ARN; AWS's mutating webhook injects the projected token and STS endpoint into the pod, and the AWS SDK automatically exchanges the token for temporary IAM credentials.
 - **Workload Identity** on GKE — a Kubernetes ServiceAccount is bound to a Google Cloud IAM service account. GKE's metadata server presents the mapped identity transparently to any Google Cloud client library running in the pod, with no manifest-level SDK configuration required.
 
-Both patterns achieve the same goal: cloud permissions are scoped per-workload via IAM policy, credentials are short-lived and auto-rotated, and nothing sensitive is stored as a Kubernetes Secret.
+- **EKS Pod Identity** — the newer AWS option. Instead of annotating ServiceAccounts and managing an OIDC provider per cluster, you create a *pod identity association* (`aws eks create-pod-identity-association --cluster-name prod --namespace checkout --service-account checkout-api --role-arn arn:aws:iam::123456789012:role/checkout-api`) and an agent on each node hands out credentials. It's simpler to operate across many clusters, and the same IAM role can be reused without editing its trust policy per cluster. IRSA remains fully supported.
+- **Azure Workload Identity** on AKS — the same federation pattern with Microsoft Entra ID.
+
+All of these achieve the same goal: cloud permissions are scoped per-workload via IAM policy, credentials are short-lived and auto-rotated, and nothing sensitive is stored as a Kubernetes Secret.
 
 ## Common Mistakes
 

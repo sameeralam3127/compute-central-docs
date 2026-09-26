@@ -28,7 +28,7 @@ A Secret object looks almost identical to a ConfigMap — same shape, same consu
 | Generic / arbitrary | `Opaque` | Free-form key-value pairs — the default and most common |
 | Docker registry credentials | `kubernetes.io/dockerconfigjson` | A `.dockerconfigjson` key holding registry auth, referenced via `imagePullSecrets` |
 | TLS certificate + key | `kubernetes.io/tls` | Exactly `tls.crt` and `tls.key` keys |
-| Service account token | `kubernetes.io/service-account-token` | Auto-created/mounted for pod-to-API-server auth (or requested on demand via the TokenRequest API since 1.22+) |
+| Service account token (legacy) | `kubernetes.io/service-account-token` | A long-lived token. No longer created automatically since v1.24, and unused ones are cleaned up automatically; Pods get short-lived tokens from the TokenRequest API instead. Create one by hand only for an external system that can't use short-lived tokens |
 
 ## How It Works
 

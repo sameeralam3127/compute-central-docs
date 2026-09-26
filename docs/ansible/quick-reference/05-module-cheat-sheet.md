@@ -24,7 +24,7 @@ tags:
 | Regex-replace content in a file | `ansible.builtin.replace` |
 | Create/remove a user | `ansible.builtin.user` |
 | Create/remove a group | `ansible.builtin.group` |
-| Manage an SSH authorized key | `ansible.builtin.authorized_key` |
+| Manage an SSH authorized key | `ansible.posix.authorized_key` (needs the `ansible.posix` collection) |
 | Schedule a cron job | `ansible.builtin.cron` |
 | Run a command with no shell | `ansible.builtin.command` |
 | Run a command needing pipes/redirects | `ansible.builtin.shell` |
@@ -39,6 +39,14 @@ tags:
 | Set a runtime variable | `ansible.builtin.set_fact` |
 | Include a static task file | `ansible.builtin.import_tasks` |
 | Include a dynamic task file | `ansible.builtin.include_tasks` |
+| Wait for a port, file, or host to come back | `ansible.builtin.wait_for` / `wait_for_connection` |
+| Reboot and wait for the host to return | `ansible.builtin.reboot` |
+| Mount a filesystem and persist it in fstab | `ansible.posix.mount` |
+| Set a kernel parameter | `ansible.posix.sysctl` |
+| Manage firewalld rules | `ansible.posix.firewalld` |
+| Manage ufw rules | `community.general.ufw` |
+| Check a background (async) job | `ansible.builtin.async_status` |
+| Validate a role's inputs | `ansible.builtin.validate_argument_spec` |
 | Include a role dynamically | `ansible.builtin.include_role` |
 
 ## Related

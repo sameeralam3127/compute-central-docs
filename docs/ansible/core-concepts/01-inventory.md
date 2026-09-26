@@ -47,7 +47,25 @@ db
 http_port=80
 ```
 
-`hosts: web` now targets both web servers. `[production:children]` groups groups — `hosts: production` targets all four... two, in this case (`web` + `db`). `[web:vars]` sets a variable for every host in the group.
+`hosts: web` now targets both web servers. `[production:children]` groups groups — `hosts: production` targets all three hosts, because it contains both the `web` and `db` groups. `[web:vars]` sets a variable for every host in the group.
+
+A real inventory usually groups each host **two ways at once**: by what it does (`web`, `db`) and by where it lives (`production`, `eu_west`). Plays target the role, `--limit` narrows by location, and `group_vars/` can hold values for either axis:
+
+```ini title="inventories/production/hosts.ini"
+[web]
+web-euw-01 ansible_host=10.20.1.11
+web-use-01 ansible_host=10.30.1.11
+
+[eu_west]
+web-euw-01
+
+[us_east]
+web-use-01
+```
+
+```bash
+ansible-playbook -i inventories/production site.yml --limit 'web:&eu_west'   # web hosts in eu_west only
+```
 
 ## The Same Inventory in YAML
 

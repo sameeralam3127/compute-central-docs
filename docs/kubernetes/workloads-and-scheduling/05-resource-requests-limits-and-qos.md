@@ -48,6 +48,18 @@ spec:
           memory: 512Mi
 ```
 
+## Sizing in Practice
+
+A pattern many production teams converge on:
+
+- **Memory: set `limits` equal to `requests`.** Memory can't be taken back from a process without killing it, so a Pod that bursts above its request on a busy node is the one that gets OOM-killed or evicted. Equal values make memory behavior predictable.
+- **CPU: set `requests` from real usage; think hard before setting a CPU `limit`.** CPU limits throttle a container even when the node has idle CPU, which shows up as latency spikes rather than errors. Many teams leave CPU limits off for latency-sensitive services and rely on requests for fair sharing. Keep CPU limits where you need hard isolation (noisy multi-tenant clusters, batch jobs next to APIs), and watch `container_cpu_cfs_throttled_periods_total` if you do.
+- **Start from data.** Run with generous values, look at a week of real usage (p95 CPU, peak memory), then set requests a little above typical and memory a safe margin above peak. [VPA in recommendation mode](06-autoscaling.md#verticalpodautoscaler) does this analysis for you.
+
+```bash
+kubectl top pods -n production --containers      # current usage, needs metrics-server
+```
+
 ## QoS Classes
 
 Kubernetes derives a QoS class per pod automatically from its requests/limits — you never set it directly.

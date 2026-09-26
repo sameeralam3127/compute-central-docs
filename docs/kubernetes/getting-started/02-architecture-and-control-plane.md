@@ -62,7 +62,7 @@ flowchart TB
 | **kube-apiserver** | The front door — a REST API that validates and processes every request (`kubectl`, controllers, kubelets all go through it) | It is the **only** control-plane component that talks to etcd directly; everything else goes through it |
 | **etcd** | A distributed, strongly consistent key-value store holding all cluster state | It's the cluster's single source of truth — losing it without a backup means losing the cluster's memory of everything |
 | **kube-scheduler** | Watches for newly created Pods with no assigned node, and picks one based on resource requests, affinity/anti-affinity, taints/tolerations, and constraints | It only *decides* the node — it never runs anything itself |
-| **kube-controller-manager** | Runs the built-in controllers (Node, ReplicaSet, Endpoints, Job, ServiceAccount, and more) as a single binary, each running its own reconciliation loop | "Controller" here means any loop that watches actual state and pushes it toward desired state |
+| **kube-controller-manager** | Runs the built-in controllers (Node, Deployment, ReplicaSet, EndpointSlice, Job, ServiceAccount, and more) as a single binary, each running its own reconciliation loop | "Controller" here means any loop that watches actual state and pushes it toward desired state |
 | **cloud-controller-manager** | Talks to your cloud provider's API for cloud-specific logic (provisioning LoadBalancer Services, attaching cloud disks, tagging nodes) | Only present on cloud-managed clusters; local clusters (minikube, kind) typically don't run one |
 
 ## Worker Node Components
@@ -70,7 +70,7 @@ flowchart TB
 | Component | Role | One thing worth remembering |
 |---|---|---|
 | **kubelet** | The agent on every node; makes sure the containers described in the PodSpecs it's been assigned are actually running, and reports node/pod status back to the API server | It talks to the container runtime through the CRI — it does not run containers itself |
-| **kube-proxy** | Maintains the network rules (iptables or IPVS) on each node that implement the Service abstraction — routing traffic for a Service's virtual IP to one of its backing Pods | You'll see this again in [Services](../core-concepts/03-services.md) |
+| **kube-proxy** | Maintains the network rules (iptables, nftables, or IPVS) on each node that implement the Service abstraction — routing traffic for a Service's virtual IP to one of its backing Pods | You'll see this again in [Services](../core-concepts/03-services.md) |
 | **Container runtime** | The software that actually pulls images and starts/stops containers — `containerd` and CRI-O are the common choices today | Talks to the kubelet via the **Container Runtime Interface (CRI)**, a plugin API that lets Kubernetes stay runtime-agnostic |
 
 The CRI matters because it's why Kubernetes isn't "a Docker orchestrator" — any runtime that implements the CRI works, which is why Docker Engine itself was removed as a *direct* Kubernetes runtime in v1.24 (images built by Docker still run fine everywhere, since they're standard OCI images; what changed is which daemon runs them on the node).

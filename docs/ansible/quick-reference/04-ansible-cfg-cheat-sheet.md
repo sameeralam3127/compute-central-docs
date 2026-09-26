@@ -22,19 +22,22 @@ CLI flag > environment variable (`ANSIBLE_*`) > `ansible.cfg` value > built-in d
 
 ```ini
 [defaults]
-inventory = inventories/production/hosts.ini
+inventory = inventories/dev          ; safe default; pass production with -i
 remote_user = deploy
-host_key_checking = True
 forks = 20
+interpreter_python = auto_silent
+callback_result_format = yaml
+host_key_checking = True
+force_handlers = True
 retry_files_enabled = False
 
 [ssh_connection]
 pipelining = True
-ssh_args = -o ControlMaster=auto -o ControlPersist=60s
+ssh_args = -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=accept-new
+control_path_dir = ~/.ansible/cp
 
 [privilege_escalation]
-become = True
-become_method = sudo
+become_method = sudo                 ; opt in per play/task with become: true
 ```
 
 ```bash

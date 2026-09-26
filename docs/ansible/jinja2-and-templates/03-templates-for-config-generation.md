@@ -38,21 +38,32 @@ server {
 
 ## Practical Example — Loops and Conditionals Inside a Template
 
-```jinja title="templates/nginx.conf.j2"
-{% for upstream in upstream_servers %}
-upstream backend_{{ loop.index }} {
-    server {{ upstream.host }}:{{ upstream.port }};
-}
+```jinja title="templates/app.conf.j2"
+# {{ ansible_managed }}
+upstream app_backend {
+{% for backend in upstream_servers %}
+    server {{ backend.host }}:{{ backend.port }} max_fails=3 fail_timeout=10s;
 {% endfor %}
+    keepalive 32;
+}
 
 server {
     listen {{ http_port }};
+    server_name {{ server_name }};
 {% if ssl_enabled %}
     listen 443 ssl;
-    ssl_certificate {{ ssl_cert_path }};
+    ssl_certificate     {{ ssl_cert_path }};
+    ssl_certificate_key {{ ssl_key_path }};
+    ssl_protocols       TLSv1.2 TLSv1.3;
 {% endif %}
+
     location / {
-        proxy_pass http://backend_1;
+        proxy_pass http://app_backend;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
 ```
@@ -60,14 +71,36 @@ server {
 ```yaml
 vars:
   http_port: 80
+  server_name: shop.example.com
   ssl_enabled: true
-  ssl_cert_path: /etc/ssl/certs/app.pem
+  ssl_cert_path: /etc/ssl/certs/shop.pem
+  ssl_key_path: /etc/ssl/private/shop.key
   upstream_servers:
     - { host: 10.0.1.10, port: 8080 }
     - { host: 10.0.1.11, port: 8080 }
 ```
 
-`{% for %}`/`{% if %}` (statement tags, not expression tags) work inside any file the `template` module renders — the whole file is one Jinja2 document, not just the parts that look like variables.
+```yaml
+- name: Deploy the site config
+  ansible.builtin.template:
+    src: app.conf.j2
+    dest: /etc/nginx/conf.d/app.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload nginx
+
+- name: Test the full nginx config before reloading
+  ansible.builtin.command: nginx -t
+  changed_when: false
+```
+
+`{% for %}`/`{% if %}` (statement tags, not expression tags) work inside any file the `template` module renders — the whole file is one Jinja2 document, not just the parts that look like variables. One `upstream` block with a loop inside it gives nginx a real pool to balance across; `keepalive` plus the empty `Connection` header reuse connections to the backends instead of opening a new one per request.
+
+`{{ ansible_managed }}` renders a "this file is managed by Ansible" comment, which warns the next person who opens the file on the server not to edit it by hand.
+
+!!! tip "Validating a fragment"
+    `validate: nginx -t -c %s` only works for a **complete** config such as `/etc/nginx/nginx.conf`. A `conf.d/` fragment isn't a valid config on its own, so for fragments run `nginx -t` as a separate task after writing it (as above), before the handler reloads nginx.
 
 ## Why `template`, Not `lineinfile`, for Whole Files
 

@@ -69,8 +69,8 @@ spec:
             periodSeconds: 10
           lifecycle:
             preStop:
-              exec:
-                command: ["sleep", "5"]
+              sleep:
+                seconds: 5   # built-in since v1.30; older clusters: exec: {command: ["sleep", "5"]}
           resources:
             requests:
               cpu: 250m

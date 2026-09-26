@@ -92,6 +92,28 @@ set -x
 
 to print commands during debugging.
 
+### Where strict mode doesn't protect you
+
+`set -e` is a safety net with holes. The four that bite most often:
+
+```bash
+# 1. Failures inside conditions are ignored — by design
+if grep -q ready /tmp/status; then ...        # grep failing here is fine and expected
+
+# 2. `local` (and `export`) hide the exit code of the command substitution
+local out=$(curl -fsS "$url")                 # curl fails, script carries on
+local out; out=$(curl -fsS "$url")            # fixed: declare, then assign
+
+# 3. Arithmetic that evaluates to 0 counts as a failure
+count=0; ((count++))                          # exits the script! (the expression's value was 0)
+count=$((count + 1))                          # safe
+
+# 4. Functions called from a condition or `||` lose set -e inside them
+deploy || rollback                            # errors inside deploy no longer stop it
+```
+
+Check important commands explicitly (`cmd || die "..."`) rather than relying on `set -e` alone, and let [ShellCheck](03-testing-linting-and-debugging.md) flag the rest.
+
 ---
 
 ## Core Building Blocks
@@ -110,7 +132,7 @@ readonly APP_NAME="payments-api"
 echo "Script name: $0"
 echo "First argument: $1"
 echo "Argument count: $#"
-echo "All arguments: $@"
+echo "All arguments: $*"          # "$@" when passing them on: cmd "$@"
 echo "Previous command exit code: $?"
 ```
 
@@ -349,43 +371,65 @@ Use cases:
 
 ---
 
-## Example Script 4: Deployment Helper
+## Example Script 4: Deploy a Release With Automatic Rollback
 
-This pattern is useful when restarting a service after pulling the latest release artifacts or configuration.
+`git pull` followed by a restart is how many small deployments start, and it has no answer for "the new version doesn't start". This version unpacks each release into its own directory, switches a `current` symlink, checks health, and switches back if the check fails:
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_DIR="/opt/myapp"
-SERVICE_NAME="myapp"
+APP="myapp"
+BASE="/opt/${APP}"
+VERSION="${1:?usage: deploy.sh VERSION (e.g. 2.14.0)}"
+ARTIFACT="https://artifacts.example.com/${APP}/${APP}-${VERSION}.tar.gz"
+HEALTH_URL="http://127.0.0.1:8080/healthz"
 
-log() {
-  printf '[%s] %s\n' "$(date '+%F %T')" "$1"
+log() { printf '[%s] %s\n' "$(date -u '+%FT%TZ')" "$*" >&2; }
+
+healthy() {
+  for _ in {1..20}; do
+    curl -fsS --max-time 2 "$HEALTH_URL" >/dev/null && return 0
+    sleep 3
+  done
+  return 1
 }
 
-deploy() {
-  log "Switching to application directory"
-  cd "$APP_DIR"
+release_dir="${BASE}/releases/${VERSION}"
+previous="$(readlink -f "${BASE}/current" || true)"
 
-  log "Pulling latest code"
-  git pull origin main
+if [[ ! -d "$release_dir" ]]; then
+  log "Downloading ${VERSION}"
+  tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
+  curl -fsSL "$ARTIFACT" -o "${tmp}/release.tar.gz"
+  mkdir -p "$release_dir"
+  tar -xzf "${tmp}/release.tar.gz" -C "$release_dir"
+fi
 
-  log "Restarting service"
-  sudo systemctl restart "$SERVICE_NAME"
+log "Switching current -> ${VERSION}"
+ln -sfn "$release_dir" "${BASE}/current"
+sudo systemctl restart "$APP"
 
-  log "Checking service status"
-  sudo systemctl status "$SERVICE_NAME" --no-pager
-}
-
-deploy
+if healthy; then
+  log "Deployed ${VERSION}"
+  # keep the 5 newest releases
+  ls -1dt "${BASE}"/releases/*/ | tail -n +6 | xargs -r rm -rf --
+else
+  log "Health check failed; rolling back to ${previous:-nothing}"
+  if [[ -n "$previous" ]]; then
+    ln -sfn "$previous" "${BASE}/current"
+    sudo systemctl restart "$APP"
+  fi
+  exit 1
+fi
 ```
 
-Use cases:
+Why this shape works in production:
 
-- Simple service deployments
-- Jenkins or GitLab CI shell stages
-- Small internal tools on virtual machines
+- **Each release lives in its own directory**, so rolling back is one symlink change, with no rebuild or re-download.
+- **Health is checked from the outside** (the HTTP endpoint), not by `systemctl status`, which only says the process started.
+- **It exits non-zero on failure**, so the CI job or person running it sees the deploy failed, even after a successful rollback.
+- The same pattern is what [Ansible's rolling deployment](../../ansible/playbook-engineering/01-blocks-rescue-always.md#worked-example-deploy-roll-back-always-notify) and Kubernetes Deployments do for you at fleet scale.
 
 ---
 
@@ -587,7 +631,7 @@ Use shell scripts for what they do best: command orchestration, operational auto
 
 ## Interview Questions
 
-- What does `set -euo pipefail` do, and what are its pitfalls?
+- What does `set -euo pipefail` do, and what are its pitfalls? (Hint: conditions, `local x=$(...)`, and `((count++))`.)
 - Why quote variables like `"$file"`?
 - How do you make sure a script cleans up temporary files even when it fails?
 - When would you rewrite a shell script in Python or move it to Ansible?

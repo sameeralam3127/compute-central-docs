@@ -84,7 +84,7 @@ ansible_python_interpreter: /opt/python3.12/bin/python3
 
 ### Python is too old
 
-Recent `ansible-core` releases require Python 3 on managed nodes; support for Python 2.7 and 3.6 targets was dropped in `ansible-core` 2.17. Very old hosts need either a newer Python installed alongside the system one, or an older `ansible-core` in a separate environment for just those hosts.
+Every `ansible-core` release supports a window of managed-node Python versions, and each release drops the oldest (2.17 dropped Python 2.7 and 3.6; later releases continue moving the floor up). Check the [support matrix](../getting-started/04-installing-ansible.md#which-python-version-do-you-need). Very old hosts need either a newer Python installed alongside the system one (RHEL 8: `dnf install python3.12`, then set `ansible_python_interpreter`), or an older `ansible-core` in a separate environment for just those hosts.
 
 Silence the interpreter-discovery warning once you've confirmed the choice is right:
 
@@ -122,9 +122,10 @@ For readable output, switch the callback:
 
 ```ini title="ansible.cfg"
 [defaults]
-stdout_callback = ansible.builtin.default
-result_format = yaml
+callback_result_format = yaml
 ```
+
+(Or `ANSIBLE_CALLBACK_RESULT_FORMAT=yaml` for one run. The old `stdout_callback = yaml` setting pointed at a `community.general` callback that has since been removed.)
 
 ## "The following modules failed to execute: ansible.legacy.setup"
 

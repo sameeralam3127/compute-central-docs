@@ -44,6 +44,8 @@ flowchart LR
 
 This means: **anything not written to stdout/stderr is invisible to Kubernetes logging by default.** An app that writes only to a local file inside the container is logging into a void that disappears with the container's filesystem.
 
+Write logs as **structured JSON, one event per line**, with a timestamp, level, and request or trace ID. Every aggregation backend can then filter on fields (`level="error" and route="/checkout"`) instead of pattern-matching free text, and a single request can be followed across services by its trace ID.
+
 ### `kubectl logs` in practice
 
 ```bash
@@ -95,6 +97,8 @@ Two architectures dominate, and they trade off resource usage against isolation:
 | **Sidecar container** | A dedicated logging container runs inside the same pod as the app, reading the app's output (or a shared volume) and shipping it independently | Per-pod control over log handling (useful if an app can't write to stdout at all, or needs per-app processing) — costs a container's worth of resources per pod |
 
 The **node-agent/DaemonSet** pattern is the standard default for most clusters because it scales with nodes, not pods, and keeps resource overhead low. The **sidecar** pattern is reserved for exceptions — an application that logs only to a file and can't be changed to use stdout, or a workload needing log processing too specific for a shared node agent.
+
+The **OpenTelemetry Collector** is increasingly used as the node agent too, because one DaemonSet can collect logs, metrics, and traces and send them to any backend.
 
 A common cluster-wide stack pairs a DaemonSet log shipper (Fluent Bit or Grafana Alloy) with a central store — **Loki** (paired with Alloy/Fluent Bit, designed to integrate with Grafana) or the **EFK stack** (Elasticsearch, Fluentd, Kibana) are the two most common combinations in production Kubernetes environments.
 

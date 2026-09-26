@@ -98,6 +98,8 @@ spec:
 
 If the StorageClass has `allowVolumeExpansion: true` and the CSI driver supports resize, increasing `resources.requests.storage` on an existing PVC and re-applying it triggers an online (usually) expansion — no data loss, though the filesystem inside the pod may need a restart to see the new size depending on the driver and filesystem type. Expansion is one-directional: PVCs cannot be shrunk this way.
 
+Changing **performance** rather than size (say, raising a gp3 disk from 3,000 to 6,000 IOPS) used to mean creating a new volume and migrating data. A `VolumeAttributesClass` (stable in recent Kubernetes releases, where the CSI driver supports it) lets you change those attributes on a live volume by pointing the PVC's `volumeAttributesClassName` at a different class.
+
 ### Default StorageClass behavior
 
 Exactly one StorageClass in a cluster should carry the annotation `storageclass.kubernetes.io/is-default-class: "true"`. Any PVC that omits `storageClassName` entirely is bound using that default. Two common failure modes:

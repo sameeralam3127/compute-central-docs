@@ -61,8 +61,10 @@ spec:
       canaryService: checkout-api-canary
       stableService: checkout-api-stable
       trafficRouting:
-        nginx:
-          stableIngress: checkout-api-ingress
+        plugins:
+          argoproj-labs/gatewayAPI:        # Gateway API traffic-router plugin
+            httpRoute: checkout-api        # an HTTPRoute with stable + canary backendRefs
+            namespace: production
       steps:
         - setWeight: 10
         - pause: { duration: 5m }
@@ -101,6 +103,8 @@ spec:
             /
             sum(rate(http_requests_total{service="{{args.service-name}}"}[2m]))
 ```
+
+The traffic router here is the Gateway API plugin, so Argo Rollouts rewrites the `weight` fields on an `HTTPRoute`. Older setups use `trafficRouting.nginx` with an ingress-nginx `Ingress`; that controller was retired in March 2026, so treat that form as something to migrate away from (see [Gateway API](../networking/07-gateway-api.md)).
 
 Reading this bottom-up: the `AnalysisTemplate` queries Prometheus every minute for the canary's success rate; if it drops below 95% three times (`failureLimit: 3`), Argo Rollouts automatically pauses the rollout and rolls traffic back to the stable version — no human intervention, no pipeline step needed.
 
@@ -156,7 +160,7 @@ You deploy a new image the normal way (`kubectl set image` or a new `kubectl app
 | | Argo Rollouts | Flagger |
 |---|---|---|
 | Model | Replaces `Deployment` with a `Rollout` CRD | Wraps an existing `Deployment`, driven by a separate `Canary` CRD |
-| Traffic routing | NGINX Ingress, Istio, Linkerd, SMI, ALB, Traefik (via plugins) | Istio, Linkerd, App Mesh, Gateway API, NGINX, Contour |
+| Traffic routing | Gateway API (plugin), Istio, Linkerd, ALB, Traefik, and the legacy NGINX Ingress integration | Gateway API, Istio, Linkerd, Contour, and legacy NGINX Ingress |
 | Blue-green support | Yes, native `strategy.blueGreen` | Indirect, via traffic mirroring/A-B patterns |
 | Ecosystem fit | Pairs naturally with Argo CD (same project, same UI) | Pairs naturally with Flux and service-mesh-heavy setups |
 | Migration cost | Requires converting `Deployment` → `Rollout` | No manifest kind change — lower migration friction |
@@ -167,8 +171,10 @@ Both need a traffic-splitting layer underneath them (an ingress controller or se
 
 Underneath either tool, weighted traffic shifting means the ingress controller or mesh proxy is configured to split requests probabilistically across two backend Services:
 
+With Gateway API, it's just the `weight` on each `backendRef` of an `HTTPRoute`, which the controller edits as the rollout progresses (see [Gateway API](../networking/07-gateway-api.md#weighted-canary-without-a-special-controller)). On older clusters still running ingress-nginx, the same idea was expressed with annotations:
+
 ```yaml
-# Example: NGINX Ingress canary annotations (what Argo Rollouts manages for you)
+# Legacy example: ingress-nginx canary annotations (controller retired March 2026)
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

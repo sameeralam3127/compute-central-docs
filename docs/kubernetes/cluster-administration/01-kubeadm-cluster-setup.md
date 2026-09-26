@@ -29,11 +29,12 @@ Before `kubeadm init` will succeed, every control-plane and worker host needs:
 
 | Prerequisite | Why |
 |---|---|
-| A container runtime (containerd, CRI-O) implementing the CRI | kubelet doesn't run containers itself — it delegates to the runtime |
-| Swap disabled | The kubelet refuses to start with swap on by default (memory accounting becomes unreliable) |
+| A container runtime (containerd 2.x, CRI-O) implementing the CRI, using the **systemd cgroup driver** (`SystemdCgroup = true` in containerd's config) | kubelet doesn't run containers itself — it delegates to the runtime; a cgroup-driver mismatch between kubelet and runtime makes Pods restart randomly |
+| **cgroup v2** on the host | Current kubelets refuse to start on cgroup v1 hosts by default (cgroup v1 support is in maintenance and being removed). Every current mainstream distribution defaults to v2; check with `stat -fc %T /sys/fs/cgroup` (prints `cgroup2fs`) |
+| Swap off, or swap explicitly configured | The kubelet refuses to start with swap on by default. Swap support is stable since v1.34: set `failSwapOn: false` and `memorySwap.swapBehavior: LimitedSwap` in the kubelet config if you want it |
 | Unique hostname, MAC address, and `product_uuid` per node | kubeadm and the scheduler use these as node identity; cloned VMs sometimes share them by accident |
 | Required ports open between nodes (6443, 2379-2380, 10250-10259) | API server, etcd peer/client traffic, kubelet API, scheduler/controller-manager health |
-| `br_netfilter` kernel module and `net.bridge.bridge-nf-call-iptables=1` | So iptables can see bridged traffic, which most CNI plugins depend on |
+| `net.ipv4.ip_forward=1` (plus `br_netfilter` and `net.bridge.bridge-nf-call-iptables=1` for bridge-based CNIs) | Nodes must forward pod traffic; kubeadm's preflight checks fail without IP forwarding |
 
 ### Initializing the first control-plane node
 

@@ -78,7 +78,7 @@ nginx_config_path: /etc/nginx/nginx.conf   # rarely correct to override per-cons
 galaxy_info:
   author: your-team
   description: Installs and configures nginx
-  min_ansible_version: "2.15"
+  min_ansible_version: "2.18"
   platforms:
     - name: Ubuntu
       versions: [jammy, noble]
@@ -96,7 +96,7 @@ dependencies:
 - Putting environment-specific values in `vars/main.yml` instead of `defaults/main.yml`, making the role hard to reuse across projects without editing its internals.
 - Building a giant role that tries to do everything (install nginx **and** manage the database **and** configure the firewall) instead of composing several focused roles.
 - Missing `meta/main.yml` dependency declarations, so the role only works correctly if included in a specific, undocumented order.
-- Deeply nested role dependencies without `allow_duplicates: no`, causing the same dependency role to run more than once unintentionally.
+- Listing the same dependency role with different `vars:` in several places and being surprised it runs more than once. Ansible deduplicates a role only when its parameters are identical; different parameters (or `allow_duplicates: true`) mean it runs again.
 
 ## Interview Questions
 

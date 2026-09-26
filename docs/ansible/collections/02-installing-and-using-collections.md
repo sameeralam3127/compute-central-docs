@@ -36,14 +36,14 @@ The `ansible` package is convenient for learning. For real projects, install `an
 collections:
   # Exact pin for anything the playbooks depend on heavily
   - name: amazon.aws
-    version: "9.4.0"
+    version: "10.0.0"
 
   # A range that accepts compatible minor and patch releases
   - name: community.general
-    version: ">=10.2.0,<11.0.0"
+    version: ">=12.0.0,<13.0.0"
 
   - name: ansible.posix
-    version: "2.0.0"
+    version: "2.1.0"
 
   # From Git, pinned to a tag
   - name: https://git.example.com/platform/acme.platform.git
@@ -135,7 +135,7 @@ On a machine with internet access:
 ```bash
 ansible-galaxy collection download -r collections/requirements.yml -p ./offline-collections
 ls offline-collections/
-# amazon-aws-9.4.0.tar.gz  ansible-posix-2.0.0.tar.gz  community-general-10.2.0.tar.gz  requirements.yml
+# amazon-aws-10.0.0.tar.gz  ansible-posix-2.1.0.tar.gz  community-general-12.0.0.tar.gz  requirements.yml
 ```
 
 `download` fetches the pinned collections **and their dependencies** as tarballs, plus a `requirements.yml` pointing at them. Copy the directory across, then on the isolated machine:

@@ -23,11 +23,11 @@ tags:
 
 **Short answer:** `kubelet` is the per-node agent that makes containers on that node match the Pod specs the API server assigned to it; `kube-proxy` is the per-node component that implements the Service abstraction by programming network rules.
 
-**Detailed:** `kubelet` doesn't route traffic and `kube-proxy` doesn't run containers — they solve two completely different problems. `kubelet` continuously reconciles "what containers should be running here" against "what's actually running," reporting status back up. `kube-proxy` watches Services and Endpoints and rewrites `iptables` (or `IPVS`) rules on every node so that traffic to a Service's virtual IP gets transparently routed to one of its backing Pods.
+**Detailed:** `kubelet` doesn't route traffic and `kube-proxy` doesn't run containers — they solve two completely different problems. `kubelet` continuously reconciles "what containers should be running here" against "what's actually running," reporting status back up. `kube-proxy` watches Services and EndpointSlices and rewrites `iptables` (or `nftables`) rules on every node so that traffic to a Service's virtual IP gets transparently routed to one of its backing Pods.
 
 **Common misconception:** That `kube-proxy` is a proxy in the literal sense — a process traffic actually flows through. In `iptables` mode (the common default) it isn't in the data path at all; it only programs kernel rules, and the kernel does the actual packet rewriting.
 
-**Senior follow-up:** "What's the practical tradeoff between `kube-proxy`'s `iptables` mode and `IPVS` mode?" — `iptables` rule evaluation is roughly linear in the number of rules, so it degrades as Service count grows into the thousands; `IPVS` uses hash tables and stays roughly constant, at the cost of being a less universally available kernel feature.
+**Senior follow-up:** "What's the practical tradeoff between `kube-proxy`'s modes?" — `iptables` rule evaluation is roughly linear in the number of rules, so it degrades (and rule updates slow down) as Service count grows into the thousands. `nftables` mode, stable since v1.33, uses map lookups and scales much better, and is where kube-proxy development is heading. `IPVS` also scaled well but lagged in features and was deprecated in v1.35. An eBPF datapath (Cilium) replaces kube-proxy altogether.
 
 ## What is CNI, and what's the actual division of labor between Kubernetes and a CNI plugin?
 
@@ -43,7 +43,7 @@ tags:
 
 **Short answer:** CoreDNS runs as a cluster add-on (itself just Pods behind a Service), and every Pod's `/etc/resolv.conf` is configured to query it, resolving names like `myapp-service.namespace.svc.cluster.local` to the Service's ClusterIP.
 
-**Detailed:** CoreDNS watches the API server for Services and Endpoints and serves records dynamically — there's no static zone file to update when a Service is created. The short-form name (`myapp-service`) resolves inside the same namespace because the Pod's `resolv.conf` includes a `search` path with the local namespace; from another namespace you need the full `myapp-service.other-namespace.svc.cluster.local` form.
+**Detailed:** CoreDNS watches the API server for Services and EndpointSlices and serves records dynamically — there's no static zone file to update when a Service is created. The short-form name (`myapp-service`) resolves inside the same namespace because the Pod's `resolv.conf` includes a `search` path with the local namespace; from another namespace you need the full `myapp-service.other-namespace.svc.cluster.local` form.
 
 **Common misconception:** That DNS failures are usually "CoreDNS is down." Far more often, the Service being queried simply doesn't exist yet, exists in a different namespace than assumed, or the querying Pod has a custom `dnsPolicy` that bypasses cluster DNS entirely.
 
@@ -56,6 +56,8 @@ tags:
 **Detailed:** An Ingress resource by itself does nothing — it's a set of routing rules that an Ingress *controller* (NGINX, Traefik, HAProxy, a cloud load balancer controller) actually implements by watching Ingress objects and configuring itself. That controller almost always sits in front of `ClusterIP` Services, not `NodePort` or `LoadBalancer` ones, since it's the single entry point doing the load balancing that a per-service `LoadBalancer` would otherwise duplicate.
 
 **Common misconception:** That you need a separate `LoadBalancer` Service per application to expose it externally. In practice one Ingress controller (behind one `LoadBalancer` Service) can front many applications by hostname/path, which is both the cost-effective and the operationally simpler pattern.
+
+**What's changed recently:** the most widely used controller, ingress-nginx, was retired in March 2026, and **Gateway API** is the Kubernetes project's recommended successor: typed fields for header matching and traffic weights instead of controller-specific annotations, and a split between platform-owned `Gateway`s and team-owned `HTTPRoute`s. Mentioning that shows you're current. See [Gateway API](../networking/07-gateway-api.md).
 
 **Senior follow-up:** "When would a Service alone — no Ingress — be the right choice for external exposure?" — non-HTTP protocols (raw TCP/UDP, a database, gRPC without an HTTP-aware Ingress controller in front) or genuinely low-traffic, single-application clusters where the extra layer buys nothing.
 

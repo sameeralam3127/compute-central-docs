@@ -174,6 +174,22 @@ kubectl auth can-i --list --namespace checkout
 
 `kubectl auth can-i` is the fastest way to prove an RBAC design does what you intended — always verify with `--as` before assuming a Role works.
 
+### Permissions That Are Quietly Equivalent to Admin
+
+Some grants look narrow but hand over far more than they appear to. Treat these like `cluster-admin` in review:
+
+| Permission | Why it's dangerous |
+|---|---|
+| `create` on `pods` (or Deployments, Jobs, ...) | The Pod can mount any Secret in the namespace and run as any ServiceAccount there, inheriting its permissions |
+| `get`/`list` on `secrets` | Reads every credential in the namespace; `list` returns them all in one call |
+| `escalate` or `bind` on roles | Lets a subject grant itself permissions it doesn't have |
+| `impersonate` on users, groups, or serviceaccounts | Act as anyone, including administrators |
+| `create` on `pods/exec` or `pods/attach` | A shell in any Pod, with that Pod's tokens and mounted secrets |
+| `get` on `nodes/proxy` | Direct access to the kubelet API on every node |
+| `update` on `validatingwebhookconfigurations` / `mutatingwebhookconfigurations` | Disable or redirect admission policy for the whole cluster |
+
+Audit these regularly (tools like `kubectl-who-can` or `rbac-tool` make it quick), and keep them out of anything bound to CI pipelines or default ServiceAccounts.
+
 ## Common Mistakes
 
 - Reaching for `ClusterRoleBinding` to `cluster-admin` to "just get past" a permissions error instead of writing the specific rule needed.

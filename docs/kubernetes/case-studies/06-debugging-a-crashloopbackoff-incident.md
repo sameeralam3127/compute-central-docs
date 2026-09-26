@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes CrashLoopBackOff Incident Debugging Case Study"
 icon: lucide/bug
-description: A realistic CrashLoopBackOff incident walked through describe, logs --previous, and events to find a renamed ConfigMap key hiding behind a red-herring OOMKill.
+description: "A realistic CrashLoopBackOff incident walked through describe, logs --previous, and events to find a renamed ConfigMap key hiding behind misleading probe failures."
 tags:
   - Kubernetes
   - Case Studies
@@ -18,7 +18,7 @@ At 14:02, a routine deploy of `order-service:1.4.0` goes out through the normal 
 - Identify the actual root cause using only `kubectl` — no re-deploying blind and hoping, no guessing from the changelog
 - Distinguish between the real cause and any misleading secondary signals along the way
 - Fix it with the smallest possible change, and confirm the fix before considering the incident resolved
-- Come out the other side with a concrete change that would have caught this before it reached production
+- Come out the other side with a concrete change that would have caught this before it reached production (the fix: the pipeline now renders manifests and runs the new image once with the target environment's ConfigMap in a pre-production namespace, so a missing key fails CI instead of production)
 
 ## Solution Walkthrough
 
@@ -52,10 +52,10 @@ Containers:
     State:          Waiting
       Reason:       CrashLoopBackOff
     Last State:     Terminated
-      Reason:       OOMKilled
-      Exit Code:    137
-      Started:      Wed, 24 Aug 2026 14:03:41 +0000
-      Finished:     Wed, 24 Aug 2026 14:03:42 +0000
+      Reason:       Error
+      Exit Code:    2
+      Started:      Mon, 24 Aug 2026 14:03:41 +0000
+      Finished:     Mon, 24 Aug 2026 14:03:42 +0000
     Ready:          False
     Restart Count:  6
     Limits:
@@ -70,10 +70,21 @@ Events:
   Normal   Pulled     4m (x6 over 4m12s) kubelet  Successfully pulled image "registry.example.com/order-service:1.4.0"
   Normal   Created    4m (x6 over 4m12s) kubelet  Created container order-service
   Normal   Started    4m (x6 over 4m12s) kubelet  Started container order-service
+  Warning  Unhealthy  4m (x9 over 4m10s) kubelet  Readiness probe failed: Get "http://10.244.2.17:8080/ready": dial tcp 10.244.2.17:8080: connect: connection refused
   Warning  BackOff    2m (x14 over 3m50s) kubelet Back-off restarting failed container
 ```
 
-`Last State: Terminated, Reason: OOMKilled` looks like an open-and-shut case — the obvious read is "1.4.0 uses more memory and needs a higher limit." **This is the red herring.** The container dies in under a second every time (`Started` and `Finished` a second apart), which is fast even for a genuine memory leak — real gradual memory growth usually takes longer than one second to hit a limit on a freshly started process. That timing detail is worth noting before accepting the OOMKill explanation at face value.
+The loudest signal is the stream of `Readiness probe failed ... connection refused` warnings, and the obvious read is "1.4.0 starts slower, the probe gives up too early, raise `initialDelaySeconds`." **This is the red herring.** A readiness failure never restarts a container; it only removes the Pod from Service endpoints. Something else is killing the process, and the probe is simply finding nothing listening because the process has already died.
+
+The evidence that matters is in `Last State`:
+
+| Field | Value | What it tells you |
+|---|---|---|
+| `Reason` | `Error` | The process exited by itself. `OOMKilled` would mean the kernel killed it for exceeding its memory limit |
+| `Exit Code` | `2` | Non-zero, chosen by the application (a Go panic exits with 2). `137` would be SIGKILL (OOM or a liveness kill), `143` SIGTERM |
+| `Started` → `Finished` | One second | It dies during startup, before it ever serves a request |
+
+An application that exits on its own within a second of starting is almost always refusing its configuration. The logs will say which part.
 
 ### Step 3: `logs --previous` — what actually happened before the kill
 
@@ -94,7 +105,7 @@ main.main()
         /app/main.go:22 +0x89
 ```
 
-This is the actual root cause: `1.4.0` renamed the expected environment variable from `PAYMENT_GATEWAY_ENDPOINT` to `PAYMENT_GATEWAY_URL`, but the ConfigMap backing it wasn't updated to match, so the new binary panics immediately on startup with a fatal config error — not a memory problem at all. A Go panic that unwinds the whole process and exits can, depending on the runtime and container memory accounting, get attributed by the kubelet as an OOM kill if the crash coincides with a brief memory spike during panic unwinding — which is exactly what produced the misleading `OOMKilled` reason in step 2 on this cluster.
+This is the actual root cause: `1.4.0` renamed the expected environment variable from `PAYMENT_GATEWAY_ENDPOINT` to `PAYMENT_GATEWAY_URL`, but the ConfigMap backing it wasn't updated to match, so the new binary panics immediately on startup with a fatal config error. Nothing about probes or timing — the probe failures in step 2 were a symptom of a process that was already dead.
 
 ### Step 4: Confirm against the actual ConfigMap
 
@@ -158,7 +169,8 @@ No output after several minutes, alongside a stable restart count, is what actua
 
 ## What Could Go Wrong
 
-- **Trusting the `OOMKilled` reason without reading `logs --previous`** — this incident's biggest trap. Bumping the memory limit in response to the reported OOMKill would not have fixed anything; the container would keep panicking on startup regardless of how much memory it's allowed, just with an even more confusing exit signature next time.
+- **Tuning the probe instead of reading `logs --previous`** — this incident's biggest trap. Raising `initialDelaySeconds` or `failureThreshold` in response to the readiness warnings would not have fixed anything; the process would keep exiting on startup no matter how patient the probe was. Read `Last State` (reason and exit code) and the previous container's logs before changing any setting.
+- **Misreading exit codes** — `137` (SIGKILL, often `OOMKilled`), `143` (SIGTERM), and small application codes like `1` or `2` point to completely different causes. The [CrashLoopBackOff troubleshooting page](../troubleshooting/crashloopbackoff.md) has the full table.
 - **`kubectl logs` without `--previous` on a crash-looping pod** — the plain `kubectl logs` command shows the *current* container attempt, which for a pod that's already back in its backoff-wait state may show nothing at all, or only a fragment. `--previous` is what shows the fatal error from the container instance that actually just crashed.
 - **Deploying an application change and its required config change as separate, uncoordinated steps** — the actual root cause here. A safer pattern is to have the application accept both the old and new key names for one release (with a deprecation warning on the old one), decoupling the code rollout from the config rollout by a full release cycle.
 - **Restarting the Deployment before actually fixing the ConfigMap** — this "fixes" the immediate symptom of stale pods for about as long as it takes the new pods to hit the same fatal panic again, and burns time that should have gone into finding the real cause.

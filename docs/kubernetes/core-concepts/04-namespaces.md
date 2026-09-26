@@ -23,7 +23,7 @@ tags:
 
 > A namespace is a way to divide a single cluster's resources into multiple virtual clusters — a name-collision and access-control boundary, not a hard security or network boundary.
 
-Two Pods named `web` can coexist in the same physical cluster only if they're in different namespaces — `web.dev.svc.cluster.local` and `web.prod.svc.cluster.local` are distinct DNS names built from the namespace. But by default, a Pod in `dev` can still send traffic to a Pod in `prod` unless a [NetworkPolicy](../security/index.md) explicitly blocks it — namespaces alone don't stop that.
+Two Pods named `web` can coexist in the same physical cluster only if they're in different namespaces — `web.dev.svc.cluster.local` and `web.prod.svc.cluster.local` are distinct DNS names built from the namespace. But by default, a Pod in `dev` can still send traffic to a Pod in `prod` unless a [NetworkPolicy](../networking/04-network-policies.md) explicitly blocks it — namespaces alone don't stop that.
 
 ```bash
 kubectl create namespace dev

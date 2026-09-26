@@ -119,7 +119,7 @@ DATABASE_HOST={{ hostvars['db01']['ansible_facts']['default_ipv4']['address'] }}
 Keep the cache warm with a scheduled fact-gathering run:
 
 ```bash
-ansible all -m ansible.builtin.setup --tree /dev/null   # populates the configured cache
+ansible all -m ansible.builtin.setup > /dev/null   # populates the configured cache
 ```
 
 ## Staleness: The Trade-Off

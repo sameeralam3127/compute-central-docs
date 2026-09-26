@@ -58,6 +58,9 @@ spec:
       containers:
         - name: postgres
           image: postgres:16.4
+          env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata   # subdirectory: a fresh volume's lost+found breaks initdb
           ports:
             - containerPort: 5432
           volumeMounts:
@@ -93,9 +96,10 @@ This distinction is the single most important thing to internalize about Statefu
 | `kubectl delete pod postgres-1` | Controller recreates `postgres-1` on (possibly) a different node | **Unchanged.** The new `postgres-1` remounts `data-postgres-1` — same data, same identity |
 | `kubectl scale statefulset postgres --replicas=2` | `postgres-2` is terminated | `data-postgres-2` is **retained** by default (not deleted) — scaling back up reattaches it |
 | `kubectl delete statefulset postgres` | All pods are terminated | All PVCs (`data-postgres-0/1/2`) are **retained** by default — the StatefulSet controller never deletes PVCs on its own |
-| `kubectl delete statefulset postgres --cascade=orphan` then delete PVCs manually | Pods terminated, StatefulSet object removed | PVCs remain until explicitly deleted — this is the only way they actually go away |
+| `kubectl delete statefulset postgres --cascade=orphan` | **Keep running**, unmanaged — only the StatefulSet object is removed | Untouched, still mounted. Used to change immutable StatefulSet fields: recreate the StatefulSet and it adopts the running Pods |
+| `kubectl delete pvc data-postgres-2` (with `Delete` reclaim policy) | — | The PVC, PV, **and the cloud disk** are deleted. The only step here that destroys data |
 
-By design, the StatefulSet controller treats storage as too precious to delete automatically. Even deleting the entire StatefulSet leaves every PVC bound and intact — you must delete PVCs yourself to actually free the underlying disks. As of Kubernetes 1.27+, an optional `persistentVolumeClaimRetentionPolicy` field lets you opt into automatic PVC deletion on scale-down or StatefulSet deletion, but the default (`Retain`) preserves the old, safer behavior:
+By design, the StatefulSet controller treats storage as too precious to delete automatically. Even deleting the entire StatefulSet leaves every PVC bound and intact — you must delete PVCs yourself to actually free the underlying disks. The `persistentVolumeClaimRetentionPolicy` field (stable since Kubernetes v1.32) lets you opt into automatic PVC deletion on scale-down or StatefulSet deletion, but the default (`Retain`) preserves the old, safer behavior:
 
 ```yaml
 spec:
@@ -103,6 +107,26 @@ spec:
     whenDeleted: Retain   # or Delete
     whenScaled: Retain    # or Delete
 ```
+
+### Growing StatefulSet volumes (a real procedure)
+
+`volumeClaimTemplates` can't be edited on an existing StatefulSet, so "the database disks are 90% full" needs a specific sequence. It works online when the StorageClass has `allowVolumeExpansion: true`:
+
+```bash
+# 1. Grow each existing PVC directly
+for i in 0 1 2; do
+  kubectl patch pvc data-postgres-$i -p '{"spec":{"resources":{"requests":{"storage":"100Gi"}}}}'
+done
+kubectl get pvc -l app=postgres -w          # wait until CAPACITY shows 100Gi
+
+# 2. Update the template so future replicas get the new size:
+#    delete only the StatefulSet object (Pods keep running), then re-apply
+#    the manifest with storage: 100Gi in volumeClaimTemplates
+kubectl delete statefulset postgres --cascade=orphan
+kubectl apply -f postgres-statefulset.yaml
+```
+
+The recreated StatefulSet adopts the running Pods by their labels; nothing restarts. If your GitOps tool manages the StatefulSet, make the template change in Git first so it doesn't revert step 2.
 
 ### Backup considerations
 
@@ -114,7 +138,7 @@ For the actual backup and disaster-recovery mechanics — CSI VolumeSnapshots, e
 
 - Assuming `kubectl delete statefulset` deletes the data — it doesn't, by default; the PVCs are orphaned but retained, which is a "phantom cost" trap (disks keep billing after the workload is gone) as often as it's a safety net.
 - Treating a retained PVC as a backup. It protects against StatefulSet/pod deletion, not against disk corruption, accidental PVC deletion, or region loss.
-- Manually editing `volumeClaimTemplates` on an existing StatefulSet expecting it to resize or reprovision existing PVCs — the field is immutable after creation and only affects PVCs for *new* ordinals when scaling up.
+- Manually editing `volumeClaimTemplates` on an existing StatefulSet expecting it to resize or reprovision existing PVCs — the API rejects the change. Resize the PVCs themselves, then recreate the StatefulSet with `--cascade=orphan` (see above).
 - Forgetting `persistentVolumeClaimRetentionPolicy` exists and manually scripting PVC cleanup instead, when the built-in `whenScaled`/`whenDeleted` policy may already cover the need.
 
 ## Interview Questions

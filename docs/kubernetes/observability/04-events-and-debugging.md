@@ -88,6 +88,18 @@ kubectl debug -it my-pod --image=busybox:1.36 --target=app
 kubectl debug node/my-node -it --image=busybox:1.36
 ```
 
+Two more forms solve problems that come up constantly in real incidents:
+
+```bash
+# The pod crashes too fast to attach to: debug a COPY with a shell and a new entrypoint
+kubectl debug my-pod -it --copy-to=my-pod-debug --container=app -- sh
+
+# Need tcpdump/iptables-level access: use a debugging profile that adds NET_ADMIN/NET_RAW
+kubectl debug -it my-pod --image=nicolaka/netshoot --target=app --profile=netadmin
+```
+
+`--copy-to` creates a new Pod from the original's spec (you can also swap its image with `--set-image`), so the original keeps crash-looping untouched while you poke at the copy. Delete the copy afterwards. Profiles (`general`, `baseline`, `restricted`, `netadmin`, `sysadmin`) set the debug container's security context; in a namespace enforcing the Restricted Pod Security Standard, only `restricted` is admitted. `kubectl debug node/...` mounts the node's root filesystem at `/host`, so `chroot /host` gives you the node's own tools.
+
 `--target=app` is what makes this genuinely useful for distroless containers: the ephemeral container shares the target container's process namespace, so tools like `ps`, `netstat`, or `curl` inside the debug container can inspect the actual running application process even though the application's own image has none of those tools.
 
 ```bash

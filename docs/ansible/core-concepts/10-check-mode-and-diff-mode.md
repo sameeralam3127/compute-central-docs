@@ -40,17 +40,29 @@ This ran with zero actual changes to `web01` — exactly the review step you wan
 
 ## The Limit: Not Every Module Supports Check Mode
 
-A module has to be written to support it (`supports_check_mode=True` internally, see [Build a Custom Module](../build-your-own/01-build-a-custom-module.md)). Most `ansible.builtin` modules do. `command` and `shell` **cannot** know what they'd change without actually running — by default, Ansible skips them in check mode entirely, unless you tell it otherwise:
+A module has to be written to support it (`supports_check_mode=True` internally, see [Build a Custom Module](../build-your-own/01-build-a-custom-module.md)). Most `ansible.builtin` modules do. `command` and `shell` **cannot** know what they'd change without actually running, so in check mode Ansible skips them. The exception is a task with `creates:` or `removes:`, which Ansible can evaluate without running the command.
+
+That skip causes a real problem for **read-only** commands whose output later tasks need:
 
 ```yaml
-- name: Restart the app only if a new build exists
-  ansible.builtin.command: systemctl restart app
-  when: new_build.stat.exists
-  changed_when: new_build.stat.exists
-  check_mode: false   # explicitly still run this even in --check, if you're sure it's safe
+- name: Read the currently deployed release
+  ansible.builtin.command: readlink /opt/checkout/current
+  register: current_release
+  changed_when: false
+  check_mode: false      # safe to run for real: it only reads
+
+- name: Upgrade when the release differs
+  ansible.builtin.include_tasks: upgrade.yml
+  when: (current_release.stdout | basename) != app_release
 ```
 
-`changed_when` overrides how a `command`/`shell` task reports change (by default it reports `changed` any time its return code is `0`, which is almost never what you want) — see it used the same way for idempotency workarounds in [command vs. shell vs. raw vs. script](../modules/01-command-vs-shell-vs-raw-vs-script.md).
+Without `check_mode: false`, the first task is skipped under `--check`, `current_release.stdout` doesn't exist, and the dry run fails on the second task, even though a real run would work. Use `check_mode: false` only on tasks that genuinely change nothing.
+
+`changed_when` overrides how a `command`/`shell` task reports change (by default it reports `changed` any time its return code is `0`, which is almost never what you want) — see it used the same way for idempotency workarounds in [command vs. shell vs. raw vs. script](../modules/01-command-vs-shell-vs-raw-vs-script.md). It does not make the task run in check mode.
+
+The opposite control also exists: `check_mode: true` on a task makes it **always** dry-run, even in a normal run. That's useful for a "what would change" report task inside a real deployment.
+
+`ansible_check_mode` is a variable that's `true` during `--check`. Use it to skip steps that can't work in a dry run, such as unpacking an archive the previous (dry-run) task never downloaded: `when: not ansible_check_mode`.
 
 ## Common Mistakes
 

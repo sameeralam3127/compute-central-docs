@@ -56,7 +56,7 @@ Step by step:
 5. **Remote execution** — the managed node's own Python interpreter runs the module as a standalone script.
 6. **JSON result** — the module prints exactly one JSON object to stdout. This is the entire contract between a module and Ansible — it's why modules can, in principle, be written in any language that can emit that JSON, even though nearly all official modules are Python.
 7. **Cleanup** — the temporary files are deleted (unless `ANSIBLE_KEEP_REMOTE_FILES=1` is set, which is genuinely useful for debugging).
-8. **Display** — the result is rendered on the control node by a callback plugin (the default `default` callback, or alternatives like `yaml`/`json`/`minimal`).
+8. **Display** — the result is rendered on the control node by a callback plugin: the `default` callback, or alternatives like `minimal` and `json`. For YAML-formatted results, set `callback_result_format = yaml` on the default callback. The old `community.general.yaml` callback was removed.
 
 None of this needs anything pre-installed on the managed node except an SSH server and a Python interpreter — no Ansible-specific software runs there before or after.
 
@@ -66,6 +66,8 @@ None of this needs anything pre-installed on the managed node except an SSH serv
 ## Why Managed Nodes Need Python
 
 Because the module that runs on the managed node is a Python program, the managed node needs a Python 3 interpreter to run it — Ansible doesn't install one for you. By default, `interpreter_python: auto` probes a list of common paths on the managed node and picks the first Python 3 it finds.
+
+The interpreter also has to be **new enough** for your `ansible-core` release. Each release supports a window of Python versions on managed nodes, and it moves forward over time. The [support matrix](04-installing-ansible.md#which-python-version-do-you-need) lists them. This bites hardest with long-lived hosts, such as a RHEL 8 box whose default `/usr/bin/python3` is 3.6.
 
 If a target has no Python at all — a bare cloud image, a minimal container — normal modules fail outright. The escape hatch is the **`raw`** module, which runs a command over SSH with no Python dependency on either side, specifically to bootstrap Python itself:
 

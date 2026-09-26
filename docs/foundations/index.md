@@ -9,7 +9,7 @@ tags:
 
 # DevOps Foundations
 
-Docker, Kubernetes, Terraform, and CI/CD all sit on the same four skills. A container is a Linux process. A Service is a network address and a DNS name. A pipeline starts with a Git push. And the glue between tools is usually a script. When those foundations are solid, every tool on top becomes easier to learn and much easier to debug.
+Docker, Kubernetes, Terraform, and CI/CD all sit on the same handful of skills. A container is a Linux process. A Service is a network address and a DNS name. A pipeline starts with a Git push. And the glue between tools is usually a script. When those foundations are solid, every tool on top becomes easier to learn and much easier to debug.
 
 ## What You'll Learn
 
@@ -18,11 +18,12 @@ Docker, Kubernetes, Terraform, and CI/CD all sit on the same four skills. A cont
 - How Git works internally, and how teams branch, review, and recover
 - How to write Python automation that is safe to run unattended
 
-## The Four Tracks
+## The Tracks
 
 | Track | Why it matters | Start |
 |---|---|---|
 | **Linux for DevOps** | Every server, container, and CI runner is Linux. Permissions, processes, systemd, disks, and performance are daily work. | [Linux](linux/index.md) |
+| **Shell Scripting** | Turning runbook commands into safe, repeatable scripts is the first step of automation. | [Shell Scripting](shell-scripting/index.md) |
 | **Networking** | Most production incidents involve DNS, TLS, timeouts, or a load balancer. | [Networking](networking/index.md) |
 | **Git and Branching** | Git is the interface to CI/CD and GitOps. Recovery skills prevent lost work. | [Git](git/index.md) |
 | **Python Automation** | When a shell script outgrows itself, Python handles APIs, data, and error handling cleanly. | [Python](python/index.md) |
@@ -44,7 +45,7 @@ You don't need to finish everything before moving on. A good rule: complete **Li
 
 ## How to Practice
 
-- **Use a disposable Linux machine.** A local VM (Multipass, UTM, VirtualBox), a WSL2 distribution, or a small cloud instance you can delete. Ubuntu 24.04 LTS matches the examples.
+- **Use a disposable Linux machine.** A local VM (Multipass, UTM, VirtualBox), a WSL2 distribution, or a small cloud instance you can delete. The examples use Ubuntu 24.04 LTS and Rocky/RHEL 9 or 10; newer LTS releases behave the same for nearly everything here.
 - **Break things on purpose.** Fill a disk, kill a process, misconfigure DNS — then fix it with the tools each chapter teaches.
 - **Write down what changed and why.** Your notes become your runbooks.
 

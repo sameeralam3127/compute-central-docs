@@ -107,7 +107,9 @@ spec:
         secretName: db-secret
 ```
 
-A mounted ConfigMap or Secret volume updates automatically when the underlying object changes (with a short delay, via the kubelet's sync loop) — env vars set at Pod start do **not** update until the Pod restarts.
+A mounted ConfigMap or Secret volume updates automatically when the underlying object changes (usually within a minute, via the kubelet's sync loop) — env vars set at Pod start do **not** update until the Pod restarts. Two exceptions catch people out: a volume mounted with `subPath` **never** updates, and an application only sees the new file if it re-reads it.
+
+In practice, most teams don't rely on live reloads. They trigger a rolling restart when config changes, either with `kubectl rollout restart deployment/<name>` or, in Helm, with a checksum annotation that changes whenever the ConfigMap does (see [ConfigMaps In Depth](../configuration-and-packaging/01-configmaps-in-depth.md)).
 
 ## Common Mistakes
 

@@ -88,18 +88,28 @@ Two ReplicaSets, one Deployment — the old one at zero replicas is exactly the 
 
 ## Basic Rolling Update Behavior
 
-By default, a Deployment uses `strategy.type: RollingUpdate`, replacing Pods gradually rather than all at once:
+By default, a Deployment uses `strategy.type: RollingUpdate`, replacing Pods gradually rather than all at once. If you don't set anything, both knobs default to **25%**:
 
 ```yaml
 spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 1        # at most 1 extra Pod above `replicas` during the rollout
-      maxUnavailable: 1  # at most 1 fewer Pod than `replicas` during the rollout
+      maxSurge: 25%        # default: extra Pods allowed above `replicas` (rounded up)
+      maxUnavailable: 25%  # default: Pods allowed below `replicas` (rounded down)
 ```
 
-With `replicas: 3`, `maxSurge: 1`, `maxUnavailable: 1`, the Deployment can briefly run up to 4 Pods and never drops below 2 while rolling from old to new. This default is deliberately conservative — it favors availability over rollout speed.
+Percentages are converted to Pod counts: `maxSurge` rounds **up** and `maxUnavailable` rounds **down**. With `replicas: 3`, that's a surge of 1 and an unavailability of 0, so the Deployment briefly runs 4 Pods and never drops below 3 ready Pods. With `replicas: 10`, it's a surge of 3 and an unavailability of 2.
+
+For a service that must never lose capacity during a deploy, set it explicitly:
+
+```yaml
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0    # a new Pod must be Ready before an old one is removed
+```
+
+"Ready" here means the Pod passed its **readiness probe**. Without one, a Pod counts as ready the moment its container starts, and a rollout can replace healthy Pods with ones that aren't serving yet. See [Probes](../observability/01-probes-liveness-readiness-startup.md).
 
 ```bash
 kubectl rollout status deployment/hello-web
@@ -119,7 +129,7 @@ This is intro-level on purpose. Tuning `maxSurge`/`maxUnavailable` for real traf
 
 - What does a ReplicaSet reconcile, and what does it explicitly *not* handle?
 - Why does a Deployment create a new ReplicaSet instead of updating the existing one's Pods in place?
-- What do `maxSurge` and `maxUnavailable` control, and what does each one being `1` mean for a 3-replica Deployment during a rollout?
+- What do `maxSurge` and `maxUnavailable` control, what are their defaults, and how many Pods can be unavailable during a rollout of a 3-replica Deployment that uses them?
 
 See [Interview Prep](../interview-prep/index.md) for full answers.
 

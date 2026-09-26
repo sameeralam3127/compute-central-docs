@@ -51,7 +51,7 @@ Test the artifact exactly as a consumer would:
 
 ```bash
 ansible-galaxy collection install dist/acme-platform-1.5.0.tar.gz -p /tmp/verify-install --force
-ansible-doc -M /tmp/verify-install acme.platform.feature_flag
+ANSIBLE_COLLECTIONS_PATH=/tmp/verify-install ansible-doc acme.platform.feature_flag
 ```
 
 ## 2. Test Before Publishing

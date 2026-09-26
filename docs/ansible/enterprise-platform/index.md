@@ -1,7 +1,7 @@
 ---
 title: "Ansible Automation Platform (AAP) and AWX Guide"
 icon: lucide/building-2
-description: "The Ansible ecosystem explained — ansible-core, the ansible package, AWX, Red Hat Ansible Automation Platform, Controller, Mesh, and licensing."
+description: "The Ansible ecosystem explained — ansible-core, the ansible package, AWX, Red Hat Ansible Automation Platform, Controller, Mesh, Event-Driven Ansible, and licensing."
 tags:
   - Ansible
   - Enterprise Platform
@@ -21,6 +21,7 @@ You don't need any of this to write and run great playbooks — plenty of teams 
 2. [Automation Controller and Automation Mesh](02-automation-controller-and-mesh.md) — the web UI/API/RBAC layer, and distributed execution
 3. [Execution Environments and Automation Hub](03-execution-environments-and-hub.md) — reproducible run environments and certified content
 4. [Licensing and Adoption](04-licensing-and-adoption.md) — AWX vs. a paid AAP subscription, and how to decide
+5. [Event-Driven Ansible](05-event-driven-ansible.md) — rulebooks that run automation when an alert or event arrives, with a working Alertmanager example
 
 ## Next
 

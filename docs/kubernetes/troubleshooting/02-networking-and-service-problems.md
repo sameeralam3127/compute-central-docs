@@ -15,12 +15,12 @@ Kubernetes networking failures nearly always sit at one of four layers: the Serv
 ## Service Has No Endpoints
 
 ```bash
-kubectl get endpoints myapp-service
-# NAME            ENDPOINTS   AGE
-# myapp-service   <none>      10m
+kubectl get endpointslices -l kubernetes.io/service-name=myapp-service
+# NAME                  ADDRESSTYPE   PORTS     ENDPOINTS   AGE
+# myapp-service-x7k2p   IPv4          <unset>   <unset>     10m
 ```
 
-An empty `ENDPOINTS` list means the Service exists but has found zero matching, ready pods — this is the single most common "service unreachable" cause and it isn't a networking bug at all.
+(`kubectl get endpoints myapp-service` shows the same thing in the older format, with a deprecation warning.) An empty `ENDPOINTS` list means the Service exists but has found zero matching, ready pods — this is the single most common "service unreachable" cause and it isn't a networking bug at all.
 
 **Likely causes:**
 
@@ -186,7 +186,7 @@ spec:
 
 | Symptom | Layer | Fix starting point |
 |---|---|---|
-| `kubectl get endpoints` shows `<none>` | Service selector/readiness | Compare selector to pod labels, check readiness |
+| EndpointSlice shows no endpoints | Service selector/readiness | Compare selector to pod labels, check readiness |
 | DNS lookup times out | CoreDNS/resolv.conf | Check CoreDNS pods and logs |
 | Ingress `404` | Ingress rule/class | Check host/path match and `ingressClassName` |
 | Ingress `502`/`503` | Backend health | Confirm Service has ready endpoints |
@@ -194,7 +194,7 @@ spec:
 
 ## Interview Questions
 
-- A Service shows healthy pods but `kubectl get endpoints` returns nothing — what are the two most likely explanations?
+- A Service shows healthy pods but its EndpointSlices list no endpoints — what are the two most likely explanations?
 - What's the practical difference between a `502` and a `503` from an Ingress controller, in terms of what's actually broken?
 - How do you tell a NetworkPolicy-caused connection failure apart from a DNS failure, when both can look like "the app can't reach the service"?
 

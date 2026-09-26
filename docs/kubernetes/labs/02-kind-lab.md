@@ -30,16 +30,18 @@ brew install kind
 **Linux**
 
 ```bash
-curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.24.0/kind-linux-amd64
-chmod +x ./kind
-sudo mv ./kind /usr/local/bin/kind
+# Take the current version from https://github.com/kubernetes-sigs/kind/releases
+KIND_VERSION=v0.30.0
+ARCH=$(uname -m | sed 's/x86_64/amd64/; s/aarch64/arm64/')
+curl -Lo ./kind "https://kind.sigs.k8s.io/dl/${KIND_VERSION}/kind-linux-${ARCH}"
+sudo install -m 0755 ./kind /usr/local/bin/kind
 ```
 
 Verify:
 
 ```bash
 kind version
-# kind v0.33.0 go1.25.x linux/amd64
+# kind v0.30.0 go1.24.x linux/amd64   (your version will differ)
 ```
 
 ## 2. Define a multi-node cluster
@@ -199,6 +201,7 @@ curl http://localhost:30080
 
 - **Pod stuck in `ImagePullBackOff`** — almost always `imagePullPolicy` wasn't set to `IfNotPresent`, or the image tag loaded doesn't exactly match the tag in the manifest.
 - **`curl localhost:30080` connection refused** — the `extraPortMappings` block only takes effect for nodes it's declared on; confirm it's under the `control-plane` node entry in `kind-config.yaml` and that you created the cluster with `--config kind-config.yaml`.
+- **`kind load docker-image` fails with a digest or "not found" error on Docker Desktop** — Docker Desktop's newer containerd image store can export images in a way `kind load docker-image` doesn't handle, especially multi-platform images. Load through an archive instead: `docker save local/hello-kind:1.0 -o hello.tar && kind load image-archive hello.tar --name lab`.
 - **New image changes don't show up** — `kind load docker-image` doesn't overwrite an already-loaded image with the same tag reliably; bump the tag (`:1.1`) or delete the pods to force a re-pull from containerd's local cache.
 - **Nodes stuck `NotReady`** — kind installs its own CNI automatically; if this happens, check `docker ps` shows all three `lab-*` containers running and `kubectl describe node <name>` for the actual condition.
 

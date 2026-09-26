@@ -45,7 +45,7 @@ flowchart TD
 
 1. [SSH and Connection Problems](01-ssh-and-connection-problems.md)
 2. [Become and Permission Problems](02-become-and-permission-problems.md)
-3. [YAML and Variable Errors](03-yaml-and-variable-errors.md)
+3. [YAML and Variable Errors](03-yaml-and-variable-errors.md) — including errors after an `ansible-core` 2.19 upgrade
 4. [Module and Execution Errors](04-module-and-execution-errors.md)
 
 ## Next

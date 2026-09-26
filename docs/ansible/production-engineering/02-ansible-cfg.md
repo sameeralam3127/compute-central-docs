@@ -37,25 +37,34 @@ shows exactly which settings differ from their defaults, and which file each cam
 
 ```ini title="ansible.cfg"
 [defaults]
-inventory = inventories/production/hosts.ini
+# Default to a SAFE inventory. Production is always passed explicitly with -i.
+inventory = inventories/dev
 remote_user = deploy
-host_key_checking = True
 forks = 20
-retry_files_enabled = False
 roles_path = roles
 collections_path = collections
+interpreter_python = auto_silent
+callback_result_format = yaml       ; readable task results (replaces the removed yaml callback)
+callbacks_enabled = ansible.posix.profile_tasks   ; per-task timing; needs the ansible.posix collection
+retry_files_enabled = False
+host_key_checking = True
+force_handlers = True               ; a failed task doesn't strand already-notified handlers
 
 [ssh_connection]
 pipelining = True
-ssh_args = -o ControlMaster=auto -o ControlPersist=60s
-control_path_dir = /tmp/.ansible-cp
+ssh_args = -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=accept-new
+control_path_dir = ~/.ansible/cp
 
 [privilege_escalation]
-become = True
 become_method = sudo
-become_user = root
 become_ask_pass = False
 ```
+
+Three choices here are deliberate:
+
+- **The default inventory is `dev`, not production.** Someone who forgets `-i` lands in the environment where mistakes are cheap. Pointing the default at production turns every forgotten flag into a production change.
+- **`become` isn't switched on globally.** Plays and tasks opt in with `become: true` where they need root, which keeps least privilege visible in review (see [Security](04-security.md)) and avoids breaking `delegate_to: localhost` tasks and Windows hosts.
+- **The ControlPersist socket lives in your home directory**, not a shared `/tmp`, where other local users could see or interfere with it.
 
 ## Settings by Category
 
@@ -69,6 +78,9 @@ become_ask_pass = False
 | Performance | `ssh_args` (ControlPersist) | Reuses one SSH connection across tasks instead of a fresh handshake per task |
 | Behavior | `interpreter_python` | `auto` (default), or pin explicitly for a known fleet to skip probing cost |
 | Behavior | `remote_tmp` | Where module code is staged on the managed node |
+| Behavior | `force_handlers` | Run notified handlers even when a later task fails |
+| Output | `callback_result_format` | `yaml` or `json` result formatting for the default callback |
+| Output | `callbacks_enabled` | Extra callbacks such as `ansible.posix.profile_tasks` (task timing) |
 | Security | `become`, `become_method`, `become_user` | Privilege escalation defaults — see [Security](04-security.md) |
 
 ## Common Mistakes

@@ -57,6 +57,9 @@ spec:
   serviceName: postgres   # must match the headless Service above
   replicas: 3
   podManagementPolicy: OrderedReady   # default; use Parallel to relax ordering
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain    # keep PVCs if the StatefulSet is deleted (default)
+    whenScaled: Retain     # keep PVCs of scaled-down Pods (default)
   selector:
     matchLabels:
       app: postgres
@@ -67,7 +70,10 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:16.3
+          image: postgres:16.4
+          env:
+            - name: PGDATA                          # a subdirectory, not the mount root:
+              value: /var/lib/postgresql/data/pgdata   # many volumes contain lost+found, which initdb refuses
           ports:
             - containerPort: 5432
           volumeMounts:
@@ -112,7 +118,7 @@ This is what lets replication configs, seed lists, and peer-discovery logic refe
 
 ### Stable storage
 
-`volumeClaimTemplates` creates one PVC per pod (`data-postgres-0`, `data-postgres-1`, `data-postgres-2`). When `postgres-1` is deleted and recreated (crash, node drain, rolling update), the new `postgres-1` pod re-attaches to the **same** PVC — its data survives the pod's death. Deleting the StatefulSet does **not** delete these PVCs; that's deliberate, so scaling down and back up doesn't silently destroy data.
+`volumeClaimTemplates` creates one PVC per pod (`data-postgres-0`, `data-postgres-1`, `data-postgres-2`). When `postgres-1` is deleted and recreated (crash, node drain, rolling update), the new `postgres-1` pod re-attaches to the **same** PVC — its data survives the pod's death. Deleting the StatefulSet does **not** delete these PVCs by default; that's deliberate, so scaling down and back up doesn't silently destroy data. `persistentVolumeClaimRetentionPolicy` (stable since v1.32) lets you choose `Delete` for either case — useful for disposable test environments, dangerous for anything you care about.
 
 !!! note "Storage depth lives elsewhere"
     Access modes, reclaim policies, StorageClasses, and volume expansion for StatefulSet-backed storage are covered in [StatefulSet Storage Patterns](../storage/04-statefulset-storage-patterns.md).
@@ -122,6 +128,9 @@ This is what lets replication configs, seed lists, and peer-discovery logic refe
 - Databases: PostgreSQL, MySQL, MongoDB replica sets, Cassandra
 - Coordination/consensus: etcd, ZooKeeper, Consul
 - Message queues/streaming: Kafka, RabbitMQ clusters
+
+!!! tip "In production, let an operator run the database"
+    The manifest above gives you three Postgres Pods with their own disks, but **not** a replicated cluster: nothing configures streaming replication, promotes a replica when the primary dies, or takes backups. Teams running databases on Kubernetes use an operator that encodes that knowledge, such as [CloudNativePG](https://cloudnative-pg.io/) for PostgreSQL, Strimzi for Kafka, or the Percona operators for MySQL and MongoDB. They still use StatefulSets or Pods with PVCs underneath. Many teams choose a managed database (RDS, Cloud SQL) instead and keep only stateless services in the cluster.
 
 ## Common Mistakes
 

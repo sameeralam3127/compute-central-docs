@@ -54,18 +54,20 @@ flowchart TD
 - name: Preflight checks on every host
   hosts: all
   tasks:
-    - name: Ensure disk space is sufficient
-      ansible.builtin.command: df -h /
-      register: disk_check
-      changed_when: false
+    - name: Refuse to continue if / has less than 2 GB free
+      ansible.builtin.assert:
+        that: (ansible_facts['mounts'] | selectattr('mount', 'equalto', '/') | first).size_available > 2 * 1024**3
+        fail_msg: "Less than 2 GB free on / — clean up before deploying"
 
 - name: Configure web servers
   hosts: web
   become: true
   pre_tasks:
-    - name: Update package cache
-      ansible.builtin.package:
+    - name: Refresh the apt cache if it's older than an hour
+      ansible.builtin.apt:
         update_cache: true
+        cache_valid_time: 3600
+      when: ansible_facts['os_family'] == 'Debian'
   roles:
     - nginx
   post_tasks:
@@ -81,7 +83,9 @@ flowchart TD
     - postgresql
 ```
 
+- The preflight play checks a real condition and fails with a clear message. Running `df -h` and registering the output would never stop anything.
 - `pre_tasks` / `post_tasks` run before/after `roles:`, regardless of what's inside the role — useful for "always check X before this role runs" logic that shouldn't live inside the role itself.
+- `update_cache` belongs to the distribution-specific module (`apt`, `dnf`). The generic `package` module only installs and removes packages.
 - Plays run **in order**, top to bottom, each against its own `hosts:` pattern.
 - Within a play, by default (the `linear` strategy), Ansible runs each task on **all** targeted hosts before moving to the next task — not host-by-host sequentially. See [Forks, Serial, Strategy](../advanced-execution/01-forks-serial-strategy-throttle.md).
 

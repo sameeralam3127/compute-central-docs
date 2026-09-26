@@ -74,7 +74,7 @@ tags:
   - linux
 dependencies:
   ansible.posix: ">=1.5.0"
-  community.general: ">=9.0.0,<11.0.0"
+  community.general: ">=11.0.0,<13.0.0"
 repository: https://git.example.com/platform/acme.platform
 build_ignore:
   - .github
@@ -94,7 +94,7 @@ build_ignore:
 ## meta/runtime.yml
 
 ```yaml title="meta/runtime.yml"
-requires_ansible: ">=2.16.0"
+requires_ansible: ">=2.18.0"
 plugin_routing:
   modules:
     old_flag:
@@ -104,7 +104,7 @@ plugin_routing:
         warning_text: Use acme.platform.feature_flag instead.
 ```
 
-`requires_ansible` declares which `ansible-core` versions the collection supports, and Galaxy and Automation Hub require it. `plugin_routing` lets you rename or move plugins without breaking existing playbooks immediately.
+`requires_ansible` declares which `ansible-core` versions the collection supports, and Galaxy and Automation Hub require it. Raise the floor as old `ansible-core` releases reach end of life, so you're not promising support for versions you no longer test. `plugin_routing` lets you rename or move plugins without breaking existing playbooks immediately.
 
 ## The Three-Part Name
 

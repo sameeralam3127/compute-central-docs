@@ -46,7 +46,7 @@ ETCDCTL_API=3 etcdctl snapshot save /backup/etcd-snapshot-$(date +%Y%m%d%H%M).db
   --cert=/etc/kubernetes/pki/etcd/server.crt \
   --key=/etc/kubernetes/pki/etcd/server.key
 
-ETCDCTL_API=3 etcdctl snapshot status /backup/etcd-snapshot-*.db --write-out=table
+etcdutl snapshot status /backup/etcd-snapshot-*.db --write-out=table   # etcdutl, not etcdctl, on etcd 3.6+
 ```
 
 Run Velero backups for namespace-level and PV-level recovery, which is the far more common real-world restore ("bring back the `payments` namespace as it was an hour ago") compared to a full etcd disaster:

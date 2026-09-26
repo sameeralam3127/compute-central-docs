@@ -1,7 +1,7 @@
 ---
 title: "Fix Ansible YAML Errors and Undefined Variables"
 icon: lucide/file-warning
-description: Diagnosing Ansible YAML parse errors and undefined-variable failures — reading the line/column error, and the fastest way to trace a variable's source.
+description: "Fix Ansible YAML parse errors, undefined variables, and ansible-core 2.19 upgrade errors like \"Conditionals must have a boolean result\"."
 tags:
   - Ansible
   - Troubleshooting
@@ -16,6 +16,7 @@ tags:
 - The handful of YAML mistakes behind most parse errors
 - How to diagnose `'X' is undefined` and `'dict object' has no attribute` errors quickly
 - How YAML type surprises become confusing errors deep inside a task
+- The errors that appear after upgrading to `ansible-core` 2.19, and how to fix each one
 
 ## Why This Exists
 
@@ -210,6 +211,60 @@ ansible-playbook site.yml -e '{"replicas": 3}'
 ```yaml
 when: replicas | int > 2
 ```
+
+## Upgrade Errors After ansible-core 2.19
+
+`ansible-core` 2.19 rebuilt templating. Most playbooks run unchanged, but code that relied on the old, looser behavior fails. These are the patterns behind nearly all upgrade failures, in the order you're likely to meet them.
+
+### "Conditionals must have a boolean result"
+
+```text
+fatal: [web01]: FAILED! => {"msg": "Conditional result (True) was derived from value of type 'str' at '...'. Conditionals must have a boolean result."}
+```
+
+A `when:`, `failed_when:`, `changed_when:`, `until:`, or `assert` expression returned a string, list, or number instead of `true`/`false`. The usual culprits are flags passed with `-e` (always strings) and "is this non-empty?" checks:
+
+```yaml
+when: skip_backup                  # "false" from -e is a non-empty string
+when: skip_backup | bool           # fixed
+
+when: result.stdout                # a string
+when: result.stdout | length > 0   # fixed
+```
+
+More examples: [Conditionals must be booleans](../core-concepts/06-conditionals.md#conditionals-must-be-booleans-ansible-core-219). As a stopgap while you fix a large codebase, `ALLOW_BROKEN_CONDITIONALS=True` restores the old behavior with a deprecation warning. Treat it as temporary.
+
+### Templates inside a conditional
+
+```yaml
+when: "{{ env }} == 'production'"     # fails on 2.19+
+when: env == 'production'             # fixed: when is already an expression
+```
+
+`when:` is evaluated as Jinja2 already. Wrapping part of it in `{{ }}` built a string that was then evaluated a second time, which 2.19 no longer allows.
+
+### A template built at run time doesn't render
+
+A value assembled at run time that contains `{{ }}`, such as a string built with `set_fact` from pieces, is no longer rendered a second time. Strings that come from module results, files, and APIs are never treated as templates. Replace the pattern with direct access:
+
+```yaml
+# Before: build a variable name as a template, then render it
+msg: "{{ '{{ ' ~ service_name ~ '_port }}' }}"
+
+# After: look the variable up directly
+msg: "{{ lookup('ansible.builtin.vars', service_name ~ '_port') }}"
+```
+
+### Deprecation warnings about top-level facts
+
+`ansible-core` 2.20 warns when a playbook reads injected fact variables like `ansible_os_family`. They still work for now; switch to `ansible_facts['os_family']` before the default changes. [Facts](../variables-and-data/03-facts.md) has a one-line `grep` to find them all.
+
+### Upgrade safely
+
+1. Install the new `ansible-core` in a separate virtualenv; don't upgrade the shared control node first.
+2. Run `ansible-lint` and `ansible-playbook --syntax-check`, then `--check --diff` against staging.
+3. Read every `[DEPRECATION WARNING]` in the output. Each one names the file and line to fix.
+4. Run the full test suite ([Molecule](../production-engineering/07-molecule-testing.md)) on the new version in CI before switching production runs over.
 
 ## Common Mistakes
 

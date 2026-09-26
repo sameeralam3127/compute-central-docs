@@ -77,7 +77,7 @@ metadata:
   name: batch-worker
 spec:
   nodeSelector:
-    node.kubernetes.io/capacity-type: spot
+    karpenter.sh/capacity-type: spot     # label depends on your provisioner; see the table below
   tolerations:
     - key: "spot"
       operator: "Equal"
@@ -88,6 +88,15 @@ spec:
     - name: worker
       image: registry.example.com/batch-worker:2.4.1
 ```
+
+There's no standard Kubernetes label for spot capacity; each provisioner sets its own:
+
+| Where the node comes from | Spot label |
+|---|---|
+| Karpenter (AWS or Azure) | `karpenter.sh/capacity-type: spot` |
+| EKS managed node group | `eks.amazonaws.com/capacityType: SPOT` |
+| GKE Spot VMs | `cloud.google.com/gke-spot: "true"` |
+| AKS spot node pool | `kubernetes.azure.com/scalesetpriority: spot` (also tainted by default) |
 
 Pair spot node pools with a PodDisruptionBudget so a wave of reclaimed nodes can't take an entire Deployment down at once — see [Production Readiness Checklist](05-production-readiness-checklist.md) for where PDBs fit into the broader gate.
 
@@ -118,7 +127,7 @@ kubectl describe node <node> | grep -A5 "Allocated resources"
 
 ### Cost visibility
 
-Requests, spot usage, and bin-packing only stay optimized if someone can see cost per namespace, team, or workload over time — otherwise regressions creep back in unnoticed. Tools like **Kubecost** (or a cloud provider's own cost-allocation views) attribute spend down to namespace/label/workload level using actual requests, usage, and node pricing, which is what turns "the bill went up" into "team X's staging environment is running 40 replicas it doesn't need."
+Requests, spot usage, and bin-packing only stay optimized if someone can see cost per namespace, team, or workload over time — otherwise regressions creep back in unnoticed. Tools like **OpenCost** (the open-source CNCF project), **Kubecost** (its commercial sibling, now part of IBM), or a cloud provider's own cost-allocation views attribute spend down to namespace/label/workload level using actual requests, usage, and node pricing, which is what turns "the bill went up" into "team X's staging environment is running 40 replicas it doesn't need."
 
 ## Common Mistakes
 

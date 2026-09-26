@@ -62,6 +62,15 @@ The first time you connect to a host, SSH records its public key fingerprint in 
 !!! danger "Don't disable host key checking globally in production"
     You'll see `ANSIBLE_HOST_KEY_CHECKING=False` or `host_key_checking = False` in a lot of tutorials, because it removes an annoying interactive prompt on freshly built lab hosts. In production this removes a real security control. Prefer pre-seeding `known_hosts` (many cloud providers publish host keys) or accepting new host keys deliberately, not blanket-disabling verification.
 
+For fleets where new hosts appear constantly (autoscaling groups, freshly provisioned VMs), `StrictHostKeyChecking=accept-new` is the practical middle ground. It records a host's key the **first** time it's seen, without a prompt, but still refuses the connection if a known host's key later **changes**:
+
+```ini title="ansible.cfg"
+[ssh_connection]
+ssh_args = -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=accept-new
+```
+
+Re-include `ControlMaster`/`ControlPersist` whenever you override `ssh_args`, or you silently lose connection reuse (see [Connection Plugins](../advanced-execution/03-connection-plugins.md#controlpersist-reuse-one-ssh-connection)).
+
 ## Connection Variables
 
 These are the inventory/host variables that control how Ansible connects to a specific host — set them in `inventory.ini`, `host_vars/`, or `group_vars/`:
@@ -139,6 +148,18 @@ ssh -vvv deploy@web01.example.com
 4. `ssh-agent` isn't running, or the right key was never `ssh-add`-ed.
 
 For a `UNREACHABLE` that's a timeout rather than a rejection, the cause is almost always network/firewall/security-group, not credentials — check that the port is reachable at all first (`nc -zv host 22`).
+
+A third failure shows up when a **new** control node talks to an **old** host: recent OpenSSH releases no longer offer the legacy `ssh-rsa` (SHA-1) signature algorithm or DSA keys, so appliances and end-of-life distributions stop negotiating:
+
+```text
+Unable to negotiate with 10.0.5.20 port 22: no matching host key type found. Their offer: ssh-rsa
+```
+
+Upgrade or re-key the old host if you can. If you can't yet, re-enable the algorithm for **that host only**, never globally:
+
+```ini title="host_vars/legacy-switch01.yml"
+ansible_ssh_common_args: "-o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa"
+```
 
 See the dedicated [SSH and Connection Problems](../troubleshooting/01-ssh-and-connection-problems.md) page for a fuller symptom-by-symptom table.
 

@@ -74,6 +74,8 @@ git cat-file -p HEAD:greeting.txt     # the blob: hello
 
 Because an object's name is the hash of its content, changing anything — a file, a message, a parent — produces a different hash. That's what makes history tamper-evident, and why rewriting one old commit changes every commit after it.
 
+Those hashes are SHA-1 (40 hex characters) in almost every repository today. Git also supports SHA-256 repositories (`git init --object-format=sha256`), and the Git project plans to make SHA-256 the default in Git 3.0, alongside `main` as the default branch name. Existing repositories keep working either way; the change matters mostly for tools that assume a 40-character hash.
+
 ## Three Places Your Changes Live
 
 ```mermaid

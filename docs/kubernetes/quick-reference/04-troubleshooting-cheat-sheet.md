@@ -26,10 +26,10 @@ A fast first-command lookup. For the full diagnosis, causes, and fix per symptom
 
 | Symptom | First command | Likely fix |
 |---|---|---|
-| Service unreachable | `kubectl get endpoints <svc>` | Fix selector/label mismatch or readiness probe — [details](../troubleshooting/02-networking-and-service-problems.md#service-has-no-endpoints) |
+| Service unreachable | `kubectl get endpointslices -l kubernetes.io/service-name=<svc>` | Fix selector/label mismatch or readiness probe — [details](../troubleshooting/02-networking-and-service-problems.md#service-has-no-endpoints) |
 | DNS lookup fails in pod | `kubectl get pods -n kube-system -l k8s-app=kube-dns` | Restart CoreDNS, use FQDN across namespaces — [details](../troubleshooting/02-networking-and-service-problems.md#dns-resolution-failures-inside-pods) |
 | Ingress `404` | `kubectl describe ingress <name>` | Set `ingressClassName`, fix host/path rule — [details](../troubleshooting/02-networking-and-service-problems.md#ingress-returning-404-502-or-503) |
-| Ingress `502`/`503` | `kubectl get endpoints <backend-svc>` | Confirm backend has ready endpoints — [details](../troubleshooting/02-networking-and-service-problems.md#ingress-returning-404-502-or-503) |
+| Ingress `502`/`503` | `kubectl get endpointslices -l kubernetes.io/service-name=<backend-svc>` | Confirm backend has ready endpoints — [details](../troubleshooting/02-networking-and-service-problems.md#ingress-returning-404-502-or-503) |
 | Connection times out, no error | `kubectl get networkpolicy -n <ns>` | Add matching `allow` rule — [details](../troubleshooting/02-networking-and-service-problems.md#traffic-silently-dropped-by-a-networkpolicy) |
 
 ## Storage
@@ -47,6 +47,8 @@ A fast first-command lookup. For the full diagnosis, causes, and fix per symptom
 | Node `NotReady` | `kubectl describe node <name>` | Restart kubelet, check CNI pod on that node — [details](../troubleshooting/04-cluster-and-node-problems.md#node-notready) |
 | Pods `Evicted` | `kubectl get events -A --field-selector reason=Evicted` | Reclaim disk, set resource requests cluster-wide — [details](../troubleshooting/04-cluster-and-node-problems.md#diskpressure-and-memorypressure-evictions) |
 | `kubectl` slow/timing out cluster-wide | `kubectl get --raw /healthz` | Check etcd/apiserver health — [details](../troubleshooting/04-cluster-and-node-problems.md#control-plane-component-failures) |
+| Pod stuck `Terminating` | `kubectl get pod <name> -o jsonpath='{.metadata.finalizers}'` | Check node state and finalizers before `--force` — [details](../troubleshooting/04-cluster-and-node-problems.md#pods-stuck-in-terminating) |
+| Node drain hangs | `kubectl get pdb -A` | A PodDisruptionBudget allows 0 disruptions — [details](../workloads-and-scheduling/01-deployment-strategies.md#poddisruptionbudgets-availability-during-maintenance) |
 
 ## Rollouts
 

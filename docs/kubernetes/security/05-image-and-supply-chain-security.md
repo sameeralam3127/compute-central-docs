@@ -56,13 +56,12 @@ CI scanning only helps if every image is guaranteed to go through that CI pipeli
 **OPA Gatekeeper** and **Kyverno** are the two dominant policy engines, both implemented as validating (and optionally mutating) admission webhooks:
 
 ```yaml
-# Kyverno ClusterPolicy: block images without a pinned digest or tag
+# Kyverno ClusterPolicy: every image must carry an explicit tag, and it can't be :latest
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: disallow-latest-tag
 spec:
-  validationFailureAction: Enforce
   rules:
     - name: require-image-tag
       match:
@@ -70,6 +69,19 @@ spec:
           - resources:
               kinds: ["Pod"]
       validate:
+        failureAction: Enforce        # Kyverno 1.13+; older releases use spec.validationFailureAction
+        message: "Images must specify a tag."
+        pattern:
+          spec:
+            containers:
+              - image: "*:*"
+    - name: disallow-latest
+      match:
+        any:
+          - resources:
+              kinds: ["Pod"]
+      validate:
+        failureAction: Enforce
         message: "Images must not use the ':latest' tag."
         pattern:
           spec:
@@ -94,6 +106,10 @@ spec:
 ```
 
 Kyverno's policies are written directly in YAML; Gatekeeper's constraints are backed by Rego policy logic wrapped in a ConstraintTemplate. Both integrate the same way: as admission webhooks that reject non-compliant objects before they're persisted.
+
+The pattern `*:*` matters: an image written with no tag at all (`nginx`) is pulled as `:latest`, so a rule that only rejects the literal string `:latest` lets it through. Stricter teams require a digest (`@sha256:...`) instead, which also guarantees the bytes that were scanned and signed are the bytes that run.
+
+For simple rules you don't need a policy engine at all. Kubernetes' built-in **ValidatingAdmissionPolicy** runs CEL expressions inside the API server — see [Authentication and Authorization](01-authentication-and-authorization.md#built-in-policies-validatingadmissionpolicy).
 
 ### Image signing and verification
 
@@ -129,7 +145,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: private-app
-  namespace production
+  namespace: production
 spec:
   imagePullSecrets:
     - name: regcred

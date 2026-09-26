@@ -27,13 +27,19 @@ You'll sometimes hear "Ansible just compiles YAML into Python and runs it." That
 flowchart TD
     A[YAML file on disk] --> B[YAML parser\nPyYAML / libyaml]
     B --> C[Python dicts and lists\none per play/task]
-    C --> D[Ansible engine validates\nagainst each module's argument_spec]
-    D --> E[Jinja2 renders any\n"{{ }}" expressions]
-    E --> F[Task Queue Manager\ndispatches the task]
-    F --> G[Module code shipped to\nmanaged node, executed there\nby the managed node's Python]
-    G --> H[Module prints one JSON\nobject to stdout]
-    H --> I[Result flows back to\nthe control node]
+    C --> D[Engine builds Play and Task objects\nand checks task keywords]
+    D --> E[Task Queue Manager\npicks the next task per host]
+    E --> F[Jinja2 renders that task's\n"{{ }}" expressions, for that host]
+    F --> G[Module + arguments packaged\nas one AnsiballZ payload]
+    G --> H[Managed node's Python runs it;\nAnsibleModule validates the\narguments against argument_spec]
+    H --> I[Module prints one JSON\nobject to stdout]
+    I --> J[Result flows back to\nthe control node]
 ```
+
+Two details in that order trip people up:
+
+- **Templating happens per host, just before the task runs**, not once when the playbook loads. That's why `{{ inventory_hostname }}` can differ for every host in the same task.
+- **Module arguments are validated on the managed node**, by `AnsibleModule` inside the module itself, after templating. A wrong type or a missing required argument fails when the task runs, not when the playbook is parsed. `--syntax-check` can't catch it.
 
 Six distinct things are easy to conflate. They are not the same:
 
@@ -69,7 +75,7 @@ task = {
 }
 ```
 
-The engine takes that dict, validates `args` against the `package` module's `argument_spec` (see [Build a Custom Module](../build-your-own/01-build-a-custom-module.md) for how a module declares one), ships the module code to the managed node, and waits for a JSON result — conceptually:
+The engine takes that dict, renders any templates in `args` for the current host, ships the module code and arguments to the managed node, where `AnsibleModule` validates them against the `package` module's `argument_spec` (see [Build a Custom Module](../build-your-own/01-build-a-custom-module.md) for how a module declares one), and waits for a JSON result — conceptually:
 
 ```python
 # Conceptual only — the shape of what comes back
@@ -90,6 +96,24 @@ result = {
 ```
 
 The YAML parser sees `"/etc/app/{{ env_name }}.conf"` as an ordinary string — it has no special meaning to YAML. Only *after* parsing does Ansible pass string values through the Jinja2 engine, substituting `{{ env_name }}` with its resolved value. This is why a Jinja2 syntax error shows up as a templating error at task-execution time, not as a YAML parse error at load time — they're genuinely different stages, with different error messages.
+
+### Trusted and Untrusted Strings (ansible-core 2.19+)
+
+Since `ansible-core` 2.19, Ansible tracks **where every string came from**. Strings written in your playbooks, roles, and inventory are *trusted* and get templated. Strings that arrive at run time, such as command output, API responses, and file contents read by a module, are *untrusted* and are treated as plain text even if they contain `{{ }}`.
+
+```yaml
+- name: Read a value from an API
+  ansible.builtin.uri:
+    url: https://config.internal.example.com/motd
+    return_content: true
+  register: motd_api          # suppose the body is: "Welcome {{ inventory_hostname }}"
+
+- name: Print it
+  ansible.builtin.debug:
+    msg: "{{ motd_api.content }}"   # prints the literal braces; it is NOT re-templated
+```
+
+This closes off template injection: a compromised API or a crafted file on a managed node can't smuggle Jinja2 into your play. The upgrade impact falls on playbooks that **build a template string at run time** and expect it to render later, for example by concatenating `'{{ '` and a variable name inside `set_fact`. That pattern no longer renders; compute the value directly instead, such as `hostvars[inventory_hostname][var_name]` or the `ansible.builtin.vars` lookup.
 
 ## Why This Model Matters in Practice
 

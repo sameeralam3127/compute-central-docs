@@ -103,7 +103,7 @@ Add a host to `[web]` in inventory, re-run, and it joins the pool.
 ```yaml
 - name: Install monitoring agent only on production hosts
   ansible.builtin.package:
-    name: node-exporter
+    name: prometheus-node-exporter
     state: present
   when: "'production' in group_names"
 
@@ -111,6 +111,8 @@ Add a host to `[web]` in inventory, re-run, and it joins the pool.
   ansible.builtin.command: /opt/checkout/bin/migrate
   when: inventory_hostname == ansible_play_hosts | first
 ```
+
+`run_once: true` is the more common way to say "exactly one host" (see [Delegation and Become](../playbook-engineering/04-delegation-and-become.md#run_once-exactly-once)). The explicit `when:` form shown here still works under `serial`, where `run_once` runs once **per batch**.
 
 ## Inspecting Them
 

@@ -35,7 +35,7 @@ Every container filesystem is ephemeral by default: kill the container, lose eve
 
 ### `emptyDir`: pod-scoped scratch space
 
-`emptyDir` is created empty when the pod is scheduled and deleted permanently when the pod is removed from the node — including when the pod is evicted or crashes past its restart budget. It's the correct choice for anything you're comfortable losing: a build cache, a temporary sort buffer, a Unix socket shared between an app container and its sidecar.
+`emptyDir` is created empty when the pod is scheduled and deleted permanently when the pod is removed from the node — including when the pod is evicted or deleted. A container **crash and restart** inside the same Pod does not touch it; the restarted container finds the same files. It's the correct choice for anything you're comfortable losing: a build cache, a temporary sort buffer, a Unix socket shared between an app container and its sidecar.
 
 ```yaml
 apiVersion: v1
@@ -60,7 +60,7 @@ spec:
         sizeLimit: 1Gi
 ```
 
-Setting `sizeLimit` matters: an unbounded `emptyDir` can fill node disk and trigger evictions for every pod on that node, not just the offender. For latency-sensitive scratch data, `emptyDir.medium: Memory` backs the volume with tmpfs — fast, but it counts against the pod's memory limit and disappears immediately on container restart.
+Setting `sizeLimit` matters: an unbounded `emptyDir` can fill node disk and trigger evictions for every pod on that node, not just the offender. For latency-sensitive scratch data, `emptyDir.medium: Memory` backs the volume with tmpfs — fast, but every byte written counts against the container's memory limit (a full tmpfs can get the Pod OOM-killed), and the data lives in RAM, so it's gone if the node reboots. Like a disk-backed `emptyDir`, it survives container restarts and is removed with the Pod.
 
 ### `hostPath`: powerful and dangerous
 

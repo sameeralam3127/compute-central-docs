@@ -115,7 +115,34 @@ stringData:
   DB_PASSWORD: change-me
 ```
 
+## Gateway API HTTPRoute
+
+The successor to Ingress for new clusters (needs Gateway API CRDs and a controller):
+
+```yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: myapp
+spec:
+  parentRefs:
+    - name: public                  # a Gateway the platform team runs
+      namespace: gateway-infra
+  hostnames:
+    - myapp.example.com
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: myapp
+          port: 80
+```
+
 ## Ingress
+
+Still supported; the annotation below is ingress-nginx-specific (that controller is retired — see [Gateway API](../networking/07-gateway-api.md)).
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -153,6 +180,20 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: standard
+```
+
+## PodDisruptionBudget
+
+```yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: myapp
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: myapp
 ```
 
 ## HorizontalPodAutoscaler

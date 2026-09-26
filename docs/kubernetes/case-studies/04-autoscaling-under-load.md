@@ -28,47 +28,47 @@ tags:
 CPU-based HPA needs `metrics-server`. The custom `requests-per-second` metric needs Prometheus plus the Prometheus Adapter, which translates PromQL queries into the `custom.metrics.k8s.io` API the HPA controller can read.
 
 ```bash
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.7.2/components.yaml
-kubectl get deployment metrics-server -n kube-system
+# Many managed clusters already run metrics-server; check before installing
+kubectl get deployment metrics-server -n kube-system \
+  || kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 ```
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 
+# Pin both charts to versions from: helm search repo prometheus-community --versions
 helm install prometheus prometheus-community/kube-prometheus-stack \
-  --version 62.7.0 --namespace monitoring --create-namespace
-
-helm install prometheus-adapter prometheus-community/prometheus-adapter \
-  --version 4.11.0 --namespace monitoring \
-  --set prometheus.url=http://prometheus-kube-prometheus-prometheus.monitoring.svc \
-  --set prometheus.port=9090
+  --version <chart-version> --namespace monitoring --create-namespace
 ```
 
-```yaml title="prometheus-adapter-rules.yaml"
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: adapter-config
-  namespace: monitoring
-data:
-  config.yaml: |
-    rules:
-      - seriesQuery: 'http_requests_total{namespace!="",pod!=""}'
-        resources:
-          overrides:
-            namespace: { resource: "namespace" }
-            pod: { resource: "pod" }
-        name:
-          matches: "http_requests_total"
-          as: "http_requests_per_second"
-        metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
+The adapter's rules are **chart values**, not a ConfigMap you create yourself — the chart renders its own ConfigMap from them, and a separately applied one is simply ignored:
+
+```yaml title="prometheus-adapter-values.yaml"
+prometheus:
+  url: http://prometheus-kube-prometheus-prometheus.monitoring.svc
+  port: 9090
+rules:
+  default: false
+  custom:
+    - seriesQuery: 'http_requests_total{namespace!="",pod!=""}'
+      resources:
+        overrides:
+          namespace: { resource: "namespace" }
+          pod: { resource: "pod" }
+      name:
+        matches: "http_requests_total"
+        as: "http_requests_per_second"
+      metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[2m])) by (<<.GroupBy>>)'
 ```
 
 ```bash
-kubectl apply -f prometheus-adapter-rules.yaml
-kubectl rollout restart deployment/prometheus-adapter -n monitoring
+helm install prometheus-adapter prometheus-community/prometheus-adapter \
+  --version <chart-version> --namespace monitoring -f prometheus-adapter-values.yaml
 ```
+
+!!! tip "KEDA is the simpler route to custom-metric scaling"
+    Prometheus Adapter works, but its rule syntax is famously easy to get wrong. [KEDA](../workloads-and-scheduling/06-autoscaling.md#event-driven-scaling-with-keda) can scale directly on a PromQL query with a `prometheus` trigger, with no adapter rules at all, and is what many teams use today.
 
 Confirm the custom metric is actually being served before wiring the HPA to it — this is the step people skip, and then spend an hour debugging an HPA that just says `<unknown>`:
 

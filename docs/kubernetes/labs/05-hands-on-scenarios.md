@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Hands-On Practice Scenarios"
 icon: lucide/dumbbell
-description: Guided Kubernetes exercises — a multi-tier app, a CI/CD pipeline, Prometheus monitoring, a blue-green release, and a CrashLoopBackOff investigation.
+description: "Kubernetes practice exercises — a multi-tier app, CI/CD pipeline, Prometheus monitoring, blue-green release, and debugging a Service and a CrashLoopBackOff."
 tags:
   - Kubernetes
   - Labs
@@ -9,7 +9,7 @@ tags:
 
 # Hands-On Scenarios
 
-Five longer exercises, each self-contained with a goal, exact steps, and a way to confirm you actually got it right. Run them on any cluster from the previous labs — [kind](02-kind-lab.md) is recommended for Scenario 1 onward since several use more than one workload type at once.
+Six longer exercises, each self-contained with a goal, exact steps, and a way to confirm you actually got it right. Run them on any cluster from the previous labs — [kind](02-kind-lab.md) is recommended for Scenario 1 onward since several use more than one workload type at once.
 
 ```bash
 kubectl create namespace scenarios
@@ -63,6 +63,9 @@ spec:
           image: postgres:16.4
           ports:
             - containerPort: 5432
+          env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata   # subdirectory, so lost+found on the volume doesn't break initdb
           envFrom:
             - configMapRef:
                 name: postgres-config
@@ -160,7 +163,8 @@ spec:
   selector:
     app: backend
   ports:
-    - port: 80
+    - name: http          # ServiceMonitors (Scenario 3) select ports by name
+      port: 80
       targetPort: 80
 ```
 
@@ -300,8 +304,11 @@ Install a real metrics pipeline, scrape a custom metric, and open a Grafana dash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 
+# Pin the chart: pick a current version from this list
+helm search repo prometheus-community/kube-prometheus-stack --versions | head -5
+
 helm install prometheus prometheus-community/kube-prometheus-stack \
-  --version 62.7.0 \
+  --version <chart-version> \
   --namespace monitoring \
   --create-namespace \
   --set grafana.adminPassword=admin123 \
@@ -322,6 +329,8 @@ kind: ServiceMonitor
 metadata:
   name: backend-monitor
   namespace: monitoring
+  labels:
+    release: prometheus     # kube-prometheus-stack only picks up ServiceMonitors with its release label
 spec:
   namespaceSelector:
     matchNames:
@@ -350,6 +359,8 @@ Open `http://localhost:3000`, log in as `admin` / `admin123`, and confirm the pr
 ```bash
 kubectl port-forward -n monitoring svc/prometheus-kube-prometheus-prometheus 9090:9090
 ```
+
+The two details that most often make a ServiceMonitor silently do nothing are both in the YAML above: the `release: prometheus` label (the chart's Prometheus only selects ServiceMonitors carrying its release name, unless you set `prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false`), and `endpoints.port` matching a **named** port on the Service.
 
 Open `http://localhost:9090/targets` and confirm `backend-monitor` shows as a discovered target (its state may be `down` if `backend` has no real `/metrics` endpoint — that's expected here; the goal is seeing the target get discovered at all).
 
@@ -422,9 +433,9 @@ kubectl rollout status deployment/myapp-green
 Confirm the Service currently routes to blue, then cut over:
 
 ```bash
-kubectl get endpoints myapp
+kubectl get endpointslices -l kubernetes.io/service-name=myapp
 kubectl patch service myapp -p '{"spec":{"selector":{"version":"green"}}}'
-kubectl get endpoints myapp
+kubectl get endpointslices -l kubernetes.io/service-name=myapp
 ```
 
 ### Verify
@@ -439,11 +450,11 @@ A full worked version of this pattern, including a canary variant, is in [Blue-G
 
 ---
 
-## Scenario 5: Investigate a CrashLoopBackOff
+## Scenario 5: Investigate a Service That Routes Nowhere
 
 ### Goal
 
-Given a broken Deployment and no other context, find and fix the actual root cause using only `kubectl`.
+Given a Service that returns nothing and no other context, find and fix the actual root cause using only `kubectl`.
 
 ### Steps
 
@@ -459,12 +470,12 @@ Now investigate as if you didn't know what was wrong:
 
 ```bash
 kubectl get pods -n scenarios
-kubectl get endpoints broken-app -n scenarios
+kubectl get endpointslices -n scenarios -l kubernetes.io/service-name=broken-app
 ```
 
 ```text
-NAME          ENDPOINTS   AGE
-broken-app    <none>      10s
+NAME               ADDRESSTYPE   PORTS     ENDPOINTS   AGE
+broken-app-8xk2v   IPv4          <unset>   <unset>     10s
 ```
 
 An empty `ENDPOINTS` column with a `Running` pod means the Service's `selector` doesn't match any pod's labels — the Service exists but forwards to nothing.
@@ -478,17 +489,67 @@ Compare the `Selector:` line in `describe service` against the pods' actual labe
 
 ```bash
 kubectl patch service broken-app -n scenarios -p '{"spec":{"selector":{"app":"broken-app"}}}'
-kubectl get endpoints broken-app -n scenarios
+kubectl get endpointslices -n scenarios -l kubernetes.io/service-name=broken-app
 ```
 
 ### Verify
 
 ```text
-NAME          ENDPOINTS           AGE
-broken-app    10.244.1.7:80       45s
+NAME               ADDRESSTYPE   PORTS   ENDPOINTS    AGE
+broken-app-8xk2v   IPv4          80      10.244.1.7   45s
 ```
 
-A non-empty `ENDPOINTS` list confirms the Service now actually has somewhere to send traffic. For a full CrashLoopBackOff incident (bad ConfigMap key, OOMKill, failing liveness probe) rather than a Service selector mismatch, see the [CrashLoopBackOff case study](../case-studies/06-debugging-a-crashloopbackoff-incident.md).
+A populated `ENDPOINTS` column confirms the Service now actually has somewhere to send traffic.
+
+---
+
+## Scenario 6: Fix a CrashLoopBackOff
+
+### Goal
+
+A Deployment's Pods keep restarting. Find out why from the evidence Kubernetes keeps, then fix it without guessing.
+
+### Steps
+
+Deploy an app that exits because a required setting is missing, the most common real cause of a crash loop:
+
+```bash
+kubectl create deployment crashy -n scenarios --image=busybox:1.36 -- \
+  sh -c 'echo "starting"; [ -n "$DATABASE_URL" ] || { echo "FATAL: DATABASE_URL is not set" >&2; exit 1; }; sleep infinity'
+```
+
+Investigate in the standard order:
+
+```bash
+kubectl get pods -n scenarios -l app=crashy
+# crashy-7d4b9c6f5d-q2x8m   0/1   CrashLoopBackOff   4 (30s ago)   2m
+
+kubectl describe pod -n scenarios -l app=crashy | grep -A4 'Last State'
+#     Last State:     Terminated
+#       Reason:       Error
+#       Exit Code:    1
+
+kubectl logs -n scenarios deploy/crashy --previous
+# starting
+# FATAL: DATABASE_URL is not set
+```
+
+`Exit Code: 1` with `Reason: Error` means the application itself chose to exit (an `OOMKilled` reason or exit code 137 would point at memory instead), and `--previous` shows the last words of the container that crashed. Fix the cause, not the symptom:
+
+```bash
+kubectl create configmap crashy-config -n scenarios --from-literal=DATABASE_URL=postgres://postgres:5432/myapp
+kubectl set env deployment/crashy -n scenarios --from=configmap/crashy-config
+kubectl rollout status deployment/crashy -n scenarios
+```
+
+### Verify
+
+```bash
+kubectl get pods -n scenarios -l app=crashy
+# crashy-5f8c7d9b6a-lm4pw   1/1   Running   0   20s
+```
+
+Restart count back to `0` on a new Pod, and `kubectl logs` shows `starting` with no error. For a longer incident with an OOMKill and a failing liveness probe, see the [CrashLoopBackOff case study](../case-studies/06-debugging-a-crashloopbackoff-incident.md).
 
 ---
 

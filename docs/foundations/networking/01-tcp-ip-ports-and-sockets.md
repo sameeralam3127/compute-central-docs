@@ -117,7 +117,7 @@ sequenceDiagram
     C->>S: FIN
     S-->>C: ACK, then FIN
     C->>S: ACK
-    Note over C: TIME-WAIT (about 2 minutes on Linux, 60s by default)
+    Note over C: TIME-WAIT (60 seconds on Linux; up to 4 minutes elsewhere)
 ```
 
 What the client sees when the handshake fails tells you a lot:

@@ -81,6 +81,7 @@ nginx_http_port: 80
   ansible.builtin.template:
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
+    validate: nginx -t -c %s      # a config nginx rejects is never written
   notify: Restart nginx
 
 - name: Ensure nginx is enabled and running
@@ -109,6 +110,7 @@ nginx_http_port: 80
     - 1
     - 3
     - "100%"
+  max_fail_percentage: 0          # any failed host stops the whole rollout
 
   roles:
     - nginx
@@ -149,7 +151,7 @@ TASK [Verify nginx responds locally on this host] ***
 ok: [web01]
 
 PLAY RECAP ***
-web01 : ok=5 changed=3 unreachable=0 failed=0
+web01 : ok=6 changed=3 unreachable=0 failed=0
 
 PLAY [Roll out nginx across web fleet] ***
 [... batch of 3: web02, web03, web04 ...]
@@ -162,7 +164,7 @@ Three distinct plays run in sequence because of `serial: [1, 3, "100%"]` — the
 
 ## Failure Scenario
 
-A teammate ships a syntactically valid but logically broken `nginx.conf.j2` — it renders fine, but sets `worker_connections` to a value the target kernel's file-descriptor limit can't support, so nginx fails to start.
+A teammate ships a broken `nginx.conf.j2`. A plain syntax error would be caught by `validate:` before the file is written. This one is subtler: it renders fine and passes `nginx -t`, but sets `worker_connections` to a value the host's file-descriptor limit can't support, so nginx fails to start.
 
 ```text
 TASK [nginx : Ensure nginx is enabled and running] ***
@@ -183,12 +185,14 @@ narrows the retry to the single failed host and shows the exact systemd error un
 
 - Add a `pre_tasks` step that checks the load balancer already has other healthy backends before taking any host out of rotation for the deploy.
 - Use [Molecule](../production-engineering/07-molecule-testing.md) to test the `nginx` role's idempotence and config validity before it ever reaches this playbook.
-- Move `nginx_worker_connections` validation into a `assert` task, failing fast with a clear message instead of letting the service fail to start.
+- Move `nginx_worker_connections` validation into an `assert` task, failing fast with a clear message instead of letting the service fail to start.
+- Drain each host from the load balancer before its restart and re-add it after the health check, as in [Delegation and Become](../playbook-engineering/04-delegation-and-become.md#delegate_to-a-load-balancer-drain), so no request ever hits a restarting nginx.
+- Use `reloaded` instead of `restarted` in the handler: nginx applies the new config without dropping in-flight connections.
 
 ## Interview Questions
 
 - Why does `serial: [1, 3, "100%"]` limit the blast radius of a bad deployment better than a flat `serial: 3`?
-- What would you add to this playbook to make it stop the *entire* rollout, not just the current batch, on a health check failure?
+- What does `max_fail_percentage: 0` add on top of `serial`, and what would happen without it if one host in the final batch failed?
 
 ## What You Learned
 

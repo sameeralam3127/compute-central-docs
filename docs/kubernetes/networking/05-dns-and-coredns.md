@@ -55,7 +55,19 @@ search production.svc.cluster.local svc.cluster.local cluster.local
 options ndots:5
 ```
 
-`ndots:5` means any name with fewer than 5 dots gets every search domain tried first before being treated as fully qualified — this is a well-known source of extra DNS lookups (and latency) for external hostnames like `api.stripe.com`.
+`ndots:5` means any name with fewer than 5 dots gets every search domain tried first before being treated as fully qualified — this is a well-known source of extra DNS lookups (and latency) for external hostnames like `api.stripe.com`, which becomes four or more queries instead of one.
+
+Two real-world fixes, per workload:
+
+```yaml
+spec:
+  dnsConfig:
+    options:
+      - name: ndots
+        value: "2"          # names with 2+ dots go straight to upstream DNS
+```
+
+Or write external names with a trailing dot (`api.stripe.com.`), which marks them as fully qualified. For clusters where DNS load itself is the problem, **NodeLocal DNSCache** runs a caching resolver on every node, cutting latency and taking load off CoreDNS.
 
 ### CoreDNS itself
 

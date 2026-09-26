@@ -58,7 +58,7 @@ dependencies:
     package_system: python3.12
     python_path: /usr/bin/python3.12
   ansible_core:
-    package_pip: ansible-core==2.19.3
+    package_pip: ansible-core==2.20.*       # pin the exact patch you validated
   ansible_runner:
     package_pip: ansible-runner==2.4.1
   galaxy: requirements.yml
@@ -73,16 +73,15 @@ additional_build_steps:
 ```yaml title="requirements.yml"
 collections:
   - name: amazon.aws
-    version: "9.4.0"
+    version: "10.0.0"
   - name: community.aws
-    version: "9.2.0"
+    version: "10.0.0"
   - name: ansible.posix
-    version: "2.0.0"
+    version: "2.1.0"
 ```
 
 ```text title="requirements.txt"
-boto3==1.40.31
-botocore==1.40.31
+boto3>=1.40,<2
 ```
 
 ```text title="bindep.txt"

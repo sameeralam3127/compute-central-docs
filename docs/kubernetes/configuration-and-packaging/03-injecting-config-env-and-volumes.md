@@ -95,9 +95,9 @@ This one manifest deliberately uses every mechanism for a reason: `APP_ENV` is a
 
 When multiple sources could define the same name, Kubernetes resolves conflicts in a fixed order:
 
-1. `env` entries are applied in the order they're listed — later entries with the same name **do not** override earlier ones; the **first** definition of a given name in `env` wins.
-2. `envFrom` entries are applied in list order, each one merging in that source's keys; a naming collision between two `envFrom` sources resolves to the **last** one listed.
-3. `env` always wins over `envFrom` regardless of list order — explicit `env` entries take priority over anything coming from a bulk `envFrom` import.
+1. `envFrom` sources are applied first, in list order; if two sources define the same key, the **last** one listed wins.
+2. `env` entries are applied after that, so an explicit `env` entry always overrides a value from `envFrom`.
+3. If the same name appears twice **within** `env`, the **later** entry wins. The API server accepts it but returns a warning (`hides previous definition of "LOG_LEVEL"`), which usually means a copy-paste mistake.
 
 ```yaml
       env:
@@ -110,7 +110,7 @@ When multiple sources could define the same name, Kubernetes resolves conflicts 
             name: team-overrides    # if both configmaps define the same key, this one wins between the two
 ```
 
-This ordering is easy to get backwards from memory — always verify with `kubectl exec <pod> -- env` rather than assuming.
+In short: later beats earlier, and `env` beats `envFrom`. Verify with `kubectl exec <pod> -- env` rather than assuming.
 
 ### Restart-to-pick-up vs. live-reload
 
@@ -129,14 +129,14 @@ kubectl rollout status deployment/orders-api
 
 ## Common Mistakes
 
-- Assuming `env` list order determines a "last one wins" precedence — it's actually first-one-wins within `env`, which is the opposite of most people's intuition.
+- Defining the same variable twice in `env` (often after merging two snippets) and not noticing the API server's "hides previous definition" warning — the later value silently wins.
 - Relying on live-reload for a value the application only reads once at process start, then wondering why nothing changes even though the mounted file updated correctly.
 - Mixing static, rarely-changing config with per-deploy secrets in a single ConfigMap/Secret, making it impossible to rotate one without touching the other.
 - Not bumping a config-checksum annotation (or otherwise forcing a rollout) after a ConfigMap/Secret change, then assuming a "config-only, no-code-change" deploy happened when in fact zero running pods picked it up.
 
 ## Interview Questions
 
-- If both `env` and `envFrom` define the same variable name on a container, which one wins, and why is that easy to get backwards?
+- If both `env` and `envFrom` define the same variable name on a container, which one wins? What if the same name appears twice in `env`?
 - Design the config strategy for a service that needs a hot-reloadable log level but a restart-required database connection string. What mechanism would you use for each?
 - What's the risk of relying purely on live-reload for a fleet of 50 replicas during a config change?
 

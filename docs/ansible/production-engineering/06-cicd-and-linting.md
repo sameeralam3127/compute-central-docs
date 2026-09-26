@@ -133,7 +133,7 @@ Pin `rev` to the release your team has validated, and update it deliberately.
 ## Pinning for Reproducible CI
 
 ```text title="requirements-ci.txt"
-ansible-core==2.19.3
+ansible-core==2.20.*        # pin the exact patch you validated, e.g. 2.20.4
 ansible-lint==25.9.0
 yamllint==1.37.1
 ```
@@ -141,10 +141,12 @@ yamllint==1.37.1
 ```yaml title="collections/requirements.yml"
 collections:
   - name: community.general
-    version: "10.2.0"
+    version: "12.0.0"
   - name: ansible.posix
-    version: "2.0.0"
+    version: "2.1.0"
 ```
+
+Version numbers here are examples; take the current releases from PyPI and Galaxy when you set this up, then let a tool such as Dependabot or Renovate propose upgrades as pull requests so CI tests every bump before it lands.
 
 If CI installs whatever is latest, a run that passed yesterday can fail today for reasons unrelated to the change under review — or pass with behavior nobody tested.
 
