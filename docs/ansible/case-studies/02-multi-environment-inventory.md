@@ -10,6 +10,16 @@ tags:
 
 # Case Study: Multi-Environment Inventory
 
+Ansible has no built-in concept of dev, staging, or production. You model environments with **one inventory directory per environment**, each holding its own hosts file and `group_vars/`, and choose the environment at run time with `-i`:
+
+```bash
+ansible-playbook -i inventories/dev/hosts.ini        playbooks/site.yml
+ansible-playbook -i inventories/staging/hosts.ini    playbooks/site.yml
+ansible-playbook -i inventories/production/hosts.ini playbooks/site.yml -e confirm_env=production
+```
+
+The roles and playbooks stay identical. Only the inventory changes, so production can't be targeted unless someone names the production inventory. The rest of this page builds that layout, plus a preflight check that refuses a production run without `-e confirm_env=production`.
+
 ## Problem
 
 Three environments — dev, staging, production — need the same roles applied with different variables (different database hosts, different replica counts, different feature flags), and a mistake in one environment must not be able to reach another.
@@ -84,6 +94,17 @@ Notice `dev-app01` and `prod-app01` are different hostnames in entirely separate
 
 ```yaml title="playbooks/site.yml"
 ---
+- name: Refuse production runs without confirmation
+  hosts: all
+  gather_facts: false
+  any_errors_fatal: true
+  tasks:
+    - name: Require -e confirm_env=production for production
+      ansible.builtin.assert:
+        that: env_name != 'production' or (confirm_env | default('')) == 'production'
+        fail_msg: "This inventory is production. Re-run with -e confirm_env=production"
+        quiet: true
+
 - name: Configure application servers
   hosts: app
   become: true
@@ -97,15 +118,23 @@ Notice `dev-app01` and `prod-app01` are different hostnames in entirely separate
 # Dev — safe to run freely
 ansible-playbook -i inventories/dev/hosts.ini playbooks/site.yml
 
-# Production — same playbook, same roles, different inventory
-ansible-playbook -i inventories/production/hosts.ini playbooks/site.yml --check --diff
-ansible-playbook -i inventories/production/hosts.ini playbooks/site.yml
+# Production — same playbook, same roles, different inventory, explicit confirmation
+ansible-playbook -i inventories/production/hosts.ini playbooks/site.yml --check --diff -e confirm_env=production
+ansible-playbook -i inventories/production/hosts.ini playbooks/site.yml -e confirm_env=production
 ```
+
+`env_name` comes from each inventory's `group_vars/all.yml`, so the preflight play knows which environment it's pointed at without any extra flag. Dev and staging runs pass straight through. A production run without the confirmation stops before any host is touched.
 
 ## Expected Output
 
 ```text
-$ ansible-playbook -i inventories/production/hosts.ini playbooks/site.yml --check --diff
+$ ansible-playbook -i inventories/production/hosts.ini playbooks/site.yml --check --diff -e confirm_env=production
+PLAY [Refuse production runs without confirmation] ***
+TASK [Require -e confirm_env=production for production] ***
+ok: [prod-app01]
+ok: [prod-app02]
+ok: [prod-app03]
+
 PLAY [Configure application servers] ***
 TASK [app : Deploy application config] ***
 --- before: /etc/app/config.yml

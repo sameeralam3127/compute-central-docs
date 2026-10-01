@@ -11,3 +11,6 @@ __pycache__/
 
 # Editor/OS cruft
 .DS_Store
+
+# Search Console exports (kept outside the repo)
+*Performance-on-Search*

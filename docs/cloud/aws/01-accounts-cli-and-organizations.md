@@ -1,7 +1,7 @@
 ---
-title: "AWS Accounts, Organizations, and IAM Identity Center"
+title: "AWS CLI for Accounts and Organizations: Account ID, SSO, SCPs"
 icon: lucide/building-2
-description: "Set up AWS properly — regions and AZs, multi-account Organizations with SCPs, IAM Identity Center, AWS CLI SSO profiles, and budget alerts."
+description: "Get your AWS account ID with aws sts get-caller-identity, run AWS Organizations and IAM Identity Center from the CLI, plus SSO profiles, SCPs, and budgets."
 tags:
   - AWS
   - Organizations
@@ -10,12 +10,15 @@ tags:
 
 # Accounts, CLI, and Organizations
 
+To see which AWS account and identity the CLI is using, run `aws sts get-caller-identity`. For just the account ID, add `--query Account --output text`. This page covers that, plus how to structure many accounts with AWS Organizations and manage them and IAM Identity Center (formerly AWS SSO) from the CLI.
+
 ## What You'll Learn
 
 - How regions and Availability Zones affect availability, latency, and cost
 - Why production workloads use many AWS accounts, and how to structure them
 - How to give people access through IAM Identity Center instead of IAM users
 - How to configure the AWS CLI with SSO profiles, and set budget alerts on day one
+- The CLI commands for account identity, Organizations, and IAM Identity Center
 
 ## Regions and Availability Zones
 
@@ -162,6 +165,82 @@ aws ec2 run-instances --generate-cli-skeleton
 ```
 
 Show the current profile in your shell prompt. Running a destructive command in the wrong account is one of the most common — and most avoidable — AWS incidents.
+
+### Find your account ID, identity, and alias
+
+```bash
+# Who am I? Returns UserId, Account, and Arn
+aws sts get-caller-identity
+
+# Just the 12-digit account ID, for scripts
+aws sts get-caller-identity --query Account --output text
+
+# The friendly alias shown on the sign-in page, if one is set
+aws iam list-account-aliases --query 'AccountAliases[0]' --output text
+
+# Which profile and region the CLI resolved, and where each value came from
+aws configure list
+```
+
+`get-caller-identity` needs no IAM permissions, so it works with any valid credentials. That also makes it the fastest test of whether your credentials work at all. With SSO profiles, the `Arn` looks like `arn:aws:sts::111111111111:assumed-role/AWSReservedSSO_PowerUserNoIAM_abc123/jane`. The role name tells you which permission set you're using.
+
+### AWS Organizations from the CLI
+
+Organizations commands work only from the management account or a delegated administrator account.
+
+```bash
+# The organization itself: ID, management account, enabled features
+aws organizations describe-organization
+
+# Every account in the organization
+aws organizations list-accounts \
+  --query 'Accounts[].[Id, Name, Email]' --output table
+
+# Name and details of one account
+aws organizations describe-account --account-id 111111111111
+
+# Walk the OU tree: root, then OUs, then accounts in an OU
+aws organizations list-roots --query 'Roots[0].Id' --output text
+aws organizations list-organizational-units-for-parent --parent-id r-ab12
+aws organizations list-accounts-for-parent --parent-id ou-ab12-34cd56ef
+
+# Create a member account (asynchronous: poll the request until it succeeds)
+aws organizations create-account --email orders-dev@acme.example --account-name orders-dev
+aws organizations describe-create-account-status --create-account-request-id car-0123456789abcdef
+
+# Move an account between OUs
+aws organizations move-account --account-id 111111111111 \
+  --source-parent-id r-ab12 --destination-parent-id ou-ab12-34cd56ef
+
+# List SCPs and attach one to an OU
+aws organizations list-policies --filter SERVICE_CONTROL_POLICY
+aws organizations attach-policy --policy-id p-0123abcd --target-id ou-ab12-34cd56ef
+```
+
+### IAM Identity Center from the CLI
+
+IAM Identity Center has two CLI namespaces: `sso-admin` manages permission sets and assignments, and `identitystore` manages users and groups. Most calls need the instance ARN and identity store ID, which you get first:
+
+```bash
+aws sso-admin list-instances \
+  --query 'Instances[0].[InstanceArn, IdentityStoreId]' --output text
+
+# Permission sets in this instance
+aws sso-admin list-permission-sets --instance-arn arn:aws:sso:::instance/ssoins-0123456789abcdef
+
+# Look up a group's ID by name
+aws identitystore get-group-id --identity-store-id d-0123456789 \
+  --alternate-identifier '{"UniqueAttribute":{"AttributePath":"displayName","AttributeValue":"platform-engineers"}}'
+
+# Give that group a permission set in one account
+aws sso-admin create-account-assignment \
+  --instance-arn arn:aws:sso:::instance/ssoins-0123456789abcdef \
+  --target-id 111111111111 --target-type AWS_ACCOUNT \
+  --permission-set-arn arn:aws:sso:::permissionSet/ssoins-0123456789abcdef/ps-0123456789abcdef \
+  --principal-type GROUP --principal-id 906702d8-0011-70e1-1234-0123456789ab
+```
+
+`create-account-assignment` is asynchronous too: check it with `describe-account-assignment-creation-status`. For anything beyond a few assignments, manage Identity Center with Terraform rather than one-off CLI calls, so access is reviewed in pull requests.
 
 ## Set a Budget Before Anything Else
 

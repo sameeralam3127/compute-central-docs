@@ -10,6 +10,8 @@ tags:
 
 # Playbooks, Plays, and Tasks
 
+An Ansible **playbook** is a YAML file containing one or more **plays**. A play targets a group of hosts and runs an ordered list of **tasks** on them, and each task calls one module. So the difference between a play and a playbook: the play is one "these hosts get these tasks" block, and the playbook is the file that holds one or more of them. You run a playbook with `ansible-playbook -i inventory.ini site.yml`.
+
 ## What You'll Learn
 
 - The three-level structure: playbook → play(s) → task(s)
