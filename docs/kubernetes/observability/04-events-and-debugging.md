@@ -9,6 +9,18 @@ tags:
 
 # Events and Debugging
 
+To debug a Kubernetes pod, work from the outside in: `kubectl get pods` for its status, `kubectl describe pod` for its events and exit codes, `kubectl logs --previous` for what the app printed before it died, and `kubectl debug` for a shell when the image has none. The status column usually tells you where to start:
+
+| What you see | Run first | Usual cause | Full guide |
+|---|---|---|---|
+| `Pending` | `kubectl describe pod <pod>` (Events) | No node has enough CPU or memory, a taint or affinity rule blocks it, or a PVC isn't bound | [Pod stuck in Pending](../troubleshooting/pod-pending.md) |
+| `ImagePullBackOff` / `ErrImagePull` | `kubectl describe pod <pod>` | Wrong image name or tag, private registry without `imagePullSecrets` | [ImagePullBackOff](../troubleshooting/imagepullbackoff.md) |
+| `CrashLoopBackOff` | `kubectl logs <pod> --previous` | The app exits on startup: bad config, missing secret, failing liveness probe | [CrashLoopBackOff](../troubleshooting/crashloopbackoff.md) |
+| `OOMKilled`, exit code 137 | `kubectl describe pod <pod>` (Last State) | Memory limit lower than the app needs | [OOMKilled](../troubleshooting/oomkilled.md) |
+| `Init:CrashLoopBackOff` | `kubectl logs <pod> -c <init-container>` | An init container fails, often waiting for a dependency | [Init container failures](../troubleshooting/init-container-failures.md) |
+| `Running` but not serving | `kubectl get endpointslices -l kubernetes.io/service-name=<svc>` | Readiness probe failing, or Service selector doesn't match the pod labels | [Service and DNS problems](../troubleshooting/02-networking-and-service-problems.md) |
+| Node `NotReady` | `kubectl describe node <node>` | kubelet down, disk or memory pressure, CNI not running | [Node and control plane problems](../troubleshooting/04-cluster-and-node-problems.md) |
+
 ## What You'll Learn
 
 - The five core `kubectl` debugging tools, and what each one actually reveals that the others don't

@@ -9,6 +9,8 @@ tags:
 
 # Registered Variables
 
+`register: result` saves a task's full result (`changed`, `failed`, `rc`, `stdout`, and every module-specific field) into a variable named `result` for the current host. Later tasks can use it in `when:`, loops, templates, or `debug`, for example `when: result.rc != 0`.
+
 ## What You'll Learn
 
 - How `register:` captures a task's full result, not just a value
