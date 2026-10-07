@@ -148,7 +148,7 @@ sudo lsof +L1                                 # deleted files still held open (s
 ulimit -n                                     # your shell's open-file limit
 ```
 
-"Too many open files" means the process hit its `nofile` limit. Raise it for the **service**, not your shell — with `LimitNOFILE=` in the systemd unit — and also check for descriptor leaks.
+"Too many open files" means the process hit its `nofile` limit. Raise it for the **service**, not your shell — with `LimitNOFILE=` in the systemd unit — and also check for descriptor leaks. [Resource Limits](10-kernel-tuning-sysctl-and-modules.md#resource-limits) explains where each limit comes from.
 
 ## Tracing a Stuck Process
 

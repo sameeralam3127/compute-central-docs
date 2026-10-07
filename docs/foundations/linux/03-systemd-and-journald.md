@@ -14,7 +14,8 @@ tags:
 - What systemd manages, and the unit types you'll meet most often
 - How to write a production-ready service unit for your own application
 - How to change a packaged unit safely with drop-in overrides
-- How to replace cron jobs with timers, sandbox a service, and query logs with `journalctl`
+- How to read and fix existing cron jobs, and when to replace them with timers
+- How to sandbox a service and query logs with `journalctl`
 
 ## Mental Model
 
@@ -119,6 +120,51 @@ To replace a list setting such as `ExecStart=`, clear it first with an empty ass
 ExecStart=
 ExecStart=/usr/sbin/nginx -g 'daemon off;' -c /etc/nginx/custom.conf
 ```
+
+## Reading and Writing cron Jobs
+
+cron is still on almost every server, and you'll inherit jobs written for it. Know where they hide and why they fail.
+
+```bash
+crontab -l                       # your user's jobs
+sudo crontab -l -u backup        # another user's jobs
+crontab -e                       # edit yours (validated on save)
+ls /etc/cron.d/ /etc/cron.daily/ # system jobs installed by packages and admins
+cat /etc/crontab
+```
+
+```text
+# ┌───────── minute (0-59)
+# │ ┌─────── hour (0-23)
+# │ │ ┌───── day of month (1-31)
+# │ │ │ ┌─── month (1-12)
+# │ │ │ │ ┌─ day of week (0-7, Sunday is 0 or 7)
+# │ │ │ │ │
+ 30 2 * * *   /usr/local/bin/db-backup.sh           # 02:30 every day
+*/15 * * * *  /usr/local/bin/sync-reports.sh        # every 15 minutes
+  0 6 * * 1-5 /usr/local/bin/weekday-report.sh      # 06:00 Monday to Friday
+@reboot       /usr/local/bin/warm-cache.sh          # once at startup
+```
+
+Files in `/etc/cron.d/` and `/etc/crontab` have an extra field, the user to run as, between the schedule and the command:
+
+```text title="/etc/cron.d/db-backup"
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+MAILTO=""
+30 2 * * * backup flock -n /run/lock/db-backup.lock /usr/local/bin/db-backup.sh 2>&1 | logger -t db-backup
+```
+
+That one line avoids the four classic cron failures:
+
+| Problem | Why it happens | Fix in the line above |
+|---|---|---|
+| "Works in my shell, fails in cron" | cron runs with a minimal `PATH` and none of your profile | Set `PATH`, or use full paths |
+| Output disappears | cron mails output to a local mailbox nobody reads | Pipe to `logger`, then read it with `journalctl -t db-backup` |
+| Two runs overlap | cron starts a new run even if the last one is still going | `flock -n` skips the run if the lock is held |
+| A `%` in the command breaks it | cron turns `%` into a newline | Escape it as `\%`, or move the command into a script |
+
+cron's own log shows whether a job started: `journalctl -u cron` on Ubuntu, `journalctl -u crond` on RHEL.
 
 ## Timers Instead of Cron
 
@@ -232,6 +278,7 @@ systemctl reset-failed orders-api       # clear the start limit after fixing the
 
 - What happens between `systemctl start` and your application accepting traffic?
 - How do you change a setting on a service installed by a package, safely?
+- A cron job works when you run it by hand but fails from cron. What are the usual causes?
 - Why might a timer be better than a cron job?
 - A service keeps restarting. Which commands do you run, in what order?
 - What does `ProtectSystem=strict` do, and how do you let the service write its data?

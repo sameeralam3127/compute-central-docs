@@ -81,7 +81,7 @@ Pick a track, or filter by what you're working on. Every track stands on its own
   <span class="cc-card-icon">:lucide-graduation-cap:</span>
   <strong>DevOps Foundations</strong>
   <span class="cc-card-desc">Linux administration, shell scripting, networking from TCP to TLS, Git workflows, and Python automation.</span>
-  <span class="cc-card-meta">5 tracks · 33 guides</span>
+  <span class="cc-card-meta">5 tracks · 37 guides</span>
 </a>
 
 <a class="cc-card" href="docker/" data-cc-tags="containers">

@@ -52,6 +52,7 @@ Each step can fail independently, and each failure has a different symptom. The 
 
 | Topic | Where |
 |---|---|
+| Configuring interfaces, static addresses, routes, and DNS on a host | [Linux: Network Configuration](../linux/11-network-configuration.md) |
 | Interfaces, loopback, and the `127.0.0.1` trap in containers | [Docker: Networking Foundations](../../docker/12-networking-fundamentals.md) |
 | Bridge networks, NAT, and port publishing | [Docker Networking](../../docker/13-docker-networking.md) |
 | Pod networking, Services, and CNI | [Kubernetes Networking](../../kubernetes/networking/index.md) |
