@@ -92,7 +92,7 @@ Publishing your own charts to the registry you already use for images (ECR, Arti
 
 ### Chart anatomy
 
-```
+```text
 my-chart/
 ├── Chart.yaml          # chart metadata: name, version, appVersion
 ├── values.yaml          # default values consumed by templates

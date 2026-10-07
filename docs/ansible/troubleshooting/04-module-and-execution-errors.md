@@ -150,9 +150,16 @@ To confirm the rest of the play works while you investigate, run it once with `g
 fatal: [web01]: FAILED! => {"msg": "Module result deserialization failed: No start of json char found"}
 ```
 
+ansible-core 2.19 and later word the same failure differently:
+
+```text
+[ERROR]: Task failed: Action failed: Module result deserialization failed: No start of json char found
+```
+
 A module reports its result by printing a JSON document. This error means Ansible got output back but found no JSON in it at all, so the module never really ran or something replaced its output. Common causes:
 
 - `ansible_python_interpreter` points at something that isn't a working Python: a wrapper script, a deleted virtualenv, or a different program.
+- The host's Python is too old for your `ansible-core`. The module dies with a `SyntaxError` before printing anything, so stdout is empty. See [Python is too old](#python-is-too-old).
 - A custom module in `library/` prints plain text instead of calling `module.exit_json()`.
 - A shell startup file or wrapper on the host exits early for non-interactive sessions.
 
