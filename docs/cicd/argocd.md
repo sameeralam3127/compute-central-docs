@@ -276,7 +276,7 @@ argocd app rollback fastapi-demo <ID>
 
 Once you have several services, define one parent Application whose "manifests" are… more Applications:
 
-```
+```text
 argocd-apps/
 ├── root-app.yaml          # points at apps/
 └── apps/

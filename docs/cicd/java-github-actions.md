@@ -44,7 +44,7 @@ flowchart LR
 
 A minimal Spring Boot web app. Project layout:
 
-```
+```text
 spring-demo/
 ├── .github/workflows/pipeline.yml
 ├── src/

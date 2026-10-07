@@ -42,7 +42,7 @@ flowchart LR
 
 ## The Application
 
-```
+```text
 fastapi-demo/
 ├── .github/workflows/pipeline.yml
 ├── app/

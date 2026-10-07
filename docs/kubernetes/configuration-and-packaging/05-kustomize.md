@@ -35,7 +35,7 @@ flowchart LR
 
 ### Directory layout
 
-```
+```text
 orders-api/
 ├── base/
 │   ├── deployment.yaml
