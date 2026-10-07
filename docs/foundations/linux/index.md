@@ -1,7 +1,7 @@
 ---
 title: "Linux for DevOps and SRE: Administration and Troubleshooting"
 icon: lucide/terminal-square
-description: "A practical Linux path for DevOps — files and permissions, processes, systemd, storage, SSH hardening, packages, and performance troubleshooting."
+description: "Linux for DevOps and SRE — permissions, processes, systemd, storage, SSH, patching, performance, boot recovery, SELinux, kernel tuning, and networking."
 tags:
   - Linux
   - Overview
@@ -17,6 +17,7 @@ Linux is the operating system under almost everything you'll run: cloud instance
 - How processes, signals, and systemd services behave, and how to read their logs
 - How to manage disks, filesystems, and LVM without losing data
 - How to secure SSH and sudo, keep packages patched, and diagnose a slow server
+- How to recover a server that won't boot, fix SELinux and AppArmor denials, tune the kernel, and configure networking
 
 ## Read in This Order
 
@@ -27,6 +28,10 @@ Linux is the operating system under almost everything you'll run: cloud instance
 5. [Users, sudo, and SSH Hardening](05-users-sudo-and-ssh-hardening.md) — accounts, groups, sudoers, key-based SSH, and a hardened `sshd` configuration
 6. [Packages and Patching](06-package-management-and-updates.md) — apt and dnf, pinning, unattended security updates, and reboot handling
 7. [Performance Troubleshooting](07-performance-troubleshooting.md) — the USE method and a 60-second triage for CPU, memory, disk, and network
+8. [Boot Process and Recovery](08-boot-process-and-recovery.md) — GRUB, the initramfs, rescue and emergency mode, a broken `fstab`, and cloud instance recovery
+9. [SELinux and AppArmor](09-selinux-and-apparmor.md) — reading denials and fixing labels, ports, booleans, and profiles instead of disabling them
+10. [Kernel Tuning](10-kernel-tuning-sysctl-and-modules.md) — `sysctl`, the settings worth changing, kernel modules, and resource limits
+11. [Network Configuration](11-network-configuration.md) — `ip`, static addresses with Netplan and `nmcli`, DNS, hostnames, and safe changes over SSH
 
 ## The Commands You'll Use Most
 
@@ -38,6 +43,9 @@ Linux is the operating system under almost everything you'll run: cloud instance
 | What's listening? | `ss -tulpn` |
 | Who can read this file? | `ls -l`, `stat`, `getfacl` |
 | Is the box overloaded? | `uptime`, `vmstat 1`, `iostat -xz 1` |
+| Why was access denied by policy? | `sudo ausearch -m AVC -ts recent`, `sudo aa-status` |
+| What are the addresses and routes? | `ip -br addr`, `ip route` |
+| What did the last boot log? | `journalctl -b -1 -p err` |
 
 ## How This Connects to the Rest of the Site
 

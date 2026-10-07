@@ -175,7 +175,7 @@ sudo journalctl -k | grep -i apparmor | tail
 findmnt -T /srv/app                               # look for ro or noexec
 ```
 
-`namei -l` is the fastest win: it prints the owner and mode of every path component, so a missing `x` on a parent directory stands out immediately.
+`namei -l` is the fastest win: it prints the owner and mode of every path component, so a missing `x` on a parent directory stands out immediately. If step 4 shows a denial, [SELinux and AppArmor](09-selinux-and-apparmor.md) explains how to fix it without disabling either.
 
 ## Common Mistakes
 

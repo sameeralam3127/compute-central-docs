@@ -14,6 +14,7 @@ tags:
 - How block devices, partitions, filesystems, and mounts fit together
 - How to add a disk and mount it persistently and safely
 - How LVM makes volumes flexible, and how to grow a cloud disk without downtime
+- When a server should have swap, and how to add a swap file
 - How to diagnose and fix "No space left on device", including inode exhaustion and deleted files
 
 ## Mental Model
@@ -64,7 +65,7 @@ sudo umount /var/lib/app
 sudo mount -a && findmnt /var/lib/app
 ```
 
-`nofail` lets the machine boot even if this volume is missing. Without it, a detached data disk can drop a cloud instance into emergency mode with no SSH access.
+`nofail` lets the machine boot even if this volume is missing. Without it, a detached data disk can drop a cloud instance into emergency mode with no SSH access. If that happens, [Fix a Broken fstab](08-boot-process-and-recovery.md#fix-a-broken-fstab) walks through the recovery.
 
 ### ext4 or XFS?
 
@@ -114,6 +115,38 @@ df -h /
 ```
 
 For a whole-disk filesystem with no partition, skip `growpart`. For LVM, run `pvresize /dev/nvme1n1` and then `lvextend -r -l +100%FREE`.
+
+## Swap
+
+Swap is disk space the kernel can move rarely used memory pages to. A little swap gives a server room to absorb a short memory spike instead of OOM-killing a process. A lot of active swapping makes everything slow (see [Performance Troubleshooting](07-performance-troubleshooting.md#memory)).
+
+```bash
+swapon --show                    # active swap devices and files
+free -h                          # how much swap is in use
+```
+
+Many cloud images ship with no swap. Add a swap file:
+
+```bash
+sudo dd if=/dev/zero of=/swapfile bs=1M count=2048 status=progress   # 2 GiB
+sudo chmod 600 /swapfile         # swap can hold secrets from memory
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap defaults 0 0' | sudo tee -a /etc/fstab
+swapon --show
+```
+
+`dd` writes every block, which works on every filesystem. `fallocate` is faster but can create files with holes that `swapon` rejects on some filesystems. Btrfs needs extra steps (`btrfs filesystem mkswapfile`).
+
+How eagerly the kernel swaps is set by `vm.swappiness`; see [Kernel Tuning](10-kernel-tuning-sysctl-and-modules.md#settings-worth-knowing). To remove a swap file, run `sudo swapoff /swapfile`, delete its `fstab` line, then delete the file.
+
+| Workload | Swap guidance |
+|---|---|
+| General-purpose server | A small swap file (1–4 GiB) as a buffer, with alerts on sustained swap activity |
+| Databases and latency-sensitive services | Often none, or very low swappiness; follow the database's own guidance |
+| Kubernetes nodes | The kubelet refuses to start with swap on unless configured for it (`failSwapOn: false`); newer releases support swap with the `LimitedSwap` behavior. Check the documentation for your version. |
+
+Fedora and some other distributions use zram instead: swap held in compressed RAM, which absorbs spikes without disk I/O. Check with `zramctl`.
 
 ## "No Space Left on Device"
 

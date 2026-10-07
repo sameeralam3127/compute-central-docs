@@ -248,6 +248,10 @@ foundations/linux/04-storage-disks-and-lvm/
 foundations/linux/05-users-sudo-and-ssh-hardening/
 foundations/linux/06-package-management-and-updates/
 foundations/linux/07-performance-troubleshooting/
+foundations/linux/08-boot-process-and-recovery/
+foundations/linux/09-selinux-and-apparmor/
+foundations/linux/10-kernel-tuning-sysctl-and-modules/
+foundations/linux/11-network-configuration/
 foundations/networking/
 foundations/networking/01-tcp-ip-ports-and-sockets/
 foundations/networking/02-dns/

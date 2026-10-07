@@ -190,4 +190,4 @@ A web API's p99 latency jumps from 80 ms to 2 s.
 
 ## Next
 
-You've finished Linux. Continue to [Networking](../networking/index.md), or put these commands into scripts with [Shell Scripting](../shell-scripting/index.md).
+Continue to [Boot Process and Recovery](08-boot-process-and-recovery.md).
