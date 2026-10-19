@@ -1,3 +1,4 @@
+/* global document$ */ // instant-navigation observable provided by the theme bundle
 (function () {
   "use strict";
 

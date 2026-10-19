@@ -13,6 +13,7 @@
    API server's RBAC error format); the page around each tool explains the
    rules. The pure functions are exported under Node for unit tests.
 */
+/* global module */ // the Node export below is for unit tests only
 (function (global, factory) {
   var api = factory();
   if (typeof module === "object" && module.exports) module.exports = api;
@@ -660,7 +661,7 @@
       if (eq <= 0) { ok = false; return; }
       try {
         out[decodeURIComponent(pair.slice(0, eq).replace(/\+/g, " "))] = decodeURIComponent(pair.slice(eq + 1).replace(/\+/g, " "));
-      } catch (error) {
+      } catch {
         ok = false;
       }
     });
@@ -751,7 +752,7 @@
       var trimmed = rawText.trim();
       var asJson = null;
       if (/^[[{]/.test(trimmed)) {
-        try { asJson = JSON.parse(trimmed); } catch (error) { asJson = null; }
+        try { asJson = JSON.parse(trimmed); } catch { asJson = null; }
       }
       var jsonType = /json/i.test(contentType);
       if (asJson !== null && (jsonParts.length || jsonType || !contentType)) {
@@ -811,12 +812,12 @@
     }
 
     var host = "";
-    var path = "";
+    var path;
     try {
       var parsedUrl = new URL(url);
       host = parsedUrl.host;
       path = parsedUrl.pathname;
-    } catch (error) {
+    } catch {
       path = url;
     }
 
@@ -957,7 +958,7 @@
     var s = String(text).replace(/\s+/g, " ").trim();
     var m = /User "([^"]*)" cannot ([a-zA-Z*]+) (?:resource "([^"]+)" in API group "([^"]*)"(?: in the namespace "([^"]+)"| at the cluster scope)|path "([^"]+)")/.exec(s);
     if (!m) return { error: "Paste the full message, including `User \"…\" cannot …`. It comes from kubectl, an API client's log, or an operator's events." };
-    var named = /(?:^|: )([a-z0-9.\/-]+) "([^"]+)" is forbidden/i.exec(s);
+    var named = /(?:^|: )([a-z0-9./-]+) "([^"]+)" is forbidden/i.exec(s);
     var user = m[1];
     var sa = /^system:serviceaccount:([^:]+):(.+)$/.exec(user);
     return {
@@ -981,7 +982,7 @@
     var subject = info.serviceAccount
       ? ["  - kind: ServiceAccount", "    name: " + yamlString(info.serviceAccount.name), "    namespace: " + yamlString(info.serviceAccount.namespace)]
       : ["  - kind: User", "    name: " + yamlString(info.user), "    apiGroup: rbac.authorization.k8s.io"];
-    var rule = [];
+    var rule;
     if (info.path) {
       rule = ["  - nonResourceURLs: [" + JSON.stringify(info.path) + "]", "    verbs: [" + JSON.stringify(info.verb) + "]"];
     } else {

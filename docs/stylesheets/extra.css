@@ -64,12 +64,12 @@ html {
   color: var(--md-accent-fg-color);
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Article widgets: quizzes, real-incident callouts, and interactive tools.
    Quizzes and incidents are admonition types written in Markdown
    (!!! quiz / !!! incident). javascripts/extra.js turns a quiz's task list
    into answer buttons; javascripts/tools.js renders each [data-cc-tool].
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 :root {
   --md-admonition-icon--quiz: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M13 5h8M13 12h8M13 19h8M3 17l2 2 4-4M3 7l2 2 4-4"/></svg>');
@@ -403,11 +403,11 @@ html {
   z-index: 1;
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
    Homepage
    Everything below uses the theme's color tokens, so light and dark mode
    both follow the active palette.
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 .md-typeset [hidden] {
   display: none !important;
