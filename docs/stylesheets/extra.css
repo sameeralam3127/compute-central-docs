@@ -64,11 +64,350 @@ html {
   color: var(--md-accent-fg-color);
 }
 
-/* ==========================================================================
+/* --------------------------------------------------------------------------
+   Article widgets: quizzes, real-incident callouts, and interactive tools.
+   Quizzes and incidents are admonition types written in Markdown
+   (!!! quiz / !!! incident). javascripts/extra.js turns a quiz's task list
+   into answer buttons; javascripts/tools.js renders each [data-cc-tool].
+   -------------------------------------------------------------------------- */
+
+:root {
+  --md-admonition-icon--quiz: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M13 5h8M13 12h8M13 19h8M3 17l2 2 4-4M3 7l2 2 4-4"/></svg>');
+  --md-admonition-icon--incident: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M7 18v-6a5 5 0 1 1 10 0v6M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2zM21 12h1M18.5 4.5 18 5M2 12h1M12 2v1M4.929 4.929l.707.707M12 12v6"/></svg>');
+}
+
+.md-typeset .admonition.quiz,
+.md-typeset details.quiz {
+  background-color: #651fff1a;
+}
+
+.md-typeset .quiz > .admonition-title::before,
+.md-typeset .quiz > summary::before {
+  background-color: #651fff;
+  -webkit-mask-image: var(--md-admonition-icon--quiz);
+  mask-image: var(--md-admonition-icon--quiz);
+}
+
+.md-typeset .admonition.incident,
+.md-typeset details.incident {
+  background-color: #ff3d001a;
+}
+
+.md-typeset .incident > .admonition-title::before,
+.md-typeset .incident > summary::before {
+  background-color: #ff3d00;
+  -webkit-mask-image: var(--md-admonition-icon--incident);
+  mask-image: var(--md-admonition-icon--incident);
+}
+
+.md-typeset .cc-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Quiz answers ---------- */
+
+.md-typeset .cc-quiz-options {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.8em 0;
+}
+
+.md-typeset .cc-quiz-option {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.3rem;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 150ms, background-color 150ms, opacity 150ms;
+}
+
+.md-typeset .cc-quiz-option:hover:not([aria-disabled]),
+.md-typeset .cc-quiz-option:focus-visible {
+  border-color: var(--md-accent-fg-color);
+}
+
+.md-typeset .cc-quiz-option[aria-disabled] {
+  cursor: default;
+}
+
+.md-typeset .cc-quiz-option.is-correct {
+  border-color: #00c853;
+  background: color-mix(in srgb, #00c853 14%, var(--md-default-bg-color));
+}
+
+.md-typeset .cc-quiz-option.is-wrong {
+  border-color: #ff5252;
+  background: color-mix(in srgb, #ff5252 14%, var(--md-default-bg-color));
+}
+
+.md-typeset .cc-quiz-done .cc-quiz-option:not(.is-correct):not(.is-wrong) {
+  opacity: 0.55;
+}
+
+.md-typeset .cc-quiz-status {
+  margin: 0.6em 0 0.4em;
+  font-weight: 700;
+}
+
+.md-typeset .cc-quiz-status:empty {
+  display: none;
+}
+
+.md-typeset .cc-quiz-retry,
+.md-typeset .cc-tool-chip,
+.md-typeset .cc-tool-copy {
+  padding: 0.2rem 0.65rem;
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-radius: 1rem;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color--light);
+  font: inherit;
+  font-size: 0.65rem;
+  cursor: pointer;
+}
+
+.md-typeset .cc-quiz-retry:hover,
+.md-typeset .cc-tool-chip:hover,
+.md-typeset .cc-tool-copy:hover,
+.md-typeset .cc-tool-chip[aria-pressed="true"] {
+  border-color: var(--md-accent-fg-color);
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset .cc-quiz-retry {
+  margin-bottom: 0.6rem;
+}
+
+/* ---------- Interactive tools ---------- */
+
+.md-typeset .cc-tool {
+  margin: 1.6em 0;
+  padding: 0.9rem 1rem 1rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.4rem;
+  background:
+    radial-gradient(70% 120% at 0% 0%, color-mix(in srgb, var(--md-accent-fg-color) 7%, transparent), transparent 70%),
+    var(--md-code-bg-color);
+}
+
+.md-typeset .cc-tool > :first-child {
+  margin-top: 0;
+}
+
+.md-typeset .cc-tool > :last-child {
+  margin-bottom: 0;
+}
+
+.md-typeset .cc-tool-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.4rem;
+}
+
+.md-typeset .cc-tool-badge {
+  padding: 0.1rem 0.5rem;
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--md-accent-fg-color) 16%, transparent);
+  color: var(--md-accent-fg-color);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.md-typeset .cc-tool-intro {
+  margin: 0 0 0.8rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.7rem;
+}
+
+.md-typeset .cc-tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0.6rem 0.8rem;
+}
+
+.md-typeset .cc-tool-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.md-typeset .cc-tool-field > label {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.md-typeset .cc-tool-field > small {
+  color: var(--md-default-fg-color--lighter);
+  font-size: 0.6rem;
+}
+
+.md-typeset .cc-tool input[type="text"],
+.md-typeset .cc-tool input[type="number"],
+.md-typeset .cc-tool select,
+.md-typeset .cc-tool textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-radius: 0.25rem;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  font: inherit;
+  font-size: 0.72rem;
+}
+
+.md-typeset .cc-tool textarea {
+  min-height: 6.5rem;
+  font-family: var(--md-code-font-family);
+  font-size: 0.65rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.md-typeset .cc-tool input:focus-visible,
+.md-typeset .cc-tool select:focus-visible,
+.md-typeset .cc-tool textarea:focus-visible,
+.md-typeset .cc-tool button:focus-visible {
+  outline: 2px solid var(--md-accent-fg-color);
+  outline-offset: 1px;
+}
+
+.md-typeset .cc-tool-check {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+}
+
+/* Columns, not a grid, so ranked lists read top to bottom (1-11, then 12-22) */
+.md-typeset .cc-tool-checks {
+  columns: 2 15rem;
+  column-gap: 1.2rem;
+  margin: 0.6rem 0 0;
+}
+
+.md-typeset .cc-tool-checks label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.68rem;
+  cursor: pointer;
+  break-inside: avoid;
+}
+
+.md-typeset .cc-tool-checks .cc-rank {
+  min-width: 1.4em;
+  color: var(--md-default-fg-color--lighter);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.md-typeset .cc-tool-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.4rem;
+  font-size: 0.65rem;
+}
+
+.md-typeset .cc-tool-out {
+  margin-top: 0.9rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--md-default-fg-color--lightest);
+  font-size: 0.72rem;
+}
+
+.md-typeset .cc-tool-out p {
+  margin: 0.4em 0;
+}
+
+.md-typeset .cc-tool-result {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.md-typeset .cc-tool-muted {
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .cc-tool-warn,
+.md-typeset .cc-tool-ok {
+  padding: 0.35rem 0.6rem;
+  border-left: 0.2rem solid #ff9100;
+  border-radius: 0 0.2rem 0.2rem 0;
+  background: color-mix(in srgb, #ff9100 10%, transparent);
+}
+
+.md-typeset .cc-tool-ok {
+  border-left-color: #00c853;
+  background: color-mix(in srgb, #00c853 10%, transparent);
+}
+
+.md-typeset .cc-tool-out ul {
+  margin: 0.4em 0 0.4em 1.2em;
+}
+
+.md-typeset .cc-tool-table {
+  overflow-x: auto;
+  margin: 0.6em 0;
+}
+
+.md-typeset .cc-tool-table table {
+  display: table;
+  font-size: 0.68rem;
+}
+
+.md-typeset .cc-tool-table tr.is-highlight td {
+  background: color-mix(in srgb, var(--md-accent-fg-color) 10%, transparent);
+  font-weight: 700;
+}
+
+.md-typeset .cc-tool-code {
+  position: relative;
+}
+
+.md-typeset .cc-tool-code pre {
+  margin: 0.5em 0 0;
+}
+
+/* The tool card already uses the code background; set generated code apart */
+.md-typeset .cc-tool-code pre > code {
+  max-height: 28rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  background: var(--md-default-bg-color);
+  white-space: pre;
+}
+
+.md-typeset .cc-tool-copy {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
    Homepage
    Everything below uses the theme's color tokens, so light and dark mode
    both follow the active palette.
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 
 .md-typeset [hidden] {
   display: none !important;
@@ -1078,7 +1417,8 @@ html {
   .md-typeset .cc-journey li,
   .md-typeset .cc-about,
   .md-typeset .cc-eyebrow::before,
-  .md-typeset .cc-terminal-tab::after {
+  .md-typeset .cc-terminal-tab::after,
+  .md-typeset .cc-quiz-option {
     animation: none !important;
     transition: none !important;
   }

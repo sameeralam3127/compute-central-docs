@@ -102,6 +102,37 @@ vars:
 !!! tip "Validating a fragment"
     `validate: nginx -t -c %s` only works for a **complete** config such as `/etc/nginx/nginx.conf`. A `conf.d/` fragment isn't a valid config on its own, so for fragments run `nginx -t` as a separate task after writing it (as above), before the handler reloads nginx.
 
+## Validate Before It Goes Live
+
+`validate:` runs a command against the rendered file **before** it replaces the real one. Ansible writes a temporary copy, puts its path where `%s` is, and moves it into place only if the command exits 0, so a broken render never reaches the live path:
+
+```yaml
+- name: Deploy sudoers rules, only if visudo accepts them
+  ansible.builtin.template:
+    src: sudoers.j2
+    dest: /etc/sudoers.d/deploy
+    mode: "0440"
+    validate: visudo -cf %s
+
+- name: Deploy sshd_config, only if sshd accepts it
+  ansible.builtin.template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    validate: /usr/sbin/sshd -t -f %s
+```
+
+A broken sudoers file locks everyone out of `sudo`, and a broken `sshd_config` can lock you out of the server at the next restart; these two lines are the cheapest insurance in Ansible. `validate` checks syntax, though, not whether the content is sane. When a template renders data that another system produces, check the data too:
+
+```yaml
+- name: Refuse a feature list larger than the proxy can load
+  ansible.builtin.assert:
+    that: bot_features | length <= 200
+    fail_msg: "{{ bot_features | length }} features; the proxy preallocates room for 200."
+```
+
+!!! incident "Real incident: Cloudflare, November 2025"
+    A database permissions change made the query that generates Cloudflare's Bot Management feature file return duplicate rows. The file doubled in size, past the proxy's limit of 200 features, and the proxy crashed across Cloudflare's network for about three hours before core traffic recovered. Cloudflare's first fix was to validate its own generated configuration as strictly as user input. [The playbook version](../case-studies/08-automation-outages-and-guardrails.md#cloudflare-2025-a-generated-file-doubled-in-size) is in Automation Outages.
+
 ## Why `template`, Not `lineinfile`, for Whole Files
 
 ```yaml
@@ -125,6 +156,27 @@ vars:
 - Using `lineinfile` to build up an entire config file line by line instead of one `template` — harder to review, and each `lineinfile` task is a separate idempotency check instead of one coherent render.
 - Forgetting `notify:` on a `template` task that changes a service's config — the service never picks up the new config until restarted; see [Handlers](../core-concepts/08-handlers.md).
 - Hardcoding environment-specific values directly in the `.j2` file instead of passing them as variables — defeats the entire point of templating.
+- Writing `sudoers` or `sshd_config` from a template without `validate:`. One typo in the rendered file is enough to lock you out.
+
+## Check Yourself
+
+!!! quiz "When validation fails"
+    A `template` task sets `validate: visudo -cf %s`, and the rendered file has a syntax error. What's in `/etc/sudoers.d/deploy` afterwards?
+
+    - [x] Whatever was there before: the check ran on a temporary copy and the task failed
+    - [ ] The broken file, because validation runs after the copy
+    - [ ] Nothing: Ansible removes the destination on failure
+
+    `%s` is the path of a temporary file. Ansible moves it to `dest` only if the validation command succeeds.
+
+!!! quiz "Validating a conf.d file"
+    `validate: nginx -t -c %s` on a template that writes `/etc/nginx/conf.d/shop.conf` fails every time, even when the file is correct. Why?
+
+    - [ ] `nginx -t` doesn't accept `-c`
+    - [x] A `conf.d` fragment isn't a complete nginx config, so testing it alone always fails
+    - [ ] `validate` doesn't work with `.conf` files
+
+    `nginx -t -c` expects a full configuration with `events` and `http` blocks. For fragments, write the file, then run `nginx -t` against the main config before reloading.
 
 ## Interview Questions
 

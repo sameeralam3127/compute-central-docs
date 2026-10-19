@@ -61,6 +61,49 @@ spec:
 !!! tip "If you only remember one thing"
     A Pod's `volumes:` block describes *how* storage is attached to that pod. It says nothing about *where the bytes actually live* or *whether they outlive the pod* — that's what PersistentVolumes, PersistentVolumeClaims, and StorageClasses are for.
 
+## What Most Engineers Miss
+
+- **Deleting a namespace can delete its disks.** Dynamically provisioned PVs take the StorageClass's `reclaimPolicy`, which defaults to `Delete`. Delete the PVC, or the namespace it lives in, and the cloud disk goes with it. For data you can't lose, use a class with `reclaimPolicy: Retain`, or switch an existing volume:
+
+    ```bash
+    kubectl patch pv <pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'
+    ```
+
+- **`ReadWriteOnce` means one node, not one Pod.** Two Pods on the same node can mount the same RWO volume at once. `ReadWriteOncePod`, stable since v1.29, is the access mode that guarantees a single Pod.
+- **`Immediate` binding can pick the wrong zone.** With `volumeBindingMode: Immediate`, the disk is created as soon as the PVC exists, possibly in a zone where the Pod can't be scheduled. `WaitForFirstConsumer` waits until the scheduler has chosen a node.
+- **StatefulSet volumes outlive their Pods.** Scaling a StatefulSet down, or deleting it, leaves its PVCs (and their bills) behind. `persistentVolumeClaimRetentionPolicy`, stable since v1.32, can delete them on scale-down or deletion when that's what you want.
+- **`fsGroup` can make a mount take minutes.** With `fsGroup` set, the kubelet changes ownership of every file in the volume at each mount, and on a volume with millions of files the Pod sits in `ContainerCreating`. `fsGroupChangePolicy: OnRootMismatch` skips the walk when the top directory already matches.
+- **Volumes only grow.** A PVC can be expanded when its StorageClass has `allowVolumeExpansion: true`, but never shrunk. Shrinking means a new volume and a data copy.
+
+## Check Yourself
+
+!!! quiz "Cleaning up a namespace"
+    A team deletes namespace `shop`. Its database used a PVC from the default StorageClass, which has no `reclaimPolicy` set. What happens to the disk?
+
+    - [ ] It's kept, because PersistentVolumes are cluster-scoped
+    - [x] It's deleted: dynamically provisioned volumes default to `reclaimPolicy: Delete`
+    - [ ] It's detached and kept for 30 days
+
+    The PVC goes with the namespace, and the `Delete` policy removes the PV and the disk behind it. Use `Retain` for anything you can't recreate.
+
+!!! quiz "Two Pods, one RWO volume"
+    Two Pods on the **same** node mount the same `ReadWriteOnce` PVC. What happens?
+
+    - [ ] The second Pod stays `Pending`
+    - [x] Both mount it: RWO limits the volume to one node, not one Pod
+    - [ ] The volume is mounted read-only in the second Pod
+
+    For a true single-writer guarantee, use `ReadWriteOncePod`.
+
+!!! quiz "Scaling a StatefulSet down"
+    A StatefulSet with `volumeClaimTemplates` scales from 3 replicas to 1. What happens to the PVCs of the removed Pods?
+
+    - [ ] They're deleted with their Pods
+    - [x] They stay, and are reused if the StatefulSet scales back up
+    - [ ] They're kept only for 24 hours
+
+    Unless `persistentVolumeClaimRetentionPolicy` says otherwise, StatefulSet PVCs are retained so that a replica gets its own data back when it returns.
+
 ## Next
 
 Once you can reason about how a pod gets durable storage, continue to [Configuration and Packaging](../configuration-and-packaging/index.md) to see how the same workloads get their configuration and secrets injected.

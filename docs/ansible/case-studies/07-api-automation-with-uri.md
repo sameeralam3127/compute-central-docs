@@ -248,4 +248,4 @@ HTTP automation needs the same idempotency discipline as file management: **read
 
 ## Next
 
-Continue to [Troubleshooting](../troubleshooting/index.md).
+Continue to [Automation Outages and Guardrails](08-automation-outages-and-guardrails.md) — nine real incidents and the guardrail that would have contained each one.

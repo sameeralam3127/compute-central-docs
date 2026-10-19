@@ -128,6 +128,14 @@ kubectl describe pod <failed-pod>          # exit code, OOMKilled, image pull er
 - **Job**: database migrations run once per deploy, one-off data backfills, batch image/video processing split across parallel workers, CI-triggered test runs.
 - **CronJob**: nightly backups, periodic cache warming, scheduled report generation, certificate renewal checks, cleaning up expired records.
 
+## What Most Engineers Miss
+
+- **More than 100 missed schedules stops a CronJob cold.** The controller counts the schedules missed since the last run; past 100 it doesn't start the Job at all and logs `too many missed start times`. A CronJob that was suspended, or whose controller was down, for a while can need `startingDeadlineSeconds` set before it recovers, because the deadline limits how far back the controller counts.
+- **Your job can run twice, or not at all.** The docs say a CronJob creates a Job approximately once per schedule, and in some situations two Jobs or none; even a Job with one completion and `restartPolicy: Never` may occasionally start its program twice. Make every job safe to run again: idempotent writes, a lock, or a "done" marker.
+- **History is short.** CronJobs keep only the last 3 successful and the last **1** failed Job by default (`successfulJobsHistoryLimit`, `failedJobsHistoryLimit`). The failure before last, and its Pod logs, is already gone.
+- **`CRON_TZ=` in the schedule is rejected.** Kubernetes fails validation for `TZ` or `CRON_TZ` inside `.spec.schedule`; the `timeZone` field shown above is the supported way.
+- **Not every failure deserves a retry.** `backoffLimit` retries any failure, with a growing delay between attempts. A `podFailurePolicy` can fail the Job immediately on an exit code that means "bad input", instead of retrying it six times.
+
 ## Common Mistakes
 
 - Using a Deployment for a task meant to run once and exit — it will restart the container in a loop forever, since a Deployment has no concept of "done."
@@ -136,6 +144,26 @@ kubectl describe pod <failed-pod>          # exit code, OOMKilled, image pull er
 - Not setting `successfulJobsHistoryLimit`/`failedJobsHistoryLimit` (for CronJobs) or `ttlSecondsAfterFinished` (for one-off Jobs), letting finished Job and Pod objects accumulate.
 - Leaving out `timeZone` and scheduling a CronJob in local time when the cluster runs on UTC.
 - A retrying Job that isn't idempotent: with `backoffLimit: 3`, a migration that half-applied before crashing runs up to three more times. Make the work safe to repeat, or use `backoffLimit: 0` and handle failure by hand.
+
+## Check Yourself
+
+!!! quiz "The CronJob that won't start"
+    A CronJob scheduled every minute was suspended for three hours. After you resume it, it never starts, and the controller logs `too many missed start times`. What fixes it?
+
+    - [ ] Delete and recreate the CronJob's Pods
+    - [x] Set `startingDeadlineSeconds`, so the controller only counts recently missed schedules
+    - [ ] Change `concurrencyPolicy` to `Replace`
+
+    With no deadline, the controller counts every miss since the last run, 180 here. Past 100 it refuses to start. A deadline such as 200 seconds bounds the count.
+
+!!! quiz "Exactly once?"
+    A CronJob sends a monthly invoice email. What guarantee does Kubernetes give about how often each scheduled run happens?
+
+    - [ ] Exactly once per schedule
+    - [x] Approximately once: occasionally twice or not at all, so the job must be safe to repeat
+    - [ ] At least once, never more
+
+    Design scheduled work to be idempotent, for example by recording which month's invoices were already sent.
 
 ## Interview Questions
 

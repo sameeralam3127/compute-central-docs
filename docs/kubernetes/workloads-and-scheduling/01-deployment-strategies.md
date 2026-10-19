@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Deployment Strategies: Rolling, Recreate, Canary"
 icon: lucide/refresh-cw
-description: "Kubernetes deployment strategies — rolling update vs recreate, tuning maxSurge and maxUnavailable, PodDisruptionBudgets, and when to use blue-green or canary."
+description: "Kubernetes deployment strategies: rolling update vs recreate, maxSurge and maxUnavailable with an interactive rollout calculator, PodDisruptionBudgets, and canary."
 tags:
   - Kubernetes
   - Workloads & Scheduling
@@ -77,6 +77,12 @@ spec:
 - Setting both to sensible non-zero values (e.g. `maxSurge: 25%`, `maxUnavailable: 25%`, the actual defaults) balances rollout speed against cluster headroom.
 - A rollout only proceeds pod-by-pod as fast as the **readiness probe** says the new pods are healthy — a broken readiness probe silently stalls or fast-tracks a bad rollout.
 
+Percentages are resolved against `replicas` with the same rules the Deployment controller uses: `maxSurge` rounds up, `maxUnavailable` rounds down. Try your own values:
+
+<div class="cc-tool" data-cc-tool="rollout" markdown>
+**Rolling update calculator** (needs JavaScript). With 10 replicas and the default 25%/25%, `maxSurge` resolves to 3 and `maxUnavailable` to 2: at most 13 Pods exist at once, and at least 8 stay available.
+</div>
+
 ### Managing a rollout
 
 ```bash
@@ -147,13 +153,59 @@ A Deployment alone can approximate both crudely (two Deployments + a Service sel
 !!! note "Where the full walkthroughs live"
     Operational, tool-based walkthroughs with Argo Rollouts and Flagger are in [Progressive Delivery: Canary and Blue-Green](../cicd-and-gitops/03-progressive-delivery-canary-and-blue-green.md). A real-world postmortem of both patterns is in [Blue-Green and Canary Releases](../case-studies/02-blue-green-and-canary-releases.md).
 
+## What Most Engineers Miss
+
+- **The two percentages round in opposite directions.** `maxSurge` rounds up and `maxUnavailable` rounds down, so with 3 replicas the default 25%/25% means up to 1 extra Pod and **0** unavailable. Small Deployments roll one surge Pod at a time.
+- **If both round to zero, the controller quietly allows one unavailable Pod.** The API rejects `maxSurge: 0` with `maxUnavailable: 0`, but `maxSurge: 0%` with `maxUnavailable: 25%` on 3 replicas rounds both to 0, and the controller then sets `maxUnavailable` to 1. A config meant to never drop capacity takes a Pod out.
+- **A stuck rollout is reported, not rolled back.** After `progressDeadlineSeconds` (default 600), the Deployment's `Progressing` condition turns `False` with reason `ProgressDeadlineExceeded`, and that's all Kubernetes does: the new Pods stay. Your pipeline has to watch for it and run `kubectl rollout undo`, or use [Argo Rollouts or Flagger](../cicd-and-gitops/03-progressive-delivery-canary-and-blue-green.md).
+- **Terminating Pods can still receive traffic.** Removing a Pod from Service endpoints and sending it SIGTERM happen at the same time, so load balancers and kube-proxy can route a few more requests to a Pod that's shutting down. A short `preStop` delay closes the gap, and since v1.34 the built-in `sleep` action does it without a `sleep` binary in the image:
+
+    ```yaml
+    lifecycle:
+      preStop:
+        sleep:
+          seconds: 5
+    ```
+
+- **`minReadySeconds` defaults to 0.** A Pod that turns Ready and crashes two seconds later has already been counted as available, and the rollout has moved on. Set it to a few seconds longer than your app's typical crash-on-start time.
+- **Undo only reaches back `revisionHistoryLimit` revisions** (default 10). Set it to 0 to save a few objects, and `kubectl rollout undo` has nothing to go back to.
+
 ## Common Mistakes
 
-- Setting `maxUnavailable: 0` and `maxSurge: 0` at the same time — the rollout can never make progress and hangs.
+- Setting `maxUnavailable: 0` and `maxSurge: 0` at the same time — the API rejects the Deployment (`may not be 0 when maxSurge is 0`), because a rollout with no room to add or remove Pods could never progress.
 - No readiness probe (or a probe that always passes) — the rollout has no real signal, so a broken new pod gets marked ready and takes production traffic immediately.
 - Using `Recreate` out of habit "to be safe" — it introduces downtime a `RollingUpdate` with `maxUnavailable: 0` doesn't need.
 - Confusing `kubectl rollout restart` (re-rolls current pods with the same spec, e.g. to pick up a changed Secret) with `kubectl rollout undo` (reverts to a previous revision).
 - Assuming a successful `rollout status` means the release is actually healthy — it only means pods are Ready per the probe; it says nothing about real user-facing error rates.
+
+## Check Yourself
+
+!!! quiz "Defaults on a small Deployment"
+    A Deployment has `replicas: 3` and the default strategy (`maxSurge: 25%`, `maxUnavailable: 25%`). What do the two limits resolve to?
+
+    - [ ] Surge 0, unavailable 0
+    - [x] Surge 1, unavailable 0
+    - [ ] Surge 1, unavailable 1
+
+    25% of 3 is 0.75. `maxSurge` rounds up to 1, `maxUnavailable` rounds down to 0, so the rollout adds one new Pod, waits for it to be Ready, then removes an old one.
+
+!!! quiz "Past the deadline"
+    A new image crashes on start, and the rollout exceeds `progressDeadlineSeconds`. What does Kubernetes do?
+
+    - [ ] Rolls back to the previous ReplicaSet automatically
+    - [x] Marks the Deployment `Progressing=False` (`ProgressDeadlineExceeded`) and leaves everything as it is
+    - [ ] Deletes the new ReplicaSet
+
+    Kubernetes only reports a stalled rollout. Rolling back is up to you, your pipeline, or a progressive delivery controller.
+
+!!! quiz "Rounded to zero"
+    `replicas: 4`, `maxSurge: 0`, `maxUnavailable: 10%`. How many Pods can be unavailable during the rollout?
+
+    - [ ] 0, so the rollout hangs
+    - [x] 1: 10% of 4 rounds down to 0, and with both limits at 0 the controller uses 1
+    - [ ] The API rejects the Deployment
+
+    The API only rejects literal zeros for both. When rounding produces zero for both, the controller allows one unavailable Pod so the rollout can move.
 
 ## Interview Questions
 

@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes RBAC Explained: Roles, ClusterRoles, and Bindings"
 icon: lucide/lock
-description: How Kubernetes RBAC works — Role vs ClusterRole, RoleBinding vs ClusterRoleBinding, verbs and resources, and a least-privilege design walkthrough.
+description: "Kubernetes RBAC explained: Role vs ClusterRole, bindings, verbs, and escalation paths, plus a tool that turns a Forbidden error into a least-privilege Role."
 tags:
   - Kubernetes
   - Security
@@ -190,6 +190,40 @@ Some grants look narrow but hand over far more than they appear to. Treat these 
 
 Audit these regularly (tools like `kubectl-who-can` or `rbac-tool` make it quick), and keep them out of anything bound to CI pipelines or default ServiceAccounts.
 
+## Reading a Forbidden Error
+
+Every RBAC denial says exactly what was missing. Read it left to right:
+
+```text
+Error from server (Forbidden): pods is forbidden: User "system:serviceaccount:ci:deployer" cannot list resource "pods" in API group "" in the namespace "checkout"
+```
+
+| Part | What it tells you |
+|---|---|
+| `User "system:serviceaccount:ci:deployer"` | Who asked: the ServiceAccount `deployer` in namespace `ci`. People appear as their username, and `system:anonymous` means no credentials were accepted at all |
+| `cannot list` | The verb that was denied |
+| `resource "pods"` | The resource. Subresources follow a slash: `pods/log`, `pods/exec`, `deployments/scale` |
+| `in API group ""` | The API group: `""` is the core group, `apps` covers Deployments, `batch` covers Jobs |
+| `in the namespace "checkout"` | Where. `at the cluster scope` means a cluster-scoped resource such as `nodes`, or a request across all namespaces |
+
+That's everything a Role needs. Paste any `Forbidden` message here to get the smallest Role and binding that allow exactly that request, plus the command to verify it:
+
+<div class="cc-tool" data-cc-tool="forbidden" markdown>
+**Forbidden error to RBAC** (needs JavaScript). Without it, copy the verb, resource, API group, and namespace from the error into a Role like the `pod-reader` example above, and bind it to the user or ServiceAccount named in the message.
+</div>
+
+!!! incident "Real incidents: Tesla (2018) and RBAC Buster (2023)"
+    Tesla's Kubernetes console was reachable without a password, and a Pod inside held AWS credentials; attackers used the cluster to mine cryptocurrency. In 2023, attackers who found API servers granting privileges to anonymous requests created a ClusterRole, a `kube-controller` ServiceAccount in `kube-system`, and a binding between them, a backdoor that outlives the original misconfiguration, then mined Monero from a DaemonSet on at least 60 clusters. The checks for both are in [Kubernetes Outages](../case-studies/07-real-world-outages-and-lessons.md#rbac-buster-2023-anonymous-access-became-a-backdoor).
+
+## What Most Engineers Miss
+
+- **There are no deny rules.** RBAC only adds permissions: a subject can do whatever any binding grants to it, to any of its groups, or to `system:authenticated`. You can't carve an exception out of a broad grant, only avoid making it.
+- **`system:masters` bypasses RBAC entirely.** Requests from that group are allowed before RBAC is consulted, so deleting bindings changes nothing, and a leaked certificate in that group can't be revoked short of rotating the cluster CA. Since kubeadm 1.29, `admin.conf` uses the `kubeadm:cluster-admins` group, which is bound to `cluster-admin` and can be revoked, and the `system:masters` credential lives separately in `super-admin.conf` for break-glass use.
+- **`list` and `watch` return Secret values, not just names.** There's no names-only permission for Secrets; granting `list` "just to see what exists" hands over every value in the namespace.
+- **The built-in `admin`, `edit`, and `view` roles grow on their own.** They're aggregated: any ClusterRole labeled `rbac.authorization.k8s.io/aggregate-to-edit: "true"` is merged into `edit` automatically. Installing an operator can quietly widen what everyone with `edit` can do.
+- **You can't grant what you don't have.** Creating a Role or binding is checked against your own permissions, so a namespace admin can't hand out `cluster-admin`. The `escalate` and `bind` verbs switch that check off, which is why they're on the dangerous list above.
+- **`kubectl auth whoami` shows who the API server thinks you are**, username and groups included. When a `Forbidden` makes no sense, check this before touching any Role.
+
 ## Common Mistakes
 
 - Reaching for `ClusterRoleBinding` to `cluster-admin` to "just get past" a permissions error instead of writing the specific rule needed.
@@ -197,6 +231,35 @@ Audit these regularly (tools like `kubectl-who-can` or `rbac-tool` make it quick
 - Forgetting that a Role and a RoleBinding must live in the **same** namespace — a RoleBinding cannot reference a Role from a different namespace (only a ClusterRole).
 - Not realizing `pods/log` is a distinct sub-resource from `pods` — a Role that grants `get` on `pods` doesn't automatically let you read `pods/log`.
 - Editing RBAC objects directly with `kubectl edit` in production instead of through version-controlled manifests, which erases the audit trail of who changed access and when.
+
+## Check Yourself
+
+!!! quiz "A ClusterRole in one namespace"
+    A RoleBinding in namespace `dev` references the ClusterRole `view`. What does its subject get?
+
+    - [ ] Read access to every namespace, because `view` is a ClusterRole
+    - [x] Read access in `dev` only
+    - [ ] Nothing: a RoleBinding can only reference a Role
+
+    The binding sets the scope. Reusing a ClusterRole through RoleBindings is the standard way to grant the same rules in many namespaces without redefining them.
+
+!!! quiz "Taking one permission away"
+    A team has `edit` in its namespace, and you want it to have everything except deleting Secrets. How do you write that in RBAC?
+
+    - [ ] Add a rule with `verbs: ["!delete"]`
+    - [ ] Create a second Role that denies `delete` on `secrets` and bind it too
+    - [x] You can't subtract: build a narrower Role that never grants it
+
+    RBAC has no deny rules. Every binding only adds, so the only way to withhold a permission is to not grant it.
+
+!!! quiz "Only create pods"
+    A CI ServiceAccount has a single permission: `create` on `pods` in namespace `shop`. What can it effectively do?
+
+    - [ ] Start Pods, nothing more
+    - [x] Read any Secret in `shop` and act as any ServiceAccount there, by starting a Pod that mounts them
+    - [ ] Nothing until it also gets `get` on `pods`
+
+    A Pod can mount any Secret and use any ServiceAccount in its namespace, so `create pods` is close to admin for that namespace. Pod Security Admission and admission policies are what limit it further.
 
 ## Interview Questions
 

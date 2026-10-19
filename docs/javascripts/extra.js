@@ -1,8 +1,13 @@
+/* global document$ */ // instant-navigation observable provided by the theme bundle
 (function () {
   "use strict";
 
   var reduceMotion =
     window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Instant navigation keeps this script alive, so this first run is the only
+  // moment its own URL is known. tools.js is fetched from the same folder.
+  var SCRIPT_SRC = document.currentScript ? document.currentScript.src : "";
 
   // Incremented on every page render so timers from a previous render
   // (instant navigation keeps this script alive) stop themselves.
@@ -468,10 +473,24 @@
     themeWatcher.observe(document.body, { attributes: true, attributeFilter: ["data-md-color-scheme"] });
   }
 
+  // Opened only on pages that have a diagram, instead of a preconnect in
+  // every page's <head> that most pages never use.
+  function preconnectMermaid() {
+    if (document.querySelector("link[data-cc-preconnect]")) return;
+    // No crossorigin: the <script> that follows is a credentialed request,
+    // and an anonymous preconnect would open a socket it can't reuse.
+    var link = document.createElement("link");
+    link.rel = "preconnect";
+    link.href = new URL(MERMAID_SRC).origin;
+    link.setAttribute("data-cc-preconnect", "");
+    document.head.appendChild(link);
+  }
+
   function setupDiagrams() {
     var blocks = Array.prototype.slice.call(document.querySelectorAll("pre.mermaid-lazy"));
     if (!blocks.length) return;
 
+    if (!mermaidPromise) preconnectMermaid();
     blocks.forEach(function (pre) {
       var code = pre.querySelector("code");
       pre.setAttribute("data-source", (code || pre).textContent);
@@ -499,6 +518,159 @@
   }
 
   /* ---------------------------------------------------------------------------
+     Quizzes: a "quiz" admonition that holds a task list becomes a question
+     with clickable answers. In Markdown the checked item is the answer and
+     everything after the list is the explanation, so without JavaScript the
+     page still reads as a question followed by its answer.
+     ------------------------------------------------------------------------- */
+
+  function srText(text) {
+    var span = document.createElement("span");
+    span.className = "cc-sr-only";
+    span.textContent = text;
+    return span;
+  }
+
+  function setupQuiz(box) {
+    var list = box.querySelector(":scope > ul.task-list");
+    if (!list || box.hasAttribute("data-cc-quiz")) return;
+    box.setAttribute("data-cc-quiz", "");
+
+    var title = box.querySelector(":scope > .admonition-title");
+    var group = document.createElement("div");
+    group.className = "cc-quiz-options";
+    group.setAttribute("role", "group");
+    if (title) group.setAttribute("aria-label", title.textContent.trim());
+
+    var options = Array.prototype.map.call(list.children, function (item) {
+      var input = item.querySelector("input[type=checkbox]");
+      var control = item.querySelector(".task-list-control");
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "cc-quiz-option";
+      button.setAttribute("data-correct", input && input.checked ? "true" : "false");
+      if (control) control.remove();
+      while (item.firstChild) button.appendChild(item.firstChild);
+      if (button.firstChild && button.firstChild.nodeType === 3) {
+        button.firstChild.data = button.firstChild.data.replace(/^\s+/, "");
+      }
+      group.appendChild(button);
+      return button;
+    });
+
+    var status = document.createElement("p");
+    status.className = "cc-quiz-status";
+    status.setAttribute("role", "status");
+
+    var answer = document.createElement("div");
+    answer.className = "cc-quiz-answer";
+    while (list.nextSibling) answer.appendChild(list.nextSibling);
+    answer.hidden = true;
+
+    var retry = document.createElement("button");
+    retry.type = "button";
+    retry.className = "cc-quiz-retry";
+    retry.textContent = "Try again";
+    retry.hidden = true;
+
+    function choose(chosen) {
+      if (box.classList.contains("cc-quiz-done")) return;
+      var right = chosen.getAttribute("data-correct") === "true";
+      box.classList.add("cc-quiz-done");
+      options.forEach(function (option) {
+        option.setAttribute("aria-disabled", "true");
+        if (option.getAttribute("data-correct") === "true") {
+          option.classList.add("is-correct");
+          option.appendChild(srText(" (correct answer)"));
+        }
+      });
+      if (!right) {
+        chosen.classList.add("is-wrong");
+        chosen.appendChild(srText(" (your answer)"));
+      }
+      status.textContent = right ? "Correct." : "Not quite. The correct answer is highlighted.";
+      answer.hidden = false;
+      retry.hidden = false;
+    }
+
+    function reset() {
+      box.classList.remove("cc-quiz-done");
+      options.forEach(function (option) {
+        option.removeAttribute("aria-disabled");
+        option.classList.remove("is-correct", "is-wrong");
+        option.querySelectorAll(".cc-sr-only").forEach(function (span) {
+          span.remove();
+        });
+      });
+      status.textContent = "";
+      answer.hidden = true;
+      retry.hidden = true;
+      if (options[0]) options[0].focus();
+    }
+
+    options.forEach(function (option) {
+      option.addEventListener("click", function () {
+        choose(option);
+      });
+    });
+    retry.addEventListener("click", reset);
+
+    list.replaceWith(group);
+    group.after(status, answer, retry);
+  }
+
+  function setupQuizzes() {
+    document.querySelectorAll(".md-typeset .admonition.quiz").forEach(setupQuiz);
+  }
+
+  /* ---------------------------------------------------------------------------
+     Interactive tools (calculators, converters) live in tools.js, which is
+     downloaded only by pages that contain a [data-cc-tool] placeholder. The
+     placeholder's own text stays as the fallback if the script can't load.
+     ------------------------------------------------------------------------- */
+
+  var toolsPromise = null;
+
+  function loadTools() {
+    if (!toolsPromise) {
+      toolsPromise = new Promise(function (resolve, reject) {
+        if (!SCRIPT_SRC) {
+          reject(new Error("Could not locate tools.js"));
+          return;
+        }
+        var script = document.createElement("script");
+        script.src = new URL("tools.js", SCRIPT_SRC).href;
+        script.async = true;
+        script.onload = function () {
+          if (window.ccTools) resolve(window.ccTools);
+          else reject(new Error("tools.js loaded but did not register"));
+        };
+        script.onerror = function () {
+          toolsPromise = null;
+          reject(new Error("Could not load " + script.src));
+        };
+        document.head.appendChild(script);
+      });
+    }
+    return toolsPromise;
+  }
+
+  function setupTools() {
+    var roots = Array.prototype.slice.call(document.querySelectorAll("[data-cc-tool]:not([data-cc-mounted])"));
+    if (!roots.length) return;
+    loadTools().then(
+      function (tools) {
+        roots.forEach(function (root) {
+          if (root.isConnected) tools.mount(root);
+        });
+      },
+      function (error) {
+        if (window.console) window.console.warn(error);
+      }
+    );
+  }
+
+  /* ---------------------------------------------------------------------------
      Wiring
      ------------------------------------------------------------------------- */
 
@@ -510,6 +682,8 @@
     setupSpotlight();
     setupReveal();
     setupDiagrams();
+    setupQuizzes();
+    setupTools();
   }
 
   if (typeof document$ !== "undefined") {

@@ -26,6 +26,7 @@ ansible/case-studies/04-user-and-ssh-access/
 ansible/case-studies/05-vault-secrets-case-study/
 ansible/case-studies/06-dynamic-inventory-case-study/
 ansible/case-studies/07-api-automation-with-uri/
+ansible/case-studies/08-automation-outages-and-guardrails/
 ansible/collections/
 ansible/collections/01-collection-structure/
 ansible/collections/02-installing-and-using-collections/
@@ -286,6 +287,7 @@ kubernetes/case-studies/03-multi-tenant-namespace-setup/
 kubernetes/case-studies/04-autoscaling-under-load/
 kubernetes/case-studies/05-secrets-rotation/
 kubernetes/case-studies/06-debugging-a-crashloopbackoff-incident/
+kubernetes/case-studies/07-real-world-outages-and-lessons/
 kubernetes/cicd-and-gitops/
 kubernetes/cicd-and-gitops/01-cicd-pipelines-for-kubernetes/
 kubernetes/cicd-and-gitops/02-scripting-and-automation-with-kubectl/

@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Resource Units and Ports Cheat Sheet"
 icon: lucide/ruler
-description: CPU and memory unit reference, well-known Kubernetes and common service ports, and the pod lifecycle phases table.
+description: "Kubernetes CPU and memory units with a converter that catches 512m-of-memory mistakes, plus well-known ports, pod phases, exit codes, and access modes."
 tags:
   - Kubernetes
   - Quick Reference
@@ -26,11 +26,17 @@ tags:
 | `Ki` | 1024 bytes | `256Ki` |
 | `Mi` | 1024 Ki | `512Mi` |
 | `Gi` | 1024 Mi | `2Gi` |
-| `K` | 1000 bytes | `256K` |
-| `M` | 1000 K | `512M` |
+| `k` | 1000 bytes | `256k` |
+| `M` | 1000 k | `512M` |
 | `G` | 1000 M | `2G` |
 
-`Mi`/`Gi` (binary, 1024-based) are the conventional choice for Kubernetes manifests; `M`/`G` (decimal, 1000-based) appear but mean a slightly smaller amount for the same number.
+`Mi`/`Gi` (binary, 1024-based) are the conventional choice for Kubernetes manifests; `M`/`G` (decimal, 1000-based) appear but mean a slightly smaller amount for the same number: `1G` is about 7% less than `1Gi`.
+
+Suffixes are case-sensitive, and two mistakes pass review all the time. Uppercase `K` isn't a valid suffix at all (decimal kilo is a lowercase `k`). Worse, lowercase `m` is valid everywhere: it means *milli*, so `memory: 512m` is 0.512 **bytes**, which the API accepts and the container can't start with.
+
+<div class="cc-tool" data-cc-tool="units" markdown>
+**Resource quantity converter** (needs JavaScript). Without it: `250m` CPU is a quarter of a core, `512Mi` is 536,870,912 bytes, `1G` is 1,000,000,000 bytes, and `512m` of memory is half a byte.
+</div>
 
 ## Well-Known Kubernetes Ports
 

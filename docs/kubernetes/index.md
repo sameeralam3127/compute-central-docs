@@ -63,6 +63,16 @@ Each project uses only what the previous ones already taught you. Skip ahead if 
 9. **Adopt GitOps instead of pushing `kubectl apply` by hand** — [GitOps With ArgoCD and Flux](cicd-and-gitops/04-gitops-with-argocd-and-flux.md)
 10. **Practice debugging a real incident** — [Case Study: Debugging a CrashLoopBackOff Incident](case-studies/06-debugging-a-crashloopbackoff-incident.md)
 11. **Run the production readiness checklist against it** — [Production Readiness Checklist](production-engineering/05-production-readiness-checklist.md)
+12. **Learn from other people's outages** — [Kubernetes Outages: 11 Real Postmortems](case-studies/07-real-world-outages-and-lessons.md)
+
+## Interactive Tools
+
+Try your own numbers against the same rules the controllers use:
+
+- [Rolling update calculator](workloads-and-scheduling/01-deployment-strategies.md#rollingupdate-tuned) — what `maxSurge` and `maxUnavailable` resolve to, step by step
+- [HPA replica calculator](workloads-and-scheduling/06-autoscaling.md#horizontalpodautoscaler-autoscalingv2) — desired replicas, the tolerance band, and scaling speed limits
+- [Forbidden error to RBAC](security/02-rbac.md#reading-a-forbidden-error) — paste a `Forbidden` error and get the least-privilege Role, binding, and `kubectl auth can-i` check
+- [Resource quantity converter](quick-reference/05-resource-units-and-ports-cheat-sheet.md) — see what `500m`, `512Mi`, or `1G` really mean, and catch `512m` of memory
 
 ## What Changed Recently
 
@@ -70,7 +80,9 @@ Kubernetes moves fast, and a lot of tutorials online still teach patterns that n
 
 | Change | What it means for you | Covered in |
 |---|---|---|
+| **HPA tolerance per object** stable, **HPA scale to zero** beta (v1.37) | Tune flapping per HPA; scale idle workloads to zero on object or external metrics | [Autoscaling](workloads-and-scheduling/06-autoscaling.md#what-most-engineers-miss) |
 | **ingress-nginx retired** (March 2026) | No more security fixes; move to Gateway API or another maintained controller | [Gateway API](networking/07-gateway-api.md) |
+| **preStop `sleep` action** stable (v1.34) | Delay shutdown so endpoints drain, without a `sleep` binary in the image | [Deployment Strategies](workloads-and-scheduling/01-deployment-strategies.md#what-most-engineers-miss) |
 | **Native sidecar containers** stable (v1.33) | Sidecars start before and stop after the app, and don't block Jobs from completing | [Pods](core-concepts/01-pods.md#native-sidecar-containers-kubernetes-v133) |
 | **In-place Pod resize** stable (v1.35) | Change CPU/memory of a running Pod without restarting it; VPA can use it | [Autoscaling](workloads-and-scheduling/06-autoscaling.md#verticalpodautoscaler) |
 | **kube-proxy nftables mode** stable (v1.33), IPVS deprecated (v1.35) | Prefer nftables (or eBPF) for large clusters | [Services Deep Dive](networking/02-services-deep-dive.md) |

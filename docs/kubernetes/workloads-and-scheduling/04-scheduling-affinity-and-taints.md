@@ -129,12 +129,61 @@ A common pattern: taint expensive nodes (GPU, high-memory) so nothing lands ther
 
 `maxSkew: 1` means no zone can have more than one pod more than the least-populated zone for pods matching this selector — this is what actually gets you "3 replicas, one per zone" instead of relying on anti-affinity rules that only look at pairs.
 
+## What Most Engineers Miss
+
+- **Every Pod waits five minutes on a dead node.** Unless a Pod sets its own, Kubernetes adds tolerations for `node.kubernetes.io/not-ready` and `node.kubernetes.io/unreachable` with `tolerationSeconds: 300`. When a node dies, its Pods aren't evicted for five minutes. Set a shorter `tolerationSeconds` on workloads that should fail over faster:
+
+    ```yaml
+      tolerations:
+        - key: node.kubernetes.io/unreachable
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 30
+    ```
+
+- **DaemonSet Pods ignore most of this.** They tolerate `unschedulable`, so cordoning a node doesn't keep them off, and they tolerate `not-ready` and `unreachable` with no time limit, so they're never evicted from a failing node.
+- **The control-plane label and taint were renamed.** `node-role.kubernetes.io/master` became `node-role.kubernetes.io/control-plane` for both. A `nodeSelector` or toleration still using the old name is valid YAML that matches nothing on a current cluster, and nothing warns you.
+- **Inter-pod affinity is expensive.** Pod affinity and anti-affinity make the scheduler compare each Pod against Pods across the cluster, and the Kubernetes docs advise against them in clusters larger than several hundred nodes. Topology spread constraints are the cheaper way to say "spread out".
+- **Spreading is checked at scheduling time only.** Scale-downs, evictions, and node replacements can leave one zone holding most replicas, and nothing moves them back. The [descheduler](https://github.com/kubernetes-sigs/descheduler) can rebalance when that matters.
+
+!!! incident "Real incident: Reddit, March 2023"
+    Reddit's Calico route reflectors were selected with the label `node-role.kubernetes.io/master`. The upgrade to Kubernetes 1.24 removed that label, the selector quietly matched zero nodes, Pod networking collapsed, and Reddit was down for 314 minutes. Search for old labels and taints before every upgrade: `kubectl get deploy,ds,sts -A -o yaml | grep node-role.kubernetes.io/master`. [The full story](../case-studies/07-real-world-outages-and-lessons.md#reddit-2023-a-removed-node-label-took-down-pod-networking).
+
 ## Common Mistakes
 
 - Using `podAntiAffinity` with `topologyKey: kubernetes.io/hostname` on a cluster smaller than the replica count — `required...` anti-affinity then leaves pods `Pending` forever because there aren't enough distinct nodes.
 - Expecting a taint to attract pods — taints only repel; tolerations only cancel that repulsion, they never make a pod prefer that node (use affinity for attraction).
 - Confusing `NoSchedule` with `NoExecute` — assuming a taint added to an already-schedulable node won't touch running pods, then being surprised when a `NoExecute` taint evicts them.
 - Forgetting `IgnoredDuringExecution` semantics — labeling a node differently after pods are already running doesn't retroactively reschedule them.
+
+## Check Yourself
+
+!!! quiz "A node dies"
+    A worker node loses power. Its Pods have no tolerations of their own. When are they evicted so their controllers can replace them elsewhere?
+
+    - [ ] Immediately
+    - [ ] As soon as the node is marked `NotReady`
+    - [x] About five minutes after the node is marked unreachable, when the default 300-second toleration runs out
+
+    The node controller first waits out its grace period and taints the node as unreachable; then the Pods' default `tolerationSeconds: 300` must expire. Set a shorter toleration for workloads that need faster failover.
+
+!!! quiz "Cordoned, but still running"
+    You cordon a node with `kubectl cordon`. Which new Pods can still be scheduled onto it?
+
+    - [ ] None
+    - [x] DaemonSet Pods, which tolerate the `unschedulable` taint
+    - [ ] Pods with the highest PriorityClass
+
+    Cordoning adds `node.kubernetes.io/unschedulable:NoSchedule`, which DaemonSet Pods tolerate automatically. Draining is what evicts the other Pods.
+
+!!! quiz "An old selector"
+    A DaemonSet uses `nodeSelector: { node-role.kubernetes.io/master: "" }` on a cluster built with a current kubeadm. What happens?
+
+    - [ ] It runs on the control-plane nodes
+    - [ ] The API server rejects it
+    - [x] It's accepted and runs nowhere: no node carries that label
+
+    The label was renamed to `node-role.kubernetes.io/control-plane`. A selector that matches nothing isn't an error, which is what made Reddit's outage so hard to spot.
 
 ## Interview Questions
 

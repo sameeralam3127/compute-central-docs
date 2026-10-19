@@ -62,11 +62,58 @@ With `import_tasks`, the `networking` tag is applied to **every task inside `net
 | Task file to include is decided by a variable, fact, or `loop` | `include_tasks` |
 | Need `--list-tasks`/`--tags` to see everything ahead of a run | `import_tasks` |
 
+## What Most Engineers Miss
+
+- **Tags on `include_tasks` don't reach the tasks inside.** The tag applies to the include itself, so `--tags networking` runs the include and then skips every task in the file, because those tasks don't carry the tag. Use `apply` to pass it down, and keep the tag on the include so it runs at all:
+
+    ```yaml
+    - name: Run networking setup
+      ansible.builtin.include_tasks:
+        file: network_setup.yml
+        apply:
+          tags: networking
+      tags: networking
+    ```
+
+- **`when` behaves differently on each.** On `import_tasks`, the condition is copied onto every imported task and checked task by task, so if an early task changes what the condition tests, later tasks skip themselves. On `include_tasks`, it's checked once, for the include.
+- **Imports can't use facts or host variables in the filename.** `import_tasks: "{{ ansible_facts['os_family'] }}.yml"` fails, because imports are resolved before any host has gathered facts. Use `include_tasks` there.
+- **Errors surface at different times.** A broken imported file stops the run at parse time, before any host is touched. A broken included file only fails when that include runs, which can be halfway through a production rollout.
+- **A handler defined inside a dynamic include can't be notified at all.** Keep handlers in `handlers/` files, or bring them in with `import_tasks`.
+
 ## Common Mistakes
 
 - Trying to `loop:` an `import_tasks` and being confused why `item` isn't defined inside the imported file — loops require `include_tasks`.
 - Assuming `include_playbook` exists — it doesn't; playbook-level composition is always static via `import_playbook`.
 - Defaulting to `include_tasks` everywhere out of habit, losing `--list-tasks` visibility for structure that was actually static all along.
+
+## Check Yourself
+
+!!! quiz "Tags on an include"
+    `include_tasks: network_setup.yml` has `tags: networking`. You run `--tags networking`. What runs?
+
+    - [ ] Every task in `network_setup.yml`
+    - [x] The include itself, but none of the tasks inside, because they don't carry the tag
+    - [ ] Nothing: includes ignore tags
+
+    Tags on a dynamic include apply only to the include. Add `apply: { tags: networking }` to pass the tag to the included tasks.
+
+!!! quiz "Which one can loop?"
+    You need to run `network_setup.yml`, `storage_setup.yml`, and `firewall_setup.yml` from a `loop`. Which works?
+
+    - [ ] `import_tasks: "{{ item }}_setup.yml"`
+    - [x] `include_tasks: "{{ item }}_setup.yml"`
+    - [ ] Both
+
+    Imports are resolved before the play runs, when `item` doesn't exist yet. Only includes can be looped.
+
+!!! quiz "A condition on an import"
+    `import_tasks: setup.yml` has `when: not app_installed`. An early task in `setup.yml` runs `set_fact: { app_installed: true }`. What happens to the tasks after it?
+
+    - [ ] They run: the condition was checked once, before the import
+    - [x] They're skipped: the condition is copied onto every imported task and re-checked each time
+    - [ ] The play fails with a recursion error
+
+    On an import, `when` is evaluated per task. Use `include_tasks` if the condition should be checked once.
 
 ## Interview Questions
 

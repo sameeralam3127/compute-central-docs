@@ -115,12 +115,48 @@ Fix it with `force_handlers`, which runs notified handlers even when the host fa
 
 Or set `force_handlers = True` in `ansible.cfg`, or pass `--force-handlers` for a single run.
 
+## What Most Engineers Miss
+
+- **Same-named handlers shadow each other.** Handlers from every role in a play share one namespace, and when two have the same name, only the last one loaded runs. If two roles each define `Restart app`, one of them restarts the wrong thing. Notify `role_name : handler_name` (for example `notify: "web : Restart app"`) to be explicit.
+- **Don't put variables in handler names.** If a variable in a handler's name isn't available when the play loads, the entire play fails, and `listen` topics can't be templated at all. Template the task inside the handler instead.
+- **You can't notify a handler defined inside a dynamic include.** If the handlers section uses `include_tasks`, notifying the include runs every task in that file; the individual handlers inside it can't be targeted. Use `import_tasks` for handler files.
+- **No `changed`, no handler.** `changed_when: false` on a task that writes config means its handler never fires, even when the file really changed.
+
 ## Common Mistakes
 
 - Expecting the handler to run **immediately** when `notify` fires — it runs at the end of the current play **section** (`pre_tasks`, `tasks`/`roles`, `post_tasks`), not synchronously. If a later task in the same section depends on the service already being restarted, use `meta: flush_handlers` first.
 - Losing a notified handler because a later task failed, leaving the service on its old config with nothing left to trigger a reload — use `force_handlers`.
 - Writing a separate unconditional "restart the service" task instead of a handler — this restarts the service on *every* run, defeating idempotency.
 - Notifying a handler name that doesn't match exactly (handler names are matched as plain strings, not module names).
+
+## Check Yourself
+
+!!! quiz "Notified three times"
+    Three tasks in the same play each notify `Restart nginx`, and all three report `changed`. How many times does nginx restart?
+
+    - [ ] Three times, right after each task
+    - [x] Once, after the current section of the play finishes
+    - [ ] Once, at the very end of the playbook
+
+    A notified handler runs once per flush, at the end of `pre_tasks`, `tasks`/`roles`, or `post_tasks`, however many tasks notified it.
+
+!!! quiz "Two roles, one name"
+    Roles `web` and `api` both define a handler called `Restart app`. A task in `web` notifies `Restart app`. Which runs?
+
+    - [ ] The `web` role's handler, because the task is in `web`
+    - [ ] Both handlers
+    - [x] Only the handler loaded last; the other is shadowed
+
+    Handler names are global within a play. Use `notify: "web : Restart app"` to target a specific role's handler.
+
+!!! quiz "A later task failed"
+    A task changes `nginx.conf` and notifies `Reload nginx`. A later task on the same host fails. Is nginx reloaded?
+
+    - [ ] Yes, notified handlers always run
+    - [x] No, unless `force_handlers` is set; the new config sits on disk unused
+    - [ ] Yes, but only in check mode
+
+    The failed host stops before the flush. Set `force_handlers: true` on the play (or pass `--force-handlers`) so notified handlers still run.
 
 ## Interview Questions
 

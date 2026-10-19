@@ -437,6 +437,6 @@ That combination gives you a much stronger foundation for building AI systems th
 
 ## Further Reading
 
-- [Anthropic Documentation](https://docs.anthropic.com/)
+- [Anthropic Documentation](https://platform.claude.com/docs/en/home)
 - [OpenAI Documentation](https://platform.openai.com/docs)
 - [Hugging Face Documentation](https://huggingface.co/docs)

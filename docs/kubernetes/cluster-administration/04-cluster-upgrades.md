@@ -104,6 +104,34 @@ Repeat the drain → upgrade → uncordon cycle for every worker node, one at a 
 !!! warning "Never upgrade all nodes simultaneously"
     Draining and upgrading nodes one at a time is what keeps the application available during the upgrade. Upgrading every node at once is functionally a full-cluster outage.
 
+## Before You Upgrade: Checks That Catch Real Outages
+
+Kubernetes doesn't support downgrades. If an upgrade breaks something, the way back is a restore from backup, so the checks happen before, not after:
+
+- [ ] Read the **Urgent Upgrade Notes** at the top of the target version's changelog. They list what the release removes or changes in a way that can break you.
+- [ ] Search workloads **and** add-on configuration for labels, taints, and fields the release removes. Custom resources count: Reddit's outage hid in Calico's route reflector config, not in any Deployment.
+
+    ```bash
+    kubectl get deploy,ds,sts,job -A -o yaml | grep -n "node-role.kubernetes.io/master"
+    ```
+
+- [ ] Ask the API server whether anything still calls deprecated APIs. The counter covers every client since the API server last started, including ones not in your Git repository:
+
+    ```bash
+    kubectl get --raw /metrics | grep apiserver_requested_deprecated_apis
+    ```
+
+- [ ] Confirm every node runs cgroup v2 (`stat -fc %T /sys/fs/cgroup` prints `cgroup2fs`). Since v1.35 the kubelet refuses to start on cgroup v1 unless `failCgroupV1: false` is set.
+- [ ] Check that the CNI, CSI drivers, ingress or Gateway controller, and service mesh support the target version.
+- [ ] Look for PodDisruptionBudgets that will block drains: any PDB showing `ALLOWED DISRUPTIONS 0` in `kubectl get pdb -A` will stall a node.
+- [ ] Take an etcd snapshot and know how to restore it (see [Backup and Restore](05-backup-and-restore.md)).
+- [ ] Rehearse on a cluster with the same add-ons. A clean cluster built last week is not the one that will surprise you.
+
+!!! incident "Real incident: Reddit, March 2023"
+    Reddit's upgrade of its oldest, largest cluster from 1.23 to 1.24 removed the `node-role.kubernetes.io/master` label. Calico's route reflectors were selected by that label, so they vanished, Pod networking collapsed, and Reddit was down for 314 minutes before the team restored from backup. [The full story](../case-studies/07-real-world-outages-and-lessons.md#reddit-2023-a-removed-node-label-took-down-pod-networking).
+
+As of October 2026 the upstream project supports 1.37, 1.36, and 1.35, and 1.34 reaches end of life on October 27, 2026. A cluster on 1.34 or older is out of upstream patch support unless a vendor extends it.
+
 ## How Managed Platforms Change This
 
 | Platform | Control plane upgrade | Node upgrade |
@@ -115,7 +143,7 @@ Repeat the drain → upgrade → uncordon cycle for every worker node, one at a 
 
 The version skew policy still applies underneath all three managed platforms — they just automate the sequencing and safety checks that `kubeadm upgrade` makes you run by hand. The trade-off is control: managed platforms restrict how far you can defer an upgrade, and deferring can cost money:
 
-- **EKS** gives each version about 14 months of standard support, then an optional **extended support** period billed at a much higher per-cluster hourly rate. Clusters left on old versions quietly become one of the larger line items on the bill.
+- **EKS** gives each version about 14 months of standard support, then **extended support**, which clusters enter automatically unless you opt out. It's billed at $0.60 per cluster per hour instead of $0.10, six times the standard rate, so clusters left on old versions quietly become one of the larger line items on the bill.
 - **GKE** enrolls clusters in **release channels** (Rapid, Regular, Stable, Extended) and upgrades them automatically within your maintenance windows and exclusions.
 - **AKS** offers a paid **long-term support** option for selected versions.
 

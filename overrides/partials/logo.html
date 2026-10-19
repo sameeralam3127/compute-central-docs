@@ -1,0 +1,13 @@
+{#-
+  Override of the theme's logo partial.
+  Identical to the stock template, except the image declares its intrinsic
+  size, so the browser reserves the box before the file arrives. The header
+  uses a 128px copy of the logo (it renders at about 26-35px, sharp up to 3x
+  screens); the 512px original stays the favicon and the structured-data logo.
+-#}
+{% if config.theme.logo %}
+  <img src="{{ config.theme.logo | url }}" alt="{{ config.site_name }}" width="128" height="128">
+{% else %}
+  {% set icon = config.theme.icon.logo or "material/library" %}
+  {% include ".icons/" ~ icon ~ ".svg" %}
+{% endif %}
