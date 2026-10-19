@@ -80,12 +80,42 @@ spec:
 
 This is what "the fan-out pattern" means in practice: one source of truth in Git, many independent clusters, no shared runtime control plane between them. It gets you the blast-radius, compliance, and latency benefits of multi-cluster without reintroducing federation's central point of failure. See [CI/CD and GitOps](../cicd-and-gitops/index.md) for the mechanics of ArgoCD/Flux themselves.
 
+## What Most Engineers Miss
+
+- **Fan-out also fans out mistakes.** With an ApplicationSet over every cluster, one bad merge reaches every region within a sync interval, which is the blast radius multi-cluster was meant to avoid. Stage it: point a canary cluster at the new revision or overlay first, and promote to the rest only after it's healthy.
+- **Cluster-scoped add-ons drift first.** CRDs, admission webhooks, CNI, and CSI drivers are installed per cluster and quietly diverge. "Works in us-east, fails in eu-west" is usually a different webhook or CRD version, so keep add-ons in the same Git fan-out as the apps.
+- **Don't stretch one cluster across regions.** etcd needs a quorum on every write, and cross-region latency makes every API call slow and every partition a risk to the control plane. Run one cluster per region and replicate at the application or data layer.
+- **DNS failover is only as fast as client caches.** GeoDNS can move traffic in seconds, but clients that cache records for minutes, or forever, keep calling the failed region. Test failover with real clients, not `dig`.
+
+!!! incident "Real incident: Spotify, 2019"
+    During its migration to GKE, Spotify accidentally deleted production clusters, twice. Users didn't notice, because services still ran on the previous platform and definitions lived outside the clusters, but rebuilding a cluster took 3.25 hours through buggy scripts and incomplete docs. Clusters as code and workloads in Git turn "rebuild" into a routine operation. [The full story](../case-studies/07-real-world-outages-and-lessons.md#spotify-2019-production-clusters-deleted-twice).
+
 ## Common Mistakes
 
 - Going multi-cluster "for scale" before actually hitting etcd or node-count limits on a single cluster — adding operational surface area for a problem you don't have yet.
 - Reaching for KubeFed or building a custom central-push system in 2026 — the ecosystem has moved decisively toward the GitOps fan-out model instead.
 - Assuming a service mesh's cross-cluster networking also solves configuration consistency — it doesn't; you still need a GitOps layer for that.
 - Under-provisioning the "nearest cluster" routing layer (global load balancer, GeoDNS) and discovering the latency problem multi-cluster was meant to solve is still there.
+
+## Check Yourself
+
+!!! quiz "One bad commit"
+    An ApplicationSet with a `clusters` generator deploys `main` to all six regional clusters. A bad commit is merged. What's the blast radius, and what limits it?
+
+    - [ ] One cluster, because each cluster has its own Argo CD
+    - [x] All six, within a sync interval; staging the revision through a canary cluster limits it
+    - [ ] None, because Argo CD validates manifests first
+
+    Independent controllers isolate failures of the control plane, not failures of the content they all pull. Roll content out in waves.
+
+!!! quiz "Stretching etcd"
+    Why not run one Kubernetes cluster with control-plane nodes in three regions?
+
+    - [ ] Kubernetes forbids nodes in different regions
+    - [x] Every etcd write needs a quorum, so cross-region latency slows the whole control plane and partitions threaten it
+    - [ ] Pods can't communicate across regions
+
+    Keep each control plane within one region's low-latency network, and treat regions as separate clusters.
 
 ## Interview Questions
 

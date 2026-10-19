@@ -105,6 +105,15 @@ A common cluster-wide stack pairs a DaemonSet log shipper (Fluent Bit or Grafana
 !!! warning "Promtail is end-of-life"
     Older Loki guides use Promtail as the DaemonSet agent. Promtail reached end of life on March 2, 2026; use Grafana Alloy (or Fluent Bit) instead. See [Loki Logging With Grafana Alloy](../../monitoring-tools/logging.md) for the config and the `alloy convert` migration path.
 
+## What Most Engineers Miss
+
+- **The default rotation is small: 10 MiB × 5 files per container.** Those are the kubelet defaults (`containerLogMaxSize: 10Mi`, `containerLogMaxFiles: 5`). A service logging 1 MB per second fills all five files in under a minute.
+- **`kubectl logs` only reads the newest file.** After a rotation, older lines are still on the node's disk, but `kubectl logs` can't return them, `--since` and `--tail` included. The Kubernetes docs say so directly. To see them, read `/var/log/pods/` on the node, or better, ship logs off the node.
+- **`kubectl logs deploy/checkout` shows one Pod.** It picks a single Pod of the Deployment and says so in its first line. For all of them, use a selector: `kubectl logs -l app=checkout --prefix --max-log-requests 20` (the default limit is 5 concurrent streams).
+- **`--previous` goes back exactly one restart.** The kubelet keeps the last terminated container's logs; after the next crash, the one before is gone.
+- **Long lines are split.** containerd breaks lines longer than 16 KiB into partial records; your log agent has to merge them back, or large JSON events arrive as broken fragments.
+- **Buffered stdout looks like lost logs.** Python and some JVM setups buffer stdout when it isn't a terminal, so the last lines before a crash never reach the log. Set `PYTHONUNBUFFERED=1` (or the language's equivalent) in the container.
+
 ## Common Mistakes
 
 - Assuming an application logging to a local file inside the container is "logging normally" — Kubernetes only captures stdout/stderr; file-based logs vanish with the container unless separately shipped.
@@ -112,6 +121,35 @@ A common cluster-wide stack pairs a DaemonSet log shipper (Fluent Bit or Grafana
 - Relying on `kubectl logs` as your only logging strategy in production — it has no retention beyond node-level rotation and no cross-pod search.
 - Choosing the sidecar pattern by default, adding a full extra container's resource cost per pod, when a node-level DaemonSet agent would cover the same need at a fraction of the overhead.
 - Not accounting for log volume growth when sizing node disk and rotation settings, leading to disk pressure evictions caused by log files rather than application data.
+
+## Check Yourself
+
+!!! quiz "Where did the morning go?"
+    A busy Pod has been running since 09:00. At 11:00, `kubectl logs my-pod --since=2h` returns only the last few minutes. Why?
+
+    - [ ] `--since` only works with `--timestamps`
+    - [x] The log rotated, and `kubectl logs` only reads the newest file
+    - [ ] The kubelet deletes logs older than one hour
+
+    Rotated files stay on the node until they're pruned, but `kubectl logs` can't reach them. A log shipper reading `/var/log/pods/` is the only reliable record.
+
+!!! quiz "Logs for a Deployment"
+    A Deployment runs 6 Pods. What does `kubectl logs deploy/web` show?
+
+    - [ ] Interleaved logs from all 6 Pods
+    - [x] Logs from one Pod it picks
+    - [ ] An error: logs need a Pod name
+
+    Use a label selector with `--prefix` to see every Pod, and raise `--max-log-requests` above 6.
+
+!!! quiz "After the crash"
+    A container crashed and restarted a minute ago. Which command shows what it printed right before it died?
+
+    - [ ] `kubectl logs my-pod`
+    - [x] `kubectl logs my-pod --previous`
+    - [ ] `kubectl describe pod my-pod`
+
+    Plain `kubectl logs` shows the new instance. `--previous` shows the last terminated one, and only that one.
 
 ## Interview Questions
 

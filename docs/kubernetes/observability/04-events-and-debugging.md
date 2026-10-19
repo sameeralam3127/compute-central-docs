@@ -135,6 +135,14 @@ kubectl cp production/my-pod:/var/log/app/error.log ./error.log
 
 This exact sequence is what the [Troubleshooting](../troubleshooting/index.md) section applies to specific symptoms — `CrashLoopBackOff`, `ImagePullBackOff`, a Service with no working endpoints — so it's worth internalizing here rather than re-deriving it under pressure each time.
 
+## What Most Engineers Miss
+
+- **The one-hour limit is a flag.** The API server keeps Events for `--event-ttl`, which defaults to `1h`. Managed control planes rarely let you change it, so if you want Events in a postmortem, run an event exporter that ships them to your log store.
+- **`kubectl events` beats `kubectl get events`.** `kubectl events --for pod/my-pod --types=Warning` shows one object's warnings in time order, with no field selectors to remember.
+- **One Event line can stand for hundreds.** Repeats are folded into a single Event with a count, so `Back-off restarting failed container` seen once in `describe` may have happened 300 times. Check the count before deciding something is rare.
+- **Ephemeral containers can't be removed.** Each `kubectl debug` adds one to the Pod for good; they stay until the Pod is deleted. On long-lived Pods, prefer `--copy-to` once you've seen what you need.
+- **Every one of these commands needs a healthy API server.** `logs`, `exec`, `debug`, and `events` all go through it. When the control plane is down, as in [OpenAI's December 2024 outage](../case-studies/07-real-world-outages-and-lessons.md#openai-2024-telemetry-on-every-node-overloaded-the-api-servers), you need node-level access as a break-glass path: SSH or a cloud session manager, then `crictl ps` and `crictl logs <container-id>` on the node.
+
 ## Common Mistakes
 
 - Jumping straight to `kubectl exec` before checking `describe` and `events`, which usually already explain the problem without needing to get inside the container at all.
@@ -142,6 +150,35 @@ This exact sequence is what the [Troubleshooting](../troubleshooting/index.md) s
 - Not checking `kubectl get events` quickly enough — events are short-lived, and the evidence for an intermittent issue can be gone by the time you look.
 - Forgetting `--previous` on `kubectl logs` after a crash and concluding there's nothing useful in the logs.
 - Modifying a pod's spec (adding a debug sidecar, changing the image) just to get a shell, when an ephemeral debug container achieves the same result with zero change to the running workload.
+
+## Check Yourself
+
+!!! quiz "The missing evidence"
+    A Pod was evicted at 02:00. At 09:00 you run `kubectl get events` and find nothing about it. Why?
+
+    - [ ] Evictions don't create Events
+    - [x] Events are kept for `--event-ttl`, one hour by default, and these have expired
+    - [ ] `kubectl get events` only shows the current namespace's last 100 Events
+
+    Short retention is by design: Events live in etcd. Export them if you need them later.
+
+!!! quiz "No shell in the image"
+    A distroless container is misbehaving and `kubectl exec -it my-pod -- sh` fails. What gives you tools inside its process namespace without restarting it?
+
+    - [ ] `kubectl exec` with `--privileged`
+    - [x] `kubectl debug -it my-pod --image=busybox:1.36 --target=app`
+    - [ ] `kubectl cp` a shell into the container
+
+    An ephemeral container with `--target` shares the app container's process namespace, so `ps` and `/proc` show the real process.
+
+!!! quiz "The control plane is down"
+    The API servers are overloaded and every `kubectl` command times out. How do you see a container's logs?
+
+    - [ ] `kubectl logs --request-timeout=5m`
+    - [x] Log in to the node and use `crictl logs`, or read `/var/log/pods/` directly
+    - [ ] You can't until the API server recovers
+
+    The kubelet and container runtime keep running without the API server. Node access is the break-glass path, so make sure it exists before you need it.
 
 ## Interview Questions
 

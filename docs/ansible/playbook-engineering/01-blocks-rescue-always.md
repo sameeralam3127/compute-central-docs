@@ -190,6 +190,13 @@ If a block notifies a handler and a later task fails, the handler doesn't run fo
 - `rescue` catches task **failures**, not unreachable hosts or syntax errors.
 - A block is not a transaction: tasks that already succeeded aren't undone unless your `rescue` undoes them.
 
+## What Most Engineers Miss
+
+- **A rescued failure doesn't count as a failure.** The Ansible docs say it plainly: a rescued task is considered successful and doesn't trigger `max_fail_percentage` or `any_errors_fatal`. A rolling deploy whose `rescue` rolls back without re-failing will happily move on to the next batch with the same broken release, which is why the worked example above ends `rescue` with `fail`.
+- **`always` doesn't run for unreachable hosts either.** Invalid task definitions and unreachable hosts trigger neither `rescue` nor `always`, so a cleanup step in `always` (removing a maintenance lock, re-enabling a load balancer member) won't run on a host that dropped off the network mid-block.
+- **`ignore_errors: true` hides failures from `rescue`.** A task that fails with `ignore_errors` is treated as done, the block continues, and `rescue` never runs. Use one or the other, not both.
+- **`failed_when` decides what `rescue` sees.** A `command` that exits 0 but prints an error isn't a failure until `failed_when` says so, and then it's caught like any other.
+
 ## Common Mistakes
 
 - Assuming a failure inside `rescue:` itself is silently swallowed — it isn't; an unhandled failure there still fails the host.
@@ -197,6 +204,26 @@ If a block notifies a handler and a later task fails, the handler doesn't run fo
 - Rolling back in `rescue` without re-failing, so a rolling deploy continues to the next host as though nothing happened.
 - Relying on a handler restart inside the block and health-checking before the handler has run.
 - Expecting `rescue` to catch an `UNREACHABLE` host.
+
+## Check Yourself
+
+!!! quiz "Does the rollout stop?"
+    A play with `serial: 1` and `max_fail_percentage: 0` deploys inside a `block`. On the first host the health check fails, `rescue` rolls back successfully, and `rescue` doesn't call `fail`. What happens next?
+
+    - [ ] The play stops: the host failed and the threshold is 0%
+    - [x] The next host is deployed: a rescued failure counts as a success
+    - [ ] Ansible retries the first host
+
+    Rescued tasks don't trigger `max_fail_percentage` or `any_errors_fatal`. End the `rescue` with `ansible.builtin.fail` when the rollout should stop.
+
+!!! quiz "The host that vanished"
+    Mid-block, a host loses network connectivity and becomes `UNREACHABLE`. Which sections run for it?
+
+    - [ ] `rescue`, then `always`
+    - [ ] Only `always`
+    - [x] Neither: unreachable hosts don't trigger `rescue` or `always`
+
+    `block` error handling covers task failures. Cleanup that must happen even when a host disappears needs to run from somewhere else, such as a later play or a `delegate_to` task on another host.
 
 ## Interview Questions
 

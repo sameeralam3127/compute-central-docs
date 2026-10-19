@@ -115,6 +115,22 @@ A structured debugging order:
 3. Does it resolve using the fully-qualified name from a *different* namespace? Isolates whether it's a short-name/search-domain issue.
 4. Is a `NetworkPolicy` blocking UDP/TCP port 53 egress from the calling pod? (Covered in [Network Policies](04-network-policies.md).)
 
+## What Most Engineers Miss
+
+- **Lookups that take exactly five seconds are a race, not a slow server.** glibc sends the A and AAAA queries in parallel from one UDP socket, and a race in the kernel's connection tracking (which handles the DNAT to the DNS Service) can drop one of them; the resolver only retries after its 5-second timeout. NodeLocal DNSCache sidesteps the race, and glibc's `single-request-reopen` option sends the two queries from different sockets:
+
+    ```yaml
+    spec:
+      dnsConfig:
+        options:
+          - name: single-request-reopen
+    ```
+
+- **Service DNS depends on the API server.** CoreDNS learns Services and endpoints by watching it. When OpenAI's API servers were overwhelmed in December 2024, caches kept names resolving for about 20 minutes, then resolution failed across clusters. [The full story](../case-studies/07-real-world-outages-and-lessons.md#openai-2024-telemetry-on-every-node-overloaded-the-api-servers).
+- **Answers are cached for up to 30 seconds by default.** The default Corefile's `cache 30` means a deleted or changed Service can keep resolving to its old address briefly, and clients often cache further on top.
+- **Some clients cache DNS much longer.** The JVM caches lookups for a fixed time, or forever when a security manager is installed, which is a common reason a Java service keeps calling Pod IPs that no longer exist behind a headless Service. Set `networkaddress.cache.ttl` explicitly.
+- **musl ignores some resolver options.** Alpine-based images don't use glibc, so `single-request-reopen` does nothing there, and search-domain handling differs. Test DNS behavior with the same base image your app ships on.
+
 ## Common Mistakes
 
 - Forgetting the short-name form only works within the same namespace — cross-namespace calls silently fail (`NXDOMAIN`) unless the namespace is included.
@@ -122,6 +138,26 @@ A structured debugging order:
 - Not knowing `ndots:5` exists — high-`ndots` search-domain expansion for frequently-called external APIs adds real, measurable latency (and DNS query volume) that's invisible until you look at `resolv.conf`.
 - Assuming a DNS problem is a CoreDNS problem before ruling out the calling pod's own `NetworkPolicy`, kube-proxy/Service health, or a genuinely misspelled Service name.
 - Editing the CoreDNS `Corefile` `ConfigMap` directly without understanding the resulting pods need a restart (or the `reload` plugin, which is included by default) to pick up changes.
+
+## Check Yourself
+
+!!! quiz "Exactly five seconds"
+    Some requests from Pods to an external API take an extra 5.0 seconds, randomly. CoreDNS looks healthy. What's the most likely cause?
+
+    - [ ] The external API is rate-limiting
+    - [x] A dropped DNS packet from the conntrack race, retried after the resolver's 5-second timeout
+    - [ ] CoreDNS's 30-second cache expiring
+
+    A delay of exactly the resolver timeout is the fingerprint. NodeLocal DNSCache, `single-request-reopen`, or fewer search-domain lookups (lower `ndots`, trailing dots) all help.
+
+!!! quiz "How many queries?"
+    With the default `ndots:5` and three search domains, a Pod resolves `api.stripe.com`. Roughly how many queries can that become?
+
+    - [ ] 1
+    - [x] Up to 4 names, each with an A and an AAAA query
+    - [ ] 5, one per dot
+
+    The name has fewer than 5 dots, so each search domain is tried first, then the name itself. A trailing dot (`api.stripe.com.`) makes it a single lookup.
 
 ## Interview Questions
 

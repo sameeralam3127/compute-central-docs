@@ -109,12 +109,53 @@ This pattern — a GPU-monitoring DaemonSet that only runs on GPU nodes — is c
 !!! note "Affinity and taints in depth"
     Node/pod affinity, taints, and tolerations are covered fully in [Scheduling, Affinity, and Taints](04-scheduling-affinity-and-taints.md) — this page only covers the DaemonSet-specific usage.
 
+## What Most Engineers Miss
+
+- **A DaemonSet's API load is multiplied by your node count.** An agent that lists every Pod in the cluster from every node makes 500 expensive LIST calls on a 500-node cluster, every time it resyncs. Make each agent watch only its own node, through an informer:
+
+    ```yaml
+    env:
+      - name: NODE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+    # list/watch Pods with fieldSelector=spec.nodeName=$(NODE_NAME)
+    ```
+
+- **So are its requests.** A 200m CPU, 256Mi request is small per node and 100 CPUs plus 125 GiB across 500 nodes, reserved before any application Pod schedules. Size node agents carefully.
+- **One node at a time is slow on big clusters.** The default `maxUnavailable: 1` with readiness gates means a rollout across 1,000 nodes takes 1,000 sequential steps. Use a percentage for agents that can tolerate it, or `maxSurge` (stable since v1.25) to start the new Pod before stopping the old one.
+- **Cordons don't stop DaemonSets.** DaemonSet Pods tolerate `unschedulable`, `not-ready`, and `unreachable` automatically, and `kubectl drain` refuses to run until you pass `--ignore-daemonsets`.
+- **Critical agents need a priority.** Give CNI, CSI, and log agents `priorityClassName: system-node-critical`, so they aren't the Pods evicted or preempted when a node runs short.
+
+!!! incident "Real incident: OpenAI, December 2024"
+    A new telemetry service made every node in each cluster run resource-intensive Kubernetes API operations whose cost grew with cluster size. The API servers in most of OpenAI's large clusters were overwhelmed, DNS-based service discovery failed once caches expired, and ChatGPT, the API, and Sora were down for hours, while the fix itself needed the API servers that were down. [What to change in your cluster](../case-studies/07-real-world-outages-and-lessons.md#openai-2024-telemetry-on-every-node-overloaded-the-api-servers).
+
 ## Common Mistakes
 
 - Setting resource requests too high on a DaemonSet — since it runs on every node, an oversized request multiplies across the whole cluster and eats capacity every other workload could have used.
 - Forgetting control-plane taints — a DaemonSet meant to run everywhere silently skips control-plane nodes unless it tolerates their taint.
 - Using a Deployment with a high replica count and anti-affinity rules to approximate "one per node" — it's fragile and doesn't auto-adjust as nodes join or leave, unlike a DaemonSet.
 - Not setting `maxUnavailable` deliberately — the default rolling update pace may be too aggressive for a CNI plugin, where taking down too many nodes' network agents at once can partition the cluster.
+
+## Check Yourself
+
+!!! quiz "Draining a node"
+    `kubectl drain node-7` stops with an error about DaemonSet-managed Pods. What's the usual fix?
+
+    - [ ] Delete the DaemonSet first
+    - [x] Rerun with `--ignore-daemonsets`: DaemonSet Pods aren't evicted, and they'd come straight back anyway
+    - [ ] Cordon the node and wait
+
+    Drain evicts everything else and leaves DaemonSet Pods running, which is what you want for log and network agents during maintenance.
+
+!!! quiz "Cheap on one node"
+    A monitoring agent requests 200m CPU. The cluster has 400 nodes. How much CPU does the DaemonSet reserve?
+
+    - [ ] 200m
+    - [x] 80 CPUs: 200m on each of 400 nodes
+    - [ ] Nothing, because DaemonSet Pods don't count against node capacity
+
+    DaemonSet requests are reserved on every node they run on. On large clusters, a small per-node request is a big line on the bill.
 
 ## Interview Questions
 

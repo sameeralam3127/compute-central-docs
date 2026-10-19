@@ -147,6 +147,17 @@ Picture a real onboarding task: three new web servers need a `max_connections` t
 
 The `lineinfile` version has no such failure mode: it can be run during every maintenance window, by anyone, for the rest of the project's life, and it will only ever change a host that doesn't already match.
 
+!!! incident "Real incident: Knight Capital, August 2012"
+    A technician copied new trading code to eight servers and missed one. Orders carrying a repurposed flag then woke up old code on that eighth server, which traded nonstop for about 45 minutes; the SEC put the loss at more than $460 million. Idempotent automation that runs the same tasks on every host, plus a check that every host ended up identical, is the guardrail. [The playbook](../case-studies/08-automation-outages-and-guardrails.md#knight-capital-2012-seven-servers-out-of-eight) is in Automation Outages.
+
+## What Most Engineers Miss
+
+- **`state: latest` isn't idempotent over time.** Run it today and next week and you can get two different versions, because "latest" moves whenever the repository publishes. Pin versions in production and leave `latest` to dev machines.
+- **`changed_when: false` can make a playbook lie.** It's right for commands that only read. On a command that changes something, it hides the change and makes the second-run test meaningless.
+- **A dry run doesn't prove idempotency; a second run does.** `--check` skips `command` and `shell` tasks entirely. Run the playbook twice and require `changed=0` on the second run, which is what Molecule's `idempotence` step automates.
+- **Non-idempotent tasks restart services.** A task that reports `changed` on every run notifies its handler on every run, so the service restarts every time the playbook runs, whether or not anything changed.
+- **Idempotent isn't the same as correct.** A `lineinfile` whose `regexp` doesn't match the hand-edited line on a server appends a second line instead of fixing the first. The second run reports `ok`, so the task is idempotent, but the server still has the wrong setting in it.
+
 ## Common Mistakes
 
 - Assuming `shell`/`command` module tasks are automatically idempotent — they are not. They run every time, unconditionally, unless you add a guard yourself.
@@ -184,6 +195,35 @@ A teammate needs to ensure a small *block* of three related lines exists in an n
 ### Production Challenge
 
 Wrap the `blockinfile` version in a role: put the target file path and the block content in `defaults/main.yml` so the role can be reused across projects, and add a handler that reloads the service only when the block actually changes.
+
+## Check Yourself
+
+!!! quiz "The second run"
+    A task uses `ansible.builtin.shell: echo "max_connections = 100" >> /etc/app/app.conf`. You run the playbook twice. What does the second run report, and what's in the file?
+
+    - [ ] `ok`, one line: Ansible noticed the line is already there
+    - [x] `changed`, two lines: `shell` runs every time and `>>` appends again
+    - [ ] `skipped`, one line: Ansible skips tasks that already ran
+
+    `shell` and `command` can't check state, so they run on every pass. Use `lineinfile`, or guard the command with `creates:`.
+
+!!! quiz "Proving it"
+    Which check actually proves a playbook is idempotent?
+
+    - [ ] `ansible-playbook --check` reports no errors
+    - [ ] `ansible-lint` passes
+    - [x] A second real run reports `changed=0` for every host
+
+    A dry run skips `command` and `shell` and only reports what modules predict. Only running it again shows whether anything still changes.
+
+!!! quiz "Is latest idempotent?"
+    `ansible.builtin.apt: name=nginx state=latest` reports `ok` on a second run today. Is it safe to call idempotent?
+
+    - [ ] Yes, and it will always produce the same version
+    - [x] Within one run yes, but over time no: the result changes when the repository publishes a new version
+    - [ ] No, `apt` tasks always report `changed`
+
+    `latest` describes a moving target. For reproducible servers, pin the version, for example `name: nginx=1.26.*`, and upgrade deliberately.
 
 ## Interview Questions
 

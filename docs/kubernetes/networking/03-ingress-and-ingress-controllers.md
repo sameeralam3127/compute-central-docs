@@ -103,6 +103,9 @@ Popular controllers:
 | **HAProxy Ingress** | Strong for teams already standardized on HAProxy |
 | **Cloud-native (ALB Ingress Controller, GKE Ingress)** | Maps `Ingress` directly onto the cloud provider's native load balancer, no separate proxy pod |
 
+!!! incident "Real incident: IngressNightmare, March 2025"
+    CVE-2025-1974 (CVSS 9.8) let anyone who could reach ingress-nginx's admission webhook from the Pod network run code inside the controller, which in a default installation can read every Secret in the cluster. Fixes shipped in v1.11.5 and v1.12.1; ingress-nginx's retirement in March 2026 means future flaws won't get one. Whatever controller you run, only the API server should be able to reach its admission webhook. [The checks](../case-studies/07-real-world-outages-and-lessons.md#ingressnightmare-2025-the-admission-webhook-was-reachable-from-any-pod).
+
 ### TLS termination with cert-manager
 
 ```yaml

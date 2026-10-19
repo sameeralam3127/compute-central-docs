@@ -122,6 +122,17 @@ kubectl describe pod web
 kubectl get pod web -o jsonpath='{.status.containerStatuses[0].ready}'
 ```
 
+## What Most Engineers Miss
+
+- **The default probe timeout is one second.** `timeoutSeconds` defaults to `1`, so a garbage-collection pause or a slow disk on a busy node makes a healthy app fail its liveness probe. Give liveness probes a few seconds and a `failureThreshold` above 1.
+- **Readiness on a shared dependency can empty a Service.** If every replica checks the same database in its readiness probe and the database hiccups, all of them leave the Service's endpoints at once, and clients get connection errors instead of degraded answers. Decide deliberately which dependencies belong in readiness.
+- **A startup probe that fails kills the container,** exactly like liveness, once `failureThreshold × periodSeconds` runs out. Liveness and readiness don't run until it succeeds, so size it for your slowest start rather than adding `initialDelaySeconds` to liveness.
+- **gRPC health checks are built in.** `grpc:` probes are stable (since v1.27), so there's no need to ship the `grpc_health_probe` binary in the image.
+- **Restart loops are throttled on purpose.** Each restart after a failed liveness probe waits longer, 10 seconds doubling up to 5 minutes. That backoff is what stops a crashing fleet from hammering its dependencies, the exact protection Google Cloud's Service Control lacked in June 2025.
+
+!!! incident "Real incident: Google Cloud, June 2025"
+    A policy with unintended blank fields replicated globally and crashed Google Cloud's Service Control binary in every region. As tasks restarted, they hammered the Spanner table they depend on, because the binary lacked randomized exponential backoff, and recovery in us-central1 took up to about 2 hours 40 minutes. Kubernetes gives containers that backoff for free; your clients' retries need it too. [The full story](../case-studies/07-real-world-outages-and-lessons.md#google-cloud-2025-a-crash-loop-with-no-backoff).
+
 ## Common Mistakes
 
 - Using the same endpoint and thresholds for liveness and readiness — a transient dependency outage then triggers unnecessary container restarts instead of just a traffic pause.
@@ -129,6 +140,26 @@ kubectl get pod web -o jsonpath='{.status.containerStatuses[0].ready}'
 - Making the liveness probe check downstream dependencies (database, external API) — if the dependency is down, restarting the container doesn't help and can restart-loop every replica simultaneously.
 - Setting `failureThreshold: 1` on a liveness probe, which restarts a container on a single transient blip (a GC pause, a momentary CPU spike) instead of tolerating brief hiccups.
 - Forgetting that `successThreshold` must be `1` for liveness probes — Kubernetes rejects any other value there.
+
+## Check Yourself
+
+!!! quiz "Liveness during a database outage"
+    A liveness probe calls `/health`, which checks the database. The database goes down for two minutes. What happens?
+
+    - [ ] Pods keep running and stop receiving traffic
+    - [x] Every replica fails liveness and restarts, without fixing anything, and keeps restarting
+    - [ ] Kubernetes pauses liveness checks while the database is down
+
+    Restarting doesn't fix a downstream outage. Keep dependency checks out of liveness; at most, use them in readiness, knowing every replica can drop out at once.
+
+!!! quiz "Slow to start"
+    An app takes up to 90 seconds to start. Which configuration avoids killing it during startup without slowing failure detection later?
+
+    - [ ] `initialDelaySeconds: 90` on the liveness probe
+    - [x] A startup probe with `periodSeconds: 10` and `failureThreshold: 10`, and a fast liveness probe
+    - [ ] A readiness probe only
+
+    The startup probe allows up to 100 seconds once, then hands over to liveness, which can stay quick for the rest of the container's life.
 
 ## Interview Questions
 

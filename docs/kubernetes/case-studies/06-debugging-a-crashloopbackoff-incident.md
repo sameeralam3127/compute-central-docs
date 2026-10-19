@@ -180,4 +180,4 @@ For a reusable, step-by-step method beyond this incident, see [Fix Kubernetes Cr
 
 ## Next
 
-Return to [Case Studies](index.md) for the full set, or continue to [Troubleshooting](../troubleshooting/index.md) for a broader diagnostic playbook beyond this one incident.
+Continue to [Kubernetes Outages: 11 Real Postmortems](07-real-world-outages-and-lessons.md) to see how other teams' clusters failed, or to [Troubleshooting](../troubleshooting/index.md) for a broader diagnostic playbook beyond this one incident.

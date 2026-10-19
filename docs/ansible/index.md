@@ -57,6 +57,15 @@ Each project uses only what the previous ones already taught you. Skip ahead if 
 10. **Write a custom module** — [Build a Custom Module](build-your-own/01-build-a-custom-module.md)
 11. **Package it into a collection** — [Build a Collection From Zero](build-your-own/03-build-a-collection-from-zero.md)
 12. **Tune a slow playbook at scale** — [Forks, Serial, Strategy, and Throttle](advanced-execution/01-forks-serial-strategy-throttle.md), [Performance](production-engineering/05-performance.md)
+13. **Learn the guardrails from real outages** — [Automation Outages: 9 Real Incidents](case-studies/08-automation-outages-and-guardrails.md)
+
+## Interactive Tools
+
+Work through your own numbers instead of reading rules:
+
+- [Variable precedence checker](variables-and-data/02-variable-precedence.md#check-any-combination) — tick every place a variable is set and see which value wins, and why
+- [Serial batch planner](advanced-execution/01-forks-serial-strategy-throttle.md#stopping-a-bad-rollout) — batch sizes, ansible-core's rounding, and which failures stop a rollout
+- [curl to uri converter](modules/04-uri-and-api-automation.md#curl-to-uri) — paste a curl command and get an `ansible.builtin.uri` task, with secrets moved to variables
 
 ## Every Section
 

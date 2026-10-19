@@ -60,6 +60,17 @@ A pattern many production teams converge on:
 kubectl top pods -n production --containers      # current usage, needs metrics-server
 ```
 
+Measure throttling directly rather than guessing. The fraction of CFS periods in which a container hit its CPU limit:
+
+```promql
+sum by (namespace, pod) (rate(container_cpu_cfs_throttled_periods_total[5m]))
+  /
+sum by (namespace, pod) (rate(container_cpu_cfs_periods_total[5m]))
+```
+
+!!! incident "Real incident: CPU limits throttling idle services (Indeed, 2019)"
+    For years, teams saw latency spikes on services that used a fraction of their CPU limit. Dave Chiluk at Indeed traced it to a Linux kernel bug in which per-CPU quota expired unused, throttling multi-threaded apps on many-core nodes despite low usage. The fix landed in Linux 5.4 (and stable 4.14.154+, 4.19.84+, 5.3.9+), and Indeed reported worst-case latency in one service falling from over two seconds to 30 ms. Patched kernels still throttle a container that really uses its quota early in each 100 ms period, which is why the advice above stands. [More real incidents](../case-studies/07-real-world-outages-and-lessons.md#indeed-2019-cpu-limits-throttled-services-that-werent-busy).
+
 ## QoS Classes
 
 Kubernetes derives a QoS class per pod automatically from its requests/limits — you never set it directly.

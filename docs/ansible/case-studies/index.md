@@ -20,6 +20,7 @@ Every earlier section teaches one concept at a time. These case studies put seve
 5. [Vault Secrets Case Study](05-vault-secrets-case-study.md) — per-environment vault IDs, a CI pipeline that never exposes the password, and proving nothing leaks
 6. [Dynamic Inventory Case Study](06-dynamic-inventory-case-study.md) — AWS EC2 inventory grouped by tag, least-privilege IAM, and catching tag drift
 7. [API Automation with URI](07-api-automation-with-uri.md) — idempotent service registration with retries and body-level error handling
+8. [Automation Outages and Guardrails](08-automation-outages-and-guardrails.md) — nine real incidents (AWS S3, GitLab, Knight Capital, CrowdStrike, Cloudflare, and more) and the Ansible guardrail that would have contained each
 
 ## Next
 

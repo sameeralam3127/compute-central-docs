@@ -174,24 +174,24 @@ Most readers move left to right — but jump in wherever your work is today.
 
 <div class="cc-news" data-cc-reveal markdown>
 
+<a class="cc-news-item" href="kubernetes/case-studies/07-real-world-outages-and-lessons/">
+  <span class="cc-badge">New</span>
+  <span class="cc-news-text"><strong>Real outages, real fixes</strong><span>Eleven Kubernetes postmortems and nine automation outages, each with what to check in your own setup.</span></span>
+</a>
+
+<a class="cc-news-item" href="ansible/variables-and-data/02-variable-precedence/">
+  <span class="cc-badge">New</span>
+  <span class="cc-news-text"><strong>Interactive tools</strong><span>Variable precedence checker, serial planner, curl to uri, RBAC from a Forbidden error, rollout and HPA calculators.</span></span>
+</a>
+
 <a class="cc-news-item" href="foundations/">
   <span class="cc-badge">New</span>
   <span class="cc-news-text"><strong>DevOps Foundations</strong><span>Linux, networking, Git, and Python automation tracks, plus an expanded shell scripting course.</span></span>
 </a>
 
-<a class="cc-news-item" href="cloud/aws/">
-  <span class="cc-badge">New</span>
-  <span class="cc-news-text"><strong>AWS learning path</strong><span>IAM and OIDC, VPC design, ECS and EKS, databases, observability, security, and cost.</span></span>
-</a>
-
 <a class="cc-news-item" href="sre/">
   <span class="cc-badge">New</span>
   <span class="cc-news-text"><strong>SRE practices</strong><span>SLOs, tested burn-rate alerts, incident response, postmortems, and load testing with k6.</span></span>
-</a>
-
-<a class="cc-news-item" href="security/">
-  <span class="cc-badge">New</span>
-  <span class="cc-news-text"><strong>Security and DevSecOps</strong><span>Vault dynamic secrets, Sigstore signing, SBOMs, policy as code, and zero trust.</span></span>
 </a>
 
 </div>

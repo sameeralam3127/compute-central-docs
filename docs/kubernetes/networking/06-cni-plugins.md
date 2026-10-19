@@ -70,6 +70,19 @@ cilium status                      # if Cilium CLI is installed
 calicoctl node status              # if calicoctl is installed
 ```
 
+### The node's OS can delete your CNI's routes
+
+A CNI plugin installs routes and routing rules on every node, and other software on the node can remove them. On nodes where `systemd-networkd` manages interfaces, tell it to leave routes and rules it didn't create alone:
+
+```ini title="/etc/systemd/networkd.conf.d/10-cni.conf"
+[Network]
+ManageForeignRoutes=no
+ManageForeignRoutingPolicyRules=no
+```
+
+!!! incident "Real incident: Datadog, March 2023"
+    A systemd security update reached Datadog's Ubuntu 22.04 nodes through unattended upgrades, in the same hour on every host. Installing it restarted `systemd-networkd`, which since v248 deletes routing rules it doesn't manage when it starts, including the ones Cilium had installed for Pod networking. More than 60% of Datadog's instances dropped off the network. Fresh nodes were fine, because networkd starts before the CNI adds its rules, so no test had caught it. [The full story](../case-studies/07-real-world-outages-and-lessons.md#datadog-2023-an-os-patch-deleted-the-cnis-routes).
+
 ## Common Mistakes
 
 - Assuming every CNI plugin supports `NetworkPolicy` — Flannel alone doesn't; verify support before writing policies you assume will be enforced.

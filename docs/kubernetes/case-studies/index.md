@@ -19,6 +19,7 @@ Every earlier section teaches one concept at a time. These case studies put seve
 4. [Autoscaling Under Load](04-autoscaling-under-load.md) — HPA on CPU and a custom metric during a real traffic spike, tuned to stop flapping
 5. [Secrets Rotation](05-secrets-rotation.md) — rotating a database credential with no pod ever holding the stale value and no downtime
 6. [Debugging a CrashLoopBackOff Incident](06-debugging-a-crashloopbackoff-incident.md) — a bad deploy, a real incident narrative, and the `describe`/`logs --previous`/`events` trail that finds the root cause
+7. [Kubernetes Outages: 11 Real Postmortems](07-real-world-outages-and-lessons.md) — Reddit, Datadog, OpenAI, Google Cloud, IngressNightmare, Spotify, and more, with what to check in your own cluster
 
 ## Next
 

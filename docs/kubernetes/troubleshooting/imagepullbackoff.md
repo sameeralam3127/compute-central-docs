@@ -122,6 +122,20 @@ Prefer node or workload identity over static pull secrets:
 
 Authenticate pulls, mirror images into your own registry, or use a pull-through cache (for example ECR pull-through cache rules for Docker Hub). Pin images by digest and avoid `imagePullPolicy: Always` on tags that rarely change, so nodes reuse cached layers.
 
+### The image moved
+
+Sometimes the tag existed yesterday and the publisher removed it. That's what happened to a large part of the Kubernetes world in 2025:
+
+!!! incident "Real incident: Bitnami's catalog change, 2025"
+    Bitnami moved its versioned images out of `docker.io/bitnami` into a frozen `docker.io/bitnamilegacy` repository, keeping only a few `latest` tags, with a final cutoff of September 29, 2025. Clusters kept running until something forced a fresh pull, such as a replaced node or a redeployed chart, and then `bitnami/postgresql:<tag>` failed with `ImagePullBackOff`. The quick fix was pointing charts at `bitnamilegacy/...`, which gets no security updates; the lasting one is mirroring every third-party image into a registry you control. [More incidents like this](../case-studies/07-real-world-outages-and-lessons.md#bitnami-2025-the-images-charts-pointed-at-moved).
+
+Find every image your cluster depends on from a given publisher before the next node rotation finds them for you:
+
+```bash
+kubectl get pods -A -o jsonpath='{range .items[*]}{range .spec.containers[*]}{.image}{"\n"}{end}{end}' \
+  | sort -u | grep -E "^(docker\.io/)?bitnami/"
+```
+
 ### Architecture mismatch
 
 ```bash

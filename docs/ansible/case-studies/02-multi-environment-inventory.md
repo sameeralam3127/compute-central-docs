@@ -157,6 +157,9 @@ ansible-playbook -i inventories/dev/hosts.ini playbooks/site.yml --limit app01
 
 `--limit app01` matches nothing — `app01` doesn't exist in the dev inventory (it's `dev-app01`) — so Ansible reports zero hosts matched and the run does nothing, rather than silently matching a same-named host in a different environment. Compare this to a single shared inventory using generic hostnames like `app01` across environments distinguished only by a variable: the same typo there could easily have matched a host in the *wrong* environment and applied a change silently.
 
+!!! incident "Real incident: GitLab.com, January 2017"
+    An engineer fighting a replication problem wiped a PostgreSQL data directory on the primary, believing it was the secondary. The backups turned out not to work, GitLab.com was down for about 18 hours, and roughly six hours of data was lost. Separate inventories stop the wrong *environment*; for destructive steps, also ask the host what it is (`pg_is_in_recovery()`, a cluster role, a hostname check) right before acting. [The guard](../case-studies/08-automation-outages-and-guardrails.md#gitlabcom-2017-the-right-command-on-the-wrong-server) is in Automation Outages.
+
 ## Troubleshooting
 
 ```bash
@@ -170,6 +173,26 @@ confirms exactly which hosts a given inventory file resolves to, before running 
 - Add a CI gate requiring `--check --diff` output to be reviewed (as a PR comment or artifact) before any production apply is allowed to run.
 - Name hosts with an environment prefix (`dev-`, `prod-`) even though they already live in separate files — a second layer of defense against a copy-pasted `--limit` pattern.
 - Restrict which CI credentials/runners can even reach the production inventory's target network, so a wrong `-i` flag fails at the network layer too, not just the inventory layer.
+
+## Check Yourself
+
+!!! quiz "The flag nobody passed"
+    An engineer runs the production inventory without `-e confirm_env=production`. With the preflight play above, what happens?
+
+    - [ ] Ansible prompts for confirmation
+    - [x] The preflight assertion fails and `any_errors_fatal` stops the run before any host is changed
+    - [ ] Only the first host is changed, then the run stops
+
+    The preflight play runs first against every host. Its assertion fails, and `any_errors_fatal: true` ends the play everywhere, so the configuration play never starts.
+
+!!! quiz "A same-named host"
+    Both environments share one inventory and use the hostname `app01`, with `env: dev` or `env: production` as a variable. What's the risk?
+
+    - [ ] None, as long as `env` is set correctly
+    - [x] `--limit app01` can match a production host when you meant dev, and nothing stops it
+    - [ ] Ansible refuses duplicate hostnames
+
+    Separate inventory directories and environment-prefixed hostnames make a wrong `--limit` match nothing, which is the safe failure.
 
 ## Interview Questions
 

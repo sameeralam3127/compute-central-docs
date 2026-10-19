@@ -1,7 +1,7 @@
 ---
 title: "Ansible uri Module (ansible.builtin.uri): REST API Examples"
 icon: lucide/globe
-description: "Ansible uri module examples — GET and POST to REST APIs with ansible.builtin.uri, JSON bodies, basic and bearer auth, retries, status_code, and curl equivalents."
+description: "Ansible uri module examples: GET and POST to REST APIs, JSON bodies, auth, retries, and status_code, plus a converter that turns any curl command into a uri task."
 tags:
   - Ansible
   - Modules
@@ -177,6 +177,12 @@ Run `ansible.builtin.debug: var=result` once against a new API to see the exact 
 | `--max-time 10` | `timeout: 10` |
 | `--fail` | `status_code` (fails on anything not listed) |
 
+Or paste the whole command. The converter handles quoting, bundled flags such as `-sSL`, JSON and form bodies, and commands copied from a browser's developer tools, and it moves tokens and passwords into variables so they don't end up in your playbook:
+
+<div class="cc-tool" data-cc-tool="curl2uri" markdown>
+**curl to uri converter** (needs JavaScript). Without it, translate the command flag by flag with the table above.
+</div>
+
 To download a file, prefer [`ansible.builtin.get_url`](03-file-package-service-user-modules.md). It verifies the file with `checksum:`, sets `owner`, `group`, and `mode` in the same task, and is the module reviewers expect for downloads.
 
 ## Why Not `shell: curl ...`
@@ -187,6 +193,50 @@ To download a file, prefer [`ansible.builtin.get_url`](03-file-package-service-u
 ```
 
 `uri` gives you a structured, `register`-able result (`registration.json`, `registration.status`) instead of a string you'd have to parse yourself, checks the status code declaratively via `status_code:`, and avoids building a shell command string out of variables — which is a real injection risk the moment any value is even slightly untrusted. It also works on hosts that don't have `curl` installed.
+
+## Check Mode and Destructive Calls
+
+`uri` doesn't support check mode. Under `--check`, every `uri` task is **skipped**, harmless `GET`s included, so a later task that reads `result.json` fails the dry run even though a real run would work. Let read-only requests run anyway:
+
+```yaml
+- name: Read the current config (safe during --check)
+  ansible.builtin.uri:
+    url: https://api.example.com/v1/config
+  register: current
+  check_mode: false
+```
+
+Never put `check_mode: false` on a `POST`, `PUT`, `PATCH`, or `DELETE`: your dry run would start changing things.
+
+Destructive calls need a guard of their own. Look up every ID before deleting, and refuse if any isn't what you expect:
+
+```yaml
+- name: Look up each object first
+  ansible.builtin.uri:
+    url: "https://api.example.com/v1/objects/{{ item }}"
+    headers:
+      Authorization: "Bearer {{ api_token }}"
+  loop: "{{ ids_to_delete }}"
+  register: lookups
+  check_mode: false
+  no_log: true
+
+- name: Refuse unless every ID is the kind of object we mean to delete
+  ansible.builtin.assert:
+    that: lookups.results | map(attribute='json.type') | unique | list == ['app']
+    fail_msg: "Some IDs are not apps. Nothing was deleted."
+```
+
+!!! incident "Real incident: Atlassian, April 2022"
+    A script meant to delete a retired app's data was given the IDs of entire customer sites, didn't check what they referred to, and ran in "permanently delete" mode. 883 sites belonging to 775 customers were deleted in 23 minutes, and some took 14 days to restore. The full guardrail, including a recoverable delete by default, is in [Automation Outages](../case-studies/08-automation-outages-and-guardrails.md#atlassian-2022-right-script-wrong-ids-permanent-mode).
+
+## What Most Engineers Miss
+
+- **`uri` reads `~/.netrc` on the managed node.** `use_netrc` defaults to `true`, so if the target user's `.netrc` has credentials for that host, they're sent even though the task sets none. Set `use_netrc: false` when that would surprise you.
+- **`follow_redirects: safe` doesn't follow a redirect on `POST`.** The task gets the `301` or `302` back and fails with `Status code was 302 and not [200]`. Set `follow_redirects: all` or post to the final URL. The old `yes`/`no` values are deprecated and removed in ansible-core 2.22.
+- **`timeout` applies to each attempt.** With `retries: 30`, `delay: 5`, and the default `timeout: 30`, a dead endpoint can hold the task for 30 × (30 + 5) seconds, over 17 minutes, not 150 seconds. Lower `timeout` on health checks.
+- **`form-multipart` writes its own `Content-Type`**, boundary included, and ignores yours. With `json` and `form-urlencoded` you can override it through `headers`.
+- **The request leaves from the managed node**, so its DNS, firewall rules, and proxy settings apply. To use a proxy, set `environment: { https_proxy: "http://proxy:3128" }` on the task.
 
 ## Common Errors
 
@@ -206,6 +256,35 @@ To download a file, prefer [`ansible.builtin.get_url`](03-file-package-service-u
 - Calling an external API from every host when it should run once: add `run_once: true` and `delegate_to: localhost`.
 - Turning off `validate_certs` instead of trusting the right CA with `ca_path`.
 - Reaching for `shell: curl` out of habit when `uri` already covers the case — see [Command vs. Shell](01-command-vs-shell-vs-raw-vs-script.md).
+
+## Check Yourself
+
+!!! quiz "201 Created"
+    A `uri` task POSTs to an API that answers `201 Created`. The task doesn't set `status_code`. What happens?
+
+    - [ ] The task succeeds: any 2xx status is a success
+    - [x] The task fails with `Status code was 201 and not [200]`
+    - [ ] The task succeeds but reports `changed`
+
+    `status_code` defaults to `[200]` only. List every status the API documents as success, such as `status_code: [200, 201]`.
+
+!!! quiz "The dry run that failed"
+    A playbook GETs `/v1/config` with `uri`, then uses `result.json.version` in a `when:`. The real run works, but `--check` fails on the `when:`. Why?
+
+    - [ ] `--check` sends requests without headers
+    - [x] `uri` doesn't support check mode, so the GET was skipped and `result` has no `json`
+    - [ ] `when:` isn't evaluated in check mode
+
+    Add `check_mode: false` to the read-only GET so it runs during dry runs too. Never do that for requests that change something.
+
+!!! quiz "401 with the right password"
+    A `uri` task sets `url_username` and `url_password` for a Jenkins API and gets `401 Unauthorized`, though the credentials are correct. What's the most likely fix?
+
+    - [ ] `validate_certs: false`
+    - [x] `force_basic_auth: true`
+    - [ ] `body_format: json`
+
+    Without `force_basic_auth`, `uri` waits for a `401` challenge before sending credentials, and many APIs never send one. Forcing it sends the `Authorization` header on the first request.
 
 ## Interview Questions
 

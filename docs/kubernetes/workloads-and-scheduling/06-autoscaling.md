@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Autoscaling: HPA vs VPA vs Cluster Autoscaler"
 icon: lucide/trending-up
-description: HPA vs VPA vs Cluster Autoscaler and Karpenter — what each scales, in-place Pod resize, KEDA for queue-driven scaling, and where they conflict.
+description: "HPA vs VPA vs Cluster Autoscaler and Karpenter, with an interactive HPA calculator: the tolerance band, scaling speed limits, scale to zero, and conflicts."
 tags:
   - Kubernetes
   - Workloads & Scheduling
@@ -101,6 +101,14 @@ kubectl get hpa checkout-api-hpa
 kubectl describe hpa checkout-api-hpa
 kubectl autoscale deployment checkout-api --cpu-percent=70 --min=3 --max=20
 ```
+
+### How the HPA Picks a Replica Count
+
+Every 15 seconds the controller computes `desiredReplicas = ceil(currentReplicas × currentMetric / target)`. If that ratio is within the tolerance (10% by default), it does nothing; otherwise it scales, bounded by `minReplicas`, `maxReplicas`, and the `behavior` policies. With several metrics, it computes a count for each and uses the largest. Try it:
+
+<div class="cc-tool" data-cc-tool="hpa" markdown>
+**HPA replica calculator** (needs JavaScript). Example: 4 replicas that request 500m CPU and use 450m on average are at 90% utilization. Against a 60% target that's a ratio of 1.5, so the HPA asks for ceil(4 × 1.5) = 6 replicas.
+</div>
 
 ## VerticalPodAutoscaler
 
@@ -204,6 +212,15 @@ kubectl describe pod <pending-pod>   # look for "Insufficient cpu/memory" events
 | VPA in `Auto` mode on a low-replica-count workload | Pod recreation for a resize can cause a brief availability dip if `minReplicas` is 1 — pair with `PodDisruptionBudget`. |
 | Cluster Autoscaler + workloads without requests set | Cluster Autoscaler can't reason about capacity for pods with no requests — they either schedule opportunistically or leave scale-up decisions wrong. |
 
+## What Most Engineers Miss
+
+- **There's a dead zone around the target.** A ratio within ±10% changes nothing, so with a 70% CPU target, utilization anywhere from 63% to 77% never scales. Since v1.37 each HPA can set its own `tolerance` under `behavior.scaleUp` and `behavior.scaleDown` (stable), instead of everyone sharing the cluster-wide `--horizontal-pod-autoscaler-tolerance`.
+- **One container without a request disables the metric.** If any container in the Pod, a sidecar included, has no CPU request, CPU utilization is undefined for that Pod and the HPA takes no action on that metric.
+- **New Pods count as idle.** During a scale-up, Pods that aren't Ready yet, or have no metrics, are assumed to use 0% of the target, which damps the next step. That's deliberate, and it's another reason slow starters need startup and readiness probes.
+- **Scaling up has a speed limit and scaling down has a memory.** By default the HPA adds at most 100% of the current replicas or 4 Pods (whichever is more) per 15 seconds, and it scales down only to the highest recommendation of the last 5 minutes. That's why replicas linger after a spike.
+- **Scale to zero is beta in v1.37**, enabled by default, but only for HPAs with object or external metrics. Resource metrics can't be measured when no Pods exist; for those, [KEDA](#event-driven-scaling-with-keda) is still the usual route.
+- **The HPA owns `replicas`.** `kubectl scale` on an autoscaled Deployment is undone at the next sync, and a GitOps manifest that also sets `spec.replicas` makes Git and the HPA fight. Drop `replicas` from the manifest once an HPA manages it.
+
 ## Common Mistakes
 
 - Running HPA and VPA on the same resource dimension for the same workload without coordinating — this is the single most common autoscaling misconfiguration.
@@ -213,6 +230,35 @@ kubectl describe pod <pending-pod>   # look for "Insufficient cpu/memory" events
 - Not setting `behavior.scaleDown.stabilizationWindowSeconds` — the default cooldown may be too twitchy for spiky traffic, causing replica count to flap.
 - Scaling a queue worker on CPU. CPU lags behind the queue; scale on queue depth or lag (KEDA) instead.
 - `maxReplicas` set higher than a downstream dependency can take. Twenty new API pods can exhaust a database's connection limit faster than the load they were added to handle.
+
+## Check Yourself
+
+!!! quiz "Just over the target"
+    An HPA targets 70% CPU utilization. The Pods average 75%. What does the HPA do?
+
+    - [ ] Adds one replica
+    - [x] Nothing: 75 / 70 is about 1.07, inside the default 10% tolerance
+    - [ ] Scales to `maxReplicas`
+
+    Ratios between 0.9 and 1.1 are ignored to prevent flapping. At 70% that band is 63% to 77%.
+
+!!! quiz "The sidecar without a request"
+    The app container requests 500m CPU, but a logging sidecar in the same Pod has no CPU request. What happens to CPU-based scaling?
+
+    - [ ] The HPA uses the app container's request alone
+    - [x] CPU utilization is undefined for those Pods, so the HPA doesn't act on that metric
+    - [ ] The sidecar counts as requesting 0m, and utilization becomes very high
+
+    Utilization is usage divided by the Pod's total request, so every container needs one. Set a small request on sidecars, or scale on a per-container metric.
+
+!!! quiz "After the spike"
+    Traffic drops sharply at 12:00, and the HPA immediately computes a lower replica count. With default behavior, when does it scale down?
+
+    - [ ] At the next 15-second sync
+    - [x] Only once the recommendation has stayed lower for the 5-minute stabilization window
+    - [ ] Never: the HPA only scales up
+
+    Scale-down uses the highest recommendation from the last 300 seconds, so a brief dip doesn't remove capacity you'll need again a minute later.
 
 ## Interview Questions
 
