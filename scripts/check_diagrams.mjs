@@ -83,4 +83,4 @@ if (failures.length) {
   console.error(`${failures.length} of ${diagrams} Mermaid diagrams fail to parse.`);
   process.exit(1);
 }
-console.log(`diagrams: all ${diagrams} Mermaid diagrams parse with Mermaid ${installed}`);
+process.stdout.write(`diagrams: all ${diagrams} Mermaid diagrams parse with Mermaid ${installed}\n`);
