@@ -1,12 +1,12 @@
 ---
 title: "Privacy Policy"
 icon: lucide/shield
-description: "What Compute Central collects, the cookies Google Analytics and Google AdSense set, how to change your cookie choice, and how to get in touch."
+description: "What Compute Central collects, the optional Google Analytics cookies, how to change your cookie choice, and how to get in touch. No ads, no ad cookies."
 ---
 
 # Privacy Policy
 
-**Last updated: 24 September 2026**
+**Last updated: 20 October 2026**
 
 Compute Central is a documentation site run by Sameer Alam. This page explains what is collected when you read it, who else receives that data, and how to change your choices.
 
@@ -15,7 +15,7 @@ Compute Central is a documentation site run by Sameer Alam. This page explains w
 - You can read every page without giving any personal information.
 - There are no accounts, sign-ups, comment forms, or newsletters.
 - Analytics cookies are **off until you accept them**.
-- Advertising is served by Google, which may set its own cookies.
+- There are no ads and no advertising cookies.
 
 ## What is collected
 
@@ -33,28 +33,18 @@ If you accept analytics cookies, Google Analytics (property `G-TBKH2M5SJ3`) reco
 
 Analytics is **opt-in**: the banner appears with analytics unchecked, and no analytics cookie is set unless you accept. You can change your mind at any time with the **Cookie settings** link in the footer.
 
-### Advertising
-
-This site shows ads through **Google AdSense**. Google and its partners may set cookies or read existing ones to serve and measure ads, and — where permitted — to personalize what you see.
-
-- Google's use of advertising cookies is described in [How Google uses information from sites that use our services](https://policies.google.com/technologies/partner-sites).
-- You can turn off personalized advertising in [Google Ad Settings](https://adssettings.google.com/).
-- If you are in the European Economic Area, the UK, or Switzerland, Google shows its own consent message before personalized ads are served. Choosing "Do not consent" means ads are still shown, but they are not personalized.
-
-The publisher identity for this site is recorded at [/ads.txt](https://computecentral.in/ads.txt).
-
 ## Cookies in use
 
 | Set by | Purpose | Set when |
 |---|---|---|
 | This site | Remembers your cookie choice, so the banner stops asking | As soon as you answer the banner |
 | Google Analytics | Tells repeat visits apart and measures which pages get read | Only after you accept analytics |
-| Google AdSense and partners | Serving, capping, and measuring ads | When ads load, subject to the consent rules above |
 
 Your browser can block or delete any of these. Nothing on the site breaks if you do.
 
 ## What is never done here
 
+- No advertising, and no ad networks loading scripts on these pages.
 - No selling or sharing of data with anyone beyond the services named above.
 - No tracking pixels from social networks.
 - No fingerprinting, session recording, or heatmap tools.
@@ -72,12 +62,13 @@ This site is written for working engineers and is not directed at children under
 
 - **Change your cookie choice**: use the **Cookie settings** link in the footer of any page.
 - **Opt out of Google Analytics everywhere**: install the [Google Analytics opt-out add-on](https://tools.google.com/dlpage/gaoptout).
-- **Control ad personalization**: [Google Ad Settings](https://adssettings.google.com/).
 - **Ask a question, or ask for data to be removed**: contact details are below. Since no personal data is stored directly by this site, most requests are about Google's data rather than mine, and Google's own controls are the fastest route.
 
 ## Changes to this policy
 
 When this policy changes, the date at the top changes with it. Material changes will be noted on this page rather than applied silently.
+
+- **20 October 2026:** Google AdSense was removed. The site no longer shows ads or loads advertising scripts, so the advertising sections of this policy were taken out.
 
 ## Contact
 
