@@ -9,6 +9,15 @@
   // moment its own URL is known. tools.js is fetched from the same folder.
   var SCRIPT_SRC = document.currentScript ? document.currentScript.src : "";
 
+  // The release this script came from: scripts/version_assets.py adds ?v=<build>
+  // to its URL at deploy time. Empty in local builds.
+  var BUILD = "";
+  try {
+    BUILD = new URL(SCRIPT_SRC).searchParams.get("v") || "";
+  } catch {
+    BUILD = "";
+  }
+
   // Incremented on every page render so timers from a previous render
   // (instant navigation keeps this script alive) stop themselves.
   var generation = 0;
@@ -639,7 +648,9 @@
           return;
         }
         var script = document.createElement("script");
-        script.src = new URL("tools.js", SCRIPT_SRC).href;
+        var url = new URL("tools.js", SCRIPT_SRC);
+        url.search = new URL(SCRIPT_SRC).search; // same release as this script
+        script.src = url.href;
         script.async = true;
         script.onload = function () {
           if (window.ccTools) resolve(window.ccTools);
@@ -671,10 +682,33 @@
   }
 
   /* ---------------------------------------------------------------------------
+     A tab left open across a deploy keeps running the old script: instant
+     navigation swaps in the new page but never re-runs scripts, so features
+     the new page relies on would silently not load. Each page's container
+     carries its build; when it differs from this script's, reload once.
+     ------------------------------------------------------------------------- */
+
+  function staleRelease() {
+    var container = document.querySelector("[data-cc-build]");
+    var pageBuild = container ? container.getAttribute("data-cc-build") : "";
+    if (!BUILD || !pageBuild || pageBuild === BUILD) return false;
+    try {
+      // Reload at most once per release, even if a cache serves mixed files.
+      if (window.sessionStorage.getItem("cc-reloaded-for") === pageBuild) return false;
+      window.sessionStorage.setItem("cc-reloaded-for", pageBuild);
+    } catch {
+      return false; // without storage there's no loop guard, so don't risk it
+    }
+    window.location.reload();
+    return true;
+  }
+
+  /* ---------------------------------------------------------------------------
      Wiring
      ------------------------------------------------------------------------- */
 
   function setup() {
+    if (staleRelease()) return;
     generation += 1;
     setupCounters();
     setupTerminal(generation);

@@ -30,6 +30,8 @@ jobs:
       - run: zensical build --clean
       - name: Add lastmod to sitemap
         run: python scripts/freshness.py sitemap
+      - name: Version extra.css and extra.js URLs
+        run: python scripts/version_assets.py
       - name: Shrink search index
         run: python scripts/slim_search_index.py
       - name: Check published URLs still resolve
@@ -60,6 +62,8 @@ jobs:
       - run: zensical build --clean
       - name: Add lastmod to sitemap
         run: python scripts/freshness.py sitemap
+      - name: Version extra.css and extra.js URLs
+        run: python scripts/version_assets.py
       - name: Shrink search index
         run: python scripts/slim_search_index.py
       - uses: actions/upload-pages-artifact@v5
