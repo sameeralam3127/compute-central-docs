@@ -179,5 +179,6 @@ test("cron: day-of-month and day-of-week are ORed unless one starts with *", () 
   const leap = t.cronNext(t.parseCron("0 0 29 2 *"), Date.UTC(2026, 9, 20), 1, true);
   assert.equal(leap[0].toISOString().slice(0, 10), "2028-02-29");
   assert.match(t.parseCron("0 0 * * * *").error, /6 fields/);
+  assert.equal(t.parseCron("0 9 1 * 1  /usr/local/bin/report.sh --all").command, "/usr/local/bin/report.sh --all");
   assert.ok(t.cronAdvice(t.parseCron("*/45 * * * *")).some((n) => n.includes("restarts every hour")));
 });

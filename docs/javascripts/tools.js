@@ -2324,8 +2324,8 @@
 
   function mountArgv(root) {
     var ui = frame(root, "What Bash actually runs", "Type a command and the variables it uses. See the exact arguments the program receives after quoting, expansion, word splitting, and globbing.");
-    var cmd = h("textarea", { rows: "2", spellcheck: "false", autocomplete: "off" });
-    var vars = h("textarea", { rows: "3", spellcheck: "false", autocomplete: "off", placeholder: "DIR=\nFILE=Q3 report.pdf" });
+    var cmd = h("textarea", { rows: "2", className: "cc-tool-short", spellcheck: "false", autocomplete: "off" });
+    var vars = h("textarea", { rows: "3", className: "cc-tool-short", spellcheck: "false", autocomplete: "off", placeholder: "DIR=\nFILE=Q3 report.pdf" });
     var args = textInput("", { placeholder: "\"my file.txt\" -v" });
     var files = textInput("app.log error.log notes.md", { placeholder: "app.log 'old report.txt'" });
     var nounsetId = "cc-tool-field-" + (++fieldId);
@@ -2367,21 +2367,22 @@
         dangers = dangers.concat(advice.danger);
         var head = res.loop
           ? "The `for` loop runs **" + plural(res.argv.length, "time") + "**, with `" + res.loop + "` set to:"
+          : res.stopped ? (run.commands.length > 1 ? "**Command " + (i + 1) + "** · " : "") + "Expanding the arguments failed:"
           : res.assignOnly ? "Sets shell variables:"
           : (run.commands.length > 1 ? "**Command " + (i + 1) + "** · " : "") + (res.argv.length ? "`" + res.argv[0] + "` receives " + plural(res.argv.length - 1, "argument") + ":" : "Only redirections:");
         nodes.push(para(head));
         if (res.assigns.length) nodes.push(bullets(res.assigns.map(function (a) { return "`" + a.name + "=" + a.value + "`" + (res.assignOnly ? "" : " (in this command's environment only)"); })));
-        if (res.argv.length && !res.assignOnly) nodes.push(shArgvList(res.argv, !!res.loop));
+        if (res.argv.length && !res.assignOnly && !res.stopped) nodes.push(shArgvList(res.argv, !!res.loop));
         if (res.redirs.length) nodes.push(bullets(res.redirs.map(function (r) { return "Redirection `" + (r.fd || "") + r.op + (/&$/.test(r.op) ? "" : " ") + r.target + "`"; })));
         advice.danger.forEach(function (t) { nodes.push(para(t, "cc-tool-danger")); });
         advice.warn.forEach(function (t) { nodes.push(para(t, "cc-tool-warn")); });
         if (advice.note.length) nodes.push(bullets(advice.note.filter(function (t, j, list) { return list.indexOf(t) === j; })));
         if (res.stopped) nodes.push(para("Bash stops here with `" + res.stopped + "`. A script exits with status 1, and nothing after this runs.", res.stopped.indexOf("parameter null") !== -1 ? "cc-tool-ok" : "cc-tool-warn"));
-        if (res.argv.length && !res.loop) lastArgv = res.argv;
+        if (res.argv.length && !res.loop && !res.stopped) lastArgv = res.argv;
       });
       if (run.notes.length) nodes.push(bullets(run.notes.filter(function (t, j, list) { return list.indexOf(t) === j; })));
       if (run.loopVar) nodes.push(para("Later commands show the first loop iteration.", "cc-tool-muted"));
-      var headline = run.stopped && !lastArgv ? "Bash stops before running anything: `" + run.stopped + "`."
+      var headline = run.stopped ? "Bash stops " + (lastArgv ? "partway" : "before running anything") + ": `" + run.stopped + "`."
         : dangers.length ? "Danger: this deletes system directories."
         : run.commands.length === 1 && lastArgv ? "`" + lastArgv[0] + "` receives " + plural(lastArgv.length - 1, "argument") + "."
         : plural(run.commands.length, "command") + ".";
@@ -2636,7 +2637,7 @@
     ["SIGABRT", "abort: an `assert` failed, or the C library detected corruption such as a double free"],
     ["SIGBUS", "bus error: often a memory-mapped file that was truncated underneath the process"],
     ["SIGFPE", "arithmetic error, such as integer division by zero"],
-    ["SIGKILL", "killed, uncatchably"],
+    ["SIGKILL", "the kill signal, which can't be caught or ignored"],
     ["SIGUSR1", "user-defined signal 1, with no handler installed"],
     ["SIGSEGV", "segmentation fault: invalid memory access"],
     ["SIGUSR2", "user-defined signal 2, with no handler installed"],
@@ -2911,7 +2912,7 @@
   function mountPorts(root) {
     var ui = frame(root, "Ephemeral port budget", "Estimate how close a client is to `Cannot assign requested address` from opening new connections too fast.");
     var range = textInput("32768 60999", { placeholder: "32768 60999" });
-    var rate = numberInput(800, { min: 1 });
+    var rate = numberInput(300, { min: 1 });
     var dests = numberInput(1, { min: 1 });
     var duration = numberInput(0.2, { min: 0, step: "0.1" });
     var closer = h("select", null, [h("option", { value: "client", text: "This host (client)" }), h("option", { value: "server", text: "The server" })]);
@@ -3009,7 +3010,7 @@
 
   function mountCertlife(root) {
     var ui = frame(root, "Certificate lifetime planner", "Paste `openssl x509 -noout -dates` output to check a certificate, and see what manual renewal will cost as the maximum lifetime shrinks.");
-    var dates = h("textarea", { rows: "3", spellcheck: "false", autocomplete: "off" });
+    var dates = h("textarea", { rows: "3", className: "cc-tool-short", spellcheck: "false", autocomplete: "off" });
     var now = Date.now();
     dates.value = "notBefore=" + new Date(now - 30 * 86400000).toUTCString().slice(8, 11) + " " + new Date(now - 30 * 86400000).getUTCDate() + " 00:00:00 " + new Date(now - 30 * 86400000).getUTCFullYear() + " GMT\nnotAfter=" + new Date(now + 170 * 86400000).toUTCString().slice(8, 11) + " " + new Date(now + 170 * 86400000).getUTCDate() + " 23:59:59 " + new Date(now + 170 * 86400000).getUTCFullYear() + " GMT";
     var certs = numberInput(40, { min: 0 });
@@ -3214,7 +3215,7 @@
     if (s === "@reboot") return { reboot: true };
     var macro = CRON_MACROS[s.split(/\s+/)[0]];
     var parts = (macro || s).split(/\s+/);
-    if (parts.length === 6 && !macro) return { error: "That's 6 fields. Standard cron has 5 (minute hour day month weekday); a leading seconds field is Quartz/Spring syntax, and a 6th field in /etc/crontab or /etc/cron.d is the user name." };
+    if (parts.length >= 6 && !macro && /^[\d*,/-]+$/.test(parts[5])) return { error: "That's 6 fields. Standard cron has 5 (minute hour day month weekday); a leading seconds field is Quartz/Spring syntax, and a 6th field in /etc/crontab or /etc/cron.d is the user name." };
     if (parts.length < 5) return { error: "A cron schedule has 5 fields: minute, hour, day of month, month, day of week." };
     var fields = [];
     for (var i = 0; i < 5; i++) {
@@ -3222,7 +3223,7 @@
       if (f.error) return { error: f.error };
       fields.push(f);
     }
-    return { fields: fields, expr: parts.slice(0, 5).join(" "), command: macro ? parts.slice(5).join(" ") : parts.slice(5).join(" ") };
+    return { fields: fields, expr: parts.slice(0, 5).join(" "), command: macro ? s.split(/\s+/).slice(1).join(" ") : parts.slice(5).join(" ") };
   }
 
   function cronMatches(c, d, utc) {

@@ -280,6 +280,10 @@ html {
   resize: vertical;
 }
 
+.md-typeset .cc-tool textarea.cc-tool-short {
+  min-height: 3.2rem;
+}
+
 .md-typeset .cc-tool input:focus-visible,
 .md-typeset .cc-tool select:focus-visible,
 .md-typeset .cc-tool textarea:focus-visible,
