@@ -13,7 +13,6 @@
    API server's RBAC error format); the page around each tool explains the
    rules. The pure functions are exported under Node for unit tests.
 */
-/* global module */ // the Node export below is for unit tests only
 (function (global, factory) {
   var api = factory();
   if (typeof module === "object" && module.exports) module.exports = api;
@@ -977,7 +976,7 @@
 
   function rbacFix(info, reusable) {
     var subjectName = info.serviceAccount ? info.serviceAccount.name : info.user.replace(/^system:/, "");
-    var base = dnsName(subjectName + "-" + (info.path ? "path" : info.resource.replace(/\//g, "-")) + "-" + info.verb.replace("*", "all"));
+    var base = dnsName(subjectName + "-" + (info.path ? "path" : info.resource.replace(/\//g, "-")) + "-" + info.verb.replace(/\*/g, "all"));
     var namespaced = Boolean(info.namespace);
     var subject = info.serviceAccount
       ? ["  - kind: ServiceAccount", "    name: " + yamlString(info.serviceAccount.name), "    namespace: " + yamlString(info.serviceAccount.namespace)]
