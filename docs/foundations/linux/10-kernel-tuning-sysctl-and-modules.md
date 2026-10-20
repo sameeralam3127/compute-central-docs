@@ -163,6 +163,17 @@ Containers share the host kernel, so most kernel settings are host-wide:
 3. Persist it in a commented file in `/etc/sysctl.d/`.
 4. Roll it out with configuration management, for example the `ansible.posix.sysctl` module, so every host has the same value and the change is reviewed.
 
+## What Most Engineers Miss
+
+- **`tcp_fin_timeout` doesn't shorten TIME-WAIT.** It limits how long an orphaned connection stays in FIN-WAIT-2. TIME-WAIT is fixed at 60 seconds (`TCP_TIMEWAIT_LEN` in the kernel source), and tuning guides that say otherwise are wrong.
+- **`tcp_tw_recycle` no longer exists.** It broke clients behind NAT and was removed in Linux 4.12. Copying an old tuning guide into `/etc/sysctl.d/` now produces `cannot stat /proc/sys/net/ipv4/tcp_tw_recycle` at boot. `tcp_tw_reuse` already defaults to `2` (reuse for loopback only).
+- **`somaxconn` is already 4096.** Since Linux 5.4 the default listen backlog cap is 4096, up from 128. Raising it is rarely the fix on a modern kernel; check the application's own backlog argument first.
+- **Many `net.*` settings are per network namespace.** A sysctl set on the host doesn't apply inside containers or Pods, which get their own copy. Kubernetes allows "safe" namespaced sysctls per Pod through `securityContext.sysctls`.
+- **Connecting to a silent host takes about two minutes.** With the default `tcp_syn_retries = 6`, `connect()` keeps retransmitting SYNs for over two minutes before giving up. Always set a connect timeout in clients rather than lowering this for the whole machine.
+
+!!! incident "Real incident: SACK Panic (2019), a remote kernel crash"
+    In June 2019 a bug in Linux's TCP selective-acknowledgment handling (CVE-2019-11477, kernels 2.6.29 and later) let a remote peer crash a server by sending crafted packets with a tiny MSS ([advisory](https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-001.md)). Until patched kernels rolled out, the mitigations were sysctls and firewall rules: `net.ipv4.tcp_sack = 0`, or dropping SYNs with a very low MSS. Knowing which sysctls are safe emergency switches is part of kernel tuning.
+
 ## Common Mistakes
 
 - Pasting a list of tuning sysctls from the internet without a symptom to fix.
@@ -171,6 +182,17 @@ Containers share the host kernel, so most kernel settings are host-wide:
 - Setting `net.bridge.*` keys before `br_netfilter` is loaded, so `sysctl --system` reports "No such file or directory."
 - Trying to set node-level sysctls such as `vm.max_map_count` from inside a container.
 - Raising `nf_conntrack_max` without asking why there are so many connections.
+
+## Check Yourself
+
+!!! quiz "Too many TIME-WAIT sockets"
+    A client host has 30,000 sockets in TIME-WAIT. A colleague proposes lowering `net.ipv4.tcp_fin_timeout` from 60 to 15. What will that do?
+
+    - [ ] Shorten TIME-WAIT to 15 seconds
+    - [x] Nothing for TIME-WAIT; it only affects orphaned FIN-WAIT-2 sockets
+    - [ ] Disable TIME-WAIT entirely
+
+    TIME-WAIT is a kernel constant. The real fix is connection reuse; see the [ephemeral port budget](../networking/01-tcp-ip-ports-and-sockets.md#ephemeral-ports).
 
 ## Interview Questions
 

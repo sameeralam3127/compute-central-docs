@@ -266,6 +266,7 @@ foundations/python/03-working-with-http-apis/
 foundations/python/04-aws-automation-with-boto3/
 foundations/python/05-files-config-and-templates/
 foundations/python/06-testing-linting-and-packaging/
+foundations/real-world-outages/
 foundations/shell-scripting/
 foundations/shell-scripting/01-bash-fundamentals/
 foundations/shell-scripting/02-text-processing/

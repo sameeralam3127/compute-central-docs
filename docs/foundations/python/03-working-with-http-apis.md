@@ -326,6 +326,12 @@ def check(
     return HealthResult(url, ok, status, (time.monotonic() - start) * 1000)
 ```
 
+## What Most Engineers Miss
+
+- **`requests` has no default timeout.** Its documentation is explicit: without `timeout=`, a request can hang forever. `httpx` defaults to 5 seconds, which is one reason this chapter uses it. Grep inherited code for `requests.get(` without `timeout`.
+- **A timeout isn't a deadline.** Both libraries apply the read timeout to each wait for data, not to the whole response, so a server trickling one byte every few seconds never times out. Wrap long operations in an overall deadline as well.
+- **Retries multiply.** Three retries in the client, three in a service mesh, and three in the load balancer turn one slow request into 27 attempts against a struggling backend. Retry in one layer, with jittered backoff and a budget.
+
 ## Common Mistakes
 
 - No timeout, so a single unresponsive endpoint hangs a cron job indefinitely.
@@ -335,6 +341,17 @@ def check(
 - `verify=False` to get past a certificate error.
 - Creating a new client for every request, losing connection reuse.
 - Logging full responses or headers that contain tokens.
+
+## Check Yourself
+
+!!! quiz "A cron job that never finishes"
+    A nightly script that calls an API with `requests.get(url)` sometimes runs for days. What's missing?
+
+    - [ ] A retry decorator
+    - [x] A `timeout=`: without one, `requests` waits forever on a connection that stops responding
+    - [ ] HTTP keep-alive
+
+    Set connect and read timeouts on every call, and an overall deadline for the job.
 
 ## Interview Questions
 

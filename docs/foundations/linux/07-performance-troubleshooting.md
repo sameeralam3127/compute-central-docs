@@ -170,6 +170,9 @@ A web API's p99 latency jumps from 80 ms to 2 s.
 4. `pidstat -d 1` — a log shipper is writing 60 MB/s after its buffer backed up.
 5. Fix now: throttle or restart the shipper. Fix properly: move logs to a separate volume, set `ionice` for the shipper, and alert on disk latency — not only disk space.
 
+!!! incident "Real incident: the 2012 leap second"
+    Just after midnight UTC on 1 July 2012, servers worldwide jumped to 100% CPU with no change in traffic. The kernel inserted a leap second but didn't update its high-resolution timers, so programs sleeping on futexes, especially Java and MySQL, woke in a tight loop. `top` showed busy processes; `perf top` showed time spent in futex calls. Setting the clock with `date -s "$(date)"` stopped it ([LWN](https://lwn.net/Articles/504744/)). When CPU rises with no load change, look at **what** the process is doing (`perf top`, `strace -c -p <pid>`), not just how much.
+
 ## Common Mistakes
 
 - Looking only at CPU percentage and missing I/O wait, steal, or memory pressure.
@@ -178,6 +181,17 @@ A web API's p99 latency jumps from 80 ms to 2 s.
 - Treating high load average as a CPU problem when processes are blocked on disk.
 - Ignoring `dmesg`, where OOM kills and disk errors are recorded.
 - Troubleshooting one sample instead of watching a few seconds of `vmstat` or `iostat` output.
+
+## Check Yourself
+
+!!! quiz "High load, idle CPU"
+    Load average is 40 on an 8-core server, but `top` shows CPUs 90% idle. What do you check next?
+
+    - [ ] Nothing; load above core count always means CPU saturation
+    - [x] Processes in state `D` and disk or NFS latency (`ps -eo stat,cmd | grep '^D'`, `iostat -xz 1`)
+    - [ ] The network interface for packet drops
+
+    Linux counts processes in uninterruptible sleep in the load average, so stuck I/O raises load without using CPU.
 
 ## Interview Questions
 

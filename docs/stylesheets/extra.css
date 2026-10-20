@@ -361,6 +361,49 @@ html {
   background: color-mix(in srgb, #00c853 10%, transparent);
 }
 
+.md-typeset .cc-tool-danger {
+  padding: 0.35rem 0.6rem;
+  border-left: 0.2rem solid #ff1744;
+  border-radius: 0 0.2rem 0.2rem 0;
+  background: color-mix(in srgb, #ff1744 12%, transparent);
+  font-weight: 600;
+}
+
+/* One box per argument, so word boundaries and spaces inside words are visible */
+.md-typeset .cc-tool-out ol.cc-argv {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.4em 0 0.6em;
+  padding: 0;
+  list-style: none;
+}
+
+.md-typeset .cc-argv li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+}
+
+.md-typeset .cc-argv-n {
+  color: var(--md-default-fg-color--lighter);
+  font-size: 0.55rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.md-typeset .cc-argv .cc-argv-w {
+  border: 1px solid var(--md-accent-fg-color);
+  background: var(--md-default-bg-color);
+  white-space: pre;
+  word-break: break-all;
+}
+
+.md-typeset .cc-argv .cc-argv-w.is-empty {
+  border-style: dashed;
+  color: var(--md-default-fg-color--lighter);
+}
+
 .md-typeset .cc-tool-out ul {
   margin: 0.4em 0 0.4em 1.2em;
 }

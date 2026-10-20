@@ -34,6 +34,10 @@ Basic Python syntax — variables, functions, loops, dictionaries, and exception
 5. [Files, Config, and Templates](05-files-config-and-templates.md) — `pathlib`, JSON, YAML, TOML, Jinja2, and atomic writes
 6. [Testing, Linting, and Packaging](06-testing-linting-and-packaging.md) — pytest, mocking HTTP and AWS, Ruff, mypy, CI, and installable tools
 
+## Real Incidents in This Track
+
+PyTorch's 2022 dependency-confusion attack, the `ctx` account takeover, and Cloudflare's negative-duration crash each map to a chapter here. See [Real Outages](../real-world-outages.md#pytorch-2022-pip-chose-the-wrong-index).
+
 ## What You'll Build
 
 By the end of the track you'll have an `opsctl` command-line tool that:

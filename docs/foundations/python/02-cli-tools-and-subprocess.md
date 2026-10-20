@@ -253,6 +253,16 @@ while not stop.is_set():
 log.info("shutting down cleanly")
 ```
 
+## What Most Engineers Miss
+
+- **A negative `returncode` means a signal.** `subprocess` reports a child killed by signal N as `-N`: `-9` is SIGKILL (often the OOM killer), `-15` SIGTERM. A shell would show the same death as 128 + N. Decode either form with the [exit status decoder](../linux/02-processes-and-signals.md#reading-an-exit-status).
+- **Ctrl+C exits like a signal since Python 3.8.** An uncaught `KeyboardInterrupt` now makes the interpreter end itself with SIGINT, so a calling shell sees status 130 and a `while` loop around the script stops on one Ctrl+C.
+- **Measure durations with `time.monotonic()`.** `time.time()` follows the wall clock, which NTP corrections and leap seconds can move backwards, producing negative durations and broken timeouts. `time.monotonic()` only moves forward.
+- **`timeout=` kills the child, not its children.** With `shell=True`, the child is the shell; a grandchild it started can keep running. Start the child in its own process group (`start_new_session=True`) and kill the group (`os.killpg`) if you need everything stopped.
+
+!!! incident "Real incident: Cloudflare's negative duration (2017)"
+    During the leap second at midnight UTC on 1 January 2017, Cloudflare's DNS service computed a round-trip time from two wall-clock readings, got a negative number, and passed it to a function that panics on negative input. Some DNS queries failed until a fix was deployed hours later ([postmortem](https://blog.cloudflare.com/how-and-why-the-leap-second-affected-cloudflare-dns/)). The same bug is one line in Python: `elapsed = time.time() - start`. Use `time.monotonic()`.
+
 ## Common Mistakes
 
 - `shell=True` with string formatting — command injection waiting to happen.
@@ -261,6 +271,17 @@ log.info("shutting down cleanly")
 - Catching `Exception` everywhere and exiting `0`, so failures look like success.
 - Calling `logging.basicConfig` in library modules, overriding the application's configuration.
 - Putting all logic in `cli.py`, so nothing can be tested without invoking the CLI.
+
+## Check Yourself
+
+!!! quiz "Timing a retry loop"
+    A retry loop stops after 30 seconds using `time.time()`. On one server it occasionally retries for a minute and a half. What's a plausible cause?
+
+    - [ ] Python's `sleep()` is inaccurate
+    - [x] The wall clock was stepped backwards by NTP during the loop
+    - [ ] The GIL delayed the loop
+
+    Deadlines and durations belong on `time.monotonic()`, which can't go backwards.
 
 ## Interview Questions
 
