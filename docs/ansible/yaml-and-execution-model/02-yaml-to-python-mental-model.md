@@ -29,7 +29,7 @@ flowchart TD
     B --> C[Python dicts and lists\none per play/task]
     C --> D[Engine builds Play and Task objects\nand checks task keywords]
     D --> E[Task Queue Manager\npicks the next task per host]
-    E --> F[Jinja2 renders that task's\n"{{ }}" expressions, for that host]
+    E --> F["Jinja2 renders that task's\n#quot;#123;#123; #125;#125;#quot; expressions, for that host"]
     F --> G[Module + arguments packaged\nas one AnsiballZ payload]
     G --> H[Managed node's Python runs it;\nAnsibleModule validates the\narguments against argument_spec]
     H --> I[Module prints one JSON\nobject to stdout]

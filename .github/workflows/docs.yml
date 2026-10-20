@@ -36,6 +36,15 @@ jobs:
         run: python scripts/slim_search_index.py
       - name: Check published URLs still resolve
         run: python scripts/check_urls.py
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: scripts/package-lock.json
+      - name: Check every Mermaid diagram parses
+        run: |
+          npm ci --prefix scripts --no-fund --no-audit
+          node scripts/check_diagrams.mjs
 
   deploy:
     if: github.event_name == 'push'

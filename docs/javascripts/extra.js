@@ -440,10 +440,21 @@
         mermaid.initialize({
           startOnLoad: false,
           securityLevel: "strict",
+          // Without this, a diagram that fails to parse leaves Mermaid's
+          // "Syntax error in text" graphic attached to the end of the page.
+          suppressErrorRendering: true,
           theme: darkScheme() ? "dark" : "default"
         });
         diagramId += 1;
-        return mermaid.render("cc-diagram-" + diagramId, source);
+        var id = "cc-diagram-" + diagramId;
+        return mermaid.render(id, source).catch(function (error) {
+          // Belt and braces: drop the scratch container Mermaid renders into.
+          ["d" + id, id].forEach(function (stray) {
+            var el = document.getElementById(stray);
+            if (el) el.remove();
+          });
+          throw error;
+        });
       });
     });
     renderChain = job.catch(function () {});
