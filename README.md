@@ -47,6 +47,13 @@ venv/bin/pip install zensical
 venv/bin/zensical build --clean
 ```
 
+To check that every Mermaid diagram parses (CI runs this too; needs Node 22.22+ or 24.15+):
+
+```bash
+npm ci --prefix scripts
+node scripts/check_diagrams.mjs
+```
+
 
 ### Keeping URLs Stable
 
