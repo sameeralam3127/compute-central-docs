@@ -26,6 +26,10 @@ Shell scripts turn the commands from the [Linux track](../linux/index.md) into r
 3. [Testing, Linting, and Debugging](03-testing-linting-and-debugging.md) — ShellCheck, `shfmt`, Bats tests, `set -x` tracing, and scripts in CI
 4. [Production-Ready Scripts](04-production-ready-scripts.md) — `getopts`, logging, exit codes, locking with `flock`, dry-run, idempotency, and retries
 
+## Try It Interactively
+
+The [Bash argument viewer](01-bash-fundamentals.md#how-bash-turns-a-line-into-arguments) shows exactly what a program receives after quoting, expansion, word splitting, and globbing, with presets for the Steam and Bumblebee `rm -rf` incidents described in [Real Outages](../real-world-outages.md).
+
 ## Shell or Python?
 
 | Use shell when… | Switch to Python when… |

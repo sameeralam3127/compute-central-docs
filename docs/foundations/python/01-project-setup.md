@@ -199,6 +199,18 @@ The `src/` layout forces tests to import the **installed** package, catching pac
 | Containers | A multi-stage image: `uv sync --locked --no-dev` in the build stage, copy `.venv` into a slim runtime |
 | AWS Lambda | Package dependencies into the deployment artifact or a layer, built for the Lambda architecture |
 
+## What Most Engineers Miss
+
+- **pip treats all indexes as equal.** With `--extra-index-url`, pip collects candidates from every index and installs the best version from any of them. If your private package name also exists on PyPI with a higher version, pip installs the public one: **dependency confusion**.
+- **uv blocks dependency confusion by default.** Its `first-index` strategy takes a package only from the first index that has it ([docs](https://docs.astral.sh/uv/concepts/indexes/)). Switching to `--index-strategy unsafe-best-match` restores pip's behavior and the risk.
+- **There's now a standard lock file.** PEP 751 defines `pylock.toml`, an installer-independent lock format. `uv export --format pylock.toml` writes one, and recent pip versions can create and install from it (still marked experimental). `uv.lock` remains uv's own, richer format.
+- **Python 3.15 defaults to UTF-8.** Since 3.15 (October 2026), `open()` without `encoding=` uses UTF-8 regardless of the locale (PEP 686). Linux was mostly UTF-8 already; Windows scripts and anything reading files written in a legacy code page change behavior. Pass `encoding=` explicitly, or `encoding="locale"` for the old behavior.
+- **Python 3.10 is end-of-life.** Its last security release was in October 2026. Supported versions are 3.11 to 3.15; Ubuntu 24.04 ships 3.12 and RHEL 10 ships 3.12, so `requires-python = ">=3.12"` is a sensible floor for new tools.
+- **`--break-system-packages` is a real flag for a reason.** Debian 12, Ubuntu 23.04+, and Fedora mark the system Python as externally managed (PEP 668). The flag exists for container builds that own the whole image, not for servers.
+
+!!! incident "Real incident: PyTorch's nightly builds (2022)"
+    From 25 to 30 December 2022, `pip install` of PyTorch nightly builds on Linux pulled a malicious `torchtriton` from PyPI instead of PyTorch's own index. The install command used `--extra-index-url`, and pip took the PyPI package. It collected system information and files such as SSH keys and sent them out over DNS ([PyTorch](https://pytorch.org/blog/compromised-nightly-dependency/)). Use a single index that proxies PyPI, or uv's default strategy, and lock with hashes.
+
 ## Common Mistakes
 
 - `sudo pip install` into system Python, breaking OS tools or getting overwritten by package upgrades.
@@ -206,6 +218,17 @@ The `src/` layout forces tests to import the **installed** package, catching pac
 - Unpinned or overly broad dependencies like `boto3` with no lower bound, silently pulling breaking changes.
 - One giant `script.py` with logic, argument parsing, and AWS calls mixed together, impossible to test.
 - Activating the wrong virtual environment and installing packages somewhere unexpected — `uv run` avoids the whole problem.
+
+## Check Yourself
+
+!!! quiz "Private package, public name"
+    Your company publishes `acme-auth` 1.4.0 to a private index. Someone uploads `acme-auth` 99.0.0 to PyPI. Which install picks up the attacker's package?
+
+    - [x] `pip install --extra-index-url https://pypi.internal.example.com/simple acme-auth`
+    - [ ] `uv pip install --index-url https://pypi.internal.example.com/simple acme-auth`
+    - [ ] `uv add acme-auth` with the private index configured first
+
+    pip merges candidates from every index and prefers the highest version. With a single index, or uv's `first-index` default, the private copy wins.
 
 ## Interview Questions
 

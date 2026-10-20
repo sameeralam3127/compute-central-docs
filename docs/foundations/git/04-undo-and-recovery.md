@@ -139,6 +139,14 @@ git reset --hard HEAD@{5}
 
 Reflog entries are local to your clone and expire (by default, reachable entries after 90 days and unreachable ones after 30). Recover promptly, and remember that a teammate's reflog can't rescue your work.
 
+### Read your own reflog
+
+Paste `git reflog` output and choose what went wrong. The tool finds the entry from just before the reset, rebase, amend, or merge (or the last commit of a deleted branch) and gives you a safe command:
+
+<div class="cc-tool" data-cc-tool="reflog" markdown>
+**Reflog rescue** (needs JavaScript). Without it: find the most recent `reset:`, `rebase (start)`, or `commit (amend)` line in `git reflog`; the line just **below** it is where you were before. Save it with `git branch rescue <sha>`.
+</div>
+
 ## Cherry-Pick
 
 Copy a commit onto the current branch as a new commit:
@@ -201,6 +209,14 @@ cd ../app-hotfix
 cd - && git worktree remove ../app-hotfix
 ```
 
+## What Most Engineers Miss
+
+- **Staged work can be recovered, even after `reset --hard`.** `git add` writes the file's content into the object database immediately. If you staged something and then lost it, `git fsck --lost-found` lists dangling blobs, and `git show <blob>` prints each one.
+- **A dropped stash is a dangling commit.** `git stash drop` or a mistaken `git stash clear` leaves the commits in place until garbage collection. Find them with `git fsck --unreachable | grep commit`, then `git stash apply <sha>`.
+- **`ORIG_HEAD` is a one-step undo.** `reset`, `rebase`, and `merge` save the previous `HEAD` there, so `git reset --hard ORIG_HEAD` undoes the last one without reading the reflog.
+- **`git gc --prune=now` ends recovery.** It deletes unreachable objects immediately. Some "clean up the repository" scripts run it, so recover first.
+- **On GitHub, deleted doesn't mean gone.** Commits pushed to a fork stay reachable by hash across the fork network even after the fork or branch is deleted ([Truffle Security](https://www.trufflesecurity.com/blog/anyone-can-access-deleted-and-private-repo-data-github)). Undo can't un-publish a secret; rotation can.
+
 ## Common Mistakes
 
 - `git reset --hard` on a branch others have pulled, then force-pushing — use `git revert` instead.
@@ -209,6 +225,26 @@ cd - && git worktree remove ../app-hotfix
 - Re-merging a branch after reverting it, and being surprised nothing comes back.
 - Leaving important work in a stash for weeks.
 - Cherry-picking fixes to a release branch but never to `main`.
+
+## Check Yourself
+
+!!! quiz "Before the rebase"
+    Your reflog shows `HEAD@{0}: rebase (finish)`, `HEAD@{1}: rebase (pick)`, `HEAD@{2}: rebase (start)`, `HEAD@{3}: commit: Add cache`. Which entry is your branch before the rebase?
+
+    - [ ] `HEAD@{1}`
+    - [ ] `HEAD@{2}`
+    - [x] `HEAD@{3}`
+
+    `rebase (start)` is the moment HEAD moved to the new base. The entry just before it is your branch as it was.
+
+!!! quiz "Lost staged changes"
+    You ran `git add config.yml`, then `git reset --hard` by mistake. The file's changes were never committed. Are they recoverable?
+
+    - [x] Yes: `git add` stored the content as a blob, which `git fsck --lost-found` can find
+    - [ ] No: only committed work is recoverable
+    - [ ] Only from the reflog
+
+    Changes that were never staged are gone for good; staged ones survive as dangling blobs until garbage collection.
 
 ## Interview Questions
 

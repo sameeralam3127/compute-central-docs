@@ -118,6 +118,14 @@ sys.exit(0)
 !!! note "Shell wrappers swallow signals"
     If a container or unit runs `sh -c "python app.py"`, the signal goes to `sh`, which may not forward it. Use `exec python app.py` in wrapper scripts so the application replaces the shell and receives signals directly.
 
+### Reading an exit status
+
+When a process ends, its parent learns either an exit code (0–255) or the signal that killed it. Shells fold both into one number: **128 + the signal number** for a signal death, so 137 is SIGKILL (9) and 143 is SIGTERM (15). Python's `subprocess` reports the same death as `-9`. Decode any number here:
+
+<div class="cc-tool" data-cc-tool="exitcode" markdown>
+**Exit status decoder** (needs JavaScript). Without it: a status above 128 usually means "killed by signal (status − 128)"; 126 means found but not executable, and 127 means command not found.
+</div>
+
 ## Zombies and Orphans
 
 - A **zombie** has exited and holds only a process-table entry until its parent calls `wait()`. You can't kill a zombie — it's already dead. Fix or restart the **parent**.
@@ -160,6 +168,15 @@ sudo cat /proc/<pid>/wchan; echo                # the kernel function it's waiti
 
 `strace` slows the traced process considerably. Attach briefly on production systems.
 
+## What Most Engineers Miss
+
+- **PID 1 in a container ignores signals it hasn't handled.** The kernel doesn't apply the default action (terminate) for signals sent to a PID namespace's init from inside it. An app running as PID 1 without a SIGTERM handler ignores `docker stop`, waits out the grace period, and is SIGKILLed: exit 137 on every deploy. Handle SIGTERM, or run a tiny init with `docker run --init` or `tini`.
+- **PID 1 must also reap zombies.** Orphans are re-parented to PID 1. If that's your application, and it never calls `wait()`, zombies accumulate until the PID limit is hit. The same `--init` fixes it.
+- **`kill -0 <pid>` sends nothing.** It only checks that the process exists and that you may signal it, which makes it the cheapest liveness check in a script.
+- **Exit statuses wrap at 256.** `exit 256` reports success, and `exit -1` reports 255. Keep your own codes between 0 and 125, because 126 and above have shell meanings.
+- **`SIGPIPE` exit 141 is often harmless.** In `producer | head -1`, `head` exits after one line and the producer dies writing to the closed pipe. With `set -o pipefail` that 141 fails the whole pipeline.
+- **systemd raises the PID limit.** The kernel default `pid_max` is 32,768, but systemd ships `kernel.pid_max = 4194304` on 64-bit systems, so PIDs above 100,000 are normal and not a sign of a leak. Check `sysctl kernel.pid_max`.
+
 ## Common Mistakes
 
 - Reaching for `kill -9` first, and corrupting data or leaving stale lock and PID files behind.
@@ -167,6 +184,26 @@ sudo cat /proc/<pid>/wchan; echo                # the kernel function it's waiti
 - Running an application through `sh -c` in a container so it never receives `SIGTERM`, and every shutdown waits for the grace period and then kills it.
 - Raising `ulimit -n` in a shell and expecting a systemd service to inherit it.
 - Assuming a high load average means high CPU usage, when processes are actually stuck in `D` state waiting on I/O.
+
+## Check Yourself
+
+!!! quiz "Exit 137 on every deploy"
+    A container exits with 137 every time Kubernetes rolls it, but memory use is low and `Reason` isn't `OOMKilled`. What's the most likely cause?
+
+    - [ ] The node is out of memory
+    - [x] The app ignores SIGTERM (often because it's PID 1 behind `sh -c`), so it's SIGKILLed after the grace period
+    - [ ] The liveness probe timeout is too long
+
+    137 is 128 + 9, SIGKILL. Without an OOM reason, it's the kubelet's SIGKILL after `terminationGracePeriodSeconds`, because SIGTERM didn't stop the process.
+
+!!! quiz "A Python child killed by the OOM killer"
+    A Python tool runs a command with `subprocess.run()`. The kernel OOM killer kills that command. What is `returncode`?
+
+    - [ ] 137
+    - [x] -9
+    - [ ] 1
+
+    `subprocess` reports death by signal N as `-N`. Only a shell turns it into 128 + N.
 
 ## Interview Questions
 

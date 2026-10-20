@@ -48,6 +48,14 @@ Each step can fail independently, and each failure has a different symptom. The 
 4. [Load Balancers and Reverse Proxies](04-load-balancers-and-reverse-proxies.md) — L4 vs L7, algorithms, health checks, timeouts, client IPs, and 502/503/504
 5. [Network Troubleshooting Toolkit](05-network-troubleshooting-toolkit.md) — a layer-by-layer method with `dig`, `curl`, `ss`, `mtr`, `openssl`, and `tcpdump`
 
+## Try It Interactively
+
+- [CIDR planner](01-tcp-ip-ports-and-sockets.md#ip-addresses-and-cidr): overlaps between your ranges and Docker, Kubernetes, and cloud defaults
+- [Ephemeral port budget](01-tcp-ip-ports-and-sockets.md#ephemeral-ports): how close a client is to running out of source ports
+- [Certificate lifetime planner](03-http-and-tls.md#certificate-lifetimes-and-automation): expiry, renewal dates, and the 47-day future
+
+Slack's DNSSEC rollback, the Dyn attack, Let's Encrypt's root expiry, and HTTP/2 Rapid Reset are in [Real Outages](../real-world-outages.md).
+
 ## Already Covered Elsewhere
 
 | Topic | Where |

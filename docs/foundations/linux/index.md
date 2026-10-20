@@ -47,6 +47,14 @@ Linux is the operating system under almost everything you'll run: cloud instance
 | What are the addresses and routes? | `ip -br addr`, `ip route` |
 | What did the last boot log? | `journalctl -b -1 -p err` |
 
+## Try It Interactively
+
+- [Permission walker](01-filesystem-and-permissions.md#debugging-permission-denied): paste `namei -l` and `id` output to find what blocks access
+- [Exit status decoder](02-processes-and-signals.md#reading-an-exit-status): what 137, 143, 126, and -9 really mean
+- [Cron schedule preview](03-systemd-and-journald.md#reading-and-writing-cron-jobs): the next runs of any crontab line
+
+The [Real Outages](../real-world-outages.md) page covers the incidents behind this track: the 2012 leap second, Dirty Pipe, the xz backdoor, and Ubuntu's silently stalled updates.
+
 ## How This Connects to the Rest of the Site
 
 | Linux concept | Shows up again in |

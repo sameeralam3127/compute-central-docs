@@ -52,6 +52,12 @@ In a traditional subnet, the first address (network) and last (broadcast) aren't
 
 Plan ranges so they never overlap across VPCs, offices, and VPNs you might connect later. Overlapping CIDRs can't be routed to each other without NAT.
 
+Check a plan before you build it. The planner flags overlaps between your ranges and with the defaults Docker, Kubernetes distributions, and clouds pick silently:
+
+<div class="cc-tool" data-cc-tool="cidr" markdown>
+**CIDR planner** (needs JavaScript). Without it, `ipcalc` shows each range, and Python's `ipaddress.ip_network(a).overlaps(ip_network(b))` checks a pair.
+</div>
+
 ```bash
 ipcalc 10.0.16.0/20        # network, broadcast, host range (sudo apt install ipcalc)
 ip -4 addr show            # addresses on this host
@@ -94,6 +100,19 @@ Two consequences you'll meet in practice:
 
 - Servers behind SNAT all appear to the outside world as the NAT's public IP. Allow-listing that IP allows the whole private network.
 - A NAT device tracks every connection. Exhausting its connection table or source ports causes intermittent timeouts under load.
+
+### NAT idle timeouts
+
+A NAT device forgets a connection that's been idle too long. The next packet on it gets a reset, and the application sees `Connection reset by peer` on a connection it thought was healthy. Linux only sends TCP keepalives after **7,200 seconds** idle by default, far longer than any of these:
+
+| Device | Idle timeout for TCP |
+|---|---|
+| AWS NAT gateway | 350 seconds, fixed |
+| AWS Network Load Balancer | 350 seconds by default, configurable 60–6,000 since 2024 |
+| Azure NAT gateway | 4 minutes by default, configurable to 120 |
+| Google Cloud NAT | 1,200 seconds by default (established connections) |
+
+Long-lived idle connections, such as database pools and message consumers, need keepalives shorter than the smallest timeout on the path: set `tcp_keepalive_time` below 300 seconds for those sockets (most drivers have an option), or have the pool close idle connections first.
 
 ## TCP vs UDP
 
@@ -167,6 +186,12 @@ net.ipv4.ip_local_port_range = 32768    60999
 
 That's about 28,000 ports per destination IP and port. A service opening a new connection for every request to the same backend, with each socket lingering in `TIME-WAIT`, can run out — showing up as `Cannot assign requested address` errors. The fix is connection pooling and keep-alive, not kernel tuning.
 
+Estimate how close a client is to running out:
+
+<div class="cc-tool" data-cc-tool="ports" markdown>
+**Ephemeral port budget** (needs JavaScript). Without it: ports in use per destination ≈ new connections per second × (seconds open + 60 seconds of TIME-WAIT). Compare that with the size of `ip_local_port_range`, 28,232 by default.
+</div>
+
 ## MTU
 
 The maximum transmission unit is the largest packet an interface sends without fragmentation: usually 1500 bytes on Ethernet, and 9001 inside some cloud networks.
@@ -185,6 +210,18 @@ If `-s 1472` fails but `-s 1372` works, something on the path has a lower MTU.
 
 IPv6 uses 128-bit addresses (`2001:db8::10`), has no NAT in the usual design, and is increasingly the default in cloud and Kubernetes environments. The same tools work with `-6` (`ip -6 route`, `ping -6`, `ss` shows both). When something works over IPv4 but not by hostname, check whether the name resolves to an IPv6 address the network doesn't route.
 
+## What Most Engineers Miss
+
+- **Two CIDR blocks never partly overlap.** Either they're disjoint or one contains the other, because both are aligned powers of two. That makes overlap checks simple, and it's why "just shift the range a bit" never works.
+- **Docker takes far more address space than `docker0`.** New bridge networks, including one per Compose project, come from `172.17.0.0/16` through `172.31.0.0/16` in /16s, then `192.168.0.0/16` in /20s, and Swarm overlays come from `10.0.0.0/8`. A Compose project on a laptop can silently shadow the corporate VPN's `172.20.0.0/16`. Set `default-address-pools` in `/etc/docker/daemon.json`.
+- **TIME-WAIT belongs to whoever closes first.** If the server closes the connection, the TIME-WAIT socket is on the server, costing it memory but no client ports. HTTP clients that close after every request pay the full 60 seconds per connection.
+- **A source port only has to be unique per destination.** `connect()` can reuse the same local port for different destination addresses or ports, so spreading traffic across backends raises the limit. Calling `bind()` before `connect()` (to choose a source IP) reserves the port for all destinations at once, unless the socket sets `IP_BIND_ADDRESS_NO_PORT`.
+- **AWS NAT gateways have a per-destination limit.** Each IP address on a NAT gateway supports up to 55,000 simultaneous connections to each unique destination; beyond that the `ErrorPortAllocation` metric climbs and new connections fail. Add secondary IPs or spread destinations.
+- **NAT gateways don't reassemble fragments.** AWS NAT gateways don't support IP fragmentation for TCP or ICMP, so `ping -s 10000` fails behind one, and so does any server that answers with fragmented TCP.
+
+!!! incident "Real incident: SACK Panic (2019)"
+    A flaw in Linux's handling of TCP selective acknowledgments (CVE-2019-11477) let a remote peer crash servers with crafted packets carrying a very small maximum segment size. Every kernel since 2.6.29 was affected ([advisory](https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-001.md)). It's a reminder that the TCP stack is code that needs patching like any other, and that knowing what SACK and MSS are turns a scary advisory into a one-line mitigation (`sysctl -w net.ipv4.tcp_sack=0`) while you patch.
+
 ## Common Mistakes
 
 - Choosing overlapping VPC or office CIDRs, then being unable to connect them with peering or VPN.
@@ -193,6 +230,26 @@ IPv6 uses 128-bit addresses (`2001:db8::10`), has no NAT in the usual design, an
 - Binding a service to `127.0.0.1` and wondering why other hosts can't reach it.
 - Raising the ephemeral port range instead of fixing missing connection reuse.
 - Blocking all ICMP, which breaks path MTU discovery and creates hard-to-diagnose hangs.
+
+## Check Yourself
+
+!!! quiz "Resets after a quiet night"
+    Every morning, the first query from each app server to a database outside the VPC fails with `Connection reset by peer`. Traffic goes through an AWS NAT gateway. What's happening?
+
+    - [ ] The database restarts overnight
+    - [x] The NAT gateway dropped connections idle for over 350 seconds, and the pool reused them
+    - [ ] The ephemeral port range is exhausted
+
+    Enable TCP keepalives below 350 seconds on the pool's sockets, or have the pool validate or retire idle connections.
+
+!!! quiz "Docker breaks the VPN"
+    After `docker compose up`, a developer can no longer reach `172.20.4.10` on the office VPN. Why?
+
+    - [x] Compose created a bridge network in `172.20.0.0/16`, and the local route to it wins over the VPN
+    - [ ] Docker's iptables rules block all VPN traffic
+    - [ ] The VPN doesn't support containers
+
+    Docker hands out /16s from `172.17.0.0/16` to `172.31.0.0/16`. Pin `default-address-pools` to a range nothing else uses.
 
 ## Interview Questions
 

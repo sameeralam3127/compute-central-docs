@@ -125,6 +125,17 @@ The rules:
 - **Keep-alive on each backend must be longer than the idle timeout of whatever connects to it.** If the app closes an idle connection at 5 seconds while the balancer reuses connections for 60, the balancer occasionally sends a request down a connection the app just closed — producing intermittent `502`s that are very hard to reproduce.
 - **Request timeouts should get shorter as you go deeper**, so the innermost layer gives up first and returns a meaningful error rather than the proxy returning a generic `504`.
 
+The first rule is broken by default more often than you'd think, because many application servers ship with short keep-alive timeouts while an AWS Application Load Balancer keeps idle connections for 60 seconds:
+
+| Server | Default keep-alive timeout | Behind a 60-second ALB idle timeout |
+|---|---|---|
+| Gunicorn | 2 seconds (`--keep-alive`) | Intermittent `502`s |
+| Uvicorn | 5 seconds (`--timeout-keep-alive`) | Intermittent `502`s |
+| Node.js `http.Server` | 5 seconds (`keepAliveTimeout`); upcoming releases raise it to 65 | Intermittent `502`s on current versions |
+| Nginx | 75 seconds (`keepalive_timeout`) | Fine |
+
+Set the app's keep-alive a few seconds **longer** than the balancer's idle timeout (for example 65 seconds behind an ALB), or the balancer's idle timeout shorter.
+
 ## 502, 503, and 504
 
 | Code | The proxy is saying… | Common causes |
@@ -183,6 +194,26 @@ server {
 - No connection draining, so every deploy drops in-flight requests.
 - Sticky sessions as a substitute for shared session storage.
 - Retrying `POST` requests at the proxy and creating duplicate side effects.
+
+## Check Yourself
+
+!!! quiz "502s at low traffic"
+    A Flask app on Gunicorn behind an ALB returns a few `502`s an hour, mostly when traffic is light. Logs show no application errors. What do you change?
+
+    - [ ] Increase the number of Gunicorn workers
+    - [x] Raise Gunicorn's `--keep-alive` above the ALB's 60-second idle timeout
+    - [ ] Lower the ALB health check interval
+
+    At low traffic, connections sit idle long enough for Gunicorn's 2-second keep-alive to close them just as the ALB reuses one.
+
+!!! quiz "Layer 4 or Layer 7"
+    You need to route `api.example.com/v2/*` to a new service and keep TLS between the client and the backend undecrypted by the balancer. Can one load balancer do both?
+
+    - [ ] Yes, an L4 balancer can route on the URL path
+    - [x] No: path routing needs to read HTTP, which means decrypting TLS at an L7 balancer
+    - [ ] Yes, with SNI routing
+
+    SNI lets an L4 balancer route by **hostname** without decrypting, but the path is inside the encrypted HTTP request. You'd terminate and re-encrypt instead.
 
 ## Interview Questions
 

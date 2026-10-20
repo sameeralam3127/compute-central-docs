@@ -193,6 +193,17 @@ awk -F: '$3 == 0 {print $1}' /etc/passwd               # UID 0 accounts — shou
 
 At scale, replace static `authorized_keys` files with short-lived SSH certificates or a session manager (for example AWS Systems Manager Session Manager), so access can be revoked centrally and every session is logged.
 
+## What Most Engineers Miss
+
+- **In `sshd_config`, the first value wins.** Unlike most config files, sshd uses the first setting it reads for each keyword. Ubuntu's `sshd_config` starts with `Include /etc/ssh/sshd_config.d/*.conf`, so a cloud-init file such as `50-cloud-init.conf` with `PasswordAuthentication yes` overrides your `no` further down. Check the effective configuration with `sudo sshd -T | grep -i passwordauthentication`, and put your hardening in a file that sorts first, such as `00-hardening.conf`.
+- **`ssh -G host` prints the client's effective settings** after every `Host` and `Match` block is applied, which settles "which key and user is it really using?".
+- **OpenSSH 10 changed defaults.** Version 10.0 (April 2025) removed DSA keys entirely and made the post-quantum hybrid `mlkem768x25519-sha256` the default key exchange. Since 10.1 (October 2025) the client prints a warning when a connection doesn't use a post-quantum key exchange; the fix is upgrading the server, not silencing `WarnWeakCrypto`.
+- **`sudo` may be the Rust rewrite.** Ubuntu 25.10 and 26.04 LTS use `sudo-rs` by default, with the original still installed as `sudo.ws`. Most sudoers files work unchanged, but test unusual options before a fleet upgrade.
+- **sudo itself needs patching.** CVE-2025-32463 in sudo 1.9.14 to 1.9.17 let local users gain root through the `--chroot` option; it's fixed in 1.9.17p1 and in CISA's catalog of exploited vulnerabilities ([advisory](https://www.sudo.ws/security/advisories/chroot_bug/)).
+
+!!! incident "Real incident: the xz backdoor (2024) and sshd's hidden dependency"
+    `sshd` doesn't use xz compression, yet the backdoored xz 5.6.0 and 5.6.1 reached it: several distributions patch OpenSSH to link `libsystemd` for service notifications, and `libsystemd` pulled in `liblzma`. It was caught because SSH logins on one test machine had become measurably slower. Run `ldd "$(command -v sshd)"` to see what your SSH server really loads. The full story is in [Real Outages](../real-world-outages.md#xz-utils-2024-a-backdoor-noticed-because-ssh-got-slower).
+
 ## Common Mistakes
 
 - `usermod -G` without `-a`, silently removing a user from every other group — including `sudo`.
@@ -201,6 +212,17 @@ At scale, replace static `authorized_keys` files with short-lived SSH certificat
 - `NOPASSWD: ALL` for automation accounts, or `NOPASSWD` on commands that can spawn a shell.
 - Sharing one SSH key or one account across a team, so access can't be revoked per person and logs show no individual.
 - Leaving SSH open to `0.0.0.0/0` because "keys are secure anyway".
+
+## Check Yourself
+
+!!! quiz "Password logins still work"
+    You set `PasswordAuthentication no` at the end of `/etc/ssh/sshd_config` on Ubuntu and restarted sshd, but password logins still work. Why?
+
+    - [ ] The restart didn't happen; `reload` is required
+    - [x] A file in `/etc/ssh/sshd_config.d/` sets it to `yes`, and sshd keeps the first value it reads
+    - [ ] `PasswordAuthentication` only applies to root
+
+    The `Include` line is near the top of the main file, so drop-ins are read first. `sshd -T` shows the value sshd actually uses.
 
 ## Interview Questions
 

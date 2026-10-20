@@ -151,6 +151,9 @@ else:
 - A bad feature is turned off in seconds without a rollback.
 - Remove flags after launch. Stale flags become permanent branches in your code.
 
+!!! incident "Real incident: Knight Capital (2012) and a reused flag"
+    On 1 August 2012 Knight Capital deployed new trading code that reused an old feature flag. One of its eight servers didn't get the new code, and on that server the flag switched on long-dead logic that bought high and sold low. Knight lost about $460 million in 45 minutes ([SEC order](https://www.sec.gov/files/litigation/admin/2013/34-70694.pdf)). Two flag rules come from it: never reuse a flag's name for new behavior, and delete flags and the dead code behind them once a launch is done. The deployment side of the story is in [Idempotency](../../ansible/core-concepts/11-idempotency.md).
+
 ## Branches and Environments in GitOps
 
 A common mistake is one Git branch per environment (`dev`, `staging`, `prod`), promoted by merging between them. Branches drift, merges carry unrelated changes, and it's hard to see what differs between environments.
@@ -173,6 +176,13 @@ platform-config/
 
 Promotion is a pull request that changes the image tag in the next environment's folder — reviewable, auditable, and trivially revertible. See [GitOps with ArgoCD and Flux](../../kubernetes/cicd-and-gitops/04-gitops-with-argocd-and-flux.md).
 
+## What Most Engineers Miss
+
+- **Trunk-based development needs a merge queue at scale.** With many pull requests merging an hour, each one is tested against a `main` that has already moved. A merge queue (GitHub's, GitLab's merge trains, or Bors-style tools) tests each change on top of the ones ahead of it, so `main` stays green without forcing everyone to rebase.
+- **Branch by abstraction beats a long branch.** For a large change, such as swapping a database client, add an interface, move callers to it in small merges, build the new implementation behind it, then switch. Every step merges to `main` the same day.
+- **A release branch is not GitFlow.** Cutting `release/2.4` from `main` and only cherry-picking fixes into it works fine with trunk-based development. GitFlow's cost is the long-lived `develop` branch, not release branches.
+- **Feature flags are configuration, and configuration fails.** Treat flag changes like deploys: audited, gradual, and reversible, with an owner and an expiry date for every flag.
+
 ## Common Mistakes
 
 - Adopting GitFlow for a continuously deployed web service and wondering why integration is painful.
@@ -180,6 +190,17 @@ Promotion is a pull request that changes the image tag in the next environment's
 - One long-lived branch per environment, merged forward, with environments silently diverging.
 - Fixing a bug on a release branch and forgetting to fix `main`.
 - Allowing every merge method, so `main`'s history is an unreadable mix.
+
+## Check Yourself
+
+!!! quiz "Integrating daily"
+    A team practicing trunk-based development has a feature that will take three weeks. How do they keep merging daily?
+
+    - [ ] Merge it to `main` only when it's finished
+    - [x] Merge small steps behind a feature flag (or branch by abstraction), with the flag off in production
+    - [ ] Keep a long-lived feature branch and rebase it daily
+
+    The code is integrated and tested continuously; the flag decides when users see it.
 
 ## Interview Questions
 

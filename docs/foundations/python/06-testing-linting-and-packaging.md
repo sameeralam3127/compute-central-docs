@@ -297,6 +297,9 @@ Ways to distribute internal tools:
 
 Version with semantic versioning and tag releases, so a cron job can pin `opsctl==0.3.*` and upgrade on purpose.
 
+!!! incident "Real incident: the ctx package (2022)"
+    In May 2022 the maintainer's email domain for the PyPI package `ctx` had expired. Someone registered it, reset the account's password, and uploaded new versions that sent environment variables, including any cloud credentials, to a remote server ([PSF write-up](https://python-security.readthedocs.io/pypi-vuln/index-2022-05-24-ctx-domain-takeover.html)). PyPI has required two-factor authentication for every publisher since 1 January 2024, and Trusted Publishing lets CI upload without stored tokens. On the consumer side, a lock file with hashes would have refused the new release.
+
 ## Common Mistakes
 
 - Tests that call real APIs or AWS accounts, making them slow, flaky, and dangerous.
@@ -305,6 +308,17 @@ Version with semantic versioning and tag releases, so a cron job can pin `opsctl
 - Relying on moto alone for destructive automation, without a run against a real sandbox.
 - Lint and type checks that run locally but aren't enforced in CI.
 - Distributing tools by copying `.py` files onto servers, with no version and no dependency pinning.
+
+## Check Yourself
+
+!!! quiz "Publishing from CI"
+    What's the safest way for a GitHub Actions workflow to publish to PyPI?
+
+    - [ ] A long-lived API token in a repository secret
+    - [x] Trusted Publishing, where PyPI trusts a short-lived OIDC token from that specific workflow
+    - [ ] The maintainer's username and password
+
+    There's no stored secret to leak, and PyPI accepts uploads only from the workflow you named.
 
 ## Interview Questions
 
