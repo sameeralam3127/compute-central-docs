@@ -176,21 +176,6 @@ A TTL counting down (`287`) means the answer came from a cache.
 | Certificate issuance fails | A `CAA` record doesn't allow the certificate authority |
 | Domain stops resolving entirely | Registration expired, or `NS` records at the registrar don't match the hosted zone |
 
-## What Most Engineers Miss
-
-- **"Exactly five seconds" is the resolver timeout.** glibc waits `timeout:5` seconds for an answer before retrying, and makes `attempts:2` rounds. A lost UDP packet therefore shows up as a lookup that takes exactly 5 seconds, a clue worth recognizing in latency graphs.
-- **Only three `nameserver` lines count.** glibc reads at most three (`MAXNS`); a fourth is ignored.
-- **The negative-caching TTL is the smaller of two numbers:** the SOA record's own TTL and its MINIMUM field (RFC 2308). Look at both with `dig example.com SOA`.
-- **Some changes live in the parent zone.** NS records at the registrar and DNSSEC's DS record are served by the TLD, with TTLs you don't control: a day is common for `.com`. A mistake there can't be undone faster than that.
-- **Validating resolvers can infer that names don't exist.** Resolvers that implement aggressive NSEC caching (RFC 8198), such as Google Public DNS, use signed "no such name" proofs to answer *other* queries without asking you again. A bug in those proofs spreads further than one bad answer.
-- **`dig` and your application can disagree.** `dig` skips `/etc/hosts` and `nsswitch.conf`; `getent ahosts name` resolves exactly as the C library does, including IPv6 ordering.
-
-!!! incident "Real incident: Slack's DNSSEC rollout (2021)"
-    On 30 September 2021 Slack signed `slack.com` and published its DS record. A Route 53 bug with wildcard records produced signed answers that some validating resolvers, including Google's 8.8.8.8, read as "this name doesn't exist". Slack removed the DS record within hours, but resolvers had cached it for up to 24 hours and kept validating against keys that were gone, returning `SERVFAIL`. Fewer than 1% of users were affected, for a day ([postmortem](https://slack.engineering/what-happened-during-slacks-dnssec-rollout/)). Before any DNS change, find the longest TTL that controls the rollback, including records in the parent zone.
-
-!!! incident "Real incident: Dyn (2016)"
-    A botnet of hijacked cameras and routers flooded Dyn's managed DNS on 21 October 2016. Twitter, GitHub, Reddit, Spotify, and others used Dyn as their only DNS provider and were unreachable for hours ([KrebsOnSecurity](https://krebsonsecurity.com/2016/10/ddos-on-dyn-impacts-twitter-spotify-reddit/)). Listing name servers from two providers in the domain's NS set keeps a site resolvable when one provider fails.
-
 ## Common Mistakes
 
 - Changing a record with a 24-hour TTL and expecting it to take effect in minutes.
@@ -199,26 +184,6 @@ A TTL counting down (`287`) means the answer came from a cache.
 - Hard-coding IP addresses from a DNS lookup into configuration files or firewall rules for cloud load balancers, whose IPs change.
 - Letting a domain registration or its auto-renew payment method expire.
 - Ignoring `ndots` and search domains when external lookups from Kubernetes are slow.
-
-## Check Yourself
-
-!!! quiz "Five-second lookups"
-    p99 latency for a service shows a cluster of requests taking just over 5 seconds, with no CPU or database load. What's the first suspect?
-
-    - [ ] A garbage-collection pause
-    - [x] A DNS query lost over UDP and retried after glibc's 5-second timeout
-    - [ ] TCP's initial retransmission timeout
-
-    Check with `strace -e trace=network` or a packet capture on port 53. In Kubernetes, conntrack races and `ndots` amplify it.
-
-!!! quiz "The rollback that doesn't roll back"
-    You change the NS records for `example.com` at your registrar to a new provider and break resolution. You revert within five minutes. How long can some users stay broken?
-
-    - [ ] Five minutes
-    - [ ] Your zone's SOA minimum
-    - [x] Up to the TTL of the NS records in the parent zone, often 48 hours for `.com`
-
-    Delegation records are served by the TLD with its TTL. Plan NS and DS changes like migrations, with the old setup kept working until caches expire.
 
 ## Interview Questions
 

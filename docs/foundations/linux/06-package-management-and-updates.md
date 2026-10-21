@@ -140,20 +140,6 @@ flowchart LR
 - Automate the waves with [Ansible's `serial` keyword](../../ansible/advanced-execution/01-forks-serial-strategy-throttle.md) and stop the rollout if health checks fail.
 - In the cloud, prefer **replacing** instances with a freshly built, patched image over patching long-lived servers in place.
 
-## What Most Engineers Miss
-
-- **A kernel update does nothing until you reboot.** The package installs a new kernel next to the running one. Compare `uname -r` with the newest installed kernel (`ls /boot/vmlinuz-*`), or check `/var/run/reboot-required` on Ubuntu and `dnf needs-restarting -r` on RHEL. Live patching (Ubuntu Livepatch, kpatch) covers some fixes between reboots.
-- **Updated libraries stay loaded in old processes.** After an OpenSSL update, every running service still uses the old copy until it restarts. `needrestart` (Ubuntu) and `dnf needs-restarting` list them.
-- **Ubuntu holds some updates back on purpose.** "The following packages have been kept back" is often *phased updates*: Canonical releases an update to a growing percentage of machines to catch regressions. It isn't an error, and forcing it removes that safety net.
-- **Automatic updates can stop silently.** Monitor the result, not the timer: alert when `/var/lib/apt/periodic/update-success-stamp` is more than two days old, or when the newest installed security update is older than a week.
-- **Ubuntu now ships Rust core utilities.** Since 25.10, `ls`, `cp`, `date`, and friends are the uutils rewrite by default, and 26.04 LTS keeps them. GNU coreutils are still installable. Scripts that depend on rare GNU flags or exact output formats should be tested on 26.04 before a fleet upgrade.
-
-!!! incident "Real incident: Ubuntu 25.10's updates stopped checking (2025)"
-    In October 2025, unattended upgrades on Ubuntu 25.10 stopped finding new updates. The scheduler uses `date -r FILE` to read a stamp file's age, and the Rust `date` returned the current time, so the last check always looked recent. Manual `apt` runs still worked, so nothing looked wrong. Fixed in `rust-coreutils` 0.2.2-0ubuntu2.1 ([Phoronix](https://www.phoronix.com/news/Ubuntu-25.10-Broken-Upgrade)). An alert on the stamp file's age catches this whole class of failure.
-
-!!! incident "Real incident: Dirty Pipe (2022) was found through corrupted logs"
-    A Linux kernel bug in pipe buffers, present since 5.8, let a process write into the cached pages of files it could only read: a path to root for any local user (CVE-2022-0847). It was found by an engineer chasing gzip archives with bad checksums ([write-up](https://dirtypipe.cm4all.com/)). Servers that installed the fixed kernel but hadn't rebooted were still exposed.
-
 ## Common Mistakes
 
 - Running `apt upgrade` on production at 3 p.m. on a Friday with no rollback plan.
@@ -162,17 +148,6 @@ flowchart LR
 - Installing security updates but never rebooting or restarting services, so the vulnerable code keeps running.
 - Enabling automatic reboots on every server at the same time, taking a whole cluster down together.
 - Mixing distribution packages with `pip install` or `npm -g` as root into system paths.
-
-## Check Yourself
-
-!!! quiz "Patched, but still vulnerable"
-    `apt` shows the fixed kernel package is installed on every server. Are they protected?
-
-    - [ ] Yes, once the package is installed
-    - [x] Only the ones that have rebooted into it (or applied a live patch)
-    - [ ] Only after `apt autoremove` removes the old kernel
-
-    `uname -r` shows the running kernel. Fleet patch reports should compare it with the installed version, not just list installed packages.
 
 ## Interview Questions
 

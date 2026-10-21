@@ -232,16 +232,6 @@ git push --force --mirror
 4. **Tell collaborators to re-clone**; old clones and forks still contain the secret. Ask the Git host's support to purge cached views if needed.
 5. **Prevent the next one:** secret scanning with push protection on the host, Gitleaks in pre-commit and CI, and secrets loaded from a secrets manager instead of files. See [Secrets Management](../../security/02-secrets-management-with-vault.md).
 
-!!! incident "Real incidents: Toyota (2022) and Uber (2016)"
-    A Toyota contractor published part of the T-Connect source code to a public GitHub repository in December 2017. It included an access key to a server with customer data, and 296,019 email addresses and customer numbers were exposed for nearly five years ([TechCrunch](https://techcrunch.com/2022/10/12/toyota-customer-email-addresses-exposed/)). Uber's 2016 breach started with cloud credentials in a **private** GitHub repository, which attackers used to copy data on 57 million people; the cover-up led to a $148 million settlement ([Security Affairs](https://securityaffairs.com/76587/security/uber-data-breach-settlement.html)). Private repositories leak too: through compromised accounts, forks, laptops, and CI logs.
-
-## What Most Engineers Miss
-
-- **Push protection beats scanning.** Secret scanning finds a key after it's in history; push protection rejects the push before it lands. GitHub offers both, and Gitleaks or TruffleHog in pre-commit gives the same protection locally.
-- **History rewriting doesn't reach other copies.** Forks, clones, CI caches, and GitHub's fork network keep old commits, and a commit in a deleted fork can still be fetched by its hash. Rotation is the fix; `git filter-repo` is cleanup.
-- **Git itself needs updating on CI runners.** CVE-2025-48384 (July 2025) let a malicious repository run code during a recursive clone on Linux and macOS, through a submodule path ending in a carriage return. It was fixed in Git 2.43.7, 2.44.4, 2.45.4, 2.46.4, 2.47.3, 2.48.2, 2.49.1, and 2.50.1, and CISA added it to its catalog of exploited vulnerabilities in August 2025 ([GitHub](https://github.blog/open-source/git/git-security-vulnerabilities-announced-6/)). Avoid `--recurse-submodules` on repositories you don't trust.
-- **`git log -S` finds when a string arrived.** `git log -S 'AKIA' --all --oneline` lists commits that added or removed it, the quickest way to scope a leak.
-
 ## Common Mistakes
 
 - Commit messages like "fix", "wip", and "updates" that make history and `git blame` useless.
@@ -250,17 +240,6 @@ git push --force --mirror
 - Rewriting history to remove a secret **instead of** rotating it.
 - Committing `.env`, Terraform state, or kubeconfig files, then adding them to `.gitignore` without removing them from the index.
 - Committing large binaries and making every clone and CI run slower forever.
-
-## Check Yourself
-
-!!! quiz "Deleted within a minute"
-    A developer pushes an API key to a public repository, notices immediately, force-pushes a clean history, and deletes the branch. What must still happen?
-
-    - [ ] Nothing; the commit is gone
-    - [x] Revoke and rotate the key, then check its usage logs
-    - [ ] Ask GitHub to run garbage collection
-
-    Bots scrape public pushes within seconds, and the commit may stay reachable by hash. Treat the key as compromised.
 
 ## Interview Questions
 

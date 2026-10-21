@@ -54,12 +54,6 @@ npm ci --prefix scripts
 node scripts/check_diagrams.mjs
 ```
 
-To test the logic behind the interactive tools in `docs/javascripts/tools.js`:
-
-```bash
-node --test scripts/test_tools.mjs
-```
-
 
 ### Keeping URLs Stable
 

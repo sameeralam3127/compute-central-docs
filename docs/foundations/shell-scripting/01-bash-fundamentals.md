@@ -222,37 +222,6 @@ trap cleanup EXIT
 
 ---
 
-## How Bash Turns a Line Into Arguments
-
-Most shell bugs come from one misunderstanding: a program never sees your command line. Bash rewrites it first, in a fixed order, and passes the program a list of strings (its `argv`):
-
-1. **Brace expansion**: `file{,.bak}` becomes `file file.bak`.
-2. **Tilde expansion**: `~/x` becomes `/home/you/x` (not inside quotes).
-3. **Parameter, arithmetic, and command expansion**: `$VAR`, `$((n + 1))`, `$(cmd)`.
-4. **Word splitting**: the results of *unquoted* expansions are split on spaces, tabs, and newlines.
-5. **Pathname expansion**: unquoted `*`, `?`, and `[...]` are replaced by matching file names.
-6. **Quote removal**: the quotes themselves disappear.
-
-Steps 4 and 5 apply only to unquoted expansions. That's the whole reason to quote: `"$FILE"` stays one argument whatever it contains, and an empty `"$DIR"` stays an (empty) argument instead of vanishing. Type a command below and watch each argument the program will receive:
-
-<div class="cc-tool" data-cc-tool="argv" markdown>
-**Bash argument viewer** (needs JavaScript). Without it, check what a command receives with `printf '<%s>\n' your args here`, which prints one argument per line between angle brackets.
-</div>
-
-!!! incident "Real incidents: Steam (2015) and Bumblebee (2011)"
-    Steam for Linux's launcher ran `rm -rf "$STEAMROOT/"*`. When `STEAMROOT` came out empty, the argument became `/*`, which the glob expanded to every top-level directory, and users lost every file they owned ([issue #3671](https://github.com/ValveSoftware/steam-for-linux/issues/3671)). Four years earlier, Bumblebee's installer ran `rm -rf /usr /lib/nvidia-current/xorg/xorg`: one stray space turned a path into two arguments, the first being `/usr`. Both are presets in the viewer above. Guard every destructive path with `${VAR:?}`, which stops the script when the variable is empty or unset; `set -u` alone misses empty values.
-
-### What Most Engineers Miss
-
-- **An empty unquoted variable doesn't become an empty argument; it disappears.** `[ $ENV = prod ]` with an empty `ENV` runs `[ = prod ]`, and fails with `unary operator expected`. Inside `[[ ]]` Bash doesn't split or glob, so `[[ $ENV == prod ]]` is safe.
-- **`"$@"` and `$*` are different.** `"$@"` passes each argument intact, `"$*"` joins them into one string, and unquoted `$@` or `$*` re-splits every argument on spaces. Wrapper scripts should always use `"$@"`.
-- **`$10` is `${1}0`.** Only one digit follows a bare `$`. Use `${10}` for the tenth argument.
-- **`${x:-1}` and `${x: -1}` mean different things.** The first is "default to 1", the second "the last character". The space matters.
-- **Prefix assignments apply after expansion.** In `LANG=C echo $LANG`, `$LANG` is expanded *before* the assignment takes effect, because `VAR=x cmd` only puts `VAR` in `cmd`'s environment.
-- **Redirection order matters.** `cmd 2>&1 > log` sends stderr to the terminal, because `2>&1` copies stderr to where stdout points *at that moment*. Write `cmd > log 2>&1`.
-- **A glob that matches nothing is passed literally.** `rm *.bak` in a directory with no backups runs `rm '*.bak'`. `shopt -s nullglob` makes it vanish instead; `failglob` makes the command fail.
-- **Bash 5.3 adds command substitution without a subshell.** `${ cmd; }` runs `cmd` in the current shell, so variables it sets survive, and `${| cmd; }` returns the value of `REPLY`. Both need Bash 5.3 (July 2025), so check `$BASH_VERSION` before using them in scripts that run elsewhere.
-
 ## Script Structure Template
 
 This is a clean starting point for operational scripts:
@@ -659,35 +628,6 @@ Shell is not always the right tool. Consider Python or Go when you need:
 - Larger testable codebases
 
 Use shell scripts for what they do best: command orchestration, operational automation, and fast system-level workflows.
-
-## Check Yourself
-
-!!! quiz "The vanishing argument"
-    `DIR` is set but empty. How many arguments does `ls -l $DIR` pass to `ls`, not counting `ls` itself?
-
-    - [ ] Two: `-l` and an empty string
-    - [x] One: `-l`, so `ls` lists the current directory
-    - [ ] None: Bash reports an error
-
-    An unquoted expansion that produces nothing is removed entirely. `ls -l "$DIR"` would pass an empty argument, and `ls` would report that it can't access `''`.
-
-!!! quiz "Guarding a delete"
-    Which line refuses to run when `TARGET` is empty?
-
-    - [ ] `set -u; rm -rf "$TARGET"/*`
-    - [x] `rm -rf "${TARGET:?}"/*`
-    - [ ] `rm -rf --preserve-root "$TARGET"/*`
-
-    `set -u` only catches unset variables, and `--preserve-root` only protects `/` itself, not `/*`. `${TARGET:?}` stops the script for both unset and empty values.
-
-!!! quiz "Logging stderr"
-    You want both stdout and stderr of `./deploy.sh` in `deploy.log`. Which works?
-
-    - [ ] `./deploy.sh 2>&1 > deploy.log`
-    - [x] `./deploy.sh > deploy.log 2>&1`
-    - [ ] Both are equivalent
-
-    Redirections apply left to right. `2>&1` copies stderr to wherever stdout points at that moment, so it must come after `> deploy.log`.
 
 ## Interview Questions
 

@@ -177,24 +177,6 @@ findmnt -T /srv/app                               # look for ro or noexec
 
 `namei -l` is the fastest win: it prints the owner and mode of every path component, so a missing `x` on a parent directory stands out immediately. If step 4 shows a denial, [SELinux and AppArmor](09-selinux-and-apparmor.md) explains how to fix it without disabling either.
 
-Paste your own `namei -l` and `id` output below. The walker applies the kernel's rules to every component and names the one that blocks you:
-
-<div class="cc-tool" data-cc-tool="perms" markdown>
-**Permission walker** (needs JavaScript). Without it: run `namei -l` on the path, find which class you are in for each component (owner, else group, else other), and check that every directory gives you `x` and the file gives you the bit you need.
-</div>
-
-## What Most Engineers Miss
-
-- **Only one class is checked, and the first match wins.** If you own a file, only the owner bits apply. A file with mode `----rw-rw-` is unreadable to its owner and readable by everyone else. The kernel doesn't fall through to the more generous group or other bits.
-- **Deleting a file is a change to the directory.** With `w` and `x` on the directory you can delete a read-only file you don't own; `rm` only asks first ("remove write-protected regular file?"). The sticky bit is the only thing that stops it, which is why `/tmp` is `drwxrwxrwt`.
-- **Root still needs an execute bit.** Root bypasses read and write checks, but `exec` of a file with no `x` bit anywhere fails even for root. A script with `--x` and no `r` fails for everyone else, because the interpreter has to read it; `bash script.sh` needs only `r`.
-- **New group membership needs a new login.** `usermod -aG docker alice` changes `/etc/group`, not the groups of processes already running. `id` in the same shell shows the old list. Log out and in, run `newgrp docker`, or restart the service. A running process's groups are in `grep Groups /proc/<pid>/status`.
-- **Numeric `chmod` keeps setgid on directories.** GNU `chmod 755 dir` leaves an existing setgid bit set. To clear it you need `chmod 00755 dir`, `chmod g-s dir`, or `chmod =755 dir`.
-- **`noexec` mounts win over modes.** On `/tmp` or `/dev/shm` mounted `noexec`, `./script` fails with `Permission denied` (exit status 126) however you set the bits. `findmnt -T <path>` shows the mount options.
-
-!!! incident "Real incident: PwnKit (2022), a setuid binary on every distribution"
-    In January 2022 Qualys disclosed that `pkexec`, a setuid-root program installed by default on nearly every major Linux distribution since 2009, could be made to run code as root by any local user (CVE-2021-4034, [advisory](https://www.qualys.com/2022/01/25/cve-2021-4034/pwnkit.txt)). The flaw sat in the binary for over twelve years. Every setuid binary is part of your attack surface, which is why the audit command in [Special Bits](#special-bits) is worth running: remove the setuid bit from programs nobody needs (`chmod u-s`), and patch the rest.
-
 ## Common Mistakes
 
 - Running `chmod -R 777` to fix an error, and turning a single misconfiguration into a machine-wide security hole.
@@ -202,26 +184,6 @@ Paste your own `namei -l` and `id` output below. The walker applies the kernel's
 - Forgetting that `sudo` in front of a redirect doesn't apply to the redirect: `sudo echo x > /etc/file` fails; use `echo x | sudo tee /etc/file`.
 - Deploying files as root with `600`, then wondering why the service user can't read them.
 - Ignoring SELinux or AppArmor denials and disabling them entirely instead of fixing the label or profile.
-
-## Check Yourself
-
-!!! quiz "Owner versus everyone else"
-    `report.txt` is owned by `alice` with mode `-r--rw-rw-`. Alice tries to edit it. What happens?
-
-    - [ ] It works, because the group and other bits allow writing
-    - [x] It fails: Alice is the owner, so only the owner bits (`r--`) apply
-    - [ ] It works, because owners can always write their own files
-
-    The kernel picks one class, and owner comes first. Alice can still fix it herself with `chmod u+w report.txt`, because the owner may always change the mode.
-
-!!! quiz "Deleting someone else's file"
-    `/srv/shared` is `drwxrwxr-x root devops`. Bob is in `devops`. Alice's file `/srv/shared/notes.txt` is `-r--------`. Can Bob delete it?
-
-    - [x] Yes: deleting needs `w` and `x` on the directory, which Bob has through `devops`
-    - [ ] No: Bob can't even read the file
-    - [ ] Only with `sudo`
-
-    The file's mode is irrelevant to deleting it. Set the sticky bit (`chmod +t /srv/shared`) if only owners should be able to remove their own files.
 
 ## Interview Questions
 

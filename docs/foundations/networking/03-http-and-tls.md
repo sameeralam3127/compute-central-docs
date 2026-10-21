@@ -193,33 +193,9 @@ Let's Encrypt certificates already last 90 days, with shorter options available.
 - **cert-manager** in Kubernetes
 - **Managed certificates** from cloud load balancers (AWS Certificate Manager, Google-managed certificates), which renew automatically
 
-Paste a certificate's dates to check it, and see how much manual renewal will cost under each phase of the schedule:
-
-<div class="cc-tool" data-cc-tool="certlife" markdown>
-**Certificate lifetime planner** (needs JavaScript). Without it: `openssl x509 -noout -dates` prints `notBefore` and `notAfter`; renew at two-thirds of the lifetime, and expect a 47-day maximum for public certificates from 15 March 2029.
-</div>
-
 ## Mutual TLS
 
 In **mTLS**, the client also presents a certificate and the server verifies it. It's used for service-to-service authentication inside meshes (Istio, Linkerd) and for machine clients of sensitive APIs. The same chain and expiry rules apply in both directions.
-
-## What Most Engineers Miss
-
-- **Let's Encrypt no longer emails you before expiry.** Expiration reminder emails ended on 4 June 2025. If those emails were your monitoring, you have none.
-- **OCSP is going away.** Let's Encrypt removed OCSP URLs from new certificates in May 2025 and shut its OCSP service down on 6 August 2025, publishing revocation through CRLs only. Software that insists on OCSP stapling for those certificates needs updating.
-- **Domain validation gets short-lived too.** A CA may reuse a successful domain check for 398 days today, falling to 10 days in 2029. Renewal will mean proving control of the domain again almost every time, which only works with ACME HTTP-01 or DNS-01 challenges automated end to end.
-- **Let's Encrypt is shortening its own default.** It already offers 45-day (`tlsserver`) and six-day (`shortlived`) profiles; the default drops from 90 to 64 days on 10 February 2027 and to 45 days on 16 February 2028.
-- **The client's trust store is part of TLS.** A container built from a three-year-old base image carries three-year-old root certificates. Update `ca-certificates` in every image build.
-- **HTTP/2 features are an attack surface.** Stream cancellation, a normal HTTP/2 feature, powered the largest DDoS attacks ever recorded in 2023, and a variant in 2025. Proxies and app servers that speak HTTP/2 need prompt patching.
-
-!!! incident "Real incident: Let's Encrypt's root expiry (2021)"
-    DST Root CA X3 expired on 30 September 2021. Modern clients already trusted Let's Encrypt's newer root, but devices and servers with stale trust stores, and OpenSSL 1.0.2, which tried the expired path and gave up, started failing TLS handshakes to millions of sites ([Let's Encrypt](https://letsencrypt.org/docs/dst-root-ca-x3-expiration-september-2021/)). Many of the failures were servers calling APIs from old base images, not browsers.
-
-!!! incident "Real incident: Ericsson's expired certificate (2018)"
-    On 6 December 2018, an expired certificate inside Ericsson's mobile-core software took down mobile data for O2 in the UK for most of a day and for SoftBank in Japan for over four hours, across about 11 countries ([TelecomTV](https://www.telecomtv.com/content/mobile/ericsson-apologises-for-software-fault-that-brought-down-cellular-networks-33522/)). Certificates live in appliances and vendor software too. Inventory them all.
-
-!!! incident "Real incident: HTTP/2 Rapid Reset (2023)"
-    In August–October 2023, attackers opened HTTP/2 streams and cancelled them immediately, over and over, so servers did the work of starting requests that clients never waited for (CVE-2023-44487). Google measured a peak of 398 million requests per second; Cloudflare and AWS reported 201 and 155 million ([Google Cloud](https://cloud.google.com/blog/products/identity-security/google-cloud-mitigated-largest-ddos-attack-peaking-above-398-million-rps/)). Nearly every HTTP/2 server shipped a patch that limits cancellations per connection.
 
 ## Common Mistakes
 
@@ -229,26 +205,6 @@ In **mTLS**, the client also presents a certificate and the server verifies it. 
 - Counting every `4xx` as an error in SLOs, or ignoring a spike in `401`s after a deploy.
 - Using `curl -k` in scripts and health checks, hiding real certificate problems.
 - Terminating TLS at a load balancer and sending plaintext across networks you don't control.
-
-## Check Yourself
-
-!!! quiz "The reminder that never came"
-    A team's Let's Encrypt certificate on an internal tool expired in 2026, and nobody got a warning. What changed?
-
-    - [ ] Let's Encrypt shortened certificates to 30 days
-    - [x] Let's Encrypt stopped sending expiry emails in June 2025, and the team had no other monitoring
-    - [ ] Browsers stopped trusting Let's Encrypt
-
-    Monitor expiry yourself: a check that alerts when `notAfter` is under 14 days away, on every endpoint you own.
-
-!!! quiz "Works in the browser, fails in the container"
-    A Python service in an old container image fails with `certificate verify failed` against an API that works in your browser. The API's chain is valid. What's the likely cause?
-
-    - [x] The image's CA bundle is outdated and doesn't include the root the chain now uses
-    - [ ] The API requires HTTP/3
-    - [ ] Python doesn't support SNI
-
-    Rebuild with current `ca-certificates` (and `certifi`, if the client uses it).
 
 ## Interview Questions
 

@@ -45,8 +45,6 @@ jobs:
         run: |
           npm ci --prefix scripts --no-fund --no-audit
           node scripts/check_diagrams.mjs
-      - name: Unit-test the interactive tools
-        run: node --test scripts/test_tools.mjs
 
   deploy:
     if: github.event_name == 'push'

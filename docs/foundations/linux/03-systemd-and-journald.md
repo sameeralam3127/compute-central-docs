@@ -166,12 +166,6 @@ That one line avoids the four classic cron failures:
 
 cron's own log shows whether a job started: `journalctl -u cron` on Ubuntu, `journalctl -u crond` on RHEL.
 
-Before trusting a schedule, look at the next few runs. The preview applies cron's actual matching rules, including the surprising ones:
-
-<div class="cc-tool" data-cc-tool="cron" markdown>
-**Cron schedule preview** (needs JavaScript). Without it, check a systemd timer expression with `systemd-analyze calendar --iterations=5 '<expr>'`, and remember that when both day-of-month and day-of-week are set, cron runs when either matches.
-</div>
-
 ## Timers Instead of Cron
 
 Timers log to the journal, don't run twice if a job overlaps, can catch up after downtime, and are visible with `systemctl`.
@@ -271,15 +265,6 @@ systemctl list-dependencies orders-api
 systemctl reset-failed orders-api       # clear the start limit after fixing the cause
 ```
 
-## What Most Engineers Miss
-
-- **Day of month and day of week are ORed.** `0 9 1 * 1` runs on the 1st **and** on every Monday, not "the 1st if it's a Monday". The rule flips to AND if either field starts with `*`, even `*/2`. This is POSIX behavior, not a bug.
-- **Steps restart at each boundary.** `*/45` in the minute field runs at :00 and :45, so the gap after :45 is 15 minutes. Steps are "every Nth value of the field", not "every N minutes".
-- **cron runs in the system time zone, and daylight saving bites.** Jobs scheduled between 01:00 and 03:00 can run twice or not at all on change nights. Servers in UTC avoid it; cronie supports `CRON_TZ=`, and Kubernetes CronJobs have `.spec.timeZone`.
-- **cgroup v1 is gone.** systemd 258 removed support for the legacy and hybrid cgroup hierarchies, and needs kernel 5.4 or newer. Old container runtimes, Java versions, and monitoring agents that read `/sys/fs/cgroup/memory/...` paths break on it.
-- **SysV init scripts no longer start.** systemd 260 (March 2026) removed the generator that turned `/etc/init.d` scripts and `/etc/rc.local` into units. Third-party software that only ships an init script needs a real unit file before you upgrade.
-- **`systemctl status` exit codes are meaningful.** It returns 3 when the unit isn't running and 4 when the unit doesn't exist, so `systemctl is-active --quiet app || alert` is a complete health check.
-
 ## Common Mistakes
 
 - Editing a unit file and forgetting `systemctl daemon-reload`, so systemd keeps running the old definition.
@@ -288,26 +273,6 @@ systemctl reset-failed orders-api       # clear the start limit after fixing the
 - Setting `After=network.target` and expecting the network to be usable — use `network-online.target` with `Wants=`.
 - Keeping cron jobs that fail silently instead of timers whose failures show up in `systemctl list-units --failed` and the journal.
 - Leaving journald without size limits on small disks.
-
-## Check Yourself
-
-!!! quiz "The first Monday of the month"
-    You want a job at 09:00 on the first Monday of each month and write `0 9 1-7 * 1`. When does it run?
-
-    - [ ] Only on the first Monday
-    - [x] On days 1 through 7 **and** on every Monday
-    - [ ] Never, because the fields conflict
-
-    With both day fields restricted, cron ORs them. Use `0 9 1-7 * *` and test the weekday inside the command: `[ "$(date +\%u)" = 1 ] && /usr/local/bin/report.sh`.
-
-!!! quiz "A timer after downtime"
-    A server was powered off at 02:30, when its nightly timer should have fired. With `Persistent=true`, what happens at boot?
-
-    - [x] The job runs once, shortly after boot
-    - [ ] It runs once for every missed night
-    - [ ] Nothing until 02:30 the next day
-
-    `Persistent=true` stores the last run time and catches up a missed run once. cron has no equivalent.
 
 ## Interview Questions
 

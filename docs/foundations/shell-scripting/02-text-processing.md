@@ -155,18 +155,6 @@ awk -v since="$since" '
 
 String comparison of timestamps works here only because every line is within the same day. For anything longer, use structured JSON logs and query them in Loki or `jq`.
 
-## What Most Engineers Miss
-
-- **Sorting depends on the locale.** In `en_US.UTF-8`, `sort` ignores punctuation and case in ways that differ from byte order, and `uniq` and `comm` then disagree with your expectations. Scripts that compare sorted output should run `LC_ALL=C sort`, which is also much faster.
-- **`uniq` only collapses adjacent lines.** Always `sort | uniq -c`, or use `sort -u`.
-- **`sed -i` replaces the file.** It writes a new file and renames it over the old one, so hard links break and the file gets a new inode; a process holding the old file open keeps writing to the deleted copy. On a symlink, GNU `sed -i` replaces the link with a regular file unless you pass `--follow-symlinks`.
-- **`grep -c` counts lines, not matches.** A line with three matches counts once; use `grep -o pattern | wc -l` for occurrences.
-- **`grep -q` can hide errors.** It exits 0 as soon as one line matches, even if another file couldn't be read, and exits 1 for "no match", which stops a `set -e` script. Exit status 2 is the real error.
-- **Some regex engines can take exponential time.** GNU `grep -E`, `sed`, and `awk` use automata and stay fast, but `grep -P`, Perl, PCRE, and Python's `re` backtrack. Patterns with nested or adjacent quantifiers over the same characters, such as `(a+)+` or `.*.*=`, can run for minutes on one crafted line.
-
-!!! incident "Real incident: Cloudflare's regular expression (2019)"
-    On 2 July 2019 a single new firewall rule containing `.*(?:.*=.*)` drove CPU to 100% on every Cloudflare machine serving HTTP traffic, taking the service down globally for 27 minutes ([postmortem](https://blog.cloudflare.com/details-of-the-cloudflare-outage-on-july-2-2019/)). The regex engine backtracked: for each `=` in a request it retried every way of splitting the text between the two `.*`. Cloudflare moved to engines that guarantee linear time. Before putting a pattern in a hot path, test it against long inputs that *almost* match.
-
 ## Common Mistakes
 
 - Parsing `ls` output instead of using globs or `find -print0 | xargs -0`, and breaking on filenames with spaces.
@@ -175,17 +163,6 @@ String comparison of timestamps works here only because every line is within the
 - Editing YAML or JSON with `sed` regexes, then corrupting the file when formatting changes.
 - Building JSON with string interpolation instead of `jq --arg`, producing invalid JSON when a value contains a quote.
 - Forgetting `pipefail`, so a missing input file produces an empty result instead of an error.
-
-## Check Yourself
-
-!!! quiz "Counting unique IPs"
-    `awk '{print $1}' access.log | uniq | wc -l` reports far more unique IPs than exist. Why?
-
-    - [ ] `awk` splits on tabs, not spaces
-    - [x] `uniq` only removes adjacent duplicates, so the input must be sorted first
-    - [ ] `wc -l` counts the header line
-
-    Use `sort -u | wc -l`, or `sort | uniq -c | sort -rn` to count per IP.
 
 ## Interview Questions
 

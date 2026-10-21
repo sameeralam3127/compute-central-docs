@@ -187,14 +187,6 @@ git push origin v2.4.0
 
 A tag is a pointer that doesn't move. Use annotated tags for releases, and never move a published release tag — CI systems, caches, and people depend on it meaning one exact commit.
 
-## What Most Engineers Miss
-
-- **A branch is a 41-byte file.** `cat .git/refs/heads/main` prints a commit hash and a newline (or the ref lives in `.git/packed-refs`). Creating a branch costs nothing, which is why short-lived branches are cheap.
-- **Git stores snapshots, then compresses them.** Each commit points to a full tree; packfiles later store most objects as deltas against similar ones. "Git stores diffs" is wrong at the model level and right only inside packfiles.
-- **SHA-1 is hardened, not trusted.** After Google and CWI published the first practical SHA-1 collision in 2017 ([SHAttered](https://shattered.io/)), Git 2.13 switched to a SHA-1 implementation that detects collision attacks. Repositories can also use SHA-256 (`git init --object-format=sha256`), but most hosting services, including GitHub, don't support SHA-256 repositories yet.
-- **Git 3.0 changes defaults.** The project's published breaking-changes plan makes SHA-256 the default for new repositories and `main` the default branch name in Git 3.0, and makes Rust a required part of the build. No release date is set; set `init.defaultBranch` explicitly today so nothing depends on the default.
-- **The empty tree has a famous hash.** `git hash-object -t tree /dev/null` prints `4b825dc642cb6eb9a060e54bf8d69288fbee4904` in every SHA-1 repository, handy for `git diff 4b825dc HEAD` to see a whole project as one diff.
-
 ## Common Mistakes
 
 - Thinking of commits as diffs, and being confused when a rebase "changes every commit hash".
@@ -202,17 +194,6 @@ A tag is a pointer that doesn't move. Use annotated tags for releases, and never
 - Committing in detached `HEAD` state and losing track of the work when switching branches.
 - Staging everything with `git add .` and committing unrelated changes, secrets, or build output together.
 - Moving or deleting published tags that pipelines and deployments reference.
-
-## Check Yourself
-
-!!! quiz "Deleting a branch"
-    You delete a local branch that was never merged or pushed. What happened to its commits?
-
-    - [ ] They were deleted with the branch
-    - [x] They still exist as unreachable objects until garbage collection prunes them, and the reflog can find them
-    - [ ] They moved to `main`
-
-    A branch is only a pointer. `git branch -D` removes the pointer; [the reflog](04-undo-and-recovery.md#the-reflog-gits-safety-net) still knows the hash.
 
 ## Interview Questions
 

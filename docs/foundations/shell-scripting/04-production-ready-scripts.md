@@ -272,25 +272,6 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 15 3 * * * backup /usr/local/bin/rotate-backups.sh -d /backup/db -k 14 >>/var/log/rotate-backups.log 2>&1
 ```
 
-## Guard Against the Wrong Host
-
-Dry-run mode protects you from the wrong action. It doesn't protect you from the right action on the wrong machine. Destructive scripts should check where they are before doing anything:
-
-```bash
-expected_role="replica"
-role=$(cat /etc/server-role 2>/dev/null || echo unknown)
-if [[ "$role" != "$expected_role" ]]; then
-  die "refusing to run on $(hostname -s): role is '$role', expected '$expected_role'"
-fi
-
-# For truly destructive steps, make the operator type the host name
-read -r -p "Type the host name to confirm: " answer
-[[ "$answer" == "$(hostname -s)" ]] || die "confirmation did not match"
-```
-
-!!! incident "Real incident: GitLab.com (2017)"
-    During a late-night replication problem, a GitLab engineer ran a recursive delete of the PostgreSQL data directory meant for the secondary database, in a terminal connected to the primary. Then the backups turned out not to work: the nightly dump had been silently producing nothing, and its failure emails were being rejected. About six hours of data were lost ([postmortem](https://about.gitlab.com/blog/postmortem-of-database-outage-of-january-31/)). Two guardrails would have changed the night: a script that refuses to run on the wrong role, and an alert when a backup file is missing or too small, not only when the backup job fails.
-
 ## Common Mistakes
 
 - No locking, so cron starts a second copy while the first is still running.
@@ -299,17 +280,6 @@ read -r -p "Type the host name to confirm: " answer
 - Returning `0` from every failure path, so callers and monitoring think everything worked.
 - Retrying non-idempotent operations, such as creating a resource or charging a payment, blindly.
 - Fixed temporary file paths shared between runs and users.
-
-## Check Yourself
-
-!!! quiz "A backup that never fails"
-    A nightly backup script has run for months with exit status 0 and no alerts. What check catches the GitLab-style failure?
-
-    - [ ] Alerting when the script exits non-zero
-    - [x] Alerting when the newest backup file is missing, too old, or much smaller than usual, and restoring one regularly
-    - [ ] Running the script with `set -x`
-
-    A job can "succeed" while producing nothing. Monitor the artifact and test the restore.
 
 ## Interview Questions
 

@@ -40,10 +40,6 @@ Git is the front door to modern delivery. A push triggers CI, a merge deploys th
 | Find a lost commit | `git reflog` |
 | Find which commit broke something | `git bisect` |
 
-## Try It Interactively
-
-[Reflog rescue](04-undo-and-recovery.md#read-your-own-reflog) reads your `git reflog` output and tells you which commit to go back to after a bad reset, rebase, or amend, or where a deleted branch last pointed.
-
 ## How Git Connects to the Rest of the Site
 
 - [CI/CD Pipelines](../../cicd/index.md) run on pushes and pull requests.

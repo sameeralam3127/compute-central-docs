@@ -195,16 +195,6 @@ git blame -w -C src/orders/client.py        # who last changed each line, ignori
 git show <sha>                              # one commit in full
 ```
 
-## What Most Engineers Miss
-
-- **`--force-with-lease` can be defeated by a background fetch.** The lease compares the remote with your remote-tracking ref. If an IDE or cron job ran `git fetch` after a teammate pushed, the ref is up to date, the lease passes, and you overwrite their commits without ever having seen them. Add `--force-if-includes` (Git 2.30+), which also requires that the remote tip is part of your local history, or set `git config --global push.useForceIfIncludes true`.
-- **`git pull` asks you to choose.** Since Git 2.27, `pull` warns until you set `pull.rebase` or `pull.ff`. `git config --global pull.ff only` is the safest default: a pull that would create a merge stops and lets you decide.
-- **A merge conflict marker isn't always a conflict.** `git diff --check` and CI catch leftover `<<<<<<<` lines, but a resolved conflict can still be wrong. Run the tests before you `git commit` the resolution, not after.
-- **`git switch` and `git restore` split up `checkout`.** `git checkout` both moves branches and overwrites files, which is how people discard work by accident. The newer commands do one thing each.
-
-!!! incident "Real incident: Jenkins (2013)"
-    A Jenkins developer started a local Gerrit server whose replication plugin was configured to push to GitHub, with a directory of 186 stale clones. Replication pushed with force by default and rewound branches across the project's repositories. Branches were rebuilt from developers' clones and with GitHub's help ([report](https://www.jenkins.io/blog/2013/11/25/summary-report-git-repository-disruption-incident-of-nov-10th/)). Server-side branch protection that blocks force-pushes would have rejected every one of those pushes.
-
 ## Common Mistakes
 
 - Working directly on `main`, then struggling to separate your changes from teammates' work.
@@ -213,17 +203,6 @@ git show <sha>                              # one commit in full
 - Rebasing a shared branch and forcing everyone else to repair their local copies.
 - Resolving conflicts and committing without running tests.
 - Committing with `git commit -am "wip"` and pushing a history nobody can review.
-
-## Check Yourself
-
-!!! quiz "The lease that didn't protect you"
-    You rebased your shared branch and ran `git push --force-with-lease`. A teammate's commit pushed ten minutes earlier disappeared, even though you never saw it. How?
-
-    - [ ] `--force-with-lease` is the same as `--force`
-    - [x] A background fetch updated `origin/branch`, so the lease matched, though the commit wasn't in your history
-    - [ ] GitHub ignores leases
-
-    `--force-if-includes` closes that gap by checking that the remote tip is in your local history (its reflog), not just in your remote-tracking ref.
 
 ## Interview Questions
 
