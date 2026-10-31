@@ -20,6 +20,7 @@ Terraform lets you describe infrastructure — networks, servers, databases, DNS
 | Working in a team, or state is getting scary | [State and Remote Backends](state-and-backends.md) |
 | Managing dev, staging, and production | [Environments and Workspaces](environments-and-workspaces.md) |
 | Setting up pull-request plans and automated applies | [Testing and CI/CD](testing-and-ci.md) |
+| Ready to deploy a real app on AWS end to end | [Project: Deploy a Web App on AWS](aws-web-app/index.md) |
 | Preparing for an interview | [Interview Questions](interview-questions.md) |
 
 ## The Learning Path
@@ -31,7 +32,8 @@ flowchart TD
     C --> D[Modules]
     D --> E[Environments and workspaces]
     E --> F[Testing and CI/CD]
-    F --> G[Interview preparation]
+    F --> P[Project: web app on AWS]
+    P --> G[Interview preparation]
 ```
 
 ## Every Page
@@ -42,7 +44,8 @@ flowchart TD
 4. [Modules](modules.md) — module structure, inputs and outputs as a contract, versioning, and composition
 5. [Environments and Workspaces](environments-and-workspaces.md) — directory-per-environment layouts, CLI workspaces, and account isolation
 6. [Testing and CI/CD](testing-and-ci.md) — `fmt`, `validate`, TFLint, security scanning, `terraform test`, and a GitHub Actions plan-and-apply pipeline with OIDC
-7. [Interview Questions](interview-questions.md) — core, scenario, and senior questions with answers
+7. [Project: Deploy a Web App on AWS](aws-web-app/index.md) — eight hands-on steps: S3 state and ECR bootstrap, a containerized app, VPC, RDS PostgreSQL, ECS Fargate behind an ALB, HTTPS with ACM, GitHub Actions with OIDC and `terraform test`, then operating and destroying it
+8. [Interview Questions](interview-questions.md) — core, scenario, and senior questions with answers
 
 ## How Terraform Fits With the Rest of This Site
 

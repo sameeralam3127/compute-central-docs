@@ -59,7 +59,7 @@ flowchart TB
 - **Use a dedicated sandbox account** in an organization, never the account that holds production.
 - **Set a budget alert before creating anything** — see [Budgets](01-accounts-cli-and-organizations.md#set-a-budget-before-anything-else).
 - **Tag everything** you create with `Owner` and `Purpose`, and delete lab resources the same day.
-- **Use Terraform** for anything you'll recreate: see [Terraform](../../terraform/index.md). [LocalStack](../../terraform/overview.md#practicing-aws-locally-with-localstack) can emulate many services locally.
+- **Use Terraform** for anything you'll recreate: see [Terraform](../../terraform/index.md), and the hands-on [web app project](../../terraform/aws-web-app/index.md) that deploys a VPC, ECS Fargate, an ALB, and RDS. [LocalStack](../../terraform/overview.md#practicing-aws-locally-with-localstack) can emulate many services locally.
 
 !!! warning "Some resources cost money even when idle"
     NAT gateways, load balancers, EKS control planes, RDS instances, and public IPv4 addresses all bill by the hour whether or not they receive traffic. Delete them when a lab is done.
