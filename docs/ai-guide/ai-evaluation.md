@@ -193,4 +193,4 @@ print(response["response"])
 
 ## Next
 
-Continue to [AI Terminology](terminology.md).
+Continue to the [AI Agent Labs](agent-labs/index.md) to build, evaluate, and secure an agent yourself, or read [AI Terminology](terminology.md).

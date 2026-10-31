@@ -130,19 +130,24 @@ LLM becomes the **brain**, agent becomes the **system**.
 
 ---
 
-## Example: Simple Agent
+## Example: A Real Agent Loop
+
+A real agent sends the model a goal and a list of tools, runs the tool calls the model asks for, sends back the results, and repeats until the model answers:
 
 ```python
-def agent(task):
-    if "weather" in task:
-        return "Calling weather API..."
-    elif "news" in task:
-        return "Fetching latest news..."
-    else:
-        return "Planning next step..."
-
-print(agent("weather today"))
+while True:
+    response = client.messages.create(model=MODEL, max_tokens=16000, tools=TOOLS, messages=messages)
+    messages.append({"role": "assistant", "content": response.content})
+    if response.stop_reason != "tool_use":
+        break  # the model has answered
+    results = [
+        {"type": "tool_result", "tool_use_id": block.id, "content": execute(block.name, block.input)}
+        for block in response.content if block.type == "tool_use"
+    ]
+    messages.append({"role": "user", "content": results})
 ```
+
+The [AI Agent Labs](agent-labs/index.md) build this loop step by step, then add guardrails, memory, MCP, evals, multi-agent patterns, and A2A.
 
 ---
 
@@ -214,12 +219,13 @@ See [AI terminology](terminology.md) for retrieval, prompts, hallucinations, eva
 
 ---
 
-## Common Frameworks
+## Common Frameworks and Protocols
 
-- LangChain Agents
-- AutoGen
-- CrewAI
-- Semantic Kernel
+- **LangChain and LangGraph**: agents with middleware, checkpoints, and graph workflows. See [Lab 11](agent-labs/11-langchain-agent.md).
+- **LiteLLM**: one interface and gateway for many model providers. See [Lab 12](agent-labs/12-litellm-multi-provider.md).
+- **Model Context Protocol (MCP)**: a standard way to give agents tools. See [Lab 4](agent-labs/04-build-an-mcp-server.md) and [Lab 5](agent-labs/05-build-a-chat-client-with-mcp.md).
+- **Agent2Agent (A2A)**: a protocol for agents to call other agents over the network. See [Lab 10](agent-labs/10-a2a-protocol.md).
+- AutoGen, CrewAI, and Semantic Kernel take similar approaches to multi-agent orchestration.
 
 ---
 
@@ -240,4 +246,4 @@ See [AI terminology](terminology.md) for retrieval, prompts, hallucinations, eva
 
 ## Next
 
-Continue to [AI Evaluation](ai-evaluation.md).
+Continue to [AI Evaluation](ai-evaluation.md), or start building with the [AI Agent Labs](agent-labs/index.md).

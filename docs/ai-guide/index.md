@@ -399,6 +399,7 @@ No. Start with the simplest pattern that solves the problem. A prompt-only assis
 - [LLM fundamentals](llm-fundamentals.md)
 - [AI agents for automation workflows](ai-agents.md)
 - [AI model evaluation](ai-evaluation.md)
+- [AI Agent Labs](agent-labs/index.md): build an incident triage agent with tools, memory, MCP, evals, multi-agent patterns, A2A, LangChain, and LiteLLM
 - [AI terminology in plain English](terminology.md)
 
 ## Common Mistakes
