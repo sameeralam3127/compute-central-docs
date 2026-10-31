@@ -469,6 +469,15 @@ system-design/multi-environment/
 system-design/observability/
 system-design/security-access/
 terraform/
+terraform/aws-web-app/
+terraform/aws-web-app/01-bootstrap/
+terraform/aws-web-app/02-app-and-image/
+terraform/aws-web-app/03-network-and-security/
+terraform/aws-web-app/04-database/
+terraform/aws-web-app/05-load-balancer-and-ecs/
+terraform/aws-web-app/06-https-and-custom-domain/
+terraform/aws-web-app/07-ci-cd-with-github-actions/
+terraform/aws-web-app/08-operate-and-destroy/
 terraform/environments-and-workspaces/
 terraform/interview-questions/
 terraform/modules/

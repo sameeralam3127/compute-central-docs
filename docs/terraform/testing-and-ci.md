@@ -331,4 +331,4 @@ HCP Terraform offers Sentinel and OPA policy checks built into runs.
 
 ## Next
 
-Continue to [Interview Questions](interview-questions.md).
+Put it all together in [Project: Deploy a Web App on AWS](aws-web-app/index.md), or continue to [Interview Questions](interview-questions.md).

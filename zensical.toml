@@ -133,6 +133,7 @@ nav = [
     "terraform/modules.md",
     "terraform/environments-and-workspaces.md",
     "terraform/testing-and-ci.md",
+    { "Project: Web App on AWS" = ["terraform/aws-web-app/index.md", "terraform/aws-web-app/01-bootstrap.md", "terraform/aws-web-app/02-app-and-image.md", "terraform/aws-web-app/03-network-and-security.md", "terraform/aws-web-app/04-database.md", "terraform/aws-web-app/05-load-balancer-and-ecs.md", "terraform/aws-web-app/06-https-and-custom-domain.md", "terraform/aws-web-app/07-ci-cd-with-github-actions.md", "terraform/aws-web-app/08-operate-and-destroy.md"] },
     "terraform/interview-questions.md",
   ] },
   { "Cloud" = [
