@@ -259,7 +259,7 @@ Start with the topic you need, then follow the examples in a local or test envir
     - **Monitoring** — [Stack overview](monitoring-tools/index.md), [monitoring lab](monitoring-tools/overview.md), [Prometheus](monitoring-tools/prometheus.md), [Grafana](monitoring-tools/grafana.md), [Alertmanager](monitoring-tools/alertmanager.md)
     - **SRE** — [Overview](sre/index.md), [SLOs](sre/01-slis-slos-and-error-budgets.md), [alerting](sre/02-alerting-on-slos.md), [incident response](sre/03-incident-response.md), [postmortems](sre/04-postmortems.md), [on-call](sre/05-on-call.md)
     - **Security** — [Overview](security/index.md), [threat modeling](security/01-devsecops-and-threat-modeling.md), [Vault](security/02-secrets-management-with-vault.md), [supply chain](security/03-software-supply-chain-security.md), [scanning](security/04-container-and-iac-scanning.md), [zero trust](security/05-identity-and-zero-trust.md)
-    - **AI Engineering** — [Guide](ai-guide/index.md), [LLM fundamentals](ai-guide/llm-fundamentals.md), [AI agents](ai-guide/ai-agents.md), [evaluation](ai-guide/ai-evaluation.md)
+    - **AI Engineering** — [Guide](ai-guide/index.md), [LLM fundamentals](ai-guide/llm-fundamentals.md), [AI agents](ai-guide/ai-agents.md), [evaluation](ai-guide/ai-evaluation.md), [agent labs](ai-guide/agent-labs/index.md), [MCP server](ai-guide/agent-labs/04-build-an-mcp-server.md), [A2A](ai-guide/agent-labs/10-a2a-protocol.md)
 
 ## About
 

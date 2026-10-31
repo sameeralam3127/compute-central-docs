@@ -29,6 +29,7 @@ nav = [
     "ai-guide/llm-fundamentals.md",
     "ai-guide/ai-agents.md",
     "ai-guide/ai-evaluation.md",
+    { "Agent Labs" = ["ai-guide/agent-labs/index.md", "ai-guide/agent-labs/01-your-first-agent-loop.md", "ai-guide/agent-labs/02-tools-and-guardrails.md", "ai-guide/agent-labs/03-tokens-context-and-memory.md", "ai-guide/agent-labs/04-build-an-mcp-server.md", "ai-guide/agent-labs/05-build-a-chat-client-with-mcp.md", "ai-guide/agent-labs/06-incident-triage-agent.md", "ai-guide/agent-labs/07-evaluating-your-agent.md", "ai-guide/agent-labs/08-prompt-injection.md", "ai-guide/agent-labs/09-multi-agent-systems.md", "ai-guide/agent-labs/10-a2a-protocol.md", "ai-guide/agent-labs/11-langchain-agent.md", "ai-guide/agent-labs/12-litellm-multi-provider.md"] },
     "ai-guide/terminology.md",
   ] },
   { "Ansible" = [
