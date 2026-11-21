@@ -88,6 +88,7 @@ Choose based on data residency, existing skills, integration coverage, expected 
 - [Observability fundamentals](observability-fundamentals.md)
 - [Python logging in practice](python-logging.md)
 - [Grafana guide](grafana.md)
+- [AI observability](../ai-guide/ai-observability.md): tracing LLM calls, tools, and agents with the OpenTelemetry GenAI conventions
 
 ## Common Mistakes
 

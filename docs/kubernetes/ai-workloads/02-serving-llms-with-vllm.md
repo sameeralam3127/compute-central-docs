@@ -1,5 +1,5 @@
 ---
-title: "Serving LLMs on Kubernetes with vLLM"
+title: "Deploy vLLM on Kubernetes: Probes, Model Cache, Autoscaling"
 icon: lucide/server
 description: "Deploy vLLM on Kubernetes: model cache, shared memory, probes for multi-minute starts, autoscaling on queue depth with KEDA, and when to use KServe or llm-d."
 tags:
@@ -8,7 +8,9 @@ tags:
   - LLM
 ---
 
-# Serving LLMs with vLLM
+# Serving LLMs on Kubernetes with vLLM
+
+To deploy vLLM on Kubernetes, run the `vllm/vllm-openai` image in a Deployment that requests a GPU, cache the model weights on a volume, give the pod a startup probe long enough for the model to load, and autoscale on the request queue rather than on CPU. This page builds that setup step by step and explains each choice.
 
 ## What You'll Learn
 
@@ -158,8 +160,8 @@ Why each piece is there:
 
 - **`--max-model-len=8192`.** Without it, vLLM uses the model's full context, 40,960 tokens for Qwen3-8B. If the KV cache can't hold one sequence that long, vLLM refuses to start. On a 24 GB GPU the cache holds roughly 25,000 tokens (see [the sizing example](01-gpus-on-kubernetes.md#will-the-model-fit)), so set the limit to what your use case needs.
 - **The cache volume** keeps downloaded weights across restarts. Without it, every restart pulls 16 GB from Hugging Face.
-- **`strategy: Recreate`.** A rolling update would start a second pod that needs a second GPU and the same `ReadWriteOnce` volume. With several replicas, give each its own cache, or use a `ReadWriteMany` volume, and use a rolling update with `maxSurge: 0`.
-- **The probes.** The server doesn't answer `/health` until the weights are loaded, which takes minutes. The startup probe gives it that time, and liveness checks only begin after startup succeeds.
+- **`strategy: Recreate`.** A rolling update would start a second pod that needs a second GPU and the same `ReadWriteOnce` volume. With several replicas, give each its own cache, or use a `ReadWriteMany` volume, and use a [rolling update](../workloads-and-scheduling/01-deployment-strategies.md) with `maxSurge: 0`.
+- **The probes.** The server doesn't answer `/health` until the weights are loaded, which takes minutes. The [startup probe](../observability/01-probes-liveness-readiness-startup.md) gives it that time, and liveness checks only begin after startup succeeds.
 
 ### Talk to it
 
@@ -195,7 +197,7 @@ Once weights are cached, setting `HF_HUB_OFFLINE=1` stops vLLM from contacting t
 
 An LLM server's CPU stays low no matter how busy it is, and GPU utilization reads high even at modest load (see [AI Observability](../../ai-guide/ai-observability.md#gpu-metrics-dcgm-exporter)). The honest signal is the queue: `vllm:num_requests_waiting` counts requests that arrived but can't join the batch yet.
 
-First, let Prometheus scrape vLLM's `/metrics` endpoint. It's served on the same port as the API:
+First, let [Prometheus](../../monitoring-tools/prometheus.md) scrape vLLM's `/metrics` endpoint. It's served on the same port as the API:
 
 ```yaml
 apiVersion: monitoring.coreos.com/v1
@@ -239,7 +241,7 @@ spec:
         threshold: "4"
 ```
 
-KEDA divides the query result by the threshold to get the target replica count, so 12 waiting requests means 3 replicas. Two cautions:
+KEDA divides the query result by the threshold to get the target replica count, so 12 waiting requests means 3 replicas. KEDA drives an HPA underneath, so the scaling behavior in [Autoscaling](../workloads-and-scheduling/06-autoscaling.md#event-driven-scaling-with-keda) applies. Two cautions:
 
 - A new replica takes minutes to become ready, so autoscaling smooths daily curves but can't absorb a sudden spike. Keep headroom in `minReplicaCount` for the traffic you can't afford to queue.
 - Scale-to-zero (`minReplicaCount: 0`) works, but the first request then waits for a GPU node, an image pull, and a weight load. Use it for batch and development, not for interactive traffic.

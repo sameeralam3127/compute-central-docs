@@ -305,6 +305,8 @@ For the wider vocabulary, see [AI terminology in plain English](terminology.md).
 ## Related
 
 - [AI model evaluation: metrics and test sets](ai-evaluation.md)
+- [AI observability: tokens, latency, and cost in production](ai-observability.md)
+- [Will the model fit? How context and the KV cache use GPU memory](../kubernetes/ai-workloads/01-gpus-on-kubernetes.md#will-the-model-fit)
 
 ## Next
 

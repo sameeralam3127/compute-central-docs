@@ -1,7 +1,7 @@
 ---
 title: "AI Workloads on Kubernetes: LLM Inference and Agents"
 icon: lucide/brain-circuit
-description: "Run LLM inference and AI agents on Kubernetes: GPUs, vLLM, the Gateway API Inference Extension, llm-d, agent gateways, and agent sandboxes."
+description: "How to run LLM inference and AI agents on Kubernetes in 2026: GPU scheduling, vLLM, the Gateway API Inference Extension, llm-d, agent gateways, and sandboxes."
 tags:
   - Kubernetes
   - AI

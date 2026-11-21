@@ -113,7 +113,7 @@ kubectl taint nodes gpu-node-1 nvidia.com/gpu=true:NoSchedule
 | `PreferNoSchedule` | Scheduler tries to avoid this node, but will use it if needed |
 | `NoExecute` | Existing pods without a matching toleration are **evicted**, not just blocked from scheduling |
 
-A common pattern: taint expensive nodes (GPU, high-memory) so nothing lands there by accident, and only pods that explicitly need that hardware tolerate the taint.
+A common pattern: taint expensive nodes (GPU, high-memory) so nothing lands there by accident, and only pods that explicitly need that hardware tolerate the taint. [GPUs on Kubernetes](../ai-workloads/01-gpus-on-kubernetes.md) covers GPU requests, tolerations, and sharing in detail.
 
 ### Topology spread constraints
 

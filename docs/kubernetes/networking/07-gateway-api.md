@@ -66,6 +66,8 @@ The CRDs alone do nothing, exactly like `Ingress` without a controller. Common i
 | **Traefik** | Supports both Ingress and Gateway API |
 | **Cloud controllers** (GKE Gateway, AWS Load Balancer Controller) | Map Gateways onto the provider's managed load balancers |
 
+Serving LLMs? The [Gateway API Inference Extension](../ai-workloads/03-inference-routing-with-gateway-api.md) builds model-aware routing on these same resources, sending each request to the model-server pod best placed to serve it.
+
 ### Platform team: the Gateway
 
 ```yaml

@@ -1,14 +1,16 @@
 ---
 title: "AI Observability: Monitoring LLMs, Agents, and GPUs"
 icon: lucide/activity
-description: "Observe LLM apps and AI agents in production: TTFT, tokens and cost, GPU saturation, OpenTelemetry GenAI traces, vLLM and DCGM metrics, alerts, and open-source tools."
+description: "LLM and AI observability in production: time to first token, tokens and cost, GPU saturation, OpenTelemetry GenAI traces, vLLM and DCGM metrics, and alerts."
 tags:
   - AI
   - Observability
   - LLM
 ---
 
-# AI Observability
+# AI Observability for LLMs and Agents
+
+AI observability, often called LLM observability, means monitoring, tracing, and evaluating systems built on language models. It tells you how fast they answer, what they cost in tokens, which prompts and tools an agent used, whether the GPUs underneath are saturated, and whether the answers are any good.
 
 ## What You'll Learn
 
@@ -20,7 +22,7 @@ tags:
 
 ## Why This Matters
 
-Classic monitoring answers "is it up, and is it fast?". An LLM system can be up, fast, and wrong: a made-up answer comes back as `200 OK` in 800 ms. Cost grows with tokens, not requests, so one agent stuck in a tool loop can spend more than all your users combined. Latency also has two parts: the wait for the first token, and the speed of the stream after it.
+Classic monitoring ([logs, metrics, and traces](../monitoring-tools/observability-fundamentals.md)) answers "is it up, and is it fast?". An LLM system can be up, fast, and wrong: a made-up answer comes back as `200 OK` in 800 ms. Cost grows with tokens, not requests, so one agent stuck in a tool loop can spend more than all your users combined. Latency also has two parts: the wait for the first token, and the speed of the stream after it.
 
 AI observability adds three questions to the usual ones: what did it cost, what did it do (which prompts, tools, and models), and was the answer any good.
 
@@ -55,7 +57,7 @@ flowchart TB
 
 ### Model server metrics (vLLM)
 
-vLLM serves Prometheus metrics on `/metrics`, on the same port as its API (see [Serving LLMs with vLLM](../kubernetes/ai-workloads/02-serving-llms-with-vllm.md#autoscale-on-the-queue-not-on-cpu) for scraping it on Kubernetes). Every metric carries a `model_name` label.
+vLLM serves [Prometheus](../monitoring-tools/prometheus.md) metrics on `/metrics`, on the same port as its API (see [Serving LLMs with vLLM](../kubernetes/ai-workloads/02-serving-llms-with-vllm.md#autoscale-on-the-queue-not-on-cpu) for scraping it on Kubernetes). Every metric carries a `model_name` label.
 
 ```promql
 # p95 time to first token, per model
@@ -96,7 +98,7 @@ NVIDIA's [DCGM exporter](https://github.com/NVIDIA/dcgm-exporter) runs as a Daem
 
 ### Tracing model calls and agents with OpenTelemetry
 
-The OpenTelemetry [GenAI semantic conventions](https://github.com/open-telemetry/semantic-conventions-genai) define standard span and attribute names for model calls, tool calls, and agents, so any backend can show them. They are still in Development status. In 2026 they moved out of the core semantic conventions into their own repository, whose first release, v0.1.0, came out on 21 November 2026.
+The [GenAI semantic conventions](https://github.com/open-telemetry/semantic-conventions-genai) from [OpenTelemetry](../monitoring-tools/opentelemetry-platforms.md) define standard span and attribute names for model calls, tool calls, and agents, so any backend can show them. They are still in Development status. In 2026 they moved out of the core semantic conventions into their own repository, whose first release, v0.1.0, came out on 21 November 2026.
 
 | Span | Name the conventions recommend | Kind | Key attributes |
 |---|---|---|---|

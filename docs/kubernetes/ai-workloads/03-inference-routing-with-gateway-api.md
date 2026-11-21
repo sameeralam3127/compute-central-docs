@@ -1,7 +1,7 @@
 ---
-title: "Gateway API Inference Extension: InferencePool and the llm-d Router"
+title: "Gateway API Inference Extension: InferencePool and llm-d"
 icon: lucide/route
-description: "Route LLM traffic on Kubernetes with the Gateway API Inference Extension: InferencePool, the llm-d router's endpoint picker, priorities, and prefix-cache-aware routing."
+description: "Route LLM traffic on Kubernetes with the Gateway API Inference Extension: InferencePool, the llm-d endpoint picker, priorities, and prefix-cache routing."
 tags:
   - Kubernetes
   - AI
@@ -9,6 +9,8 @@ tags:
 ---
 
 # Inference Routing with the Gateway API Inference Extension
+
+The Gateway API Inference Extension adds model-aware load balancing to the Kubernetes Gateway API. An `InferencePool` groups the pods that serve one model, and an endpoint picker chooses the best pod for each request based on its queue length, KV cache usage, and cached prompt prefixes. In 2026 the production endpoint picker became part of the llm-d router.
 
 ## What You'll Learn
 
@@ -19,7 +21,7 @@ tags:
 
 ## Why This Matters
 
-A Service or an ordinary Gateway route spreads requests evenly across pods. That works when requests cost about the same. LLM requests don't: a 50-token question and a 30,000-token document differ in cost by orders of magnitude. Even spreading leaves some replicas with full KV caches and long queues while others sit idle. It also throws away cached work. When the next turn of a conversation lands on a different replica, that replica recomputes the whole prompt instead of reusing the prefix the first replica already had in its cache.
+A [Service](../networking/02-services-deep-dive.md) or an ordinary Gateway route spreads requests evenly across pods. That works when requests cost about the same. LLM requests don't: a 50-token question and a 30,000-token document differ in cost by orders of magnitude. Even spreading leaves some replicas with full KV caches and long queues while others sit idle. It also throws away cached work. When the next turn of a conversation lands on a different replica, that replica recomputes the whole prompt instead of reusing the prefix the first replica already had in its cache.
 
 The result is a long tail of time to first token and GPUs you pay for but don't use. The [Gateway API Inference Extension](https://gateway-api-inference-extension.sigs.k8s.io/) fixes this inside the standard [Gateway API](../networking/07-gateway-api.md).
 
@@ -54,7 +56,7 @@ The project reorganized in 2026. Tutorials from 2025 show resources and charts t
 | `InferencePool` | `inference.networking.k8s.io/v1`, GA | Gateway API Inference Extension (v1.6.2) | Selects model-server pods and names their endpoint picker |
 | Endpoint picker (EPP) | ext_proc service | [llm-d router](https://github.com/llm-d/llm-d-router) (v1.0.0) | Scores pods for each request |
 | `InferenceObjective` | `llm-d.ai/v1` | llm-d router | Gives a workload a priority |
-| `InferenceModelRewrite` | `llm-d.ai` | llm-d router | Rewrites model names, for canaries and A/B tests |
+| `InferenceModelRewrite` | `llm-d.ai` | llm-d router | Rewrites model names, for [canaries](../cicd-and-gitops/03-progressive-delivery-canary-and-blue-green.md) and A/B tests |
 | Payload processor | ext_proc service | [llm-d Inference Payload Processor](https://github.com/llm-d/llm-d-inference-payload-processor) | Reads the request body to route by model name |
 
 !!! note "Following an older tutorial?"
@@ -290,7 +292,7 @@ It runs on GPUs, TPUs, and other accelerators, and uses LeaderWorkerSet for mult
 - **The picker is in the request path.** With `FailClose`, which is the API default, a broken picker means a broken endpoint. The llm-d chart sets `FailOpen`, which keeps traffic flowing but falls back to model-blind routing. Either way, run more than one picker replica: llm-d runs extra replicas as warm standbys with leader election by default.
 - **Timeouts are easy to miss.** Long generations stream for minutes, and some proxies close requests after 15 seconds by default (Envoy's route timeout). Set a request timeout on every inference route.
 - **One pool, one model.** Every pod in a pool must serve the same base model, because the picker treats them as interchangeable apart from their state. Use one pool per model and route between pools.
-- **The picker must reach the pods' metrics.** NetworkPolicies that block the picker from the model servers' metrics port quietly turn smart routing into guessing.
+- **The picker must reach the pods' metrics.** [NetworkPolicies](../networking/04-network-policies.md) that block the picker from the model servers' metrics port quietly turn smart routing into guessing.
 
 ## Common Mistakes
 

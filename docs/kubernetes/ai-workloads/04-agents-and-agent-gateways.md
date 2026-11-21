@@ -1,14 +1,16 @@
 ---
 title: "AI Agents on Kubernetes: MCP, Agent Gateways, and Sandboxes"
 icon: lucide/bot
-description: "Run AI agents on Kubernetes: lock down agent pods, put MCP servers behind an agent gateway (agentgateway, Agent Router), set token budgets, and sandbox agent code."
+description: "Run AI agents on Kubernetes safely: lock down agent pods, put MCP servers behind an agent gateway like agentgateway, set token budgets, and sandbox agent code."
 tags:
   - Kubernetes
   - AI
   - Security
 ---
 
-# Agents and Agent Gateways
+# AI Agents and Agent Gateways on Kubernetes
+
+An agent gateway is a proxy between AI agents and everything they call: language models, MCP tool servers, and other agents. It authenticates each agent, decides which tools it may use, enforces token budgets, and records every call. This page covers running agents on Kubernetes with an agent gateway in front and sandboxes for the code they write.
 
 ## What You'll Learn
 
@@ -19,7 +21,7 @@ tags:
 
 ## Why This Matters
 
-An agent is a loop: it calls a model, decides which tools to use, and acts through MCP servers, internal APIs, and other agents. Every hop carries credentials, and every piece of text the agent reads can try to steer it (see [prompt injection](../../ai-guide/agent-labs/08-prompt-injection.md)). Without one place to apply policy, each agent team builds its own authentication, rate limits, and audit logging. MCP servers multiply, each holding its own API keys. Token spending has no owner until the invoice arrives.
+An [agent](../../ai-guide/ai-agents.md) is a loop: it calls a model, decides which tools to use, and acts through MCP servers, internal APIs, and other agents. Every hop carries credentials, and every piece of text the agent reads can try to steer it (see [prompt injection](../../ai-guide/agent-labs/08-prompt-injection.md)). Without one place to apply policy, each agent team builds its own authentication, rate limits, and audit logging. MCP servers multiply, each holding its own API keys. Token spending has no owner until the invoice arrives.
 
 ## Mental Model
 
@@ -40,9 +42,9 @@ flowchart LR
 
 An agent runs as an ordinary Deployment, but lock it down more than a typical service:
 
-- **Its own ServiceAccount**, with `automountServiceAccountToken: false` unless it really needs the Kubernetes API. An agent that "helps debug the cluster" with cluster-admin rights is one injected instruction away from deleting it.
+- **Its own [ServiceAccount](../security/03-service-accounts.md)**, with `automountServiceAccountToken: false` unless it really needs the Kubernetes API. An agent that "helps debug the cluster" with cluster-admin rights is one injected instruction away from deleting it. Grant only what it needs with [RBAC](../security/02-rbac.md).
 - **No provider API keys in the pod.** The gateway holds them and injects them into outbound requests, so a compromised agent has nothing to leak.
-- **Default-deny egress.** An agent that can fetch any URL can be talked into sending data anywhere. Allow only the gateway and DNS:
+- **Default-deny egress.** An agent that can fetch any URL can be talked into sending data anywhere. Allow only the gateway and DNS with a [NetworkPolicy](../networking/04-network-policies.md):
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -81,8 +83,8 @@ If you'd rather declare agents than write Deployments, [kagent](https://kagent.d
 | Traffic | What it is | What the gateway can do with it |
 |---|---|---|
 | LLM calls | OpenAI- or Anthropic-style APIs to hosted providers or self-hosted models | Route between providers and models, fail over, count tokens, enforce budgets |
-| MCP | The [Model Context Protocol](https://modelcontextprotocol.io/), how agents discover and call tools | Combine many servers into one endpoint, authorize per tool, audit every call |
-| A2A | Agent-to-agent protocol for delegating tasks between agents | Authenticate both sides, route by agent, trace across agents |
+| MCP | The [Model Context Protocol](https://modelcontextprotocol.io/), how agents discover and call tools ([build an MCP server](../../ai-guide/agent-labs/04-build-an-mcp-server.md)) | Combine many servers into one endpoint, authorize per tool, audit every call |
+| A2A | Agent-to-agent protocol for delegating tasks between agents ([A2A lab](../../ai-guide/agent-labs/10-a2a-protocol.md)) | Authenticate both sides, route by agent, trace across agents |
 
 MCP's current specification (revision 2026-07-28) made the protocol stateless. It removed the `initialize` handshake and the `Mcp-Session-Id` session header, and every request over Streamable HTTP now carries `MCP-Protocol-Version`, `Mcp-Method`, and `Mcp-Name` headers. Load balancers and gateways can route and authorize on the tool name without parsing the JSON body, and any replica can serve any request. Servers still on a 2025 revision keep sessions inside one replica. Run those as a single replica, use session affinity, or upgrade them.
 

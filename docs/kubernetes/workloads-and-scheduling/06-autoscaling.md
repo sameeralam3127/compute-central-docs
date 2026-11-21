@@ -198,6 +198,8 @@ spec:
 
 KEDA creates and manages an HPA under the hood, so the same `behavior` tuning applies. Scale-to-zero suits background workers; for user-facing services, the cold start when the first request arrives usually rules it out.
 
+LLM model servers are a good example of work waiting: their CPU stays flat while requests queue for the GPU. See [autoscaling vLLM on queue depth](../ai-workloads/02-serving-llms-with-vllm.md#autoscale-on-the-queue-not-on-cpu).
+
 ```bash
 kubectl get pods --field-selector=status.phase=Pending
 kubectl describe pod <pending-pod>   # look for "Insufficient cpu/memory" events

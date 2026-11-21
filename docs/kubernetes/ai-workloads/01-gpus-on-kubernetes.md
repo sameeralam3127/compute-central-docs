@@ -1,5 +1,5 @@
 ---
-title: "GPUs on Kubernetes: Device Plugin, DRA, MIG, and Time-Slicing"
+title: "GPUs on Kubernetes: Device Plugin, DRA, MIG, Time-Slicing"
 icon: lucide/cpu
 description: "Schedule GPUs on Kubernetes with the NVIDIA device plugin and DRA, share them with MIG or time-slicing, and size GPU memory for an LLM, KV cache included."
 tags:
@@ -9,6 +9,8 @@ tags:
 ---
 
 # GPUs on Kubernetes
+
+Kubernetes schedules GPUs as extended resources: a device plugin advertises `nvidia.com/gpu` on each GPU node, and pods request whole GPUs in their resource limits. Dynamic Resource Allocation (DRA) adds requests by device attributes. This page covers both, how to share one GPU between pods, and how to tell whether a model will fit.
 
 ## What You'll Learn
 
@@ -37,7 +39,7 @@ flowchart TD
 
 ### The NVIDIA GPU Operator
 
-Few teams install GPU components by hand. The [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html) runs them as DaemonSets on GPU nodes: the driver (unless the node image already has one), the NVIDIA Container Toolkit, the device plugin, GPU Feature Discovery labels, and the DCGM exporter for metrics.
+Few teams install GPU components by hand. The [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html) runs them as DaemonSets on GPU nodes: the driver (unless the node image already has one), the NVIDIA Container Toolkit, the device plugin, GPU Feature Discovery labels, and the DCGM exporter for metrics (see [which GPU metrics to watch](../../ai-guide/ai-observability.md#gpu-metrics-dcgm-exporter)).
 
 ```bash
 helm repo add nvidia https://helm.ngc.nvidia.com/nvidia
@@ -74,9 +76,9 @@ spec:
 
 The rules from the [Kubernetes GPU guide](https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/):
 
-- GPUs go in `limits`. You may also set `requests`, but they must equal the limit, and a request without a limit is rejected.
+- GPUs go in `limits`. You may also set `requests`, but they must equal the limit, and a request without a limit is rejected. (For how requests and limits work in general, see [Resource Requests, Limits, and QoS](../workloads-and-scheduling/05-resource-requests-limits-and-qos.md).)
 - With the device plugin you get whole devices: `nvidia.com/gpu: 0.5` is not a thing. Sharing works differently (see below).
-- GPU nodes are usually tainted so that ordinary pods stay off them. If the taint key is the resource name (`nvidia.com/gpu`) and the `ExtendedResourceToleration` admission plugin is enabled, Kubernetes adds the toleration to any pod that requests a GPU, so you can leave it out of the spec.
+- GPU nodes are usually [tainted](../workloads-and-scheduling/04-scheduling-affinity-and-taints.md) so that ordinary pods stay off them. If the taint key is the resource name (`nvidia.com/gpu`) and the `ExtendedResourceToleration` admission plugin is enabled, Kubernetes adds the toleration to any pod that requests a GPU, so you can leave it out of the spec.
 
 To pick a GPU model, use node labels. GPU Feature Discovery adds labels such as `nvidia.com/gpu.product`, and managed platforms add their own (GKE uses `cloud.google.com/gke-accelerator`):
 
@@ -190,8 +192,8 @@ vLLM prints the KV cache size it actually got, in tokens, when it starts. Read i
 ## What Most Engineers Miss
 
 - **The KV cache, not the weights, sets your concurrency.** "It fits" only means the weights fit. Size GPUs for the number of tokens in flight at peak, then check the startup log.
-- **A bigger GPU is often cheaper per token.** Because the weights are a fixed cost, moving from 24 GB to 80 GB multiplies usable cache far more than it multiplies memory, as the example above shows.
-- **GPU node scale-up is slow.** A new node may need minutes for the driver container to install, then minutes more to pull a multi-gigabyte engine image and load the weights. If you need capacity fast, keep warm nodes or reserved capacity.
+- **A bigger GPU is often cheaper per token.** Because the weights are a fixed cost, moving from 24 GB to 80 GB multiplies usable cache far more than it multiplies memory, as the example above shows. Compare cost per token served, not cost per GPU hour ([Cost Optimization](../production-engineering/02-cost-optimization.md)).
+- **GPU node scale-up is slow.** A new node may need minutes for the driver container to install, then minutes more to pull a multi-gigabyte engine image and load the weights. If you need capacity fast, keep warm nodes or reserved capacity rather than relying on the [cluster autoscaler](../workloads-and-scheduling/06-autoscaling.md) alone.
 - **Time-slicing hides failures.** With no memory isolation, one notebook allocating everything turns into out-of-memory errors in an unrelated inference pod on the same GPU.
 - **DRA status depends on the driver, not on Kubernetes.** The API is GA, but each vendor's driver has its own maturity. Read the driver's README, not the Kubernetes release notes.
 
