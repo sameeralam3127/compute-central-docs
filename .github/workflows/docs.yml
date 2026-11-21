@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: 3.x
-      - run: pip install zensical
+      - run: pip install -r requirements-docs.txt
       - name: Add last-updated dates to front matter
         run: python scripts/freshness.py frontmatter
       - run: zensical build --clean
@@ -67,7 +67,7 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: 3.x
-      - run: pip install zensical
+      - run: pip install -r requirements-docs.txt
       - name: Add last-updated dates to front matter
         run: python scripts/freshness.py frontmatter
       - run: zensical build --clean

@@ -215,6 +215,7 @@ font = false
 
 features = [
   "announce.dismiss",
+  "content.action.copy",
   "content.code.annotate",
   "content.code.copy",
   "content.code.select",
@@ -295,6 +296,27 @@ actions = ["accept", "reject", "manage"]
 [project.extra.consent.cookies.analytics]
 name = "Google Analytics"
 checked = false
+
+# llms.txt: an index of the guides for AI assistants and LLM tools, plus a
+# Markdown copy of every listed page, written next to its index.html as
+# index.md. The theme's content.action.copy feature uses those copies for the
+# "Copy as Markdown" button on each page.
+[project.plugins.llmstxt]
+markdown_description = "Practical, lab-tested guides to Linux, networking, Docker, Kubernetes, Ansible, Terraform, AWS, CI/CD, monitoring, SRE, security, and AI engineering."
+
+[project.plugins.llmstxt.sections]
+"Start here" = ["index.md", "about/index.md"]
+"Foundations" = ["foundations/*"]
+"AI Guide" = ["ai-guide/*"]
+"Ansible" = ["ansible/*"]
+"Docker" = ["docker/*"]
+"CI/CD Pipelines" = ["cicd/*"]
+"Kubernetes" = ["kubernetes/*"]
+"Monitoring" = ["monitoring-tools/*"]
+"Terraform" = ["terraform/*"]
+"Cloud" = ["cloud/*"]
+"SRE" = ["sre/*"]
+"Security" = ["security/*"]
 
 # Old URLs that search engines and other sites may still link to. Each old page
 # becomes a small HTML page that sends readers (and search engines) to the new

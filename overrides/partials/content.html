@@ -5,8 +5,9 @@
   matter, the last-updated date.
 -#}
 {% include "partials/actions.html" %}
+{#- The skip-link target is an anchor in base.html since zensical-ui 0.0.35, not this heading -#}
 {% if "<h1" not in page.content %}
-  <h1 id="__skip">{{ page.title | d(config.site_name, true)}}</h1>
+  <h1>{{ page.title | d(config.site_name, true)}}</h1>
 {% endif %}
 {#- zensical leaves page.is_homepage undefined; the homepage has an empty url -#}
 {% if page.url in ["", "index.html", "about/"] %}
