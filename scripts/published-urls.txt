@@ -1,4 +1,8 @@
 /
+AI Guide/
+AI Guide/ai-agents/
+AI Guide/ai-evaluation/
+AI Guide/llm-fundamentals/
 about/
 ai-guide/
 ai-guide/agent-labs/
