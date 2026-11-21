@@ -17,7 +17,72 @@ tags:
 - How `block:` groups tasks and shares keywords like `when`, `become`, and `tags`
 - How `rescue:` and `always:` give you try/except/finally behavior, per host
 - Which magic variables tell a `rescue` section what failed
+- What happens to notified handlers when a block fails
 - A complete deploy-with-rollback pattern you can adapt
+
+## A Minimal Example
+
+Save this as `block-demo.yml` and run it with `ansible-playbook block-demo.yml`. It needs no inventory, because it targets `localhost`:
+
+```yaml title="block-demo.yml"
+- name: block, rescue, and always
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Upgrade the app, roll back if it fails
+      block:
+        - name: Run the database migration
+          ansible.builtin.fail:
+            msg: "Migration 42 failed: column already exists"
+
+        - name: Never reached after the failure
+          ansible.builtin.debug:
+            msg: Upgrade finished
+
+      rescue:
+        - name: Report what failed
+          ansible.builtin.debug:
+            msg: "{{ ansible_failed_task.name }}: {{ ansible_failed_result.msg }}"
+
+      always:
+        - name: Runs whether the block failed or not
+          ansible.builtin.debug:
+            msg: Maintenance mode off
+```
+
+The output from ansible-core 2.22:
+
+```text
+TASK [Run the database migration] **********************************************
+[ERROR]: Task failed: Action failed: Migration 42 failed: column already exists
+Origin: /home/you/block-demo.yml:7:11
+
+5     - name: Upgrade the app, roll back if it fails
+6       block:
+7         - name: Run the database migration
+            ^ column 11
+
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "Migration 42 failed: column already exists"}
+
+TASK [Report what failed] ******************************************************
+ok: [localhost] => {
+    "msg": "Run the database migration: Migration 42 failed: column already exists"
+}
+
+TASK [Runs whether the block failed or not] ************************************
+ok: [localhost] => {
+    "msg": "Maintenance mode off"
+}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=1    ignored=0
+```
+
+Three things to notice:
+
+- The failure is still printed as `[ERROR]` and `fatal:`. That's normal: `rescue` runs after Ansible reports the failure.
+- The second task in the block never ran. The block stops at the first failure, for that host.
+- The recap says `failed=0` and `rescued=1`. Once `rescue` finishes, the host counts as recovered.
 
 ## Why This Exists
 
@@ -177,12 +242,23 @@ Two deliberate choices:
 
 ## Handlers and Blocks
 
-If a block notifies a handler and a later task fails, the handler doesn't run for that host by default. To make sure a notified reload happens before `rescue` logic runs, flush handlers explicitly inside the block:
+What happens to a handler that a block notified before one of its tasks failed depends on whether the host recovers. Each row below was run on ansible-core 2.22:
+
+| The block fails, and... | The notified handler |
+|---|---|
+| `rescue` recovers the host | Runs at the end of the play, **after** the `rescue` tasks |
+| Nothing rescues it | Never runs: the host failed, and its notified handlers are dropped |
+| Nothing rescues it, with `force_handlers: true` (or `--force-handlers`) | Runs anyway, even though the host failed |
+| `meta: flush_handlers` comes right after the notifying task | Runs immediately, **before** the failure and before `rescue` |
+
+The first row is the one that surprises people. The handler still fires after `rescue` has rolled things back, at the end of the play rather than when you expected, so a service your `rescue` already restarted gets reloaded a second time. When a reload has to happen at a specific point, such as before a health check, flush handlers right where you need them:
 
 ```yaml
     - name: Apply queued service reloads now
       ansible.builtin.meta: flush_handlers
 ```
+
+[Handlers](../core-concepts/08-handlers.md) covers how notification and flushing work in general.
 
 ## Limits of block
 
@@ -190,9 +266,21 @@ If a block notifies a handler and a later task fails, the handler doesn't run fo
 - `rescue` catches task **failures**, not unreachable hosts or syntax errors.
 - A block is not a transaction: tasks that already succeeded aren't undone unless your `rescue` undoes them.
 
+## rescue, ignore_errors, or failed_when?
+
+Three tools change what a failure does, and they're easy to mix up:
+
+| Tool | What it does | Does `rescue` run? | In the recap |
+|---|---|---|---|
+| `block` + `rescue` | Runs recovery tasks when a task in the block fails | Yes | `rescued=1` |
+| `ignore_errors: true` | Lets the task fail and carries on with the next task | No: the failure is ignored before `rescue` sees it | `ignored=1` |
+| `failed_when` | Decides what counts as a failure: `failed_when: false` never fails, a condition can fail a task that exited 0 | Only if the condition makes the task fail | `failed=1`, or `rescued=1` inside a block |
+
+Use `failed_when` to define failure correctly, `rescue` to recover from it, and `ignore_errors` only when a failure genuinely doesn't matter. [Error Handling](02-error-handling.md) covers `failed_when`, `changed_when`, and `any_errors_fatal` in detail.
+
 ## What Most Engineers Miss
 
-- **A rescued failure doesn't count as a failure.** The Ansible docs say it plainly: a rescued task is considered successful and doesn't trigger `max_fail_percentage` or `any_errors_fatal`. A rolling deploy whose `rescue` rolls back without re-failing will happily move on to the next batch with the same broken release, which is why the worked example above ends `rescue` with `fail`.
+- **A rescued failure doesn't count as a failure.** The Ansible docs say it plainly: a rescued task is considered successful and doesn't trigger `max_fail_percentage` or `any_errors_fatal` (see [serial and max_fail_percentage](../advanced-execution/01-forks-serial-strategy-throttle.md)). A rolling deploy whose `rescue` rolls back without re-failing will happily move on to the next batch with the same broken release, which is why the worked example above ends `rescue` with `fail`.
 - **`always` doesn't run for unreachable hosts either.** Invalid task definitions and unreachable hosts trigger neither `rescue` nor `always`, so a cleanup step in `always` (removing a maintenance lock, re-enabling a load balancer member) won't run on a host that dropped off the network mid-block.
 - **`ignore_errors: true` hides failures from `rescue`.** A task that fails with `ignore_errors` is treated as done, the block continues, and `rescue` never runs. Use one or the other, not both.
 - **`failed_when` decides what `rescue` sees.** A `command` that exits 0 but prints an error isn't a failure until `failed_when` says so, and then it's caught like any other.
@@ -224,6 +312,15 @@ If a block notifies a handler and a later task fails, the handler doesn't run fo
     - [x] Neither: unreachable hosts don't trigger `rescue` or `always`
 
     `block` error handling covers task failures. Cleanup that must happen even when a host disappears needs to run from somewhere else, such as a later play or a `delegate_to` task on another host.
+
+!!! quiz "The handler after a rescue"
+    A block's first task changes a config file and notifies `Reload app`. The next task fails, and `rescue` rolls the file back successfully. Does the handler run?
+
+    - [ ] No: handlers are dropped as soon as a task fails
+    - [x] Yes, at the end of the play, after the `rescue` tasks
+    - [ ] Yes, immediately, before `rescue` starts
+
+    The host recovered, so its notified handlers still run at the end of the play. Add `meta: flush_handlers` right after the notifying task if the reload must happen first.
 
 ## Interview Questions
 
