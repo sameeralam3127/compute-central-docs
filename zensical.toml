@@ -328,6 +328,13 @@ checked = false
 "sonarqube/sonarqube.md" = "cicd/code-quality/installation.md"
 "monitoring-tools/log.md" = "monitoring-tools/overview.md"
 "docker/basic.md" = "docker/docker.md"
+# The AI Guide folder was once "docs/AI Guide/" (with a space). Google still
+# crawls those URLs, e.g. /AI%20Guide/llm-fundamentals/.
+"AI Guide/index.md" = "ai-guide/index.md"
+"AI Guide/llm-fundamentals.md" = "ai-guide/llm-fundamentals.md"
+"AI Guide/ai-agents.md" = "ai-guide/ai-agents.md"
+"AI Guide/ai-evaluation.md" = "ai-guide/ai-evaluation.md"
+
 "interview/index.md" = "ansible/interview-prep/index.md"
 # Early single-page Ansible guides, replaced by the task-oriented course.
 "ansible/ansible.md" = "ansible/index.md"
