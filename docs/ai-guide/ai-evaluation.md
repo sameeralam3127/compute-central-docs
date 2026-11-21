@@ -193,4 +193,4 @@ print(response["response"])
 
 ## Next
 
-Continue to the [AI Agent Labs](agent-labs/index.md) to build, evaluate, and secure an agent yourself, or read [AI Terminology](terminology.md).
+Continue to [AI Observability](ai-observability.md) to monitor quality, cost, and latency once a system is live, or to the [AI Agent Labs](agent-labs/index.md) to build, evaluate, and secure an agent yourself.

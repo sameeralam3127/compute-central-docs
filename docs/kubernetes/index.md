@@ -28,6 +28,7 @@ It's built to work two ways: read it start to finish as a course, or jump straig
 | Running the control plane yourself | [Cluster Administration](cluster-administration/index.md) |
 | Building a deployment pipeline or adopting GitOps | [CI/CD & GitOps](cicd-and-gitops/index.md) |
 | Running Kubernetes in production at scale | [Production Engineering](production-engineering/index.md) |
+| Serving LLMs on GPUs or running AI agents | [AI Workloads](ai-workloads/index.md) |
 | Working on Red Hat OpenShift specifically | [OpenShift](openshift/index.md) |
 | Learning by doing, on a local cluster | [Labs](labs/index.md) |
 | Wanting full worked examples, failure paths included | [Case Studies](case-studies/index.md) |
@@ -82,6 +83,8 @@ Kubernetes moves fast, and a lot of tutorials online still teach patterns that n
 |---|---|---|
 | **HPA tolerance per object** stable, **HPA scale to zero** beta (v1.37) | Tune flapping per HPA; scale idle workloads to zero on object or external metrics | [Autoscaling](workloads-and-scheduling/06-autoscaling.md#what-most-engineers-miss) |
 | **ingress-nginx retired** (March 2026) | No more security fixes; move to Gateway API or another maintained controller | [Gateway API](networking/07-gateway-api.md) |
+| **Inference routing moved to llm-d** (2026) | `InferencePool` is GA; the endpoint picker and `InferenceObjective` now come from the llm-d router, so 2025 tutorials are out of date | [Inference Routing](ai-workloads/03-inference-routing-with-gateway-api.md) |
+| **Dynamic Resource Allocation** stable (v1.34) | Request devices such as GPUs by attributes through ResourceClaims; vendor driver maturity varies | [GPUs on Kubernetes](ai-workloads/01-gpus-on-kubernetes.md#dynamic-resource-allocation-dra) |
 | **preStop `sleep` action** stable (v1.34) | Delay shutdown so endpoints drain, without a `sleep` binary in the image | [Deployment Strategies](workloads-and-scheduling/01-deployment-strategies.md#what-most-engineers-miss) |
 | **Native sidecar containers** stable (v1.33) | Sidecars start before and stop after the app, and don't block Jobs from completing | [Pods](core-concepts/01-pods.md#native-sidecar-containers-kubernetes-v133) |
 | **In-place Pod resize** stable (v1.35) | Change CPU/memory of a running Pod without restarting it; VPA can use it | [Autoscaling](workloads-and-scheduling/06-autoscaling.md#verticalpodautoscaler) |
@@ -105,6 +108,7 @@ Kubernetes moves fast, and a lot of tutorials online still teach patterns that n
 - [Cluster Administration](cluster-administration/index.md) — kubeadm, etcd, node management, upgrades, backup and restore, multi-tenancy
 - [CI/CD & GitOps](cicd-and-gitops/index.md) — pipelines for Kubernetes, kubectl scripting, progressive delivery, ArgoCD and Flux
 - [Production Engineering](production-engineering/index.md) — capacity planning, cost optimization, multi-cluster design, disaster recovery, readiness review
+- [AI Workloads](ai-workloads/index.md) — GPUs and DRA, serving LLMs with vLLM, the Gateway API Inference Extension and llm-d, agent gateways and sandboxes
 - [OpenShift](openshift/index.md) — what OpenShift adds, the `oc` CLI and Projects, Routes, Source-to-Image, Operators
 - [Labs](labs/index.md) — minikube, kind, Docker Desktop, Podman, and guided hands-on scenarios
 - [Case Studies](case-studies/index.md) — full worked deployments, including the failure paths

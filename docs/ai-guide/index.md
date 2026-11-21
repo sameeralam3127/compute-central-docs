@@ -399,7 +399,9 @@ No. Start with the simplest pattern that solves the problem. A prompt-only assis
 - [LLM fundamentals](llm-fundamentals.md)
 - [AI agents for automation workflows](ai-agents.md)
 - [AI model evaluation](ai-evaluation.md)
+- [AI observability](ai-observability.md): time to first token, tokens and cost, GPU saturation, and OpenTelemetry traces for agents
 - [AI Agent Labs](agent-labs/index.md): build an incident triage agent with tools, memory, MCP, evals, multi-agent patterns, A2A, LangChain, and LiteLLM
+- [AI workloads on Kubernetes](../kubernetes/ai-workloads/index.md): GPUs, vLLM, model-aware routing, and agent gateways
 - [AI terminology in plain English](terminology.md)
 
 ## Common Mistakes
@@ -426,6 +428,7 @@ This overview connects to the deeper topics in this section:
 - [LLM Fundamentals](llm-fundamentals.md)
 - [AI Agents](ai-agents.md)
 - [AI Model Evaluation](ai-evaluation.md)
+- [AI Observability](ai-observability.md)
 
 If you are new to this space, a helpful learning sequence is:
 
