@@ -134,8 +134,8 @@
   {% endif %}
 
   <meta property="og:type" content="{{ 'website' if is_home else ('profile' if is_about else 'article') }}">
-  <meta property="og:title" content="{{ page_title }}">
-  <meta property="og:description" content="{{ page_description }}">
+  <meta property="og:title" content="{{ page_title | e }}">
+  <meta property="og:description" content="{{ page_description | e }}">
   <meta property="og:url" content="{{ page_url }}">
   <meta property="og:image" content="{{ page_image }}">
   <meta property="og:site_name" content="{{ config.site_name }}">
@@ -144,8 +144,8 @@
   {% endif %}
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{{ page_title }}">
-  <meta name="twitter:description" content="{{ page_description }}">
+  <meta name="twitter:title" content="{{ page_title | e }}">
+  <meta name="twitter:description" content="{{ page_description | e }}">
   <meta name="twitter:image" content="{{ page_image }}">
 
   {#- The author entity is defined once and referenced by @id everywhere else. -#}
