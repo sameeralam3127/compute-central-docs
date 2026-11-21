@@ -1,19 +1,16 @@
 ---
 title: "Ansible Idempotency Explained (Declarative vs Imperative)"
 icon: lucide/git-compare
-description: "Idempotency and declarative automation — imperative vs declarative, desired state, and reconciliation across shell, Terraform, Ansible, and Kubernetes."
+description: "Is Ansible declarative or imperative? What idempotency means in Ansible, how to test it with a second run, and how to fix tasks that change on every run."
 tags:
   - Ansible
   - Core Concepts
   - Idempotency
 ---
 
-# Idempotency and the Declarative Model
+# Ansible Idempotency and the Declarative Model
 
 This is the single most important mental model in Ansible. "Why did this task change something on the second run?" and "why is my playbook not safe to re-run?" both trace back to the declarative/imperative distinction covered here.
-
-!!! question "Is Ansible declarative or imperative?"
-    Both, at different levels. Each **task** is declarative: `ansible.builtin.package` with `state: present` describes an end state, and the module changes nothing if the host already matches. The **playbook** is procedural: tasks run top to bottom in the order you wrote them, steered by `when`, `loop`, and handlers. Tasks that use `command` or `shell` are imperative unless you add `creates`, `removes`, or `changed_when`.
 
 ## What You Will Learn
 
@@ -21,6 +18,35 @@ This is the single most important mental model in Ansible. "Why did this task ch
 - What "idempotent" actually means, in terms you can check by running something twice
 - Why Ansible modules — not playbooks — are where idempotency is actually implemented
 - How to spot a non-idempotent task on sight, and fix it
+
+## Is Ansible Declarative or Imperative?
+
+Both, at different levels. Each **task** is declarative: a module such as `ansible.builtin.package` with `state: present` describes an end state, and changes nothing if the host already matches. The **playbook** is procedural: tasks run top to bottom in the order you wrote them. Tasks that use `command` or `shell` are imperative unless you add a check.
+
+| Level | Style | Why |
+|---|---|---|
+| A task that uses a module (`package`, `copy`, `lineinfile`) | Declarative | It describes an end state, and the module checks the host before changing anything |
+| The playbook | Procedural | Tasks run in order, steered by `when`, `loop`, and handlers |
+| A `command` or `shell` task | Imperative | It runs every time, unless `creates`, `removes`, or `changed_when` adds a check |
+
+## What Is Idempotency in Ansible?
+
+Idempotency in Ansible means that running a task or playbook again changes nothing once the host is in the desired state: the run that makes the change reports `changed`, and every run after it reports `ok`.
+
+### How to Test for Idempotency
+
+Run the playbook twice, and require `changed=0` for every host on the second run:
+
+```bash
+ansible-playbook site.yml
+ansible-playbook site.yml | tee second-run.log
+if grep -E 'changed=[1-9]' second-run.log; then
+  echo "Not idempotent: the second run changed something"
+  exit 1
+fi
+```
+
+That's the check to put in [CI](../production-engineering/06-cicd-and-linting.md). For roles, Molecule's `idempotence` step does the same thing (see [Production Best Practices](#production-best-practices)).
 
 ## Theory
 
@@ -80,6 +106,7 @@ Here is the same intent — "make sure this line exists in a config file" — wr
 # minimal-shell.yml
 - name: Add a max_connections setting (naively)
   hosts: web
+  gather_facts: false
   tasks:
     - name: Append max_connections to app config
       ansible.builtin.shell: echo "max_connections = 100" >> /etc/app/app.conf
@@ -91,6 +118,7 @@ Here is the same intent — "make sure this line exists in a config file" — wr
 # minimal-lineinfile.yml
 - name: Ensure max_connections setting is present
   hosts: web
+  gather_facts: false
   tasks:
     - name: Ensure max_connections line exists in app config
       ansible.builtin.lineinfile:
@@ -105,6 +133,7 @@ Here is the same intent — "make sure this line exists in a config file" — wr
 
 - `ansible.builtin.shell` runs its argument as a literal shell command on the managed node, every single time the task executes — Ansible has no way to know what `echo ... >> file` is "supposed" to accomplish, so it can't check anything first.
 - `>>` appends. Run this playbook twice and the line appears twice; run it ten times and it appears ten times.
+- `gather_facts: false` skips fact gathering. Neither task needs facts, and it keeps the output below to one task per run.
 
 `minimal-lineinfile.yml`:
 
@@ -115,31 +144,39 @@ Here is the same intent — "make sure this line exists in a config file" — wr
 
 ## Expected Output
 
-Running `minimal-shell.yml` twice:
+This is real output from ansible-core 2.22.0, run against one host in the `web` group. Running `minimal-shell.yml` twice:
 
 ```text
 $ ansible-playbook minimal-shell.yml
 TASK [Append max_connections to app config] ***
 changed: [web1]
+PLAY RECAP ***
+web1                       : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 
 $ ansible-playbook minimal-shell.yml
 TASK [Append max_connections to app config] ***
-changed: [web1]        # ← changed again! the line is now duplicated
+changed: [web1]
+PLAY RECAP ***
+web1                       : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-Running `minimal-lineinfile.yml` twice:
+The second run changed something again, and the file now contains the line twice. Running `minimal-lineinfile.yml` twice:
 
 ```text
 $ ansible-playbook minimal-lineinfile.yml
 TASK [Ensure max_connections line exists in app config] ***
 changed: [web1]
+PLAY RECAP ***
+web1                       : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 
 $ ansible-playbook minimal-lineinfile.yml
 TASK [Ensure max_connections line exists in app config] ***
-ok: [web1]              # ← nothing to do, state already matches
+ok: [web1]
+PLAY RECAP ***
+web1                       : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-That single word — `changed` versus `ok` on the second run — is the entire declarative model made visible in one line of terminal output.
+Nothing to do: the line is already there. That single word, `changed` versus `ok` on the second run, is the entire declarative model made visible in one line of terminal output, and `changed=0` in the recap is what an idempotency test checks for.
 
 ## Practical
 
@@ -155,7 +192,7 @@ The `lineinfile` version has no such failure mode: it can be run during every ma
 - **`state: latest` isn't idempotent over time.** Run it today and next week and you can get two different versions, because "latest" moves whenever the repository publishes. Pin versions in production and leave `latest` to dev machines.
 - **`changed_when: false` can make a playbook lie.** It's right for commands that only read. On a command that changes something, it hides the change and makes the second-run test meaningless.
 - **A dry run doesn't prove idempotency; a second run does.** `--check` skips `command` and `shell` tasks entirely. Run the playbook twice and require `changed=0` on the second run, which is what Molecule's `idempotence` step automates.
-- **Non-idempotent tasks restart services.** A task that reports `changed` on every run notifies its handler on every run, so the service restarts every time the playbook runs, whether or not anything changed.
+- **Non-idempotent tasks restart services.** A task that reports `changed` on every run notifies its [handler](08-handlers.md) on every run, so the service restarts every time the playbook runs, whether or not anything changed.
 - **Idempotent isn't the same as correct.** A `lineinfile` whose `regexp` doesn't match the hand-edited line on a server appends a second line instead of fixing the first. The second run reports `ok`, so the task is idempotent, but the server still has the wrong setting in it.
 
 ## Common Mistakes

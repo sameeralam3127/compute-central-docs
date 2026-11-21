@@ -24,21 +24,21 @@ Building, testing, and shipping Ansible content well requires more than `ansible
 pip install ansible-dev-tools
 ```
 
-Use **Python 3.12 or newer**: the tools themselves run on older versions, but pip can only install a current `ansible-core` on a Python it supports (see the [support matrix](../getting-started/04-installing-ansible.md#which-python-version-do-you-need)). As with any Ansible tooling, prefer pipx or a project virtualenv over a global install.
+Use **Python 3.13 or newer**: the tools themselves run on older versions, but pip can only install a current `ansible-core` on a Python it supports, and ansible-core 2.22 needs 3.13 (see the [support matrix](../getting-started/04-installing-ansible.md#which-python-version-do-you-need)). On Python 3.12 you get ansible-core 2.21 instead. As with any Ansible tooling, prefer pipx or a project virtualenv over a global install.
 
 ```bash
 $ adt --version
-ansible-builder                          3.x
-ansible-core                             2.20.x
-ansible-creator                          25.x
-ansible-dev-environment                  25.x
-ansible-dev-tools                        25.x
-ansible-lint                             25.x
-ansible-navigator                        25.x
-ansible-sign                             0.1.x
-molecule                                 25.x
-pytest-ansible                           25.x
-tox-ansible                              25.x
+ansible-builder                          3.2.0
+ansible-core                             2.22.0
+ansible-creator                          26.11.0
+ansible-dev-environment                  26.11.0
+ansible-dev-tools                        26.11.0
+ansible-lint                             26.11.0
+ansible-navigator                        26.11.0
+ansible-sign                             0.1.6
+molecule                                 26.11.0
+pytest-ansible                           26.11.0
+tox-ansible                              26.11.0
 ```
 
 (Your exact versions will differ; most of these tools use calendar versioning, `YY.M.patch`.)

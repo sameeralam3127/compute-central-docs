@@ -12,6 +12,16 @@ tags:
 
 Ansible was created by **Michael DeHaan** and first released in **February 2012**. Red Hat acquired Ansible, Inc. in **October 2015**, and the commercial platform became Ansible Automation Platform.
 
+| | |
+|---|---|
+| Created by | Michael DeHaan |
+| First release | February 2012 |
+| Company | AnsibleWorks, later Ansible, Inc. |
+| Acquired by | Red Hat, October 2015 |
+| Written in | Python |
+| Name | From Ursula K. Le Guin's *ansible*, a fictional device for instant communication |
+| Current release | ansible-core 2.22 (November 2026) |
+
 ## What You'll Learn
 
 - What server automation looked like before Ansible, and specifically why it wasn't enough
@@ -76,6 +86,7 @@ flowchart TD
     F --> G["2019–2021\nCollections split content from the engine:\nansible-base 2.10, then ansible-core 2.11;\nTower becomes automation controller in AAP 2.0"]
     G --> H["2023–2025\nEvent-Driven Ansible; AAP 2.5 unifies\ncontroller, hub, and EDA behind one gateway;\nansible-core 2.19 rewrites templating"]
     H --> I["November 2025 – May 2026\nansible-core 2.20 deprecates top-level\nfact variables; ansible-core 2.21 ships;\nthe ansible 14 package follows in June"]
+    I --> J["November 2026\nansible-core 2.22 masks secrets in output\nand needs Python 3.13+; the ansible 15\npackage follows two weeks later"]
 ```
 
 The **Tower → AWX/AAP** naming split matters enough that it gets its own page once you're past the fundamentals: [ansible-core vs. ansible vs. AAP](../enterprise-platform/01-ansible-core-vs-ansible-vs-aap.md).
@@ -83,7 +94,9 @@ The **Tower → AWX/AAP** naming split matters enough that it gets its own page 
 !!! note "What changed recently, and why it matters to you"
     `ansible-core` 2.19 (July 2025) changed how templating works under the hood. Conditionals must now produce a real boolean, templates embedded inside a `when:` expression are rejected, and strings that came from outside the playbook are no longer templated automatically. Playbooks that leaned on the old, looser behavior can fail after an upgrade. [YAML and Variable Errors](../troubleshooting/03-yaml-and-variable-errors.md#upgrade-errors-after-ansible-core-219) covers the errors you'll see and how to fix each one.
 
-    `ansible-core` 2.20 (November 2025) started warning whenever a playbook reads injected fact variables such as `ansible_os_family`. They still work, but the default flips in 2.24, so new playbooks should use `ansible_facts['os_family']`. The current release line is 2.21, out since May 2026.
+    `ansible-core` 2.20 (November 2025) started warning whenever a playbook reads injected fact variables such as `ansible_os_family`. They still work, but the default flips in 2.24, so new playbooks should use `ansible_facts['os_family']`.
+
+    `ansible-core` 2.22 (November 2026) is the current release line. It needs Python 3.13 or newer on the control node, and it redacts known secrets from everything it prints: the decrypted value of a vault-encrypted variable shows up as `$REDACTED$`, even in a `debug` task, and so do vault passwords. The matching `ansible` 15 package followed on 17 November.
 
 ## Common Mistakes
 

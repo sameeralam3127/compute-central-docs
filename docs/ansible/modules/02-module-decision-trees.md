@@ -45,7 +45,7 @@ This is one of the most common Ansible interview questions, and the answer is ab
 - ansible.builtin.include_tasks: "{{ os_family }}_setup.yml"
 ```
 
-Default to `import_tasks` for anything with a fixed structure; reach for `include_tasks` only when the task list genuinely can't be known until run time.
+Default to `import_tasks` for anything with a fixed structure; reach for `include_tasks` only when the task list genuinely can't be known until run time. The full comparison, covering tags, `when`, handlers, and `--start-at-task`, is in [import_tasks vs include_tasks](../playbook-engineering/03-imports-vs-includes.md).
 
 ## role vs. task include
 

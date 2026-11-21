@@ -94,7 +94,7 @@ Most production setups pin `ansible-core` explicitly and add only the specific c
 
 ```bash
 $ ansible --version
-ansible [core 2.20.x]
+ansible [core 2.21.x]
   config file = None
   configured module search path = ['/home/user/.ansible/plugins/modules', ...]
   ansible python module location = /home/user/.local/share/pipx/venvs/ansible-core/lib/python3.12/site-packages/ansible
@@ -117,10 +117,12 @@ Every `ansible-core` release supports a window of Python versions: one window fo
 | 2.18 | 3.11 – 3.13 | 3.8 – 3.13 |
 | 2.19 | 3.11 – 3.13 | 3.8 – 3.13 |
 | 2.20 | 3.12 – 3.14 | 3.9 – 3.14 |
+| 2.21 | 3.12 – 3.14 | 3.9 – 3.14 |
+| 2.22 | 3.13 – 3.15 | 3.9 – 3.15 |
 
 The official [support matrix](https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html) is the source of truth and lists newer releases as they ship. Two consequences in practice:
 
-- **pip quietly installs an older release on an older Python.** On a control node with Python 3.10, `pip install ansible-core` gives you 2.17, not the latest. `ansible --version` tells you which one you actually got.
+- **pip quietly installs an older release on an older Python.** ansible-core 2.22 (November 2026) needs Python 3.13 or newer on the control node, so on Python 3.12, `pip install ansible-core` gives you 2.21, and on Python 3.10 it gives you 2.17. `ansible --version` tells you which one you actually got.
 - **Old managed nodes need a newer Python, not an older Ansible.** RHEL 8 ships Python 3.6 as its platform Python but offers newer ones as packages (`dnf install python3.12`). Point `ansible_python_interpreter` at the newer one for those hosts.
 
 ## "ansible-playbook: command not found"
