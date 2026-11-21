@@ -57,6 +57,7 @@ That makes it a solid learning setup for DevOps and SRE work.
 - [Logging with Loki and Grafana Alloy](logging.md)
 - [Python logging in practice](python-logging.md)
 - [OpenTelemetry and other platforms](opentelemetry-platforms.md)
+- [AI observability: LLMs, agents, and GPUs](../ai-guide/ai-observability.md) (in the AI Guide)
 - [Blackbox Exporter](blackbox.md)
 - [Troubleshooting](troubleshooting.md)
 

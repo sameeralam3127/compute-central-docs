@@ -191,7 +191,7 @@ Lab 5 does the same thing by hand, so you can see every step.
 - **MCP standardizes the interface, not the safety.** A server with a `run_shell` tool is as dangerous over MCP as it is in your own code. Review third-party servers like any dependency that runs with your credentials.
 - **Tool descriptions from a server go straight into the model's context.** A malicious or compromised server can put instructions in a description. Only connect servers you trust, and pin their versions.
 - **stdio servers run with your user's permissions.** The server process can read anything you can, whatever its tools claim. Run untrusted servers in a container.
-- **Remote servers** (the streamable HTTP transport) need authentication, TLS, and rate limits, like any API. The stdio transport in this lab has none of those because nothing is exposed.
+- **Remote servers** (the streamable HTTP transport) need authentication, TLS, and rate limits, like any API. The stdio transport in this lab has none of those because nothing is exposed. On Kubernetes, an agent gateway can provide them for every server at once: see [an MCP server behind agentgateway](../../kubernetes/ai-workloads/04-agents-and-agent-gateways.md#example-an-mcp-server-behind-agentgateway).
 
 !!! quiz "Tool errors in MCP"
     Your MCP tool raises `FileNotFoundError` for a missing file. What does the model see?

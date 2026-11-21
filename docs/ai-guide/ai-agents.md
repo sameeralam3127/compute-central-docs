@@ -178,6 +178,8 @@ Well-designed agents can:
 
 Agents are not automatically safer or more accurate. Their extra steps can improve quality only when tools have limited permissions, results are checked, failures are logged, and risky actions require human approval.
 
+In production, enforce those limits outside the model: an agent gateway controls which tools each agent may call, and sandboxes isolate the code agents write. See [AI agents on Kubernetes](../kubernetes/ai-workloads/04-agents-and-agent-gateways.md).
+
 ---
 
 ## Agent + RAG + Tools

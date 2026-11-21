@@ -20,6 +20,7 @@ ai-guide/agent-labs/11-langchain-agent/
 ai-guide/agent-labs/12-litellm-multi-provider/
 ai-guide/ai-agents/
 ai-guide/ai-evaluation/
+ai-guide/ai-observability/
 ai-guide/llm-fundamentals/
 ai-guide/terminology/
 ansible/
@@ -298,6 +299,11 @@ jenkins/java-github-actions/
 jenkins/jenkins/
 jenkins/python-github-actions/
 kubernetes/
+kubernetes/ai-workloads/
+kubernetes/ai-workloads/01-gpus-on-kubernetes/
+kubernetes/ai-workloads/02-serving-llms-with-vllm/
+kubernetes/ai-workloads/03-inference-routing-with-gateway-api/
+kubernetes/ai-workloads/04-agents-and-agent-gateways/
 kubernetes/case-studies/
 kubernetes/case-studies/01-rolling-deployment-with-zero-downtime/
 kubernetes/case-studies/02-blue-green-and-canary-releases/

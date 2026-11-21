@@ -24,4 +24,4 @@ Getting a workload to run on Kubernetes is the easy part. This section is the di
 
 ## Next
 
-Continue to [OpenShift](../openshift/index.md) to see how a major enterprise Kubernetes distribution packages many of these same production concerns into the platform itself.
+Continue to [AI Workloads](../ai-workloads/index.md) for GPUs, model serving, and AI agents, or to [OpenShift](../openshift/index.md) to see how a major enterprise Kubernetes distribution packages many of these same production concerns into the platform itself.

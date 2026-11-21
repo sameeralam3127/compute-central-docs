@@ -91,4 +91,4 @@ See [Interview Prep](../interview-prep/index.md) for full answers.
 
 ## Next
 
-This is the last page in Production Engineering. Continue to [OpenShift](../openshift/index.md) to see how a major enterprise Kubernetes distribution builds several of these same guarantees into the platform itself.
+This is the last page in Production Engineering. Continue to [AI Workloads](../ai-workloads/index.md) to serve LLMs and run AI agents on these clusters, or to [OpenShift](../openshift/index.md) to see how a major enterprise Kubernetes distribution builds several of these same guarantees into the platform itself.
